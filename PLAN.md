@@ -629,6 +629,8 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 
 **Demo con las niñas:** buscar los 5 cofres secretos con botín real. Ver quién arma primero a Thor.
 
+**Notas de cierre F3:** hecho como el plan. Cambios: sin cámara aparte para el inventario (entra a x1 en la tablet), legendarios por clase en el Claro Escondido, mágicos `m_*` mezclados con los normales. Para después: las hombreras y pantalones necesitan casillero (hoy no se sortean), y los anillos y amuletos tipo charm tampoco.
+
 ### F4. El minotauro
 
 **Objetivo:** la pelea final del Mundo 1 y el cierre.

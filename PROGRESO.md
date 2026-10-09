@@ -4,7 +4,7 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 
 ## Estado
 
-- Fase actual: F3 (botín) en curso. F2 cerrada (typecheck, 174 tests, build, e2e escritorio y tablet en verde, capturas en docs/capturas/f2). F1b cerrada antes.
+- Fase actual: F4 (minotauro) en curso. F3 cerrada (botín, inventario, rompibles, Thor armado), F2 y F1b cerradas antes.
 - F1b hecha en código: Titulo (logo, Toca para empezar, botón Créditos), SeleccionJugador (tarjetas del manifest, aura y Thor), guardado con migración, Presentacion (paneo la primera vez), Entidades (cofres, carteles, fogatas, Abuelo), HUD (contadores, oro, pausa, panel de cartel), Pausa (Noche, Música, Efectos, calidad, modo peque, otra jugadora, créditos, seguir), Creditos (CREDITOS.txt con scroll)
 - F1a hecha: grilla, A*, movimiento, zonas, descubrimiento; MundoVista, Decos (pool por celdas, viento, hechizados, copas, pasto), Heroina, ThorSprite (sigue el rastro), Criaturas, Camara, Entrada (toque, mantener, teclado), Sonido; fx: Luces (RenderTexture con pozos), Bruma, Nubes, Particulas, AtmosferaFX (postFX soft light y viñeta), Atmosfera; escenas Mundo y HUD; postales en docs/capturas/f1a y comparar.html
 - F0 hecha: tooling (Vite, TS, Vitest, Playwright, Netlify), cargador del kit, mapa puro, azar, direccion, escala entera, config, Boot, SalaKit, verificar-kit, ganchos de prueba, 46 tests, 12 e2e (1 salta a propósito)
@@ -35,13 +35,22 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 - F2, el oro de los enemigos entra directo a la bolsa con un número flotante. Los drops con haz y rebote llegan en F3.
 - F2, el cinturón arranca con 2 pociones de vida y 1 de maná (`BOTIN.cinturonInicial`). Una poción no se gasta si la vida o el maná ya están llenos.
 - F2, la lógica de las acciones (golpe, aviso, recarga) corre con el reloj del juego, no con el de las animaciones, así `avanzar()` es exacto en las pruebas.
+- F3, el catálogo del kit se usa tal cual (`botin/catalogo.json`). Hombreras, pantalones, gemas, runas y amuletos tipo "charm" no tienen casillero en el layout del inventario, así que no se sortean en las tablas. Los mágicos `m_*` entran como el 25 % de los objetos normales cuando le tocan a su nivel y los raros `r_*` son la tabla de raros.
+- F3, legendario del Claro Escondido por clase: Sophie `pluma_de_cuervo`, Alana `ramita_del_abuelo`, Rick `filo_del_alba`, Steph `rama_del_bosque_eterno` (el kit solo trae legendarios propios para Sophie y Alana).
+- F3, el inventario va a escala entera (x1 en la tablet, x2 o x3 si sobra pantalla) y no usa cámara aparte: con la vista de 590 x 410 el panel de 280 x 410 entra justo. La bolsa de 28 casillas y el oro salen del `layout` del kit. El cinturón no está en esa imagen: se ve en el HUD.
+- F3, el cofre del tutorial da `pet_armor_1` además del azar y Thor cambia de sprite al equiparla (`thor_armadura1` a 3 se cargan al entrar).
+- F3, el oro de los enemigos y cofres cae como monedas `oro_<tamaño>`. Thor las recoge a 120 px de él, la heroína a 34 px.
+- F3, Thor desentierra algo cada 60 a 90 s con 25 % de probabilidad, solo sin enemigos a 360 px.
+- F4, el aviso del golpe fuerte usa `aviso_jefe` a x1 (radio 48) y el del pisotón y el salto a x2 (radio 96): el plan decía 70, 100 y 80, pero escalar con decimales rompía los pixeles. Los números viven en `JEFE`.
+- F4, el minotauro usa su hoja de 96 px sin escalar (el taller ya la entregó): no hace falta el 1.5 de la nota del plan.
+- F4, la salida de la arena se cierra con un anillo de cuadros bloqueados justo afuera del borde (el borde queda a 24 px de donde la heroína dispara la pelea). Si la heroína se aleja más de 60 px de la arena, la pelea se corta como si la hubieran rescatado.
 - F1b, las pruebas e2e llegan a cofres, carteles y fogatas por la parada del objeto (`teleport` a la parada): la caminata larga ya la cubre F1a.
 
 - Entrega del taller (5 tandas, submódulo en 8ba7f2a): adoptada en F1a. Decos usa tronco y copa por separado, pasto con sus anims, capa `superficie` para los pasos, 13 postales. Falta usar en sus fases: iconos de cartel (F1b), Abuelo que sonríe (F1b), títulos y logo (F1b), flecha y naturaleza (F2), botín bajo (F3), Thor cava (F3), minotauro 96 y carga (F4), íconos de app (F5). En balance se quitaron las escalas temporales del trol y del minotauro.
 
 ## Lo que falta
 
-F2, F3, F4, F5 (ver PLAN.md sección 5)
+F4 (cierre), F5 (ver PLAN.md sección 5)
 
 ## Comandos para retomar
 
@@ -75,6 +84,16 @@ npm run typecheck && npm test && npm run build && npm run e2e
 - Para Alana (modo peque): ataca sola al enemigo que tenga cerca, los botones son más grandes, los enemigos pegan la mitad y avisan 1.8 s. Preguntar si entiende los dos botones sin explicación y si el aullido de Thor la hace reír.
 - Thor: muerde cada 2 s lo que esté a menos de 160 px de la heroína y aúlla con un escudo si la vida baja de 30 %. Si la heroína cae, Thor aúlla, la pantalla se va a negro y reaparece en la última fogata con todo lleno ("¡Thor te salvó!"). No se pierde nada.
 - Lo que no pude medir: cómo se siente el combate con el dedo en la tablet de verdad y los fps con 29 enemigos. Los lejanos (más de 900 px) ni piensan ni se dibujan.
+
+### F3 (botín)
+- `docs/capturas/f3/`: `botin_en_el_piso.png` (haces de luz de rareza, oro) e `inventario.png`, en escritorio y tablet (`_tablet`).
+- Probar con las niñas: abrir el cofre del tutorial (cerca del inicio, al sur). Sale la armadura de Thor: se recoge pasando encima, se abre la mochila con el botón de arriba a la derecha (o I) y se toca la armadura. Thor cambia. Mantener presionado un objeto muestra el tooltip con el nombre en el color de su rareza y la comparación (+ verde, - rojo). Probar con rompibles (cajas, barriles, vasijas) y buscar los 5 cofres secretos.
+- Para ver quién arma primero a Thor.
+- Lo que no pude medir: el rendimiento con muchos objetos en el piso y la sensación del toque largo en la tablet de verdad.
+
+### F4 (minotauro)
+- La arena está al noreste del mapa (`arena_del_minotauro` en el comparador). Entrar caminando hasta el centro dispara la pelea. Probar con nivel 6 o más (Alana con nivel 4 en modo peque).
+- Los avisos grandes se ven en el piso: círculo que se llena (pisotón y salto), elipse delante (golpe fuerte) y línea roja (la carga). En modo peque duran 1.8 s.
 
 ## Pasos solo de Rick
 

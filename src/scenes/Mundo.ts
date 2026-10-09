@@ -417,6 +417,8 @@ export class Mundo extends Phaser.Scene {
     if (!j.peleando && j.vivo && !this.partida.jefeVencido && !this.combate.caido) {
       if (Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) <= a.radio - JEFE.entradaMargen) this.empezarJefe()
     }
+    // si la heroína se va lejos de la arena (un salto de prueba, por ejemplo) la pelea se corta sin curar al jefe
+    if (j.peleando && Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) > a.radio + 60) this.alCaerEnArena()
     j.update({ dt, heroeX: this.heroina.x, heroeY: this.heroina.y, heroeVivo: !this.combate.caido, modoPeque: this.combate.modoPeque, ratasVivas: this.enemigos.invocadasVivas })
     // el portal: se entra caminando
     const p = this.portalJefe

@@ -90,12 +90,18 @@ test.describe('Bosque GG vivo', () => {
   test('se llega caminando, solo tocando el piso, a todas las zonas del mapa', async ({ page }) => {
     test.setTimeout(240_000)
     await abrirMundo(page)
+    // desde F2 el camino tiene enemigos y la arena tiene al jefe: esta prueba mide solo que se pueda llegar caminando
+    await gancho(page, 'matarEnemigos')
+    await gancho(page, 'ponerNivel', 10)
     const mapa = await info(page)
     for (const z of mapa.zonas) {
       const objetivo = puntoPropioDeZona(mapa, z.nombre)
       const meta = await puntoLibre(page, objetivo.x, objetivo.y)
+      await gancho(page, 'curarTodo')
       await gancho(page, 'tocar', meta.x, meta.y)
       await avanzar(page, 150, true)
+      // entrar a la arena despierta al jefe y cierra la salida: se lo vence para seguir
+      if ((await gancho<{ peleando?: boolean }>(page, 'jefe')).peleando) await gancho(page, 'danarJefe', 9999)
       const p = await pos(page)
       expect(Math.hypot(p.x - meta.x, p.y - meta.y), `no llegó a ${z.nombre}`).toBeLessThan(12)
       const zona = await gancho<string | null>(page, 'zona')
