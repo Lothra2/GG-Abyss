@@ -24,9 +24,9 @@ export interface ClaseBalance {
 }
 
 export const CLASES: Record<ClaseId, ClaseBalance> = {
-  amazona: { vida: 60, mana: 30, dano: [4, 7], alcance: 220, ataquesPorSeg: 1.0, animAtaque: 'shoot_bow', proyectil: 'proyectil_sagrado', impacto: 'impacto_sagrado', armaPersonal: 'arco_de_sophie' },
-  druida: { vida: 55, mana: 50, dano: [3, 6], alcance: 200, ataquesPorSeg: 1.0, animAtaque: 'cast', proyectil: 'proyectil_veneno', impacto: 'impacto_veneno', armaPersonal: 'varita_de_alana' },
-  paladin: { vida: 90, mana: 20, dano: [5, 9], alcance: 44, ataquesPorSeg: 1.1, animAtaque: 'attack', proyectil: null, impacto: 'impacto_sagrado', armaPersonal: 'juramento_de_rick' },
+  amazona: { vida: 60, mana: 30, dano: [4, 7], alcance: 220, ataquesPorSeg: 1.0, animAtaque: 'shoot_bow', proyectil: 'proyectil_flecha', impacto: 'impacto_flecha', armaPersonal: 'arco_de_sophie' },
+  druida: { vida: 55, mana: 50, dano: [3, 6], alcance: 200, ataquesPorSeg: 1.0, animAtaque: 'cast', proyectil: 'proyectil_naturaleza', impacto: 'impacto_naturaleza', armaPersonal: 'varita_de_alana' },
+  paladin: { vida: 90, mana: 20, dano: [5, 9], alcance: 44, ataquesPorSeg: 1.1, animAtaque: 'attack', proyectil: null, impacto: 'tajo', armaPersonal: 'juramento_de_rick' },
   hechicera: { vida: 50, mana: 60, dano: [5, 8], alcance: 220, ataquesPorSeg: 0.9, animAtaque: 'cast', proyectil: 'proyectil_fuego', impacto: 'impacto_fuego', armaPersonal: 'baculo_de_steph' },
 }
 
@@ -125,7 +125,7 @@ export interface EnemigoBalance {
 export const ENEMIGOS: Record<string, EnemigoBalance> = {
   rata: { vida: 12, dano: [2, 3], anim: 'attack_thrust', ataquesPorSeg: 1, alcance: 26, velocidad: 70, ve: 140, xp: 5, oro: [1, 3] },
   calabaza: { vida: 30, dano: [3, 5], anim: 'attack', ataquesPorSeg: 0.8, alcance: 28, velocidad: 50, ve: 160, xp: 12, oro: [2, 5] },
-  goblin_arquero: { vida: 22, dano: [3, 5], anim: 'shoot_bow', ataquesPorSeg: 0.7, alcance: 200, velocidad: 60, ve: 220, xp: 15, oro: [3, 6], proyectil: 'proyectil_sagrado', impacto: 'impacto_sagrado', huyeSi: 120 },
+  goblin_arquero: { vida: 22, dano: [3, 5], anim: 'shoot_bow', ataquesPorSeg: 0.7, alcance: 200, velocidad: 60, ve: 220, xp: 15, oro: [3, 6], proyectil: 'proyectil_flecha', impacto: 'impacto_flecha', huyeSi: 120 },
   trol: { vida: 140, dano: [7, 10], anim: 'attack', ataquesPorSeg: 0.6, alcance: 34, velocidad: 55, ve: 200, xp: 90, oro: [20, 35] },
 }
 
@@ -227,7 +227,31 @@ export const STATS_ACTIVOS = [
   'critChance', 'lifeRegen', 'healPct', 'petDmg', 'petArmor', 'restoreLife', 'restoreMana',
 ] as const
 
+/** Cuándo, dentro de la animación, sale el golpe o el disparo (0 a 1 del total de cuadros) */
+export const GOLPE_EN = {
+  heroe: 0.55,
+  enemigo: 0.55,
+}
+
+export const PROYECTIL = {
+  velocidad: 300,
+  /** radio de choque contra un cuerpo, en px */
+  radio: 12,
+  vidaMaxS: 1.6,
+}
+
 export const COMBATE = {
+  /** el enemigo marcado por el toque pierde la marca si se va más lejos que esto */
+  soltarObjetivoLejos: 420,
+  /** al recibir un golpe el enemigo se frena este rato, en s */
+  aturdidoS: 0.28,
+  empujeHit: 10,
+  /** cuántos números de daño caben a la vez en pantalla */
+  topeNumeros: 24,
+  /** la heroína cae a este nivel de vida */
+  vidaCaida: 0,
+  fundidoRescateS: 1,
+  rescateVidaPct: 100,
   critDanoMult: 1.5,
   critBase: 0.05,
   /** cada punto de armadura reduce el daño: dano * 100 / (100 + armadura * esto) */
