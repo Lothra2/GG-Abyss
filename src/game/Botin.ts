@@ -80,7 +80,7 @@ export class Botin {
 
   info() {
     return {
-      drops: this.drops.map((x) => ({ id: x.id, x: Math.round(x.x), y: Math.round(x.y), rareza: x.item.rarity })),
+      drops: this.drops.map((x) => ({ id: x.id, x: Math.round(x.x), y: Math.round(x.y), rareza: x.item.rarity, haz: !!x.haz, cae: !!x.caida })),
       monedas: this.monedas.map((m) => ({ oro: m.oro, x: Math.round(m.x), y: Math.round(m.y) })),
     }
   }

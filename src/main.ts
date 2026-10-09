@@ -11,6 +11,7 @@ import { Mundo } from './scenes/Mundo'
 import { HUD } from './scenes/HUD'
 import { Pausa } from './scenes/Pausa'
 import { Creditos } from './scenes/Creditos'
+import { Inventario } from './scenes/Inventario'
 
 if (params.seed !== null) fijarSemilla(params.seed)
 
@@ -28,7 +29,7 @@ const game = new Phaser.Game({
   scale: { mode: Phaser.Scale.NONE, width: escala.ancho, height: escala.alto, zoom: escala.cssZoom },
   render: { powerPreference: 'high-performance', mipmapFilter: 'NEAREST' },
   input: { activePointers: 3, touch: { capture: true } },
-  scene: [Boot, Titulo, SeleccionJugador, SalaKit, Mundo, HUD, Pausa, Creditos],
+  scene: [Boot, Titulo, SeleccionJugador, SalaKit, Mundo, HUD, Pausa, Creditos, Inventario],
   callbacks: { preBoot: (g) => g.registry.set('escala', escala) },
 })
 

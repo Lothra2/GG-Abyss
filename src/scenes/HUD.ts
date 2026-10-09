@@ -32,6 +32,7 @@ export class HUD extends Phaser.Scene {
   private bNombrePlata!: Phaser.GameObjects.BitmapText
   private fps?: Phaser.GameObjects.BitmapText
   private pausa!: Boton
+  private bolsa!: Boton
   private combate!: HudCombate
   private bNivel!: Phaser.GameObjects.BitmapText
   private bRescate!: Phaser.GameObjects.BitmapText
@@ -77,6 +78,7 @@ export class HUD extends Phaser.Scene {
 
     // pausa arriba a la derecha (Esc en el teclado)
     this.pausa = crearBoton(this, { x: 0, y: 0, w: 28, h: 28, icono: k('icono_pausa', 'icono_ajustes').replace('ui_', ''), origen: [1, 0], alToque: () => this.abrirPausa() })
+    this.bolsa = crearBoton(this, { x: 0, y: 0, w: 28, h: 28, icono: 'icono_bolsa', origen: [1, 0], alToque: () => this.mundo.abrirInventario() })
     this.input.keyboard?.on('keydown-ESC', () => this.abrirPausa())
 
     this.combate = new HudCombate(this, this.mundo, K.atlas('iconos', '32'))
@@ -155,8 +157,10 @@ export class HUD extends Phaser.Scene {
     this.bNivel.setScale(esc + 1).setPosition(Math.round(w / 2), Math.round(h * 0.34))
     this.bRescate.setScale(esc + 1).setPosition(Math.round(w / 2), Math.round(h / 2))
     this.pausa.setPosition(w - mg, mg)
-    this.fps?.setPosition(w - mg, mg + this.pausa.alto + 2)
-    this.avisoCalidadImg?.setPosition(w - mg - 12, mg + this.pausa.alto + 20)
+    this.bolsa.setPosition(w - mg, mg + this.pausa.alto + 4)
+    const yBajo = mg + this.pausa.alto + this.bolsa.alto + 8
+    this.fps?.setPosition(w - mg, yBajo)
+    this.avisoCalidadImg?.setPosition(w - mg - 12, yBajo + 18)
     if (this.cartel) this.mostrarCartel(this.cartelInfo!.icono, this.cartelInfo!.texto)
   }
 
@@ -272,6 +276,7 @@ export class HUD extends Phaser.Scene {
       panel: r(this.panel),
       fps: this.fps ? r(this.fps) : null,
       pausa: r(this.pausa),
+      bolsa: r(this.bolsa),
       banner: { x: Math.round(this.banner.x), y: Math.round(this.banner.y) },
     }
   }

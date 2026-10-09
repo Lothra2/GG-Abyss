@@ -327,6 +327,7 @@ export class Mundo extends Phaser.Scene {
     this.instalarTeclasCombate()
     this.game.events.on('cartel-cerrado', this.alCerrarCartel, this)
     this.game.events.on('pausa-cerrada', this.alCerrarPausa, this)
+    this.game.events.on('inventario-cerrado', this.alCerrarPausa, this)
 
     // la música del título se va apagando al entrar al mundo
     const mt = this.registry.get('musicaTitulo') as Phaser.Sound.BaseSound | undefined
@@ -421,6 +422,7 @@ export class Mundo extends Phaser.Scene {
     this.listo = false
     this.game.events.off('cartel-cerrado', this.alCerrarCartel, this)
     this.game.events.off('pausa-cerrada', this.alCerrarPausa, this)
+    this.game.events.off('inventario-cerrado', this.alCerrarPausa, this)
     quitarGanchos(...NOMBRES_GANCHOS)
     this.entrada.destroy()
     this.combate.destruir()
@@ -776,8 +778,8 @@ export class Mundo extends Phaser.Scene {
       combate: () => this.combate.info(),
       botin: () => this.botin.info(),
       inventario: () => ({ equipo: { ...this.partida.equipo }, bolsa: [...this.partida.bolsa], cinturon: [...this.partida.cinturon], armaduraThor: this.thor.nivelArmadura, oro: this.partida.oro, velMult: this.heroina.velMult }),
-      soltarObjeto: ((id: string) => this.botin.soltar(id, this.heroina.x + 20, this.heroina.y + 4)) as never,
-      soltarOro: ((n: number) => this.botin.soltarOro(n, this.heroina.x + 26, this.heroina.y + 6)) as never,
+      soltarObjeto: ((id: string, dx = 70) => this.botin.soltar(id, this.heroina.x + dx, this.heroina.y + 4)) as never,
+      soltarOro: ((n: number, dx = 26) => this.botin.soltarOro(n, this.heroina.x + dx, this.heroina.y + 6)) as never,
       darObjeto: ((id: string) => {
         const r = recogerInv(this.inv(), this.cat, id)
         if (r.ok) this.alCambioInventario()
