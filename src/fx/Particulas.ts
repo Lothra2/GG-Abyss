@@ -287,6 +287,7 @@ export class Particulas {
       }
       switch (d.nombre) {
         case 'fogata':
+        case 'campamento_fogata':
           emite('b', 6, () => this.crear('mota', 'brasa', d.x + (r() - 0.5) * 10, d.y - 8, { vx: (r() - 0.5) * 10, vy: -18 - r() * 18, vida: 0.7 + r() * 1.0, local: true }))
           emite('h', 1.2, () => this.crear('mota', 'humo', d.x + (r() - 0.5) * 6, d.y - 22, { vx: 3 + r() * 4, vy: -9 - r() * 4, vida: 2.8, porEdad: true, alfaMax: 0.8, local: true }))
           break

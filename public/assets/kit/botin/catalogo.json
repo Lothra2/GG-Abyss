@@ -10417,6 +10417,1403 @@
    "atlas": "armadura_n5"
   },
   {
+   "id": "m_arco_certero",
+   "name": {
+    "es": "Arco corto certero",
+    "en": "Precise Short Bow"
+   },
+   "rarity": "magic",
+   "level": 2,
+   "base": {
+    "cat": "weapon",
+    "icon": "bow"
+   },
+   "grade": 1,
+   "twoHanded": true,
+   "stats": {
+    "damage": [
+     2,
+     7
+    ],
+    "speed": 1.3,
+    "mods": [
+     {
+      "stat": "critChance",
+      "value": 3
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+3% probabilidad de crítico"
+    ],
+    "en": [
+     "+3% Critical Chance"
+    ]
+   },
+   "icon": "m_arco_certero",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_varita_arcana",
+   "name": {
+    "es": "Varita arcana",
+    "en": "Arcane Wand"
+   },
+   "rarity": "magic",
+   "level": 3,
+   "base": {
+    "cat": "weapon",
+    "icon": "wand"
+   },
+   "grade": 1,
+   "twoHanded": false,
+   "stats": {
+    "damage": [
+     1,
+     5
+    ],
+    "speed": 1.4,
+    "mods": [
+     {
+      "stat": "mana",
+      "value": 15
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+15 a Maná"
+    ],
+    "en": [
+     "+15 Mana"
+    ]
+   },
+   "icon": "m_varita_arcana",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_espada_cruel",
+   "name": {
+    "es": "Espada cruel",
+    "en": "Cruel Sword"
+   },
+   "rarity": "magic",
+   "level": 2,
+   "base": {
+    "cat": "weapon",
+    "icon": "sword"
+   },
+   "grade": 1,
+   "twoHanded": false,
+   "stats": {
+    "damage": [
+     3,
+     8
+    ],
+    "speed": 1.2,
+    "mods": [
+     {
+      "stat": "dmgPct",
+      "value": 15
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+15% de daño"
+    ],
+    "en": [
+     "+15% Damage"
+    ]
+   },
+   "icon": "m_espada_cruel",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_baculo_prisa",
+   "name": {
+    "es": "Báculo de la Prisa",
+    "en": "Staff of Haste"
+   },
+   "rarity": "magic",
+   "level": 4,
+   "base": {
+    "cat": "weapon",
+    "icon": "staff"
+   },
+   "grade": 1,
+   "twoHanded": true,
+   "stats": {
+    "damage": [
+     3,
+     9
+    ],
+    "speed": 1.1,
+    "mods": [
+     {
+      "stat": "castSpeed",
+      "value": 10
+     },
+     {
+      "stat": "mana",
+      "value": 10
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+10% velocidad de lanzamiento",
+     "+10 a Maná"
+    ],
+    "en": [
+     "+10% Cast Speed",
+     "+10 Mana"
+    ]
+   },
+   "icon": "m_baculo_prisa",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_rodela_robusta",
+   "name": {
+    "es": "Rodela robusta",
+    "en": "Hale Round Shield"
+   },
+   "rarity": "magic",
+   "level": 3,
+   "base": {
+    "cat": "offhand",
+    "icon": "shield_round"
+   },
+   "grade": 1,
+   "stats": {
+    "defense": 6,
+    "block": 22,
+    "mods": [
+     {
+      "stat": "life",
+      "value": 15
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+15 a Vida"
+    ],
+    "en": [
+     "+15 Life"
+    ]
+   },
+   "icon": "m_rodela_robusta",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_jubon_robusto",
+   "name": {
+    "es": "Jubón de cuero robusto",
+    "en": "Hale Leather Jerkin"
+   },
+   "rarity": "magic",
+   "level": 2,
+   "base": {
+    "cat": "armor",
+    "slot": "chest",
+    "line": "cuero",
+    "tier": 1
+   },
+   "stats": {
+    "defense": 8,
+    "mods": [
+     {
+      "stat": "life",
+      "value": 12
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+12 a Vida"
+    ],
+    "en": [
+     "+12 Life"
+    ]
+   },
+   "icon": "m_jubon_robusto",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_botas_viento",
+   "name": {
+    "es": "Botas de cuero del Viento",
+    "en": "Leather Boots of the Wind"
+   },
+   "rarity": "magic",
+   "level": 3,
+   "base": {
+    "cat": "armor",
+    "slot": "boots",
+    "line": "cuero",
+    "tier": 1
+   },
+   "stats": {
+    "defense": 2,
+    "mods": [
+     {
+      "stat": "moveSpeed",
+      "value": 8
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+8% velocidad de movimiento"
+    ],
+    "en": [
+     "+8% Movement Speed"
+    ]
+   },
+   "icon": "m_botas_viento",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_guantes_prisa",
+   "name": {
+    "es": "Guantes de cuero de la Prisa",
+    "en": "Leather Gloves of Haste"
+   },
+   "rarity": "magic",
+   "level": 4,
+   "base": {
+    "cat": "armor",
+    "slot": "gloves",
+    "line": "cuero",
+    "tier": 1
+   },
+   "stats": {
+    "defense": 2,
+    "mods": [
+     {
+      "stat": "atkSpeed",
+      "value": 6
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+6% velocidad de ataque"
+    ],
+    "en": [
+     "+6% Attack Speed"
+    ]
+   },
+   "icon": "m_guantes_prisa",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_calzas_viento",
+   "name": {
+    "es": "Calzas de cuero del Viento",
+    "en": "Leather Pants of the Wind"
+   },
+   "rarity": "magic",
+   "level": 6,
+   "base": {
+    "cat": "armor",
+    "slot": "pants",
+    "line": "cuero",
+    "tier": 1
+   },
+   "stats": {
+    "defense": 4,
+    "mods": [
+     {
+      "stat": "moveSpeed",
+      "value": 5
+     },
+     {
+      "stat": "life",
+      "value": 8
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+5% velocidad de movimiento",
+     "+8 a Vida"
+    ],
+    "en": [
+     "+5% Movement Speed",
+     "+8 Life"
+    ]
+   },
+   "icon": "m_calzas_viento",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_cinta_certera",
+   "name": {
+    "es": "Cinta de cuero certera",
+    "en": "Precise Leather Headband"
+   },
+   "rarity": "magic",
+   "level": 9,
+   "base": {
+    "cat": "armor",
+    "slot": "helm",
+    "line": "cuero",
+    "tier": 2
+   },
+   "stats": {
+    "defense": 8,
+    "mods": [
+     {
+      "stat": "critChance",
+      "value": 4
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+4% probabilidad de crítico"
+    ],
+    "en": [
+     "+4% Critical Chance"
+    ]
+   },
+   "icon": "m_cinta_certera",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_tunica_arcana",
+   "name": {
+    "es": "Túnica de aprendiz arcana",
+    "en": "Arcane Apprentice Robe"
+   },
+   "rarity": "magic",
+   "level": 3,
+   "base": {
+    "cat": "armor",
+    "slot": "chest",
+    "line": "tunica",
+    "tier": 1
+   },
+   "stats": {
+    "defense": 6,
+    "mods": [
+     {
+      "stat": "mana",
+      "value": 20
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+20 a Maná"
+    ],
+    "en": [
+     "+20 Mana"
+    ]
+   },
+   "icon": "m_tunica_arcana",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_capucha_buho",
+   "name": {
+    "es": "Capucha de seda del Búho",
+    "en": "Silk Hood of the Owl"
+   },
+   "rarity": "magic",
+   "level": 8,
+   "base": {
+    "cat": "armor",
+    "slot": "helm",
+    "line": "tunica",
+    "tier": 2
+   },
+   "stats": {
+    "defense": 5,
+    "mods": [
+     {
+      "stat": "castSpeed",
+      "value": 8
+     },
+     {
+      "stat": "mana",
+      "value": 10
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+8% velocidad de lanzamiento",
+     "+10 a Maná"
+    ],
+    "en": [
+     "+8% Cast Speed",
+     "+10 Mana"
+    ]
+   },
+   "icon": "m_capucha_buho",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_casco_robusto",
+   "name": {
+    "es": "Casco de anillas robusto",
+    "en": "Hale Ring Mail Helm"
+   },
+   "rarity": "magic",
+   "level": 5,
+   "base": {
+    "cat": "armor",
+    "slot": "helm",
+    "line": "malla",
+    "tier": 1
+   },
+   "stats": {
+    "defense": 6,
+    "mods": [
+     {
+      "stat": "life",
+      "value": 15
+     },
+     {
+      "stat": "armorPct",
+      "value": 8
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+15 a Vida",
+     "+8% de armadura"
+    ],
+    "en": [
+     "+15 Life",
+     "+8% Armor"
+    ]
+   },
+   "icon": "m_casco_robusto",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_cinturon_robusto",
+   "name": {
+    "es": "Cinturón de anillas robusto",
+    "en": "Hale Ring Mail Belt"
+   },
+   "rarity": "magic",
+   "level": 4,
+   "base": {
+    "cat": "armor",
+    "slot": "belt",
+    "line": "malla",
+    "tier": 1
+   },
+   "stats": {
+    "defense": 3,
+    "mods": [
+     {
+      "stat": "life",
+      "value": 10
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+10 a Vida"
+    ],
+    "en": [
+     "+10 Life"
+    ]
+   },
+   "icon": "m_cinturon_robusto",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_botas_malla_viento",
+   "name": {
+    "es": "Botas de malla del Viento",
+    "en": "Chain Boots of the Wind"
+   },
+   "rarity": "magic",
+   "level": 10,
+   "base": {
+    "cat": "armor",
+    "slot": "boots",
+    "line": "malla",
+    "tier": 2
+   },
+   "stats": {
+    "defense": 7,
+    "mods": [
+     {
+      "stat": "moveSpeed",
+      "value": 8
+     },
+     {
+      "stat": "armorPct",
+      "value": 10
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+8% velocidad de movimiento",
+     "+10% de armadura"
+    ],
+    "en": [
+     "+8% Movement Speed",
+     "+10% Armor"
+    ]
+   },
+   "icon": "m_botas_malla_viento",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_coraza_vida",
+   "name": {
+    "es": "Coraza de hierro de la Vida",
+    "en": "Iron Breastplate of Life"
+   },
+   "rarity": "magic",
+   "level": 6,
+   "base": {
+    "cat": "armor",
+    "slot": "chest",
+    "line": "placas",
+    "tier": 1
+   },
+   "stats": {
+    "defense": 20,
+    "mods": [
+     {
+      "stat": "lifeRegen",
+      "value": 2
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+2 vida por segundo"
+    ],
+    "en": [
+     "+2 Life per Second"
+    ]
+   },
+   "icon": "m_coraza_vida",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_hombreras_firmes",
+   "name": {
+    "es": "Hombreras de hierro firmes",
+    "en": "Sturdy Iron Pauldrons"
+   },
+   "rarity": "magic",
+   "level": 5,
+   "base": {
+    "cat": "armor",
+    "slot": "shoulders",
+    "line": "placas",
+    "tier": 1
+   },
+   "stats": {
+    "defense": 7,
+    "mods": [
+     {
+      "stat": "armorPct",
+      "value": 12
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+12% de armadura"
+    ],
+    "en": [
+     "+12% Armor"
+    ]
+   },
+   "icon": "m_hombreras_firmes",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_anillo_vida",
+   "name": {
+    "es": "Anillo de la Vida",
+    "en": "Ring of Life"
+   },
+   "rarity": "magic",
+   "level": 3,
+   "base": {
+    "cat": "jewel",
+    "icon": "ring"
+   },
+   "stats": {
+    "mods": [
+     {
+      "stat": "lifeRegen",
+      "value": 2
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+2 vida por segundo"
+    ],
+    "en": [
+     "+2 Life per Second"
+    ]
+   },
+   "icon": "m_anillo_vida",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_sortija_arcana",
+   "name": {
+    "es": "Sortija arcana",
+    "en": "Arcane Band"
+   },
+   "rarity": "magic",
+   "level": 6,
+   "base": {
+    "cat": "jewel",
+    "icon": "ring_band"
+   },
+   "stats": {
+    "mods": [
+     {
+      "stat": "mana",
+      "value": 20
+     },
+     {
+      "stat": "castSpeed",
+      "value": 5
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+20 a Maná",
+     "+5% velocidad de lanzamiento"
+    ],
+    "en": [
+     "+20 Mana",
+     "+5% Cast Speed"
+    ]
+   },
+   "icon": "m_sortija_arcana",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_amuleto_robusto",
+   "name": {
+    "es": "Amuleto robusto",
+    "en": "Hale Amulet"
+   },
+   "rarity": "magic",
+   "level": 5,
+   "base": {
+    "cat": "jewel",
+    "icon": "amulet"
+   },
+   "stats": {
+    "mods": [
+     {
+      "stat": "life",
+      "value": 20
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+20 a Vida"
+    ],
+    "en": [
+     "+20 Life"
+    ]
+   },
+   "icon": "m_amuleto_robusto",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_colgante_manada",
+   "name": {
+    "es": "Colgante de la Manada",
+    "en": "Pendant of the Pack"
+   },
+   "rarity": "magic",
+   "level": 8,
+   "base": {
+    "cat": "jewel",
+    "icon": "amulet_pendant"
+   },
+   "stats": {
+    "mods": [
+     {
+      "stat": "petDmg",
+      "value": 15
+     },
+     {
+      "stat": "petArmor",
+      "value": 10
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+15% daño de tu mascota",
+     "+10% armadura de tu mascota"
+    ],
+    "en": [
+     "+15% Pet Damage",
+     "+10% Pet Armor"
+    ]
+   },
+   "icon": "m_colgante_manada",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_carcaj_prisa",
+   "name": {
+    "es": "Carcaj de la Prisa",
+    "en": "Quiver of Haste"
+   },
+   "rarity": "magic",
+   "level": 4,
+   "base": {
+    "cat": "offhand",
+    "icon": "quiver"
+   },
+   "grade": 1,
+   "stats": {
+    "defense": 0,
+    "mods": [
+     {
+      "stat": "atkSpeed",
+      "value": 8
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+8% velocidad de ataque"
+    ],
+    "en": [
+     "+8% Attack Speed"
+    ]
+   },
+   "icon": "m_carcaj_prisa",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_orbe_arcano",
+   "name": {
+    "es": "Orbe arcano",
+    "en": "Arcane Orb"
+   },
+   "rarity": "magic",
+   "level": 6,
+   "base": {
+    "cat": "offhand",
+    "icon": "orb"
+   },
+   "grade": 1,
+   "stats": {
+    "defense": 2,
+    "mods": [
+     {
+      "stat": "mana",
+      "value": 10
+     },
+     {
+      "stat": "mana",
+      "value": 25
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+10 a Maná",
+     "+25 a Maná"
+    ],
+    "en": [
+     "+10 Mana",
+     "+25 Mana"
+    ]
+   },
+   "icon": "m_orbe_arcano",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "m_daga_certera",
+   "name": {
+    "es": "Daga certera",
+    "en": "Precise Dagger"
+   },
+   "rarity": "magic",
+   "level": 5,
+   "base": {
+    "cat": "weapon",
+    "icon": "dagger"
+   },
+   "grade": 1,
+   "twoHanded": false,
+   "stats": {
+    "damage": [
+     1,
+     5
+    ],
+    "speed": 1.6,
+    "mods": [
+     {
+      "stat": "critChance",
+      "value": 4
+     },
+     {
+      "stat": "dmgPct",
+      "value": 10
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+4% probabilidad de crítico",
+     "+10% de daño"
+    ],
+    "en": [
+     "+4% Critical Chance",
+     "+10% Damage"
+    ]
+   },
+   "icon": "m_daga_certera",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "r_aguijon_de_cuervo",
+   "name": {
+    "es": "Aguijón de Cuervo",
+    "en": "Raven Sting"
+   },
+   "rarity": "rare",
+   "level": 7,
+   "base": {
+    "cat": "weapon",
+    "icon": "bow"
+   },
+   "grade": 1,
+   "twoHanded": true,
+   "stats": {
+    "damage": [
+     2,
+     7
+    ],
+    "speed": 1.3,
+    "mods": [
+     {
+      "stat": "dmgPct",
+      "value": 30
+     },
+     {
+      "stat": "atkSpeed",
+      "value": 10
+     },
+     {
+      "stat": "critChance",
+      "value": 4
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+30% de daño",
+     "+10% velocidad de ataque",
+     "+4% probabilidad de crítico"
+    ],
+    "en": [
+     "+30% Damage",
+     "+10% Attack Speed",
+     "+4% Critical Chance"
+    ]
+   },
+   "icon": "r_aguijon_de_cuervo",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "r_canto_del_bosque",
+   "name": {
+    "es": "Canto del Bosque",
+    "en": "Forest Song"
+   },
+   "rarity": "rare",
+   "level": 8,
+   "base": {
+    "cat": "weapon",
+    "icon": "wand"
+   },
+   "grade": 1,
+   "twoHanded": false,
+   "stats": {
+    "damage": [
+     1,
+     5
+    ],
+    "speed": 1.4,
+    "mods": [
+     {
+      "stat": "dmgPct",
+      "value": 25
+     },
+     {
+      "stat": "castSpeed",
+      "value": 10
+     },
+     {
+      "stat": "petDmg",
+      "value": 15
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+25% de daño",
+     "+10% velocidad de lanzamiento",
+     "+15% daño de tu mascota"
+    ],
+    "en": [
+     "+25% Damage",
+     "+10% Cast Speed",
+     "+15% Pet Damage"
+    ]
+   },
+   "icon": "r_canto_del_bosque",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "r_corona_de_escarcha",
+   "name": {
+    "es": "Corona de Escarcha",
+    "en": "Frost Crown"
+   },
+   "rarity": "rare",
+   "level": 9,
+   "base": {
+    "cat": "weapon",
+    "icon": "staff"
+   },
+   "grade": 1,
+   "twoHanded": true,
+   "stats": {
+    "damage": [
+     3,
+     9
+    ],
+    "speed": 1.1,
+    "mods": [
+     {
+      "stat": "mana",
+      "value": 35
+     },
+     {
+      "stat": "castSpeed",
+      "value": 12
+     },
+     {
+      "stat": "dmgPct",
+      "value": 20
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+35 a Maná",
+     "+12% velocidad de lanzamiento",
+     "+20% de daño"
+    ],
+    "en": [
+     "+35 Mana",
+     "+12% Cast Speed",
+     "+20% Damage"
+    ]
+   },
+   "icon": "r_corona_de_escarcha",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "r_juramento_de_hierro",
+   "name": {
+    "es": "Juramento de Hierro",
+    "en": "Iron Oath"
+   },
+   "rarity": "rare",
+   "level": 8,
+   "base": {
+    "cat": "weapon",
+    "icon": "sword"
+   },
+   "grade": 1,
+   "twoHanded": false,
+   "stats": {
+    "damage": [
+     3,
+     8
+    ],
+    "speed": 1.2,
+    "mods": [
+     {
+      "stat": "dmgPct",
+      "value": 30
+     },
+     {
+      "stat": "life",
+      "value": 20
+     },
+     {
+      "stat": "armorPct",
+      "value": 10
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+30% de daño",
+     "+20 a Vida",
+     "+10% de armadura"
+    ],
+    "en": [
+     "+30% Damage",
+     "+20 Life",
+     "+10% Armor"
+    ]
+   },
+   "icon": "r_juramento_de_hierro",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "r_muralla_del_alba",
+   "name": {
+    "es": "Muralla del Alba",
+    "en": "Dawn Rampart"
+   },
+   "rarity": "rare",
+   "level": 10,
+   "base": {
+    "cat": "offhand",
+    "icon": "shield_heater"
+   },
+   "grade": 1,
+   "stats": {
+    "defense": 8,
+    "block": 22,
+    "mods": [
+     {
+      "stat": "armorPct",
+      "value": 20
+     },
+     {
+      "stat": "life",
+      "value": 25
+     },
+     {
+      "stat": "healPct",
+      "value": 10
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+20% de armadura",
+     "+25 a Vida",
+     "+10% de curación recibida"
+    ],
+    "en": [
+     "+20% Armor",
+     "+25 Life",
+     "+10% Healing Received"
+    ]
+   },
+   "icon": "r_muralla_del_alba",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "r_piel_del_lobo_gris",
+   "name": {
+    "es": "Piel del Lobo Gris",
+    "en": "Grey Wolf Hide"
+   },
+   "rarity": "rare",
+   "level": 8,
+   "base": {
+    "cat": "armor",
+    "slot": "chest",
+    "line": "cuero",
+    "tier": 2
+   },
+   "stats": {
+    "defense": 18,
+    "mods": [
+     {
+      "stat": "life",
+      "value": 25
+     },
+     {
+      "stat": "moveSpeed",
+      "value": 6
+     },
+     {
+      "stat": "armorPct",
+      "value": 10
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+25 a Vida",
+     "+6% velocidad de movimiento",
+     "+10% de armadura"
+    ],
+    "en": [
+     "+25 Life",
+     "+6% Movement Speed",
+     "+10% Armor"
+    ]
+   },
+   "icon": "r_piel_del_lobo_gris",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "r_manto_de_luna_nueva",
+   "name": {
+    "es": "Manto de Luna Nueva",
+    "en": "New Moon Mantle"
+   },
+   "rarity": "rare",
+   "level": 9,
+   "base": {
+    "cat": "armor",
+    "slot": "chest",
+    "line": "tunica",
+    "tier": 2
+   },
+   "stats": {
+    "defense": 12,
+    "mods": [
+     {
+      "stat": "mana",
+      "value": 30
+     },
+     {
+      "stat": "lifeRegen",
+      "value": 3
+     },
+     {
+      "stat": "castSpeed",
+      "value": 8
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+30 a Maná",
+     "+3 vida por segundo",
+     "+8% velocidad de lanzamiento"
+    ],
+    "en": [
+     "+30 Mana",
+     "+3 Life per Second",
+     "+8% Cast Speed"
+    ]
+   },
+   "icon": "r_manto_de_luna_nueva",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "r_marca_de_la_manada",
+   "name": {
+    "es": "Marca de la Manada",
+    "en": "Mark of the Pack"
+   },
+   "rarity": "rare",
+   "level": 10,
+   "base": {
+    "cat": "jewel",
+    "icon": "ring"
+   },
+   "stats": {
+    "mods": [
+     {
+      "stat": "petDmg",
+      "value": 25
+     },
+     {
+      "stat": "petArmor",
+      "value": 20
+     },
+     {
+      "stat": "life",
+      "value": 15
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+25% daño de tu mascota",
+     "+20% armadura de tu mascota",
+     "+15 a Vida"
+    ],
+    "en": [
+     "+25% Pet Damage",
+     "+20% Pet Armor",
+     "+15 Life"
+    ]
+   },
+   "icon": "r_marca_de_la_manada",
+   "animated": false,
+   "atlas": "iconos"
+  },
+  {
+   "id": "pluma_de_cuervo",
+   "name": {
+    "es": "Arco Pluma de Cuervo",
+    "en": "Ravenfeather Bow"
+   },
+   "rarity": "legendary",
+   "level": 8,
+   "base": {
+    "cat": "weapon",
+    "icon": "bow"
+   },
+   "twoHanded": true,
+   "stats": {
+    "damage": [
+     4,
+     14
+    ],
+    "speed": 1.3,
+    "mods": [
+     {
+      "stat": "atkSpeed",
+      "value": 20
+     },
+     {
+      "stat": "critChance",
+      "value": 8
+     },
+     {
+      "stat": "moveSpeed",
+      "value": 8
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+20% velocidad de ataque",
+     "+8% probabilidad de crítico",
+     "+8% velocidad de movimiento"
+    ],
+    "en": [
+     "+20% Attack Speed",
+     "+8% Critical Chance",
+     "+8% Movement Speed"
+    ]
+   },
+   "flavor": {
+    "es": "Los cuervos del bosque lo dejaron en el claro. Para ti.",
+    "en": "The forest crows left it in the clearing. For you."
+   },
+   "icon": "pluma_de_cuervo",
+   "animated": true,
+   "atlas": "especiales"
+  },
+  {
+   "id": "ramita_del_abuelo",
+   "name": {
+    "es": "Ramita del Abuelo Roble",
+    "en": "Grandfather Oak's Twig"
+   },
+   "rarity": "legendary",
+   "level": 9,
+   "base": {
+    "cat": "weapon",
+    "icon": "wand"
+   },
+   "twoHanded": false,
+   "stats": {
+    "damage": [
+     2,
+     10
+    ],
+    "speed": 1.4,
+    "mods": [
+     {
+      "stat": "dmgPct",
+      "value": 60
+     },
+     {
+      "stat": "petDmg",
+      "value": 30
+     },
+     {
+      "stat": "lifeRegen",
+      "value": 4
+     }
+    ]
+   },
+   "text": {
+    "es": [
+     "+60% de daño",
+     "+30% daño de tu mascota",
+     "+4 vida por segundo"
+    ],
+    "en": [
+     "+60% Damage",
+     "+30% Pet Damage",
+     "+4 Life per Second"
+    ]
+   },
+   "flavor": {
+    "es": "Te la dio sonriendo. Todavía le salen hojas.",
+    "en": "He gave it to you with a smile. It still grows leaves."
+   },
+   "icon": "ramita_del_abuelo",
+   "animated": true,
+   "atlas": "especiales"
+  },
+  {
    "id": "filo_del_alba",
    "name": {
     "es": "Filo del Alba",

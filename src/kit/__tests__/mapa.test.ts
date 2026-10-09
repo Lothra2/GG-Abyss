@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { leerJson } from '../../../scripts/lib/verificacion'
-import { entidadesDeTipo, llaveEntidad, nombresParticulasConocidas, parsearMapa, totalSecretos, totalZonasDescubribles, traducirParticulas } from '../mapa'
+import { entidadesDeTipo, llaveEntidad, nombresParticulasConocidas, parsearMapa, superficieEn, totalSecretos, totalZonasDescubribles, traducirParticulas } from '../mapa'
 import type { Manifest, MapaTiled } from '../tipos'
 
 const KIT = 'public/assets/kit/'
@@ -62,6 +62,21 @@ describe('mapa del Bosque GG', () => {
     expect(mapa.aguaCuadros).toBeGreaterThanOrEqual(2)
     expect(mapa.aguaMs).toBe(220)
     expect(mapa.agua.some((v) => v > 0)).toBe(true)
+  })
+
+  it('la capa de superficie dice qué suena al pisar: pasto, tierra, piedra, madera y agua', () => {
+    const vistas = new Set<string>()
+    for (let ty = 0; ty < mapa.alto; ty += 2) for (let tx = 0; tx < mapa.ancho; tx += 2) vistas.add(superficieEn(mapa, tx * 32 + 16, ty * 32 + 16))
+    for (const sup of ['pasto', 'tierra', 'piedra', 'madera', 'agua']) expect(vistas.has(sup), sup).toBe(true)
+    // el puente del trol es de madera
+    const puentes = mapa.decos.filter((d) => d.sprite === 'puente')
+    expect(puentes.length).toBeGreaterThanOrEqual(1)
+    expect(superficieEn(mapa, puentes[0]!.x, puentes[0]!.y - 20)).toBe('madera')
+    // fuera del mapa es pasto, sin romper
+    expect(superficieEn(mapa, -50, -50)).toBe('pasto')
+    // el inicio de la heroína es pasto o tierra, no agua
+    const ini = entidadesDeTipo(mapa, 'jugador_inicio')[0]!
+    expect(['pasto', 'tierra']).toContain(superficieEn(mapa, ini.x, ini.y))
   })
 
   it('el jugador arranca en un cuadro por el que se puede caminar', () => {

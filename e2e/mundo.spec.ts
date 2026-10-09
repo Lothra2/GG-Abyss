@@ -210,7 +210,8 @@ test.describe('Bosque GG vivo', () => {
     const d = await gancho<{ x: number; anim: string; despierto: boolean }[]>(page, 'decoInfo', 'arbol_hechizado_0')
     const suyo = d.find((q) => Math.abs(q.x - a.x) < 1)!
     expect(suyo.despierto).toBe(true)
-    expect(['despierto', 'parpadeo']).toContain(suyo.anim)
+    // con tronco y copa separados la cara va en el tronco: tronco_despierto o tronco_parpadeo
+    expect(['tronco_despierto', 'tronco_parpadeo']).toContain(suyo.anim)
     // sus ojos alumbran
     expect((await gancho<{ luces: number }>(page, 'atmosfera')).luces).toBeGreaterThanOrEqual(2)
     const lejos = await puntoLibre(page, a.x + 300, a.y + 60)
@@ -220,7 +221,7 @@ test.describe('Bosque GG vivo', () => {
     const suyo2 = d2.find((q) => Math.abs(q.x - a.x) < 1)
     if (suyo2) {
       expect(suyo2.despierto).toBe(false)
-      expect(suyo2.anim).toBe('dormido')
+      expect(suyo2.anim).toBe('tronco_dormido')
     }
   })
 
@@ -251,20 +252,40 @@ test.describe('Bosque GG vivo', () => {
     expect(pastos.length).toBeGreaterThan(0)
     const g = pastos[0]!
     await gancho(page, 'teleport', g.x - 6, g.y + 2)
-    await avanzar(page, 0.35)
-    const d = await gancho<{ x: number; y: number; angulo: number }[]>(page, 'decoInfo', 'pasto_alto')
+    await avanzar(page, 0.5)
+    const d = await gancho<{ x: number; y: number; anim: string; pasto: string }[]>(page, 'decoInfo', 'pasto_alto')
     const mio = d.find((q) => Math.abs(q.x - g.x) < 1 && Math.abs(q.y - g.y) < 1)!
-    expect(Math.abs(mio.angulo)).toBeGreaterThan(4)
-    // se va y vuelve a su sitio
-    await gancho(page, 'teleport', g.x + 160, g.y + 80)
-    await avanzar(page, 0.1)
-    await gancho(page, 'irAPostal', 'llegada')
-    await gancho(page, 'teleport', g.x - 6, g.y + 2)
+    expect(mio.anim).toMatch(/^apartar_(izq|der)$/)
+    expect(['abriendo', 'abierto']).toContain(mio.pasto)
+    // se va y el pasto se cierra solo
     await gancho(page, 'teleport', g.x + 200, g.y + 100)
-    await avanzar(page, 1.2)
-    const d2 = await gancho<{ x: number; y: number; angulo: number }[]>(page, 'decoInfo', 'pasto_alto')
+    await avanzar(page, 1.5)
+    await gancho(page, 'irAPostal', 'llegada')
+    await gancho(page, 'teleport', g.x + 40, g.y + 6)
+    await avanzar(page, 1.5)
+    const d2 = await gancho<{ x: number; y: number; anim: string; pasto: string }[]>(page, 'decoInfo', 'pasto_alto')
     const mio2 = d2.find((q) => Math.abs(q.x - g.x) < 1 && Math.abs(q.y - g.y) < 1)
-    if (mio2) expect(Math.abs(mio2.angulo)).toBeLessThan(1.5)
+    if (mio2) expect(mio2.pasto).toBe('idle')
+  })
+
+  test('los árboles grandes se dibujan con tronco y copa separados y solo la copa se vuelve transparente', async ({ page }) => {
+    await abrirMundo(page)
+    const robles = await decosDelMapa(page, 'roble_0')
+    let visto = false
+    for (const r of robles.slice(0, 80)) {
+      const detras = await puntoLibre(page, r.x, r.y - 50)
+      if (Math.hypot(detras.x - r.x, detras.y - (r.y - 50)) > 6) continue
+      await gancho(page, 'teleport', detras.x, detras.y)
+      await avanzar(page, 0.5)
+      const d = await gancho<{ x: number; y: number; alfa: number; copa: boolean }[]>(page, 'decoInfo', 'roble_0')
+      const suyo = d.find((q) => Math.abs(q.x - r.x) < 1 && Math.abs(q.y - r.y) < 1)
+      if (!suyo) continue
+      expect(suyo.copa).toBe(true)
+      expect(suyo.alfa).toBeLessThanOrEqual(0.5)
+      visto = true
+      break
+    }
+    expect(visto).toBe(true)
   })
 
   test('los cuervos huyen cuando la heroína se acerca', async ({ page }) => {

@@ -30,6 +30,8 @@ export class Sonido {
   private ambienteMeta: string | null = null
   private musicaMeta: string | null = null
   private ultimoPaso = 0
+  private ultimaVariante = -1
+  private ultimoNombrePaso = ''
 
   constructor(
     private escena: Phaser.Scene,
@@ -104,12 +106,29 @@ export class Sonido {
     this.escena.sound.play(key, { volume: v, rate: op.rate ?? 1, detune: op.detune ?? 0 })
   }
 
-  /** Un paso: volumen y tono con un poco de azar para que no suene a máquina */
-  paso(fuerte = false): void {
+  /**
+   * Un paso sobre una superficie: el kit trae 3 variantes de cada una (`paso_<superficie>_<0..2>`) y se alternan sin repetir.
+   * Volumen y tono con un poco de azar para que no suene a máquina.
+   */
+  paso(superficie: string = 'pasto', fuerte = false): void {
     const ahora = this.escena.time.now
     if (ahora - this.ultimoPaso < 90) return
     this.ultimoPaso = ahora
-    this.efecto('paso', { volumen: (fuerte ? 0.5 : 0.35) * (0.8 + fx().next() * 0.4), detune: (fx().next() - 0.5) * 300 })
+    let nombre = 'paso'
+    const variantes = [0, 1, 2].filter((i) => this.escena.cache.audio.exists(K.aud(`paso_${superficie}_${i}`)))
+    if (variantes.length > 0) {
+      const opciones = variantes.length > 1 ? variantes.filter((i) => i !== this.ultimaVariante) : variantes
+      const v = opciones[Math.floor(fx().next() * opciones.length)]!
+      this.ultimaVariante = v
+      nombre = `paso_${superficie}_${v}`
+    }
+    this.ultimoNombrePaso = nombre
+    this.efecto(nombre, { volumen: (fuerte ? 0.55 : 0.4) * (0.8 + fx().next() * 0.4), detune: (fx().next() - 0.5) * 240 })
+  }
+
+  /** El último paso que sonó, para las pruebas */
+  ultimoPasoSonado(): string {
+    return this.ultimoNombrePaso
   }
 
   detener(): void {

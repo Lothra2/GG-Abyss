@@ -50,6 +50,8 @@ export interface MapaJuego {
   cuadro: number
   /** 1 = no se pasa */
   colision: Uint8Array
+  /** qué suena al pisar cada cuadro: 1 pasto, 2 tierra, 3 piedra, 4 madera, 5 agua (0 si el mapa no trae la capa) */
+  superficie: Uint8Array
   /** 0 = no hay agua, si no es el id del tile del agua (0 animado + 1) */
   agua: Uint8Array
   aguaCuadros: number
@@ -96,6 +98,11 @@ export function parsearMapa(json: MapaTiled): MapaJuego {
   const aguaData = dataDe('agua')
   const agua = new Uint8Array(ancho * alto)
   aguaData.forEach((v, i) => (agua[i] = Math.min(255, v)))
+
+  // capa de superficie para los pasos (el taller la agregó en la entrega 3b: si falta todo es pasto)
+  const supCapa = capas.find((l) => l.name === 'superficie' && l.type === 'tilelayer')
+  const superficie = new Uint8Array(ancho * alto)
+  if (supCapa?.data && supCapa.data.length === ancho * alto) supCapa.data.forEach((v, i) => (superficie[i] = Math.min(255, v)))
 
   // animación del tile 0 del tileset del agua: cuántos cuadros y cuánto dura cada uno
   const ts = json.tilesets.find((t) => t.name === 'agua')
@@ -144,7 +151,18 @@ export function parsearMapa(json: MapaTiled): MapaJuego {
 
   const postales: Postal[] = objetosDe(json.layers, 'postales').map((o) => ({ nombre: o.name, x: o.x, y: o.y }))
 
-  return { ancho, alto, cuadro: json.tilewidth, colision, agua, aguaCuadros, aguaMs, decos, entidades, zonas, postales }
+  return { ancho, alto, cuadro: json.tilewidth, colision, superficie, agua, aguaCuadros, aguaMs, decos, entidades, zonas, postales }
+}
+
+export type Superficie = 'pasto' | 'tierra' | 'piedra' | 'madera' | 'agua'
+const NOMBRES_SUPERFICIE: Superficie[] = ['pasto', 'pasto', 'tierra', 'piedra', 'madera', 'agua']
+
+/** Qué hay bajo los pies en un punto del mundo (px) */
+export function superficieEn(m: Pick<MapaJuego, 'ancho' | 'alto' | 'cuadro' | 'superficie'>, x: number, y: number): Superficie {
+  const tx = Math.floor(x / m.cuadro)
+  const ty = Math.floor(y / m.cuadro)
+  if (tx < 0 || ty < 0 || tx >= m.ancho || ty >= m.alto) return 'pasto'
+  return NOMBRES_SUPERFICIE[m.superficie[ty * m.ancho + tx]!] ?? 'pasto'
 }
 
 export function entidadesDeTipo(m: MapaJuego, tipo: string): Entidad[] {

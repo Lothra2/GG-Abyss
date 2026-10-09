@@ -645,6 +645,12 @@
      "cuadros": 8,
      "fps": 12,
      "loop": true
+    },
+    "dig": {
+     "archivo": "mascota/thor_dig.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
     }
    }
   },
@@ -681,10 +687,22 @@
      "fps": 14,
      "loop": false
     },
+    "bark": {
+     "archivo": "mascota/thor_armadura1_bark.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
+    },
     "howl": {
      "archivo": "mascota/thor_armadura1_howl.png",
      "cuadros": 8,
      "fps": 8,
+     "loop": false
+    },
+    "pickup": {
+     "archivo": "mascota/thor_armadura1_pickup.png",
+     "cuadros": 8,
+     "fps": 10,
      "loop": false
     },
     "hurt": {
@@ -692,6 +710,30 @@
      "cuadros": 4,
      "fps": 12,
      "loop": false
+    },
+    "die": {
+     "archivo": "mascota/thor_armadura1_die.png",
+     "cuadros": 5,
+     "fps": 8,
+     "loop": false
+    },
+    "sit": {
+     "archivo": "mascota/thor_armadura1_sit.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "wag": {
+     "archivo": "mascota/thor_armadura1_wag.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": true
+    },
+    "dig": {
+     "archivo": "mascota/thor_armadura1_dig.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
     }
    }
   },
@@ -728,10 +770,22 @@
      "fps": 14,
      "loop": false
     },
+    "bark": {
+     "archivo": "mascota/thor_armadura2_bark.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
+    },
     "howl": {
      "archivo": "mascota/thor_armadura2_howl.png",
      "cuadros": 8,
      "fps": 8,
+     "loop": false
+    },
+    "pickup": {
+     "archivo": "mascota/thor_armadura2_pickup.png",
+     "cuadros": 8,
+     "fps": 10,
      "loop": false
     },
     "hurt": {
@@ -739,6 +793,30 @@
      "cuadros": 4,
      "fps": 12,
      "loop": false
+    },
+    "die": {
+     "archivo": "mascota/thor_armadura2_die.png",
+     "cuadros": 5,
+     "fps": 8,
+     "loop": false
+    },
+    "sit": {
+     "archivo": "mascota/thor_armadura2_sit.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "wag": {
+     "archivo": "mascota/thor_armadura2_wag.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": true
+    },
+    "dig": {
+     "archivo": "mascota/thor_armadura2_dig.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
     }
    }
   },
@@ -775,10 +853,22 @@
      "fps": 14,
      "loop": false
     },
+    "bark": {
+     "archivo": "mascota/thor_armadura3_bark.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
+    },
     "howl": {
      "archivo": "mascota/thor_armadura3_howl.png",
      "cuadros": 8,
      "fps": 8,
+     "loop": false
+    },
+    "pickup": {
+     "archivo": "mascota/thor_armadura3_pickup.png",
+     "cuadros": 8,
+     "fps": 10,
      "loop": false
     },
     "hurt": {
@@ -786,6 +876,30 @@
      "cuadros": 4,
      "fps": 12,
      "loop": false
+    },
+    "die": {
+     "archivo": "mascota/thor_armadura3_die.png",
+     "cuadros": 5,
+     "fps": 8,
+     "loop": false
+    },
+    "sit": {
+     "archivo": "mascota/thor_armadura3_sit.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "wag": {
+     "archivo": "mascota/thor_armadura3_wag.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": true
+    },
+    "dig": {
+     "archivo": "mascota/thor_armadura3_dig.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
     }
    }
   },
@@ -822,10 +936,22 @@
      "fps": 14,
      "loop": false
     },
+    "bark": {
+     "archivo": "mascota/thor_armadura4_bark.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
+    },
     "howl": {
      "archivo": "mascota/thor_armadura4_howl.png",
      "cuadros": 8,
      "fps": 8,
+     "loop": false
+    },
+    "pickup": {
+     "archivo": "mascota/thor_armadura4_pickup.png",
+     "cuadros": 8,
+     "fps": 10,
      "loop": false
     },
     "hurt": {
@@ -833,6 +959,30 @@
      "cuadros": 4,
      "fps": 12,
      "loop": false
+    },
+    "die": {
+     "archivo": "mascota/thor_armadura4_die.png",
+     "cuadros": 5,
+     "fps": 8,
+     "loop": false
+    },
+    "sit": {
+     "archivo": "mascota/thor_armadura4_sit.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "wag": {
+     "archivo": "mascota/thor_armadura4_wag.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": true
+    },
+    "dig": {
+     "archivo": "mascota/thor_armadura4_dig.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
     }
    }
   },
@@ -869,10 +1019,22 @@
      "fps": 14,
      "loop": false
     },
+    "bark": {
+     "archivo": "mascota/thor_armadura5_bark.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
+    },
     "howl": {
      "archivo": "mascota/thor_armadura5_howl.png",
      "cuadros": 8,
      "fps": 8,
+     "loop": false
+    },
+    "pickup": {
+     "archivo": "mascota/thor_armadura5_pickup.png",
+     "cuadros": 8,
+     "fps": 10,
      "loop": false
     },
     "hurt": {
@@ -880,6 +1042,30 @@
      "cuadros": 4,
      "fps": 12,
      "loop": false
+    },
+    "die": {
+     "archivo": "mascota/thor_armadura5_die.png",
+     "cuadros": 5,
+     "fps": 8,
+     "loop": false
+    },
+    "sit": {
+     "archivo": "mascota/thor_armadura5_sit.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "wag": {
+     "archivo": "mascota/thor_armadura5_wag.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": true
+    },
+    "dig": {
+     "archivo": "mascota/thor_armadura5_dig.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
     }
    }
   },
@@ -1045,10 +1231,10 @@
   "trol": {
    "tipo": "enemigo",
    "nombre": "trol",
-   "celda": 48,
+   "celda": 64,
    "pivote": [
-    24,
-    46
+    32,
+    62
    ],
    "anims": {
     "idle": {
@@ -1098,10 +1284,10 @@
   "minotauro": {
    "tipo": "jefe",
    "nombre": "minotauro",
-   "celda": 64,
+   "celda": 96,
    "pivote": [
-    32,
-    62
+    48,
+    93
    ],
    "anims": {
     "idle": {
@@ -1582,6 +1768,76 @@
    "loop": false,
    "celda": 48
   },
+  "proyectil_naturaleza_right": {
+   "archivo": "fx/proyectil_naturaleza_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_naturaleza_down_right": {
+   "archivo": "fx/proyectil_naturaleza_down_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_naturaleza_down": {
+   "archivo": "fx/proyectil_naturaleza_down.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_naturaleza_down_left": {
+   "archivo": "fx/proyectil_naturaleza_down_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_naturaleza_left": {
+   "archivo": "fx/proyectil_naturaleza_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_naturaleza_up_left": {
+   "archivo": "fx/proyectil_naturaleza_up_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_naturaleza_up": {
+   "archivo": "fx/proyectil_naturaleza_up.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_naturaleza_up_right": {
+   "archivo": "fx/proyectil_naturaleza_up_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "impacto_naturaleza": {
+   "archivo": "fx/impacto_naturaleza.png",
+   "cuadros": 8,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "nova_naturaleza": {
+   "archivo": "fx/nova_naturaleza.png",
+   "cuadros": 10,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
   "tajo": {
    "archivo": "fx/tajo.png",
    "cuadros": 5,
@@ -1622,6 +1878,83 @@
    "cuadros": 8,
    "fps": 10,
    "loop": true,
+   "celda": 48
+  },
+  "proyectil_flecha_right": {
+   "archivo": "fx/proyectil_flecha_right.png",
+   "cuadros": 2,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_flecha_down_right": {
+   "archivo": "fx/proyectil_flecha_down_right.png",
+   "cuadros": 2,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_flecha_down": {
+   "archivo": "fx/proyectil_flecha_down.png",
+   "cuadros": 2,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_flecha_down_left": {
+   "archivo": "fx/proyectil_flecha_down_left.png",
+   "cuadros": 2,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_flecha_left": {
+   "archivo": "fx/proyectil_flecha_left.png",
+   "cuadros": 2,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_flecha_up_left": {
+   "archivo": "fx/proyectil_flecha_up_left.png",
+   "cuadros": 2,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_flecha_up": {
+   "archivo": "fx/proyectil_flecha_up.png",
+   "cuadros": 2,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_flecha_up_right": {
+   "archivo": "fx/proyectil_flecha_up_right.png",
+   "cuadros": 2,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "impacto_flecha": {
+   "archivo": "fx/impacto_flecha.png",
+   "cuadros": 5,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "onda_pisoton": {
+   "archivo": "fx/onda_pisoton.png",
+   "cuadros": 8,
+   "fps": 16,
+   "loop": false,
+   "celda": 96
+  },
+  "tierra_cavada": {
+   "archivo": "fx/tierra_cavada.png",
+   "cuadros": 6,
+   "fps": 10,
+   "loop": false,
    "celda": 48
   }
  },
@@ -1731,7 +2064,12 @@
    "ruinas_y_estatua": "mundo/postales/ruinas_y_estatua.png",
    "anillo_de_hadas": "mundo/postales/anillo_de_hadas.png",
    "arena_del_minotauro": "mundo/postales/arena_del_minotauro.png",
-   "colina_goblin": "mundo/postales/colina_goblin.png"
+   "colina_goblin": "mundo/postales/colina_goblin.png",
+   "bosque_profundo": "mundo/postales/bosque_profundo.png",
+   "claro_escondido": "mundo/postales/claro_escondido.png",
+   "lago_espejo": "mundo/postales/lago_espejo.png",
+   "campo_calabazas": "mundo/postales/campo_calabazas.png",
+   "las_alturas": "mundo/postales/las_alturas.png"
   },
   "objetos": {
    "arbol_roble_0": {
@@ -2007,6 +2345,18 @@
       "cuadros": 4,
       "fps": 4,
       "loop": true
+     },
+     "apartar_izq": {
+      "archivo": "mundo/objetos/pasto_alto_apartar_izq.png",
+      "cuadros": 4,
+      "fps": 12,
+      "loop": false
+     },
+     "apartar_der": {
+      "archivo": "mundo/objetos/pasto_alto_apartar_der.png",
+      "cuadros": 4,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -2123,6 +2473,52 @@
       "cuadros": 6,
       "fps": 10,
       "loop": true
+     }
+    }
+   },
+   "campamento_fogata": {
+    "w": 64,
+    "h": 48,
+    "apoyo": [
+     32,
+     40
+    ],
+    "solido": [
+     -14,
+     -6,
+     28,
+     8
+    ],
+    "luz": {
+     "color": "#ffa040",
+     "radius": 150,
+     "flicker": true,
+     "dy": 10
+    },
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/campamento_fogata_idle.png",
+      "cuadros": 6,
+      "fps": 10,
+      "loop": true
+     }
+    }
+   },
+   "aviso_carga": {
+    "w": 32,
+    "h": 48,
+    "apoyo": [
+     0,
+     24
+    ],
+    "solido": null,
+    "capa": "suelo",
+    "anims": {
+     "llenar": {
+      "archivo": "mundo/objetos/aviso_carga_llenar.png",
+      "cuadros": 8,
+      "fps": 8,
+      "loop": false
      }
     }
    },
@@ -2628,17 +3024,17 @@
     }
    },
    "anillo_hadas": {
-    "w": 96,
-    "h": 64,
+    "w": 128,
+    "h": 96,
     "apoyo": [
-     48,
-     36
+     64,
+     52
     ],
     "solido": null,
     "capa": "suelo",
     "luz": {
      "color": "#7affe0",
-     "radius": 120,
+     "radius": 150,
      "pulse": true,
      "dy": 4
     },
@@ -2723,6 +3119,28 @@
      }
     }
    },
+   "pilar_alto": {
+    "w": 32,
+    "h": 128,
+    "apoyo": [
+     16,
+     124
+    ],
+    "solido": [
+     -11,
+     -6,
+     22,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/pilar_alto_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
    "muro_ruina": {
     "w": 96,
     "h": 64,
@@ -2799,17 +3217,17 @@
     }
    },
    "estatua_thor": {
-    "w": 96,
-    "h": 150,
+    "w": 128,
+    "h": 192,
     "apoyo": [
-     48,
-     146
+     64,
+     188
     ],
     "solido": [
-     -40,
-     -14,
-     80,
-     14
+     -52,
+     -16,
+     104,
+     16
     ],
     "anims": {
      "idle": {
@@ -2980,6 +3398,227 @@
      }
     }
    },
+   "cama_trol": {
+    "w": 64,
+    "h": 40,
+    "apoyo": [
+     32,
+     30
+    ],
+    "solido": null,
+    "capa": "suelo",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/cama_trol_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "olla_trol": {
+    "w": 40,
+    "h": 48,
+    "apoyo": [
+     20,
+     45
+    ],
+    "solido": [
+     -12,
+     -6,
+     24,
+     6
+    ],
+    "luz": {
+     "color": "#ff9040",
+     "radius": 70,
+     "flicker": true,
+     "dy": 6
+    },
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/olla_trol_idle.png",
+      "cuadros": 4,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "huesos_pescado": {
+    "w": 32,
+    "h": 16,
+    "apoyo": [
+     16,
+     12
+    ],
+    "solido": null,
+    "capa": "suelo",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/huesos_pescado_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "diana": {
+    "w": 32,
+    "h": 48,
+    "apoyo": [
+     16,
+     45
+    ],
+    "solido": [
+     -7,
+     -4,
+     14,
+     4
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/diana_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "tarima": {
+    "w": 96,
+    "h": 48,
+    "apoyo": [
+     48,
+     45
+    ],
+    "solido": [
+     -44,
+     -22,
+     88,
+     20
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/tarima_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "barriles": {
+    "w": 48,
+    "h": 40,
+    "apoyo": [
+     24,
+     36
+    ],
+    "solido": [
+     -16,
+     -8,
+     32,
+     8
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/barriles_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "flores_grandes_0": {
+    "w": 48,
+    "h": 32,
+    "apoyo": [
+     24,
+     29
+    ],
+    "solido": null,
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/flores_grandes_0_idle.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "flores_grandes_1": {
+    "w": 48,
+    "h": 32,
+    "apoyo": [
+     24,
+     29
+    ],
+    "solido": null,
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/flores_grandes_1_idle.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "flores_grandes_2": {
+    "w": 48,
+    "h": 32,
+    "apoyo": [
+     24,
+     29
+    ],
+    "solido": null,
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/flores_grandes_2_idle.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "tocon_hongos": {
+    "w": 40,
+    "h": 36,
+    "apoyo": [
+     20,
+     33
+    ],
+    "solido": [
+     -11,
+     -6,
+     22,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/tocon_hongos_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "charco": {
+    "w": 48,
+    "h": 24,
+    "apoyo": [
+     24,
+     13
+    ],
+    "solido": null,
+    "capa": "suelo",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/charco_idle.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
    "roble_0": {
     "w": 96,
     "h": 116,
@@ -2996,6 +3635,18 @@
     "anims": {
      "idle": {
       "archivo": "mundo/objetos/roble_0_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/roble_0_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/roble_0_copa.png",
       "cuadros": 9,
       "fps": 5,
       "loop": true
@@ -3021,6 +3672,18 @@
       "cuadros": 9,
       "fps": 5,
       "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/roble_1_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/roble_1_copa.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
      }
     }
    },
@@ -3040,6 +3703,18 @@
     "anims": {
      "idle": {
       "archivo": "mundo/objetos/roble_2_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/roble_2_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/roble_2_copa.png",
       "cuadros": 9,
       "fps": 5,
       "loop": true
@@ -3065,6 +3740,18 @@
       "cuadros": 9,
       "fps": 5,
       "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/roble_grande_0_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/roble_grande_0_copa.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
      }
     }
    },
@@ -3084,6 +3771,18 @@
     "anims": {
      "idle": {
       "archivo": "mundo/objetos/roble_otono_1_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/roble_otono_1_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/roble_otono_1_copa.png",
       "cuadros": 9,
       "fps": 5,
       "loop": true
@@ -3109,6 +3808,18 @@
       "cuadros": 9,
       "fps": 5,
       "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/pino_0_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/pino_0_copa.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
      }
     }
    },
@@ -3131,6 +3842,18 @@
       "cuadros": 9,
       "fps": 5,
       "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/pino_1_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/pino_1_copa.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
      }
     }
    },
@@ -3150,6 +3873,18 @@
     "anims": {
      "idle": {
       "archivo": "mundo/objetos/pino_2_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/pino_2_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/pino_2_copa.png",
       "cuadros": 9,
       "fps": 5,
       "loop": true
@@ -3187,6 +3922,30 @@
       "cuadros": 5,
       "fps": 12,
       "loop": false
+     },
+     "copa": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_copa.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_dormido": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_tronco_dormido.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_despierto": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_tronco_despierto.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_parpadeo": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_tronco_parpadeo.png",
+      "cuadros": 5,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -3218,6 +3977,30 @@
      },
      "parpadeo": {
       "archivo": "mundo/objetos/arbol_hechizado_1_parpadeo.png",
+      "cuadros": 5,
+      "fps": 12,
+      "loop": false
+     },
+     "copa": {
+      "archivo": "mundo/objetos/arbol_hechizado_1_copa.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_dormido": {
+      "archivo": "mundo/objetos/arbol_hechizado_1_tronco_dormido.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_despierto": {
+      "archivo": "mundo/objetos/arbol_hechizado_1_tronco_despierto.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_parpadeo": {
+      "archivo": "mundo/objetos/arbol_hechizado_1_tronco_parpadeo.png",
       "cuadros": 5,
       "fps": 12,
       "loop": false
@@ -3255,6 +4038,30 @@
       "cuadros": 5,
       "fps": 12,
       "loop": false
+     },
+     "copa": {
+      "archivo": "mundo/objetos/arbol_hechizado_2_copa.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_dormido": {
+      "archivo": "mundo/objetos/arbol_hechizado_2_tronco_dormido.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_despierto": {
+      "archivo": "mundo/objetos/arbol_hechizado_2_tronco_despierto.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_parpadeo": {
+      "archivo": "mundo/objetos/arbol_hechizado_2_tronco_parpadeo.png",
+      "cuadros": 5,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -3274,6 +4081,18 @@
     "anims": {
      "idle": {
       "archivo": "mundo/objetos/arbol_seco_0_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/arbol_seco_0_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/arbol_seco_0_copa.png",
       "cuadros": 9,
       "fps": 5,
       "loop": true
@@ -3299,6 +4118,18 @@
       "cuadros": 9,
       "fps": 5,
       "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/arbol_seco_1_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/arbol_seco_1_copa.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
      }
     }
    },
@@ -3318,6 +4149,18 @@
     "anims": {
      "idle": {
       "archivo": "mundo/objetos/sauce_v3_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/sauce_v3_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/sauce_v3_copa.png",
       "cuadros": 9,
       "fps": 5,
       "loop": true
@@ -3431,6 +4274,30 @@
       "cuadros": 9,
       "fps": 4,
       "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/abuelo_roble_v3_tronco.png",
+      "cuadros": 9,
+      "fps": 4,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/abuelo_roble_v3_copa.png",
+      "cuadros": 9,
+      "fps": 4,
+      "loop": true
+     },
+     "sonreir": {
+      "archivo": "mundo/objetos/abuelo_roble_v3_sonreir.png",
+      "cuadros": 8,
+      "fps": 8,
+      "loop": false
+     },
+     "tronco_sonreir": {
+      "archivo": "mundo/objetos/abuelo_roble_v3_tronco_sonreir.png",
+      "cuadros": 8,
+      "fps": 8,
+      "loop": false
      }
     }
    },
@@ -3924,6 +4791,95 @@
    "h": 24,
    "cuadros": 4
   },
+  "icono_pausa": {
+   "archivo": "ui/icono_pausa.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_secreto": {
+   "archivo": "ui/icono_secreto.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_zona": {
+   "archivo": "ui/icono_zona.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_luna": {
+   "archivo": "ui/icono_luna.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_sonido": {
+   "archivo": "ui/icono_sonido.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_silencio": {
+   "archivo": "ui/icono_silencio.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_calidad": {
+   "archivo": "ui/icono_calidad.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_jugadora": {
+   "archivo": "ui/icono_jugadora.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_peque": {
+   "archivo": "ui/icono_peque.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_jugar": {
+   "archivo": "ui/icono_jugar.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_guardado": {
+   "archivo": "ui/icono_guardado.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "girar_tablet": {
+   "archivo": "ui/girar_tablet.png",
+   "w": 64,
+   "h": 64,
+   "cuadros": 2
+  },
+  "iconos_cartel": {
+   "flecha_norte": "ui/carteles/flecha_norte.png",
+   "peligro": "ui/carteles/peligro.png",
+   "corazon": "ui/carteles/corazon.png",
+   "cruce": "ui/carteles/cruce.png",
+   "estrella": "ui/carteles/estrella.png"
+  },
+  "habilidades": {
+   "lluvia_flechas": "ui/habilidades/lluvia_flechas.png",
+   "esquiva": "ui/habilidades/esquiva.png",
+   "llamar_thor": "ui/habilidades/llamar_thor.png",
+   "curar": "ui/habilidades/curar.png",
+   "torbellino": "ui/habilidades/torbellino.png",
+   "bloqueo": "ui/habilidades/bloqueo.png",
+   "nova_fuego": "ui/habilidades/nova_fuego.png",
+   "rayo_canalizado": "ui/habilidades/rayo_canalizado.png"
+  },
   "numeros": {
    "archivo": "ui/numeros.png",
    "w": 7,
@@ -4048,6 +5004,14 @@
     }
    }
   },
+  "logo": {
+   "archivo": "ui/logo.png",
+   "w": 288,
+   "h": 96,
+   "cuadros": 8,
+   "fps": 8,
+   "loop": true
+  },
   "fuentes": {
    "fuente_ui": {
     "png": "ui/fuentes/fuente_ui.png",
@@ -4068,6 +5032,39 @@
     "base": 17
    },
    "notas": "BMFont XML: this.load.bitmapFont(nombre, png, fnt). fuente_ui (8 px, blanca con sombra, se tiñe con setTint; usar escala entera x2 o x3), fuente_titulo y fuente_titulo_plata (16 px, ya pintadas). Tienen ñ, tildes, ¡ y ¿."
+  },
+  "continuara": {
+   "archivo": "ui/continuara.png",
+   "w": 960,
+   "h": 540,
+   "cuadros": 1
+  }
+ },
+ "app": {
+  "icono_192": {
+   "archivo": "app/icono_192.png",
+   "tam": 192,
+   "uso": "any"
+  },
+  "icono_512": {
+   "archivo": "app/icono_512.png",
+   "tam": 512,
+   "uso": "any"
+  },
+  "icono_maskable_512": {
+   "archivo": "app/icono_maskable_512.png",
+   "tam": 512,
+   "uso": "maskable"
+  },
+  "apple_touch_180": {
+   "archivo": "app/apple_touch_180.png",
+   "tam": 180,
+   "uso": "any"
+  },
+  "favicon_32": {
+   "archivo": "app/favicon_32.png",
+   "tam": 32,
+   "uso": "any"
   }
  },
  "audio": {
@@ -4097,9 +5094,33 @@
   "error": "audio/error.wav",
   "jugador_dolor": "audio/jugador_dolor.wav",
   "magia": "audio/magia.wav",
+  "descubrir": "audio/descubrir.wav",
+  "secreto": "audio/secreto.wav",
+  "elegir": "audio/elegir.wav",
+  "guardado": "audio/guardado.wav",
+  "arco": "audio/arco.wav",
+  "esquiva": "audio/esquiva.wav",
+  "bloqueo": "audio/bloqueo.wav",
+  "thor_rescate": "audio/thor_rescate.wav",
+  "paso_pasto_0": "audio/paso_pasto_0.wav",
+  "paso_pasto_1": "audio/paso_pasto_1.wav",
+  "paso_pasto_2": "audio/paso_pasto_2.wav",
+  "paso_tierra_0": "audio/paso_tierra_0.wav",
+  "paso_tierra_1": "audio/paso_tierra_1.wav",
+  "paso_tierra_2": "audio/paso_tierra_2.wav",
+  "paso_piedra_0": "audio/paso_piedra_0.wav",
+  "paso_piedra_1": "audio/paso_piedra_1.wav",
+  "paso_piedra_2": "audio/paso_piedra_2.wav",
+  "paso_madera_0": "audio/paso_madera_0.wav",
+  "paso_madera_1": "audio/paso_madera_1.wav",
+  "paso_madera_2": "audio/paso_madera_2.wav",
+  "paso_agua_0": "audio/paso_agua_0.wav",
+  "paso_agua_1": "audio/paso_agua_1.wav",
+  "paso_agua_2": "audio/paso_agua_2.wav",
   "musica_bosque": "audio/musica_bosque.wav",
   "musica_jefe": "audio/musica_jefe.wav",
   "musica_victoria": "audio/musica_victoria.wav",
+  "musica_titulo": "audio/musica_titulo.wav",
   "ambiente_bosque": "audio/ambiente_bosque.wav",
   "ambiente_agua": "audio/ambiente_agua.wav",
   "ambiente_noche": "audio/ambiente_noche.wav",

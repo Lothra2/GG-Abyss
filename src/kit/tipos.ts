@@ -111,6 +111,8 @@ export interface UiImagen {
   layout?: LayoutInventario
   caracteres?: string
   filas?: string[]
+  fps?: number
+  loop?: boolean
 }
 
 export interface LayoutInventario {
@@ -131,10 +133,21 @@ export interface FuenteDef {
 
 export type FuentesManifest = Record<string, FuenteDef | string>
 
-/** `fuentes` convive con las demás imágenes de ui, por eso el tipo de ui es abierto */
+/** Íconos sueltos: nombre a ruta del PNG (iconos_cartel de 24 x 24, habilidades de 40 x 40) */
+export type IconosSueltos = Record<string, string>
+
+/** `fuentes`, `iconos_cartel` y `habilidades` conviven con las demás imágenes de ui, por eso el tipo de ui es abierto */
 export interface UiManifest {
   fuentes: FuentesManifest
-  [nombre: string]: UiImagen | FuentesManifest
+  iconos_cartel?: IconosSueltos
+  habilidades?: IconosSueltos
+  [nombre: string]: UiImagen | FuentesManifest | IconosSueltos | undefined
+}
+
+export interface IconoApp {
+  archivo: string
+  tam: number
+  uso: 'any' | 'maskable'
 }
 
 export interface Manifest {
@@ -149,6 +162,8 @@ export interface Manifest {
   botin: Botin
   mundo: MundoManifest
   ui: UiManifest
+  /** íconos de la app para la PWA (entrega 3a del taller) */
+  app?: Record<string, IconoApp>
   audio: Record<string, string>
   creditos: string
 }

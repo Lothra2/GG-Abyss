@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import type { Manifest } from './tipos'
 import { K } from './claves'
-import { fuentesDe, uiImagenes } from './manifest'
+import { fuentesDe, iconosCartel, iconosHabilidad, uiImagenes } from './manifest'
 import { RUTA_KIT } from '../config/juego'
 
 /**
@@ -30,6 +30,10 @@ export function encolarUi(e: Escena, m: Manifest, solo?: string[]): void {
     if (u.cuadros > 1 || u.caracteres) e.load.spritesheet(key, rutaKit(u.archivo), { frameWidth: u.w, frameHeight: u.h })
     else e.load.image(key, rutaKit(u.archivo))
   }
+  if (solo) return
+  // íconos sueltos: los carteles del mapa y las habilidades de las clases
+  for (const [n, ruta] of Object.entries(iconosCartel(m))) if (!yaHay(e, K.ui(`cartel_${n}`))) e.load.image(K.ui(`cartel_${n}`), rutaKit(ruta))
+  for (const [n, ruta] of Object.entries(iconosHabilidad(m))) if (!yaHay(e, K.ui(`hab_${n}`))) e.load.image(K.ui(`hab_${n}`), rutaKit(ruta))
 }
 
 /** Hojas de un personaje (heroína, Thor, enemigo, jefe). `anims` limita cuáles se cargan. */

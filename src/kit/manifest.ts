@@ -1,4 +1,4 @@
-import type { Manifest, FuenteDef, Personaje, UiImagen } from './tipos'
+import type { Manifest, FuenteDef, IconosSueltos, Personaje, UiImagen } from './tipos'
 import { NOMBRE_JUEGO, VERSION_KIT_ESPERADA, ORDEN_HEROES } from '../config/juego'
 
 /** Error con mensaje claro para el aviso del kit faltante o roto */
@@ -36,6 +36,16 @@ export function uiImagenes(m: Manifest): Record<string, UiImagen> {
   const out: Record<string, UiImagen> = {}
   for (const [n, v] of Object.entries(m.ui)) if (n !== 'fuentes' && v && typeof v === 'object' && 'archivo' in v) out[n] = v as UiImagen
   return out
+}
+
+/** Íconos de los carteles del mapa (`flecha_norte`, `peligro`...). Vacío si el kit no los trae. */
+export function iconosCartel(m: Manifest): IconosSueltos {
+  return m.ui.iconos_cartel ?? {}
+}
+
+/** Íconos de las habilidades de las clases */
+export function iconosHabilidad(m: Manifest): IconosSueltos {
+  return m.ui.habilidades ?? {}
 }
 
 export function ui(m: Manifest, nombre: string): UiImagen {
@@ -99,8 +109,11 @@ export function rutasDelManifest(m: Manifest): string[] {
   for (const [n, v] of Object.entries(m.ui)) {
     if (n === 'fuentes') {
       for (const f of Object.values(v as Record<string, FuenteDef | string>)) if (typeof f === 'object') { add(f.png); add(f.fnt) }
+    } else if (n === 'iconos_cartel' || n === 'habilidades') {
+      for (const r of Object.values((v ?? {}) as IconosSueltos)) add(r)
     } else if (v && typeof v === 'object' && 'archivo' in v) add((v as UiImagen).archivo)
   }
+  for (const ic of Object.values(m.app ?? {})) add(ic.archivo)
   for (const r of Object.values(m.audio)) add(r)
   add(m.creditos)
   return [...out]

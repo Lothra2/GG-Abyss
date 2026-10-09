@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { verificarKit, leerJson, tamanoPng, LIMITE_TEXTURA } from '../../../scripts/lib/verificacion'
-import { fuentesDe, heroes, idThor, personaje, rutasDelManifest, uiImagenes, validarManifest, KitError } from '../manifest'
+import { fuentesDe, heroes, iconosCartel, iconosHabilidad, idThor, personaje, rutasDelManifest, uiImagenes, validarManifest, KitError } from '../manifest'
 import type { Manifest } from '../tipos'
 
 const KIT = 'public/assets/kit'
@@ -64,6 +64,27 @@ describe('kit de PixelForja', () => {
     for (const n of ['barra_marco', 'barra_xp', 'boton', 'panel', 'orbe_vida', 'orbe_mana', 'numeros', 'inventario', 'marca_destino', 'estandarte', 'barra_jefe']) {
       expect(ui[n], n).toBeDefined()
     }
+  })
+
+  it('trae lo que el taller entregó: íconos de cartel y de habilidad, logo, continuará, girar la tablet y los íconos de la app', () => {
+    const ui = uiImagenes(manifest)
+    for (const n of ['logo', 'continuara', 'girar_tablet', 'icono_pausa', 'icono_secreto', 'icono_zona', 'icono_luna', 'icono_sonido', 'icono_silencio', 'icono_calidad', 'icono_jugadora', 'icono_peque', 'icono_jugar', 'icono_guardado']) {
+      expect(ui[n], n).toBeDefined()
+    }
+    expect(Object.keys(iconosCartel(manifest)).sort()).toEqual(['corazon', 'cruce', 'estrella', 'flecha_norte', 'peligro'])
+    for (const n of ['lluvia_flechas', 'esquiva', 'llamar_thor', 'curar', 'torbellino', 'bloqueo', 'nova_fuego', 'rayo_canalizado']) expect(iconosHabilidad(manifest)[n], n).toBeDefined()
+    for (const n of ['icono_192', 'icono_512', 'icono_maskable_512', 'apple_touch_180', 'favicon_32']) expect(manifest.app?.[n], n).toBeDefined()
+    for (const n of ['descubrir', 'secreto', 'elegir', 'guardado', 'musica_titulo', 'arco', 'esquiva', 'bloqueo', 'thor_rescate', 'paso_pasto_0', 'paso_madera_2', 'paso_agua_1']) expect(manifest.audio[n], n).toBeDefined()
+    expect(manifest.fx.proyectil_flecha_down).toBeDefined()
+    expect(manifest.fx.proyectil_naturaleza_up).toBeDefined()
+    expect(manifest.fx.onda_pisoton).toBeDefined()
+    expect(manifest.personajes.minotauro!.celda).toBe(96)
+    expect(manifest.personajes.thor!.anims.dig).toBeDefined()
+  })
+
+  it('al menos 8 postales del manifest, y todas las del manifest están en el mapa', () => {
+    expect(Object.keys(manifest.mundo.postales).length).toBeGreaterThanOrEqual(8)
+    expect(r.avisos.filter((a) => a.includes('postal'))).toEqual([])
   })
 
   it('validarManifest rechaza un kit que no es de GG Abyss o está viejo', () => {

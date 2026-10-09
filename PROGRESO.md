@@ -24,6 +24,8 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 - F1a, postales: la heroína se para en el punto libre más cercano a (postal + 36, +56) para no tapar lo que muestra la postal. Con `?postal=1` no se abre el HUD.
 - Calidad automática por fps: desactivada con `?test=1`.
 
+- Entrega del taller (5 tandas, submódulo en 8ba7f2a): adoptada en F1a. Decos usa tronco y copa por separado, pasto con sus anims, capa `superficie` para los pasos, 13 postales. Falta usar en sus fases: iconos de cartel (F1b), Abuelo que sonríe (F1b), títulos y logo (F1b), flecha y naturaleza (F2), botín bajo (F3), Thor cava (F3), minotauro 96 y carga (F4), íconos de app (F5). En balance se quitaron las escalas temporales del trol y del minotauro.
+
 ## Lo que falta
 
 F0, F1a, F1b, F2, F3, F4, F5 (ver PLAN.md sección 5)

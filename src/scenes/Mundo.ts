@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import type { Manifest } from '../kit/tipos'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
-import { entidadesDeTipo, llaveEntidad, parsearMapa, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
+import { entidadesDeTipo, llaveEntidad, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
 import { encolarAudio, encolarBotin, encolarCriaturas, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
 import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
@@ -35,7 +35,7 @@ const EXTRAS_MUNDO = ['portal_azul', 'portal_rojo', 'aviso_jefe']
 
 const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
-  'cuervosVolando', 'hud', 'puntoCerca', 'thor', 'sonido', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
+  'cuervosVolando', 'hud', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
 ]
 
 /**
@@ -231,24 +231,10 @@ export class Mundo extends Phaser.Scene {
   }
 
   private alPaso(x: number, y: number, corriendo: boolean): void {
-    this.sonido.paso(corriendo)
-    if (this.superficie(x, y) === 'seca') this.atmosfera.particulas.polvo(x, y)
-  }
-
-  /** Mira el pixel del suelo bajo los pies: pasto, o tierra y piedra (que levantan polvo) */
-  private superficie(x: number, y: number): 'pasto' | 'seca' | 'agua' {
-    const suelo = this.m.mundo.suelo
-    for (let i = 0; i < suelo.length; i++) {
-      const s = suelo[i]!
-      if (x >= s.x && y >= s.y && x < s.x + this.m.mundo.trozo && y < s.y + this.m.mundo.trozo) {
-        const c = this.textures.getPixel(Math.floor(x - s.x), Math.floor(y - s.y), K.suelo(i))
-        if (!c || c.alpha < 128) return 'agua'
-        if (c.green > c.red + 10 && c.green >= c.blue) return 'pasto'
-        if (c.blue > c.red + 30 && c.blue > c.green) return 'agua'
-        return 'seca'
-      }
-    }
-    return 'pasto'
+    const sup = superficieEn(this.mapa, x, y)
+    this.sonido.paso(sup, corriendo)
+    // tierra y piedra levantan polvito
+    if (sup === 'tierra' || sup === 'piedra') this.atmosfera.particulas.polvo(x, y)
   }
 
   private alCambiarZona(z: Zona | null): void {
@@ -409,6 +395,8 @@ export class Mundo extends Phaser.Scene {
       puntoCerca: ((x: number, y: number) => this.grilla.puntoLibreCerca(x, y, 8, 320)) as never,
       thor: () => ({ x: this.thor.x, y: this.thor.y, estado: this.thor.estado }),
       sonido: () => this.sonido.estado(),
+      ultimoPaso: () => this.sonido.ultimoPasoSonado(),
+      superficieEn: ((x: number, y: number) => superficieEn(this.mapa, x, y)) as never,
       // avanza el mundo sin esperar al reloj de pantalla (para pruebas deterministas)
       avanzar: ((segundos: number, parar = false) => {
         const n = Math.round(segundos * 60)
@@ -425,7 +413,7 @@ export class Mundo extends Phaser.Scene {
       tecla: ((dx: number, dy: number) => this.heroina.caminarDir(dx, dy)) as never,
       marca: () => ({ visible: this.marca.visible, x: this.marca.x, y: this.marca.y }),
       cuervos: () => this.criaturas.cuervos.map((c) => ({ x: c.hx, y: c.hy, st: c.st })),
-      decoInfo: ((nombre: string) => this.decos.activosDe(nombre).map((a) => ({ x: a.d.x, y: a.d.y, anim: a.anim, alfa: Math.round(a.alfa * 100) / 100, angulo: Math.round(a.s.angle * 10) / 10, despierto: a.despierto, frame: a.fr }))) as never,
+      decoInfo: ((nombre: string) => this.decos.activosDe(nombre).map((a) => ({ x: a.d.x, y: a.d.y, anim: a.anim, alfa: Math.round(a.alfa * 100) / 100, pasto: a.pasto, copa: !!a.c, despierto: a.despierto, frame: a.fr }))) as never,
       aguaFrame: () => this.vista.frameAgua,
       thorInfo: () => ({ x: this.thor.x, y: this.thor.y, estado: this.thor.estado }),
       hudLayout: () => (this.scene.isActive('HUD') ? (this.scene.get('HUD') as unknown as { layout(): unknown }).layout() : null),

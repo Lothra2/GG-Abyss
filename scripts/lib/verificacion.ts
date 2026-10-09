@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { Manifest, MapaTiled, UiImagen } from '../../src/kit/tipos'
-import { rutasDelManifest, validarManifest, fuentesDe, uiImagenes } from '../../src/kit/manifest'
+import { rutasDelManifest, validarManifest, fuentesDe, uiImagenes, iconosCartel, iconosHabilidad } from '../../src/kit/manifest'
 import { parsearMapa, traducirParticulas } from '../../src/kit/mapa'
 
 /** Revisa que el kit sea coherente: rutas, tamaños de hojas, límite de 4096, y que el mapa pida solo lo que el manifest trae. */
@@ -71,6 +71,9 @@ export function verificarKit(carpeta: string): Resultado {
     if (u.caracteres && u.filas) hoja(`ui ${n}`, u.archivo, u.caracteres.length * u.w, u.filas.length * u.h)
     else hoja(`ui ${n}`, u.archivo, u.cuadros * u.w, u.h)
   }
+  for (const [n, ruta] of Object.entries(iconosCartel(m))) hoja(`ícono de cartel ${n}`, ruta, 24, 24)
+  for (const [n, ruta] of Object.entries(iconosHabilidad(m))) hoja(`ícono de habilidad ${n}`, ruta, 40, 40)
+  for (const [n, ic] of Object.entries(m.app ?? {})) hoja(`ícono de app ${n}`, ic.archivo, ic.tam, ic.tam)
   for (const s of m.mundo.suelo) {
     if (existsSync(f(s.archivo))) {
       const t = tamanoPng(f(s.archivo))

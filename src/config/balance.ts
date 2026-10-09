@@ -126,7 +126,7 @@ export const ENEMIGOS: Record<string, EnemigoBalance> = {
   rata: { vida: 12, dano: [2, 3], anim: 'attack_thrust', ataquesPorSeg: 1, alcance: 26, velocidad: 70, ve: 140, xp: 5, oro: [1, 3] },
   calabaza: { vida: 30, dano: [3, 5], anim: 'attack', ataquesPorSeg: 0.8, alcance: 28, velocidad: 50, ve: 160, xp: 12, oro: [2, 5] },
   goblin_arquero: { vida: 22, dano: [3, 5], anim: 'shoot_bow', ataquesPorSeg: 0.7, alcance: 200, velocidad: 60, ve: 220, xp: 15, oro: [3, 6], proyectil: 'proyectil_sagrado', impacto: 'impacto_sagrado', huyeSi: 120 },
-  trol: { vida: 140, dano: [7, 10], anim: 'attack', ataquesPorSeg: 0.6, alcance: 34, velocidad: 55, ve: 200, xp: 90, oro: [20, 35], escala: 1.25 },
+  trol: { vida: 140, dano: [7, 10], anim: 'attack', ataquesPorSeg: 0.6, alcance: 34, velocidad: 55, ve: 200, xp: 90, oro: [20, 35] },
 }
 
 export const TROL_ELITE = {
@@ -241,7 +241,6 @@ export const COMBATE = {
 
 export const JEFE = {
   vida: 650,
-  escalaTemporal: 1.5,
   arenaRadio: 192,
   fase2Pct: 60,
   golpe: { dano: [10, 14] as [number, number], radio: 50 },
