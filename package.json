@@ -1,0 +1,30 @@
+{
+  "name": "gg-abyss",
+  "private": true,
+  "version": "0.1.0",
+  "description": "GG Abyss: un Diablo amable para Sophie y Alana",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "kit": "tsx tools/pixel_forja/scripts/game-kit.ts public/assets/kit --fichas fichas",
+    "verificar-kit": "tsx scripts/verificar-kit.ts",
+    "postales": "tsx scripts/comparar-postales.ts"
+  },
+  "dependencies": {
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@types/node": "^26.6.4",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.3",
+    "vitest": "^5.0.3"
+  }
+}
