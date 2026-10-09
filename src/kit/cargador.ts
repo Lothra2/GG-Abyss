@@ -97,21 +97,30 @@ export function encolarParticulas(e: Escena, m: Manifest, nombres?: string[]): v
 }
 
 /** Atlas del botín (íconos 32 y 64, especiales, armadura) y el atlas del mundo (cofres, monedas, haces) */
-export function encolarBotin(e: Escena, m: Manifest): void {
-  for (const [nombre, r] of Object.entries(m.botin.atlas)) {
+export function encolarBotin(e: Escena, m: Manifest, soloMundo = false): void {
+  for (const [nombre, r] of soloMundo ? [] : Object.entries(m.botin.atlas)) {
     for (const tam of ['32', '64'] as const) {
       const key = K.atlas(nombre, tam)
       if (!yaHay(e, key)) e.load.atlas(key, rutaKit(r[tam].replace('.json', '.png')), rutaKit(r[tam]))
     }
   }
   if (!yaHay(e, 'atlas_mundo')) e.load.atlas('atlas_mundo', rutaKit(m.botin.mundo.replace('.json', '.png')), rutaKit(m.botin.mundo))
-  if (!e.cache.json.exists(K.catalogo)) e.load.json(K.catalogo, rutaKit(m.botin.catalogo))
+  if (!e.cache.json.exists('atlas_mundo_datos')) e.load.json('atlas_mundo_datos', rutaKit(m.botin.mundo))
+  if (!soloMundo && !e.cache.json.exists(K.catalogo)) e.load.json(K.catalogo, rutaKit(m.botin.catalogo))
 }
 
 export function encolarAudio(e: Escena, m: Manifest, nombres?: string[]): void {
   for (const [nombre, ruta] of Object.entries(m.audio)) {
     if (nombres && !nombres.includes(nombre)) continue
     if (!e.cache.audio.exists(K.aud(nombre))) e.load.audio(K.aud(nombre), rutaKit(ruta))
+  }
+}
+
+/** Postales del mundo (por nombre) para fondos de título y comparaciones */
+export function encolarPostales(e: Escena, m: Manifest, nombres?: string[]): void {
+  for (const [nombre, ruta] of Object.entries(m.mundo.postales)) {
+    if (nombres && !nombres.includes(nombre)) continue
+    if (!yaHay(e, K.postal(nombre))) e.load.image(K.postal(nombre), rutaKit(ruta))
   }
 }
 

@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import { K } from '../../kit/claves'
 import { texto, type Fuente } from '../Texto'
 import { escalaDe, toqueMinimo } from '../Pantalla'
+import { Bloqueo } from './Bloqueo'
 
 export interface OpcionesBoton {
   x: number
@@ -70,6 +71,7 @@ export function crearBoton(e: Phaser.Scene, o: OpcionesBoton): Boton {
     c.add(etiqueta)
   }
 
+  Bloqueo.instalar(e)
   const zona = e.add.zone(0, 0, w, h).setOrigin(ox, oy).setInteractive({ useHandCursor: true })
   c.add(zona)
   c.zona = zona
@@ -80,7 +82,7 @@ export function crearBoton(e: Phaser.Scene, o: OpcionesBoton): Boton {
   let activo = true
   zona.on('pointerover', () => activo && fondo.setFrame(1))
   zona.on('pointerout', () => { fondo.setFrame(0); c.y = o.y })
-  zona.on('pointerdown', () => { if (!activo) return; fondo.setFrame(2); c.y = o.y + 1 })
+  zona.on('pointerdown', (p: Phaser.Input.Pointer) => { Bloqueo.tomar(p.id); if (!activo) return; fondo.setFrame(2); c.y = o.y + 1 })
   zona.on('pointerup', () => {
     fondo.setFrame(0)
     c.y = o.y

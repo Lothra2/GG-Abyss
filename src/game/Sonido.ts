@@ -1,0 +1,122 @@
+import Phaser from 'phaser'
+import { K } from '../kit/claves'
+import type { Zona } from '../kit/mapa'
+import { fx } from '../logic/azar'
+
+export interface VolumenesSonido {
+  musica: number
+  efectos: number
+}
+
+interface Lazo {
+  nombre: string
+  s: Phaser.Sound.WebAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound
+  vol: number
+  meta: number
+  /** segundos que tarda en llegar */
+  fundido: number
+}
+
+/** Ambiente: 0.55 como el visor. La música va más baja para no tapar los efectos. */
+const VOL_AMBIENTE = 0.55
+const VOL_MUSICA = 0.45
+
+/**
+ * Sonido del juego (PLAN.md 2.5): un ambiente en bucle por zona (fundido de 1.2 s), la música aparte
+ * (fundido de 2 s) y los efectos sueltos. El audio arranca con el primer toque (Phaser lo desbloquea solo).
+ */
+export class Sonido {
+  private lazos = new Map<string, Lazo>()
+  private ambienteMeta: string | null = null
+  private musicaMeta: string | null = null
+  private ultimoPaso = 0
+
+  constructor(
+    private escena: Phaser.Scene,
+    private vol: () => VolumenesSonido,
+  ) {}
+
+  /** Qué suena en una zona. La música `jefe` la controla la pelea (F4), no entrar a la arena. */
+  fijarZona(zona: Zona | null): void {
+    this.ambienteMeta = `ambiente_${zona?.ambiente ?? 'bosque'}`
+    const musica = zona?.musica && zona.musica !== 'jefe' ? zona.musica : 'bosque'
+    this.musicaMeta = `musica_${musica}`
+  }
+
+  /** La pelea con el jefe manda la música */
+  fijarMusica(nombre: string | null): void {
+    this.musicaMeta = nombre
+  }
+
+  private asegurar(nombre: string, fundido: number): Lazo | null {
+    let l = this.lazos.get(nombre)
+    if (l) return l
+    const key = K.aud(nombre)
+    if (!this.escena.cache.audio.exists(key)) return null
+    const s = this.escena.sound.add(key, { loop: true, volume: 0 })
+    l = { nombre, s, vol: 0, meta: 0, fundido }
+    this.lazos.set(nombre, l)
+    s.play()
+    return l
+  }
+
+  update(dt: number): void {
+    const { musica, efectos } = this.vol()
+    const metas: [string | null, number, number][] = [
+      [this.ambienteMeta, VOL_AMBIENTE * efectos, 1.2],
+      [this.musicaMeta, VOL_MUSICA * musica, 2],
+    ]
+    for (const [nombre, v, fundido] of metas) {
+      if (!nombre) continue
+      const l = this.asegurar(nombre, fundido)
+      if (l) {
+        l.meta = v
+        l.fundido = fundido
+      }
+    }
+    for (const l of [...this.lazos.values()]) {
+      const quiere = l.nombre === this.ambienteMeta || l.nombre === this.musicaMeta
+      const meta = quiere ? l.meta : 0
+      const velocidad = 1 / Math.max(0.1, l.fundido)
+      if (l.vol < meta) l.vol = Math.min(meta, l.vol + (Math.max(meta, 0.2) * velocidad) * dt)
+      else if (l.vol > meta) l.vol = Math.max(meta, l.vol - (Math.max(l.vol, 0.2) * velocidad) * dt)
+      l.s.setVolume(l.vol)
+      if (!quiere && l.vol <= 0.001) {
+        l.s.stop()
+        l.s.destroy()
+        this.lazos.delete(l.nombre)
+      }
+    }
+  }
+
+  /** Volumen actual de cada lazo, para las pruebas */
+  estado(): Record<string, number> {
+    const o: Record<string, number> = {}
+    for (const l of this.lazos.values()) o[l.nombre] = Math.round(l.vol * 1000) / 1000
+    return o
+  }
+
+  efecto(nombre: string, op: { volumen?: number; rate?: number; detune?: number } = {}): void {
+    const key = K.aud(nombre)
+    if (!this.escena.cache.audio.exists(key)) return
+    const v = (op.volumen ?? 1) * this.vol().efectos
+    if (v <= 0) return
+    this.escena.sound.play(key, { volume: v, rate: op.rate ?? 1, detune: op.detune ?? 0 })
+  }
+
+  /** Un paso: volumen y tono con un poco de azar para que no suene a máquina */
+  paso(fuerte = false): void {
+    const ahora = this.escena.time.now
+    if (ahora - this.ultimoPaso < 90) return
+    this.ultimoPaso = ahora
+    this.efecto('paso', { volumen: (fuerte ? 0.5 : 0.35) * (0.8 + fx().next() * 0.4), detune: (fx().next() - 0.5) * 300 })
+  }
+
+  detener(): void {
+    for (const l of this.lazos.values()) {
+      l.s.stop()
+      l.s.destroy()
+    }
+    this.lazos.clear()
+  }
+}
