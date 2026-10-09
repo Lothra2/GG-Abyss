@@ -231,7 +231,7 @@ test.describe('Pausa y créditos', () => {
     await tocarRect(page, info, b)
     await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Creditos'), { timeout: 10_000 }).toBe(true)
     // el toque en el botón no empieza el juego
-    expect(await gancho(page, 'escena')).toBe('Titulo')
+    expect(await gancho<string[]>(page, 'escenasActivas')).not.toContain('SeleccionJugador')
     const c = await gancho<{ desde: string; max: number }>(page, 'creditos')
     expect(c.desde).toBe('Titulo')
     expect(c.max).toBeGreaterThan(0)
