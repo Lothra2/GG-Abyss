@@ -30,6 +30,14 @@ export const APODOS: Record<string, string> = {
   steph: 'Mamá',
 }
 
+/** Cuadro del atlas `iconos` (32 px) con el arma de cada clase, para las tarjetas de jugadora */
+export const ICONO_ARMA_CLASE: Record<string, string> = {
+  amazona: 'bow_1',
+  druida: 'wand_1',
+  paladin: 'sword_1',
+  hechicera: 'staff_1',
+}
+
 /** Orden fijo de las tarjetas. Las que no estén aquí (del estudio) salen después. */
 export const ORDEN_HEROES = ['sophie', 'alana', 'rick', 'steph']
 

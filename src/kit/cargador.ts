@@ -65,9 +65,7 @@ export function encolarMundoBase(e: Escena, m: Manifest): void {
   mu.suelo.forEach((s, i) => {
     if (!yaHay(e, K.suelo(i))) e.load.image(K.suelo(i), rutaKit(s.archivo))
   })
-  for (const [key, ruta] of [[K.luz, mu.luz], [K.nube, mu.nube], [K.nieblaNubes, mu.niebla.nubes], [K.nieblaJirones, mu.niebla.jirones]] as const) {
-    if (!yaHay(e, key)) e.load.image(key, rutaKit(ruta))
-  }
+  encolarAtmosfera(e, m)
 }
 
 /** Solo los objetos del mundo que se piden (los que aparecen en el mapa), no los 74 */
@@ -100,17 +98,45 @@ export function encolarParticulas(e: Escena, m: Manifest, nombres?: string[]): v
   }
 }
 
+export interface OpcionesBotin {
+  /** nombres de atlas de `manifest.botin.atlas` (iconos, especiales, armadura_n5). Por defecto todos. */
+  atlas?: string[]
+  /** tamaños a cargar. Por defecto los dos. */
+  tamanos?: ('32' | '64')[]
+  /** el atlas del mundo (cofres, monedas, haces) y su JSON de animaciones. Por defecto sí. */
+  mundo?: boolean
+  /** el catálogo de objetos. Por defecto sí. */
+  catalogo?: boolean
+}
+
 /** Atlas del botín (íconos 32 y 64, especiales, armadura) y el atlas del mundo (cofres, monedas, haces) */
-export function encolarBotin(e: Escena, m: Manifest, soloMundo = false): void {
-  for (const [nombre, r] of soloMundo ? [] : Object.entries(m.botin.atlas)) {
-    for (const tam of ['32', '64'] as const) {
+export function encolarBotin(e: Escena, m: Manifest, op: OpcionesBotin = {}): void {
+  const tams = op.tamanos ?? ['32', '64']
+  for (const [nombre, r] of Object.entries(m.botin.atlas)) {
+    if (op.atlas && !op.atlas.includes(nombre)) continue
+    for (const tam of tams) {
       const key = K.atlas(nombre, tam)
       if (!yaHay(e, key)) e.load.atlas(key, rutaKit(r[tam].replace('.json', '.png')), rutaKit(r[tam]))
     }
   }
-  if (!yaHay(e, 'atlas_mundo')) e.load.atlas('atlas_mundo', rutaKit(m.botin.mundo.replace('.json', '.png')), rutaKit(m.botin.mundo))
-  if (!e.cache.json.exists('atlas_mundo_datos')) e.load.json('atlas_mundo_datos', rutaKit(m.botin.mundo))
-  if (!soloMundo && !e.cache.json.exists(K.catalogo)) e.load.json(K.catalogo, rutaKit(m.botin.catalogo))
+  if (op.mundo !== false) {
+    if (!yaHay(e, 'atlas_mundo')) e.load.atlas('atlas_mundo', rutaKit(m.botin.mundo.replace('.json', '.png')), rutaKit(m.botin.mundo))
+    if (!e.cache.json.exists('atlas_mundo_datos')) e.load.json('atlas_mundo_datos', rutaKit(m.botin.mundo))
+  }
+  if (op.catalogo !== false && !e.cache.json.exists(K.catalogo)) e.load.json(K.catalogo, rutaKit(m.botin.catalogo))
+}
+
+/** Solo el mapa de Tiled (para el título, que no necesita los trozos de suelo) */
+export function encolarMapa(e: Escena, m: Manifest): void {
+  if (!e.cache.json.exists(K.mapa)) e.load.json(K.mapa, rutaKit(m.mundo.mapa))
+}
+
+/** Texturas técnicas del mundo: luz, nube y las dos de bruma */
+export function encolarAtmosfera(e: Escena, m: Manifest): void {
+  const mu = m.mundo
+  for (const [key, ruta] of [[K.luz, mu.luz], [K.nube, mu.nube], [K.nieblaNubes, mu.niebla.nubes], [K.nieblaJirones, mu.niebla.jirones]] as const) {
+    if (!yaHay(e, key)) e.load.image(key, rutaKit(ruta))
+  }
 }
 
 export function encolarAudio(e: Escena, m: Manifest, nombres?: string[]): void {

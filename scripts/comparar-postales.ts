@@ -18,10 +18,12 @@ if (!fase) {
 const carpetaFase = join(raiz, fase)
 mkdirSync(raiz, { recursive: true })
 
+/** Pantallas que no son postales del mapa: se muestran aparte */
+const PANTALLAS = ['titulo', 'seleccion', 'pausa']
 const nombres = Object.keys(manifest.mundo.postales)
 // postales que el mapa trae y el manifest todavía no (las del taller que llegan después)
 const extra = existsSync(carpetaFase)
-  ? readdirSync(carpetaFase).filter((f) => f.endsWith('.png') && !f.endsWith('_tablet.png')).map((f) => f.replace('.png', '')).filter((n) => !nombres.includes(n))
+  ? readdirSync(carpetaFase).filter((f) => f.endsWith('.png') && !f.endsWith('_tablet.png')).map((f) => f.replace('.png', '')).filter((n) => !nombres.includes(n) && !PANTALLAS.includes(n))
   : []
 const todas = [...nombres, ...extra]
 
@@ -39,6 +41,13 @@ const fila = (n: string) => {
 </section>`
 }
 
+const pantallas = PANTALLAS.filter((n) => existsSync(join(carpetaFase, `${n}.png`)))
+const seccionPantallas = pantallas.length
+  ? `<section><h2>Pantallas del juego</h2><div class="par">${pantallas
+      .map((n) => `<figure><img src="${fase}/${n}.png" alt="${n}"><figcaption>${n} (960 x 540)</figcaption></figure>${existsSync(join(carpetaFase, `${n}_tablet.png`)) ? `<figure><img src="${fase}/${n}_tablet.png" alt="${n} tablet"><figcaption>${n} en la tablet</figcaption></figure>` : ''}`)
+      .join('')}</div></section>`
+  : ''
+
 const html = `<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><title>Postales: kit contra juego (${fase})</title>
 <style>
@@ -52,6 +61,7 @@ const html = `<!doctype html>
 </style></head><body>
 <h1>Postales: kit contra juego (${fase})</h1>
 <p class="nota">A la izquierda lo que hizo el taller. A la derecha el juego con luces, bruma, partículas y personajes. El juego tiene que verse igual o mejor.</p>
+${seccionPantallas}
 ${todas.map(fila).join('\n')}
 </body></html>
 `

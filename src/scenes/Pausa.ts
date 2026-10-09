@@ -1,0 +1,260 @@
+import Phaser from 'phaser'
+import { K } from '../kit/claves'
+import { OSCURIDAD } from '../config/balance'
+import { alCambiarEscala, escalaDe, toqueMinimo } from '../game/Pantalla'
+import { texto } from '../game/Texto'
+import { crearBoton, type Boton } from '../game/ui/Boton'
+import { Bloqueo } from '../game/ui/Bloqueo'
+import { nocheMaxima } from '../logic/zonas'
+import { agregarGanchos, quitarGanchos } from '../test/ganchos'
+import type { Mundo } from './Mundo'
+
+interface Deslizador {
+  rotulo: string
+  nombre: 'noche' | 'musica' | 'efectos'
+  icono: Phaser.GameObjects.Image
+  riel: Phaser.GameObjects.NineSlice
+  relleno: Phaser.GameObjects.NineSlice
+  perilla: Phaser.GameObjects.NineSlice
+  zona: Phaser.GameObjects.Zone
+  valor: Phaser.GameObjects.BitmapText
+  max: () => number
+  x: number
+  w: number
+}
+
+/**
+ * Pausa y ajustes (PLAN.md F1b): Noche, música y efectos con deslizadores, calidad, modo peque,
+ * cambiar de jugadora, créditos y continuar. Todo se guarda en la partida de la jugadora que está jugando.
+ * Se abre encima del Mundo en pausa y lo reanuda al cerrar.
+ */
+export class Pausa extends Phaser.Scene {
+  private mundo!: Mundo
+  private velo!: Phaser.GameObjects.Rectangle
+  private panel!: Phaser.GameObjects.NineSlice
+  private titulo!: Phaser.GameObjects.BitmapText
+  private deslizadores: Deslizador[] = []
+  private calidad!: Boton
+  private peque!: Boton
+  private cambiar!: Boton
+  private creditos!: Boton
+  private seguir!: Boton
+  private arrastrando: Deslizador | null = null
+  private cerrando = false
+  private nombresVisibles = true
+
+  constructor() {
+    super('Pausa')
+  }
+
+  create(): void {
+    this.mundo = this.scene.get('Mundo') as Mundo
+    this.cerrando = false
+    this.arrastrando = null
+    this.deslizadores = []
+    Bloqueo.instalar(this)
+
+    this.velo = this.add.rectangle(0, 0, 10, 10, 0x070a12, 0.72).setOrigin(0, 0).setInteractive()
+    this.velo.on('pointerdown', (p: Phaser.Input.Pointer) => Bloqueo.tomar(p.id))
+    this.panel = this.add.nineslice(0, 0, K.ui('panel'), undefined, 100, 100, 8, 8, 8, 8).setOrigin(0, 0)
+    this.titulo = texto(this, 0, 0, 'Pausa', 'fuente_titulo', 1, { origen: [0.5, 0] })
+
+    const aj = () => this.mundo.partida.ajustes
+    this.deslizador('noche', 'icono_luna', () => nocheMaxima(aj().modoPeque), 'Noche')
+    this.deslizador('musica', 'icono_sonido', () => 1, 'Música')
+    this.deslizador('efectos', 'icono_sonido', () => 1, 'Efectos')
+
+    this.calidad = crearBoton(this, { x: 0, y: 0, icono: 'icono_calidad', etiqueta: 'Calidad alta', alToque: () => this.alternarCalidad() })
+    this.peque = crearBoton(this, { x: 0, y: 0, icono: 'icono_peque', etiqueta: 'Modo peque: no', alToque: () => this.alternarPeque() })
+    this.cambiar = crearBoton(this, { x: 0, y: 0, icono: 'icono_jugadora', etiqueta: 'Otra jugadora', alToque: () => this.cambiarJugadora() })
+    this.creditos = crearBoton(this, { x: 0, y: 0, icono: 'icono_guardado', etiqueta: 'Créditos', alToque: () => this.abrirCreditos() })
+    this.seguir = crearBoton(this, { x: 0, y: 0, icono: 'icono_jugar', etiqueta: 'Seguir', alToque: () => this.continuar() })
+
+    this.input.on('pointermove', (p: Phaser.Input.Pointer) => this.arrastrando && p.isDown && this.mover(this.arrastrando, p.x))
+    this.input.on('pointerup', () => this.soltar())
+    this.input.on('pointerupoutside', () => this.soltar())
+    this.input.keyboard?.on('keydown-ESC', () => this.continuar())
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => quitarGanchos('pausa', 'pausaFijar', 'pausaContinuar', 'pausaCambiarJugadora'))
+    this.events.on(Phaser.Scenes.Events.RESUME, () => this.acomodar())
+    alCambiarEscala(this, () => this.acomodar())
+    this.refrescar()
+
+    agregarGanchos({
+      pausa: () => ({
+        abierta: true,
+        deslizadores: this.deslizadores.map((d) => ({ nombre: d.nombre, x: d.x, y: Math.round(d.riel.y), w: d.w, valor: this.valorDe(d.nombre) })),
+        botones: { calidad: this.calidad.getBounds(), peque: this.peque.getBounds(), cambiar: this.cambiar.getBounds(), creditos: this.creditos.getBounds(), seguir: this.seguir.getBounds() },
+        ajustes: { ...aj() },
+      }),
+      pausaFijar: ((nombre: 'noche' | 'musica' | 'efectos', v: number) => {
+        const d = this.deslizadores.find((x) => x.nombre === nombre)
+        if (d) this.poner(d, v)
+      }) as never,
+      pausaContinuar: (() => this.continuar()) as never,
+      pausaCambiarJugadora: (() => this.cambiarJugadora()) as never,
+    })
+  }
+
+  override update(_t: number, ms: number): void {
+    this.mundo.sonidoEnPausa(Math.min(0.05, ms / 1000))
+  }
+
+  private valorDe(n: Deslizador['nombre']): number {
+    return this.mundo.partida.ajustes[n]
+  }
+
+  private deslizador(nombre: Deslizador['nombre'], icono: string, max: () => number, etiqueta: string): void {
+    const ic = this.add.image(0, 0, K.ui(icono)).setOrigin(0, 0.5)
+    const riel = this.add.nineslice(0, 0, K.ui('panel_hundido'), undefined, 100, 10, 6, 6, 6, 6).setOrigin(0, 0.5)
+    const relleno = this.add.nineslice(0, 0, K.ui('boton'), 0, 10, 6, 8, 8, 6, 6).setOrigin(0, 0.5).setTint(0xffd27a)
+    const perilla = this.add.nineslice(0, 0, K.ui('boton'), 0, 14, 22, 8, 8, 6, 6).setOrigin(0.5, 0.5)
+    const zona = this.add.zone(0, 0, 10, 10).setOrigin(0, 0.5).setInteractive({ useHandCursor: true })
+    const valor = texto(this, 0, 0, etiqueta, 'fuente_ui', 1, { origen: [0, 0.5] })
+    const d: Deslizador = { rotulo: etiqueta, nombre, icono: ic, riel, relleno, perilla, zona, valor, max, x: 0, w: 100 }
+    zona.on('pointerdown', (p: Phaser.Input.Pointer) => {
+      Bloqueo.tomar(p.id)
+      this.arrastrando = d
+      this.mover(d, p.x)
+    })
+    this.deslizadores.push(d)
+  }
+
+  private mover(d: Deslizador, px: number): void {
+    const t = Phaser.Math.Clamp((px - d.x) / d.w, 0, 1)
+    this.poner(d, t * (d.nombre === 'noche' ? OSCURIDAD.nocheMax : 1))
+  }
+
+  private poner(d: Deslizador, v: number): void {
+    const a = this.mundo.partida.ajustes
+    const nuevo = Phaser.Math.Clamp(Math.round(v * 100) / 100, 0, d.max())
+    a[d.nombre] = nuevo
+    this.refrescar()
+  }
+
+  private soltar(): void {
+    if (!this.arrastrando) return
+    this.arrastrando = null
+    this.mundo.guardar()
+  }
+
+  private alternarCalidad(): void {
+    const a = this.mundo.partida.ajustes
+    a.calidad = a.calidad === 'alta' ? 'baja' : 'alta'
+    this.mundo.guardar()
+    this.refrescar()
+  }
+
+  private alternarPeque(): void {
+    const a = this.mundo.partida.ajustes
+    a.modoPeque = !a.modoPeque
+    a.noche = Math.min(a.noche, nocheMaxima(a.modoPeque))
+    this.mundo.guardar()
+    this.refrescar()
+  }
+
+  private refrescar(): void {
+    const a = this.mundo.partida.ajustes
+    for (const d of this.deslizadores) {
+      const total = d.nombre === 'noche' ? OSCURIDAD.nocheMax : 1
+      const t = Phaser.Math.Clamp(a[d.nombre] / total, 0, 1)
+      const tope = Phaser.Math.Clamp(d.max() / total, 0, 1)
+      d.relleno.setSize(Math.max(8, Math.round(d.w * t)), 6)
+      d.perilla.setPosition(Math.round(d.x + d.w * t), d.riel.y)
+      const pct = `${Math.round((a[d.nombre] / total) * 100)}%`
+      d.valor.setText(this.nombresVisibles ? `${d.rotulo} ${pct}` : pct)
+      // en modo peque el riel se corta en el tope para que se vea hasta dónde llega
+      d.riel.setAlpha(1)
+      d.icono.setAlpha(tope < 1 ? 0.85 : 1)
+    }
+    this.calidad.setEtiqueta(`Calidad ${a.calidad === 'alta' ? 'alta' : 'baja'}`)
+    this.peque.setEtiqueta(a.modoPeque ? 'Modo peque: sí' : 'Modo peque: no')
+  }
+
+  private acomodar(): void {
+    if (!this.velo || !this.panel.active) return
+    const w = this.scale.width
+    const h = this.scale.height
+    const e = escalaDe(this.game)
+    const esc = e.zoom >= 3 ? 1 : 2
+    this.nombresVisibles = esc === 1
+    this.refrescar()
+    this.velo.setSize(w, h)
+    const fila = Math.max(toqueMinimo(e, this.mundo.partida.ajustes.modoPeque), 26)
+    const pw = Math.min(w - 16, Math.max(280, Math.floor(w * 0.62)))
+    const lado = this.calidad.ancho + 8 + this.peque.ancho <= pw - 20
+    const ancho3 = this.cambiar.ancho + this.creditos.ancho + this.seguir.ancho + 16
+    const tres = ancho3 <= pw - 20
+    this.titulo.setScale(esc)
+    const alto = 10 + this.titulo.displayHeight + 8 + fila * 3 + 6 + (lado ? fila + 6 : fila * 2 + 10) + (tres ? fila : fila * 2 + 4) + 12
+    const ph = Math.min(h - 8, alto)
+    const px = Math.round((w - pw) / 2)
+    const py = Math.round((h - ph) / 2)
+    this.panel.setPosition(px, py).setSize(pw, ph)
+    this.titulo.setPosition(Math.round(w / 2), py + 10)
+    let y = py + 10 + this.titulo.displayHeight + 8
+    for (const d of this.deslizadores) {
+      const cy = y + fila / 2
+      d.valor.setScale(esc)
+      const etiquetaW = (this.nombresVisibles ? 84 : 32) * esc
+      d.icono.setPosition(px + 14, cy)
+      d.valor.setPosition(px + pw - 14 - d.valor.displayWidth, cy)
+      d.x = px + 14 + 24 + 10
+      d.w = Math.max(40, pw - 14 * 2 - 24 - 10 - etiquetaW - 10)
+      d.riel.setPosition(d.x, cy).setSize(d.w, 10)
+      d.zona.setPosition(d.x - 10, cy).setSize(d.w + 20, fila)
+      d.perilla.setY(cy)
+      d.relleno.setPosition(d.x, cy)
+      y += fila
+    }
+    y += 6
+    const centrar = (b: Boton, cx: number, cy: number) => b.setPosition(Math.round(cx), Math.round(cy))
+    if (lado) {
+      centrar(this.calidad, px + 10 + this.calidad.ancho / 2, y + fila / 2)
+      centrar(this.peque, px + pw - 10 - this.peque.ancho / 2, y + fila / 2)
+      y += fila + 6
+    } else {
+      centrar(this.calidad, px + pw / 2, y + fila / 2)
+      centrar(this.peque, px + pw / 2, y + fila * 1.5 + 4)
+      y += fila * 2 + 10
+    }
+    if (tres) {
+      let cx = px + (pw - ancho3) / 2
+      for (const b of [this.cambiar, this.creditos, this.seguir]) {
+        centrar(b, cx + b.ancho / 2, y + fila / 2)
+        cx += b.ancho + 8
+      }
+    } else {
+      centrar(this.cambiar, px + pw / 2, y + fila / 2)
+      centrar(this.creditos, px + pw / 4, y + fila * 1.5 + 4)
+      centrar(this.seguir, px + (pw * 3) / 4, y + fila * 1.5 + 4)
+    }
+    this.refrescar()
+  }
+
+  private continuar(): void {
+    if (this.cerrando) return
+    this.cerrando = true
+    this.mundo.guardar()
+    this.scene.resume('Mundo')
+    this.game.events.emit('pausa-cerrada')
+    this.scene.stop()
+  }
+
+  private cambiarJugadora(): void {
+    if (this.cerrando) return
+    this.cerrando = true
+    this.mundo.guardar()
+    this.game.registry.remove('partida')
+    this.game.registry.remove('heroeId')
+    this.scene.stop('Mundo')
+    this.scene.start('SeleccionJugador')
+  }
+
+  private abrirCreditos(): void {
+    this.scene.pause()
+    this.scene.launch('Creditos', { desde: 'Pausa' })
+    this.scene.bringToTop('Creditos')
+  }
+}
+

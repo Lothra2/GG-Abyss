@@ -64,6 +64,12 @@ export class ThorSprite {
     this.animActual = ''
   }
 
+  /** Mueve la cola un momento (cuando algo lindo pasa) */
+  menearCola(seg = 1.6): void {
+    this.estado = 'wag'
+    this.colaS = seg
+  }
+
   /** La heroína avisa dónde está para ir dejando rastro */
   registrarRastro(h: Heroina): void {
     const u = this.rastro[this.rastro.length - 1]

@@ -1,5 +1,6 @@
-import type { Calidad } from '../config/juego'
+import { CLAVE_GUARDADO, CLAVE_PERFILES, CLAVE_ROTO, type Calidad } from '../config/juego'
 import { MODO_PEQUE, OSCURIDAD } from '../config/balance'
+import { nocheMaxima } from './zonas'
 
 /**
  * La partida de una jugadora (PLAN.md 3.5). La clave en localStorage es `ggabyss:v1:perfil:<id>`.
@@ -80,4 +81,162 @@ export function partidaNueva(id: string, ahora: number = Date.now()): Partida {
     cinturon: [null, null, null, null],
     ajustes: ajustesPorDefecto(id),
   }
+}
+
+/* ---------- almacenamiento ---------- */
+
+/** Lo mínimo de localStorage que usa el juego, para poder probarlo con un almacén de memoria */
+export interface Almacen {
+  getItem(k: string): string | null
+  setItem(k: string, v: string): void
+  removeItem(k: string): void
+}
+
+export class AlmacenMemoria implements Almacen {
+  readonly datos = new Map<string, string>()
+  getItem(k: string): string | null {
+    return this.datos.get(k) ?? null
+  }
+  setItem(k: string, v: string): void {
+    this.datos.set(k, v)
+  }
+  removeItem(k: string): void {
+    this.datos.delete(k)
+  }
+  claves(): string[] {
+    return [...this.datos.keys()]
+  }
+}
+
+/** El localStorage del navegador, o un almacén en memoria si no se puede usar (modo privado, bloqueado) */
+export function almacenDelNavegador(): Almacen {
+  try {
+    const t = '__ggabyss_prueba__'
+    window.localStorage.setItem(t, '1')
+    window.localStorage.removeItem(t)
+    return window.localStorage
+  } catch {
+    return new AlmacenMemoria()
+  }
+}
+
+export const claveDe = (id: string): string => `${CLAVE_GUARDADO}${id}`
+
+const esNum = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v)
+const esLista = (v: unknown): v is unknown[] => Array.isArray(v)
+const textos = (v: unknown): string[] => (esLista(v) ? v.filter((x): x is string => typeof x === 'string') : [])
+const limitar = (v: number, a: number, b: number): number => Math.max(a, Math.min(b, v))
+
+/**
+ * Sube cualquier partida vieja a la versión actual (PLAN.md 3.5): rellena lo que falte con los valores
+ * por defecto, arregla tipos y recorta rangos. Devuelve null solo si no es una partida de nadie.
+ */
+export function migrar(json: unknown, idEsperado?: string): Partida | null {
+  if (!json || typeof json !== 'object' || Array.isArray(json)) return null
+  const j = json as Record<string, unknown>
+  const id = typeof j.id === 'string' && j.id ? j.id : idEsperado
+  if (!id) return null
+  const base = partidaNueva(id, esNum(j.creada) ? j.creada : Date.now())
+  // la versión 0 de prueba llamaba `nivel` a `level` y `oro` a `gold`
+  const nivel = esNum(j.nivel) ? j.nivel : esNum(j.level) ? j.level : base.nivel
+  const oro = esNum(j.oro) ? j.oro : esNum(j.gold) ? j.gold : base.oro
+  const aj = (j.ajustes && typeof j.ajustes === 'object' ? j.ajustes : {}) as Record<string, unknown>
+  const modoPeque = typeof aj.modoPeque === 'boolean' ? aj.modoPeque : base.ajustes.modoPeque
+  const pos = (j.posicion && typeof j.posicion === 'object' ? j.posicion : {}) as Record<string, unknown>
+  const bolsa = esLista(j.bolsa) ? j.bolsa.slice(0, 28).map((x) => (typeof x === 'string' ? x : null)) : []
+  while (bolsa.length < 28) bolsa.push(null)
+  const cinto = esLista(j.cinturon) ? j.cinturon.slice(0, 4).map((x) => (typeof x === 'string' ? x : null)) : []
+  while (cinto.length < 4) cinto.push(null)
+  const equipo: Record<string, string> = {}
+  if (j.equipo && typeof j.equipo === 'object') for (const [k, v] of Object.entries(j.equipo as Record<string, unknown>)) if (typeof v === 'string') equipo[k] = v
+
+  const p: Partida = {
+    version: VERSION_PARTIDA,
+    id,
+    creada: base.creada,
+    actualizada: esNum(j.actualizada) ? j.actualizada : base.actualizada,
+    nivel: Math.round(limitar(nivel, 1, 10)),
+    xp: Math.max(0, esNum(j.xp) ? j.xp : 0),
+    oro: Math.max(0, Math.round(oro)),
+    vida: Math.max(0, esNum(j.vida) ? j.vida : 0),
+    mana: Math.max(0, esNum(j.mana) ? j.mana : 0),
+    posicion: { x: esNum(pos.x) ? pos.x : 0, y: esNum(pos.y) ? pos.y : 0 },
+    ultimaFogata: typeof j.ultimaFogata === 'string' ? j.ultimaFogata : '',
+    zonas: textos(j.zonas),
+    secretos: textos(j.secretos),
+    cofres: textos(j.cofres),
+    rompibles: textos(j.rompibles),
+    presentacionVista: j.presentacionVista === true,
+    jefeVencido: j.jefeVencido === true,
+    equipo,
+    bolsa,
+    cinturon: cinto,
+    ajustes: {
+      noche: limitar(esNum(aj.noche) ? aj.noche : OSCURIDAD.nocheDefecto, 0, nocheMaxima(modoPeque)),
+      calidad: aj.calidad === 'baja' ? 'baja' : 'alta',
+      musica: limitar(esNum(aj.musica) ? aj.musica : base.ajustes.musica, 0, 1),
+      efectos: limitar(esNum(aj.efectos) ? aj.efectos : base.ajustes.efectos, 0, 1),
+      modoPeque,
+    },
+  }
+  if (esNum(j.jefeVida)) p.jefeVida = Math.max(0, j.jefeVida)
+  if (esNum(j.tiempoJugado)) p.tiempoJugado = Math.max(0, j.tiempoJugado)
+  return p
+}
+
+export interface ResultadoLeer {
+  partida: Partida | null
+  /** había algo guardado pero no se pudo leer: se dejó una copia */
+  rota: boolean
+  /** clave donde quedó la copia de lo roto */
+  copia?: string
+}
+
+/** Lee la partida de un perfil. Si el JSON está roto deja una copia en `ggabyss:v1:roto:<id>:<fecha>` y no la borra. */
+export function leerPartida(alm: Almacen, id: string, ahora: number = Date.now()): ResultadoLeer {
+  const crudo = alm.getItem(claveDe(id))
+  if (crudo === null) return { partida: null, rota: false }
+  let json: unknown
+  try {
+    json = JSON.parse(crudo)
+  } catch {
+    json = undefined
+  }
+  const p = json === undefined ? null : migrar(json, id)
+  if (p && p.id === id) return { partida: p, rota: false }
+  const copia = `${CLAVE_ROTO}${id}:${ahora}`
+  alm.setItem(copia, crudo)
+  alm.removeItem(claveDe(id))
+  return { partida: null, rota: true, copia }
+}
+
+export function listaPerfiles(alm: Almacen): string[] {
+  try {
+    const l = JSON.parse(alm.getItem(CLAVE_PERFILES) ?? '[]') as unknown
+    return textos(l)
+  } catch {
+    return []
+  }
+}
+
+export function guardarPartida(alm: Almacen, p: Partida, ahora: number = Date.now()): void {
+  p.actualizada = ahora
+  alm.setItem(claveDe(p.id), JSON.stringify(p))
+  const l = listaPerfiles(alm)
+  if (!l.includes(p.id)) alm.setItem(CLAVE_PERFILES, JSON.stringify([...l, p.id]))
+}
+
+/** Borra un perfil. Deja una copia por si se borró sin querer. */
+export function borrarPartida(alm: Almacen, id: string, ahora: number = Date.now()): void {
+  const crudo = alm.getItem(claveDe(id))
+  if (crudo !== null) alm.setItem(`${CLAVE_ROTO}${id}:borrada:${ahora}`, crudo)
+  alm.removeItem(claveDe(id))
+  alm.setItem(CLAVE_PERFILES, JSON.stringify(listaPerfiles(alm).filter((x) => x !== id)))
+}
+
+/** Lee la partida o crea una nueva (sin guardarla todavía) */
+export function cargarOCrear(alm: Almacen, id: string, ahora: number = Date.now()): { partida: Partida; nueva: boolean; rota: boolean } {
+  const r = leerPartida(alm, id, ahora)
+  if (r.partida) return { partida: r.partida, nueva: false, rota: false }
+  return { partida: partidaNueva(id, ahora), nueva: true, rota: r.rota }
 }

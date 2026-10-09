@@ -6,6 +6,8 @@ export interface Params {
   kit: boolean
   postal: boolean
   sinTitulo: boolean
+  /** entrar con ?heroe= también hace la presentación */
+  presentacion: boolean
   calidad: 'alta' | 'baja' | null
 }
 
@@ -20,6 +22,7 @@ export function leerParams(search: string = typeof location !== 'undefined' ? lo
     kit: q.get('kit') === '1',
     postal: q.get('postal') === '1',
     sinTitulo: q.get('sinTitulo') === '1',
+    presentacion: q.get('presentacion') === '1',
     calidad: cal === 'alta' || cal === 'baja' ? cal : null,
   }
 }

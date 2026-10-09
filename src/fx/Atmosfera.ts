@@ -197,7 +197,7 @@ export class Atmosfera {
   }
 
   destruir(): void {
-    this.escena.cameras.main.resetPostPipeline(true)
+    this.escena.cameras?.main?.resetPostPipeline(true)
     this.luces.destruir()
     this.bruma.destruir()
     this.nubes.destruir()

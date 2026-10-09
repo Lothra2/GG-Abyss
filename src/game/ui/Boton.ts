@@ -48,7 +48,7 @@ export function crearBoton(e: Phaser.Scene, o: OpcionesBoton): Boton {
   if (o.etiqueta !== undefined) etiqueta = texto(e, 0, 0, o.etiqueta, o.fuente ?? 'fuente_ui', o.escalaTexto ?? 1, { origen: [0.5, 0.5] })
   const iconoW = o.icono ? (o.escalaIcono ?? 1) * 24 + (etiqueta ? 6 : 0) : 0
   const w = Math.max(o.w ?? 0, min, etiqueta ? etiqueta.displayWidth + iconoW + 16 : 0, o.icono && !etiqueta ? iconoW + 12 : 0)
-  const h = Math.max(o.h ?? 0, min, etiqueta ? etiqueta.displayHeight + 8 : 0)
+  const h = Math.max(o.h ?? 0, min, etiqueta ? etiqueta.displayHeight + 8 : 0, o.icono ? (o.escalaIcono ?? 1) * 24 + 8 : 0)
 
   const c = e.add.container(o.x, o.y) as Boton
   const fondo = e.add.nineslice(0, 0, K.ui('boton'), 0, w, h, 8, 8, 6, 6).setOrigin(ox, oy)

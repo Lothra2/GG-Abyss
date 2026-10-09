@@ -5,9 +5,12 @@ import { escalaActual, instalarPantalla } from './game/Pantalla'
 import { instalarGanchos } from './test/ganchos'
 import { Boot } from './scenes/Boot'
 import { Titulo } from './scenes/Titulo'
+import { SeleccionJugador } from './scenes/SeleccionJugador'
 import { SalaKit } from './scenes/SalaKit'
 import { Mundo } from './scenes/Mundo'
 import { HUD } from './scenes/HUD'
+import { Pausa } from './scenes/Pausa'
+import { Creditos } from './scenes/Creditos'
 
 if (params.seed !== null) fijarSemilla(params.seed)
 
@@ -25,7 +28,7 @@ const game = new Phaser.Game({
   scale: { mode: Phaser.Scale.NONE, width: escala.ancho, height: escala.alto, zoom: escala.cssZoom },
   render: { powerPreference: 'high-performance', mipmapFilter: 'NEAREST' },
   input: { activePointers: 3, touch: { capture: true } },
-  scene: [Boot, Titulo, SalaKit, Mundo, HUD],
+  scene: [Boot, Titulo, SeleccionJugador, SalaKit, Mundo, HUD, Pausa, Creditos],
   callbacks: { preBoot: (g) => g.registry.set('escala', escala) },
 })
 

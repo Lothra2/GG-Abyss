@@ -2,9 +2,11 @@ import Phaser from 'phaser'
 import { K } from '../kit/claves'
 import { validarManifest, KitError, MENSAJE_KIT_FALTANTE, heroes } from '../kit/manifest'
 import {
-  encolarAudio, encolarCreditos, encolarFuentes, encolarMundoBase, encolarObjetosMundo, encolarPersonaje, encolarUi, rutaKit,
+  encolarAtmosfera, encolarAudio, encolarBotin, encolarCreditos, encolarFuentes, encolarFx, encolarMapa, encolarObjetosMundo, encolarParticulas,
+  encolarPersonaje, encolarPostales, encolarUi, rutaKit,
 } from '../kit/cargador'
-import { crearAnimsPersonaje } from '../kit/anims'
+import { crearAnimFx, crearAnimsPersonaje } from '../kit/anims'
+import { parsearMapa } from '../kit/mapa'
 import { manifestDe } from '../kit/contexto'
 import type { Manifest } from '../kit/tipos'
 import { params } from '../config/params'
@@ -85,9 +87,15 @@ export class Boot extends Phaser.Scene {
     encolarUi(this, m)
     for (const id of heroes(m)) encolarPersonaje(this, m, id, ['idle', 'walk', 'run'])
     encolarPersonaje(this, m, 'thor', ['idle', 'walk', 'run', 'sit', 'wag'])
-    encolarMundoBase(this, m)
+    // el título y la selección: el mapa (para las luces), la postal de la arena, la bruma, brasas y el aura de la elección
+    encolarMapa(this, m)
+    encolarAtmosfera(this, m)
+    encolarPostales(this, m, ['arena_del_minotauro'])
+    encolarParticulas(this, m, ['brasa', 'luciernaga'])
+    encolarFx(this, m, ['aura_nivel', 'curar'])
+    encolarBotin(this, m, { atlas: ['iconos'], tamanos: ['32'], mundo: false, catalogo: false })
     encolarObjetosMundo(this, m, ['portal_azul'])
-    encolarAudio(this, m, ['musica_bosque', 'ambiente_magia', 'click', 'subir_nivel'])
+    encolarAudio(this, m, ['musica_titulo', 'musica_bosque', 'ambiente_magia', 'click', 'subir_nivel', 'elegir', 'ladrido'])
     encolarCreditos(this, m)
     this.load.once(Phaser.Loader.Events.COMPLETE, () => this.listo())
     this.load.start()
@@ -96,12 +104,19 @@ export class Boot extends Phaser.Scene {
   private listo(): void {
     const m = manifestDe(this)
     for (const id of [...heroes(m), 'thor']) crearAnimsPersonaje(this, m, id)
+    crearAnimFx(this, m, 'aura_nivel')
+    crearAnimFx(this, m, 'curar')
+    const logo = m.ui.logo as { cuadros: number; fps: number } | undefined
+    if (logo && !this.anims.exists('logo')) {
+      this.anims.create({ key: 'logo', frames: this.anims.generateFrameNumbers(K.ui('logo'), { start: 0, end: logo.cuadros - 1 }), frameRate: logo.fps ?? 8, repeat: -1 })
+    }
+    this.registry.set('mapa', parsearMapa(this.cache.json.get(K.mapa)))
     this.cameras.main.fadeIn(250, 7, 10, 18)
     if (params.kit) return void this.scene.start('SalaKit')
     if (params.heroe && this.scene.manager.keys['Mundo']) {
       this.registry.set('heroeId', params.heroe)
       return void this.scene.start('Mundo')
     }
-    this.scene.start('Titulo')
+    this.scene.start(params.sinTitulo ? 'SeleccionJugador' : 'Titulo')
   }
 }

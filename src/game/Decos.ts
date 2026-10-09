@@ -62,6 +62,8 @@ export interface Activo {
   pastoT: number
   /** segundo del reloj en que empezó a sonreír (el Abuelo Roble), o -1 */
   sonrisaT: number
+  /** una animación que se toca una vez encima de la de fondo (el portal que se abre) */
+  forzada?: { anim: string; t0: number }
 }
 
 /** Árboles y objetos que se vuelven transparentes cuando la heroína pasa detrás */
@@ -301,11 +303,21 @@ export class Decos {
         }
       }
 
-      const nombre = pastoAnim ?? an
+      let nombre = pastoAnim ?? an
+      let forzadaF = -1
+      if (a.forzada) {
+        const fi = def.anims[a.forzada.anim]
+        const el = t - a.forzada.t0
+        if (fi && el < fi.cuadros / fi.fps) {
+          nombre = a.forzada.anim
+          forzadaF = Math.min(fi.cuadros - 1, Math.floor(el * fi.fps))
+        } else a.forzada = undefined
+      }
       const info = def.anims[nombre]
       if (!info) continue
       let f: number
-      if (pastoAnim) {
+      if (forzadaF >= 0) f = forzadaF
+      else if (pastoAnim) {
         const el = t - a.pastoT
         const maxF = info.cuadros - 1
         if (a.pasto === 'abriendo') f = Math.min(maxF, Math.floor(el * info.fps))
@@ -344,6 +356,18 @@ export class Decos {
         }
       }
     }
+  }
+
+  /** Toca una animación una vez sobre los decorados activos con ese nombre (el portal que se abre) */
+  reproducir(t: number, nombre: string, anim: string): boolean {
+    let hubo = false
+    for (const a of this.activos.values()) {
+      if (a.d.nombre === nombre && a.d.def.anims[anim]) {
+        a.forzada = { anim, t0: t }
+        hubo = true
+      }
+    }
+    return hubo
   }
 
   /** Un toque sobre el Abuelo Roble: sonríe. Devuelve true si había uno cerca del punto. */
