@@ -4,7 +4,7 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 
 ## Estado
 
-- Fase actual: F5 (pulido y deploy) en curso. F4 cerrada (typecheck, 236 tests, build, 104 e2e en verde y 2 que se saltan a propósito). F1b a F3 cerradas antes.
+- Fase actual: todas las fases del plan hechas (F0 a F5). Lo que falta es solo de Rick: publicar en Netlify y probar en las tablets de verdad (ver "Pasos solo de Rick").
 - F1b hecha en código: Titulo (logo, Toca para empezar, botón Créditos), SeleccionJugador (tarjetas del manifest, aura y Thor), guardado con migración, Presentacion (paneo la primera vez), Entidades (cofres, carteles, fogatas, Abuelo), HUD (contadores, oro, pausa, panel de cartel), Pausa (Noche, Música, Efectos, calidad, modo peque, otra jugadora, créditos, seguir), Creditos (CREDITOS.txt con scroll)
 - F1a hecha: grilla, A*, movimiento, zonas, descubrimiento; MundoVista, Decos (pool por celdas, viento, hechizados, copas, pasto), Heroina, ThorSprite (sigue el rastro), Criaturas, Camara, Entrada (toque, mantener, teclado), Sonido; fx: Luces (RenderTexture con pozos), Bruma, Nubes, Particulas, AtmosferaFX (postFX soft light y viñeta), Atmosfera; escenas Mundo y HUD; postales en docs/capturas/f1a y comparar.html
 - F0 hecha: tooling (Vite, TS, Vitest, Playwright, Netlify), cargador del kit, mapa puro, azar, direccion, escala entera, config, Boot, SalaKit, verificar-kit, ganchos de prueba, 46 tests, 12 e2e (1 salta a propósito)
@@ -44,13 +44,18 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 - F4, el aviso del golpe fuerte usa `aviso_jefe` a x1 (radio 48) y el del pisotón y el salto a x2 (radio 96): el plan decía 70, 100 y 80, pero escalar con decimales rompía los pixeles. Los números viven en `JEFE`.
 - F4, el minotauro usa su hoja de 96 px sin escalar (el taller ya la entregó): no hace falta el 1.5 de la nota del plan.
 - F4, la salida de la arena se cierra con un anillo de cuadros bloqueados justo afuera del borde (el borde queda a 24 px de donde la heroína dispara la pelea). Si la heroína se aleja más de 60 px de la arena, la pelea se corta como si la hubieran rescatado.
+- F5, la PWA: `public/manifest.webmanifest` (pantalla completa, horizontal, íconos de `manifest.app` del kit), `public/sw.js` como plantilla y `scripts/generar-sw.ts` que corre al final de `npm run build` y le pone la versión (hash de los archivos) y la lista de 628 archivos. El service worker guarda todo al instalar (cache primero) y sirve el index sin importar los parámetros. Solo se registra en la versión construida y no con `?test=1` (para que las pruebas no vean una versión vieja guardada): `?sw=1` lo fuerza, así lo prueba el e2e.
+- F5, aviso de girar: es HTML con el ícono `ui/girar_tablet.png` del kit y sin texto (Alana no lee). Sale solo en aparatos táctiles en vertical (`(orientation: portrait) and (pointer: coarse)`) y el juego se duerme con `game.loop.sleep()` y el sonido se pausa.
+- F5, audio: el contexto se despierta al volver a ver la página (`visibilitychange`, `pageshow`, `focus`) y en cada toque. Los bucles son de WebAudio, no se cortan.
+- F5, pantalla completa: botón en la pausa (Android y PC). En iPad no existe la API y el botón dice "Instalar" y abre un panel con 3 pasos. Faltan los íconos de Safari: ASSETS_PENDIENTES.md #28.
+- F5, el kit ya está guardado en el repo (`public/assets/kit`, 634 archivos), así que construir NO necesita el submódulo privado. Por eso el plan B de Netlify es mucho más simple de lo que decía el plan: un GitHub Action manual (`.github/workflows/netlify.yml`) sin llaves del submódulo.
 - F1b, las pruebas e2e llegan a cofres, carteles y fogatas por la parada del objeto (`teleport` a la parada): la caminata larga ya la cubre F1a.
 
 - Entrega del taller (5 tandas, submódulo en 8ba7f2a): adoptada en F1a. Decos usa tronco y copa por separado, pasto con sus anims, capa `superficie` para los pasos, 13 postales. Falta usar en sus fases: iconos de cartel (F1b), Abuelo que sonríe (F1b), títulos y logo (F1b), flecha y naturaleza (F2), botín bajo (F3), Thor cava (F3), minotauro 96 y carga (F4), íconos de app (F5). En balance se quitaron las escalas temporales del trol y del minotauro.
 
 ## Lo que falta
 
-F5 (cierre: medir en las tablets de verdad, publicar en Netlify) (ver PLAN.md sección 5)
+Nada del plan. Quedan cosas que solo pueden hacerse con las tablets en la mano: medir fps en el iPad y el Android, instalar la app, publicar en Netlify y la demo con las niñas. (ver PLAN.md sección 5)
 
 ## Comandos para retomar
 
@@ -100,4 +105,32 @@ npm run typecheck && npm test && npm run build && npm run e2e
 
 ## Pasos solo de Rick
 
-(vacío)
+### 1. Publicar en Netlify (la forma más corta, sin tocar el submódulo)
+
+El juego ya trae el kit dentro del repo, así que Netlify no necesita clonar `pixel_forja`. Pero si conectas el repo a Netlify directo, Netlify igual intenta clonar el submódulo privado y falla. Dos caminos:
+
+**Camino A (recomendado, 6 pasos, sin llaves SSH):**
+1. En Netlify: Add new site, Deploy manually, arrastra cualquier carpeta vacía (solo para crear el sitio). Ponle un nombre.
+2. En el sitio: Site configuration, Site information, copia el "Site ID".
+3. En Netlify: tu foto, User settings, Applications, Personal access tokens, New access token. Cópialo.
+4. En GitHub, repo `Lothra2/gg-abyss`: Settings, Secrets and variables, Actions, New repository secret. Crea `NETLIFY_AUTH_TOKEN` (el token) y `NETLIFY_SITE_ID` (el id).
+5. Pestaña Actions, "Desplegar a Netlify", Run workflow (rama `claude/ecstatic-ramanujan-oq0r0o` o `main` cuando la mezcles). Tarda unos 3 minutos.
+6. Abre la URL del sitio en la tablet. Para cada actualización repite el paso 5.
+
+**Camino B (Netlify conectado al repo):** en Netlify, Add new site, Import from Git, elige `Lothra2/gg-abyss`. Cuando falle por el submódulo: Site configuration, Build and deploy, Deploy key, generar la llave y copiarla. En GitHub, repo `Lothra2/pixel_forja`, Settings, Deploy keys, Add deploy key, pega la llave (solo lectura). Reintenta el deploy. Si no funciona, usa el Camino A.
+
+### 2. Instalar en la tablet
+- **iPad:** abrir la URL en Safari, Compartir, Agregar a inicio, abrir desde el ícono. (El botón "Instalar" de la pausa lo explica.)
+- **Android:** abrir en Chrome, menú de los tres puntos, Instalar app (o el aviso de abajo). Abre en horizontal y a pantalla completa.
+- Probar sin red: abrir una vez con internet, esperar a que cargue el título, activar el modo avión y abrir la app desde el ícono.
+
+### 3. Medir en los aparatos
+- Abrir `https://<tu-sitio>/?test=1&heroe=sophie`: arriba a la derecha sale el medidor de fps en verde (55 o más), amarillo o rojo. Caminar por el Bosque Profundo y por la arena con el jefe, que es lo más pesado.
+- Si un aparato no llega a 60 fps en calidad alta, ponerlo en calidad baja desde la pausa (queda guardado por jugadora). El juego también pasa solo a baja si el promedio de los primeros 10 segundos es menor de 45 fps.
+- Anotar aquí el aparato, el fps y la calidad: iPad ___ / Android ___.
+
+### 4. Lighthouse
+En Chrome del escritorio, con el sitio abierto: F12, Lighthouse, Progressive Web App (si tu Chrome ya no trae la categoría, el panel Application, Manifest y Service workers muestran los mismos chequeos). No lo pude correr aquí: lo que sí está probado por pruebas automáticas es el manifest, el service worker y el modo sin red.
+
+### 5. Demo con las niñas
+Ver las secciones "Para que Rick revise" de cada fase.

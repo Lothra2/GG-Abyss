@@ -689,6 +689,8 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 
 **Demo con las niñas:** la app en su tablet, desde el ícono, sin Rick al lado.
 
+**Notas de cierre F5:** hecho como el plan salvo: el kit ya está en el repo (no hace falta la llave del submódulo para construir, solo para actualizar el kit), no se pudo medir en el iPad ni en el Android ni correr Lighthouse (pasos de Rick en PROGRESO.md), y el panel de instalar en iPad usa texto porque faltan los íconos de Safari (ASSETS_PENDIENTES.md #28).
+
 ---
 
 ## 6. Riesgos y mitigación
