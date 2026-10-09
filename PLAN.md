@@ -15,7 +15,11 @@ Referencias que hay que tener abiertas siempre:
 
 | Tema | Decisión |
 |---|---|
+| Escala | Pixeles perfectos desde F0, igual que el visor. Nada de 960 x 540 fijo ni `Scale.FIT`. Zoom entero de cámara calculado del alto físico de la pantalla, vista lógica de al menos 400 de alto. El HUD se ancla a los bordes. Detalle en 3.2 |
 | Texto | Todo el texto sale de las fuentes bitmap del kit (`manifest.ui.fuentes`): `fuente_ui` (8 px, se tiñe, escala entera x2 o x3), `fuente_titulo` (dorada) y `fuente_titulo_plata` (16 px). Nada de fuentes web ni `this.add.text`. |
+| Conteos del mapa | Ningún test ni pantalla usa cantidades fijas de postales, zonas, cofres o fogatas. Todo se lee del mapa. Los tests exigen "al menos": postales >= 8, zonas >= 13, cofres secretos >= 5, puntos de guardado >= 3. El taller va a agregar más |
+| Repos | `gg-abyss` y `pixel_forja` son privados. Netlify con deploy key (F5) |
+| Kit para F0 | F0 arranca con el kit actual y no depende de nada pendiente. El taller ya está haciendo los imprescindibles de F1 y el botín de nivel bajo (ver `ASSETS_PENDIENTES.md`). Cuando lleguen: `git submodule update --remote tools/pixel_forja && npm run kit` |
 | Oscuridad | Oscuridad final = `clamp(noche + zona.oscuridad, 0, 0.6)`. Noche por defecto 0.15 (hora dorada). Control "Noche" en ajustes de 0 a 0.55, guardado por perfil. En modo peque el control llega solo a 0.25 y la oscuridad final nunca pasa de 0.45. El farol de la heroína (92 px) siempre encendido. Igual que `runtime.js`. |
 | Trol | El trol élite del Puente del Trol es un enemigo élite normal en F2: barra con nombre, más vida, golpe pesado avisado. Muere y suelta mejor botín. |
 | Tablets | iPad y Android. Pruebas en los dos de verdad antes de cerrar F1 y F5. |
@@ -47,7 +51,7 @@ Lo bueno primero: el kit está sólido. Las 467 rutas del manifest existen, toda
 
 **Datos que no cuadran con el prompt original** (ya resueltos en este plan):
 
-- Hay 5 cofres secretos en el mapa, no 6: `tras_la_cascada`, `anillo_hadas`, `claro_escondido`, `pasto_alto` y `estanque_alto`. El sexto secreto es la zona Claro Escondido (`secreto: true`). El contador de secretos cuenta 6: 5 cofres y 1 zona.
+- Hay 5 cofres secretos en el mapa, no 6: `tras_la_cascada`, `anillo_hadas`, `claro_escondido`, `pasto_alto` y `estanque_alto`. El sexto secreto es la zona Claro Escondido (`secreto: true`). Hoy el contador de secretos da 6: 5 cofres y 1 zona. El total siempre se calcula del mapa: cofres con `secreto` más zonas con `secreto`.
 - El agua anima a 220 ms, no 260.
 - El mapa trae un trol élite y el prompt no lo listaba. Queda como élite en F2.
 - Los nombres de partículas de las zonas vienen en plural y no coinciden con las llaves del manifest. Además `fuegos_fatuos` y `murcielagos` son criaturas, no partículas. Tabla de traducción en la sección 3.
@@ -174,13 +178,13 @@ Todo esto replica `runtime.js` y lo mejora:
 - **Ojos entre arbustos:** brillan con alfa `0.35 + oscuridad` y parpadean.
 - **Luces:** cada objeto con `luz` borra la oscuridad con `luz.png` a `radius * 2 / 128` de escala y suma su resplandor de color en modo ADD a radio x 0.7 con alfa `0.22 + oscuridad x 0.25`.
 - **Ambiente sonoro:** un loop por zona (`ambiente_<zona.ambiente>`) a 0.55 y los demás a 0, fundido de 1.2 s. Música `musica_<zona.musica>` aparte, fundido de 2 s.
-- **Banner de descubrimiento:** la primera vez que entra a una zona con `descubrir`: "Descubriste" en `fuente_ui` x2 teñida `#ffd27a` y el nombre en `fuente_titulo` x2, aparece en 0.9 s, se queda 3.2 s, sale en 0.9 s. Para zonas con `secreto`: `fuente_titulo_plata` y sonido distinto. Contador en el HUD: zonas descubiertas de 13 y secretos de 6.
+- **Banner de descubrimiento:** la primera vez que entra a una zona con `descubrir`: "Descubriste" en `fuente_ui` x2 teñida `#ffd27a` y el nombre en `fuente_titulo` x2, aparece en 0.9 s, se queda 3.2 s, sale en 0.9 s. Para zonas con `secreto`: `fuente_titulo_plata` y sonido distinto. Contador en el HUD: zonas descubiertas y secretos encontrados sobre el total que se cuenta del mapa (hoy 13 zonas y 6 secretos).
 - **Cámara:** sigue con lerp 0.12 y se adelanta 40 px hacia donde camina. Sin salirse del mapa. La primera vez de cada perfil hay paneo de presentación (F1b).
 
 ### 2.6 Postales y criterio de calidad
 
 - Las postales salen de la capa `postales` del mapa, no de una lista fija.
-- Playwright en vista tablet con `?test=1&seed=1&postal=1`: pone a la heroína en el punto más cercano caminable a la postal, cámara centrada exacta en el punto, Thor al lado, espera 3 s para que las partículas se asienten y guarda `docs/capturas/<fase>/<postal>.png` a 960 x 540.
+- Playwright en el proyecto `postales` (ventana 960 x 540 con dpr 1, que da zoom 1 y vista lógica de 960 x 540, el mismo encuadre de las postales del kit) con `?test=1&seed=1&postal=1`: pone a la heroína en el punto más cercano caminable a la postal, cámara centrada exacta en el punto, Thor al lado, espera 3 s para que las partículas se asienten y guarda `docs/capturas/<fase>/<postal>.png`. Además guarda la misma postal en la vista tablet como `<postal>_tablet.png` para ver cómo se ve de verdad en el iPad.
 - `scripts/comparar-postales.ts` arma `docs/capturas/comparar.html` con cada postal del kit al lado de la del juego para que Rick las revise.
 - Criterio: cada postal del juego tiene que verse igual o mejor que la del kit. Rick decide. Si una no pasa, se anota qué falla en "Notas para después" y se arregla antes de cerrar la fase.
 - Rendimiento: con `?test=1` hay medidor de fps en pantalla. Meta: 60 fps en el iPad y el Android reales con calidad alta y todo prendido. En Playwright el fps de Chromium sin GPU no sirve como medida, así que el e2e solo verifica límites que sí son deterministas: decorados activos menos de 450, partículas dentro del límite de la calidad, luces dentro del límite.
@@ -257,9 +261,17 @@ gg-abyss/
 
 ### 3.2 Render
 
-- `width: 960`, `height: 540`, `pixelArt: true`, `roundPixels: true`, `Scale.FIT`, `autoCenter: CENTER_BOTH`, fondo `#070a12`.
-- Las fuentes se escalan solo x1, x2 o x3. Nunca 1.5.
-- Oscuridad: una `RenderTexture` de 960 x 540 pegada a la pantalla. Cada cuadro: limpiar, llenar con `rgb(3,6,18)` y alfa = oscuridad final, y borrar con `luz.png` en cada luz visible (stamp con modo ERASE). Escala de cada luz: `radio * 2 / 128` por el factor de parpadeo o latido de `runtime.js`.
+- Escala entera, la misma regla del visor. Una función pura `calcularEscala(anchoCss, altoCss, dpr)` en `src/logic/escala.ts`, con tests:
+  - `dpr = window.devicePixelRatio || 1`
+  - `Wp = round(anchoCss * dpr)`, `Hp = round(altoCss * dpr)`: pixeles físicos
+  - `zoom = max(1, floor(Hp / 400))`
+  - vista lógica = `Wp / zoom` x `Hp / zoom`. Siempre al menos 400 de alto si la pantalla lo permite, y cada pixel del arte es un cuadrado de `zoom` x `zoom` pixeles físicos
+  - Ejemplos: iPad 1180 x 820 con dpr 2 da zoom 4 y vista 590 x 410. Escritorio 1280 x 720 con dpr 1 da zoom 1 y vista 1280 x 720. 960 x 540 con dpr 1 da zoom 1 y vista 960 x 540
+- Phaser con `Scale.RESIZE`, `pixelArt: true`, `roundPixels: true`, fondo `#070a12`. El canvas va en pixeles físicos (`Wp` x `Hp`) y por CSS ocupa la ventana. Las cámaras usan `setZoom(zoom)` entero. Se recalcula en cada `resize` y al girar la tablet. Si `Scale.RESIZE` no deja manejar el canvas en pixeles físicos, se usa `Scale.NONE` con el mismo cálculo a mano y se dice en el resumen.
+- Nada se posiciona con coordenadas fijas de 960 x 540. El HUD se ancla a los bordes de la vista lógica (orbe de vida abajo a la izquierda, orbe de maná abajo a la derecha, cinturón abajo al centro, habilidades arriba del orbe de maná, contadores y pausa arriba) con márgenes de `config/juego.ts`, y se reacomoda en cada `resize`. Los paneles se centran con la vista.
+- El inventario (280 x 410) va a x1. Si la vista lógica mide menos de 426 de alto (410 más 8 de margen arriba y abajo), la escena `Inventario` usa su propia cámara con un zoom entero menos, así cabe sin escalar en fracciones. Pasa en el iPad (410 de alto).
+- Las fuentes se escalan solo x1, x2 o x3 sobre la vista lógica. Nunca 1.5.
+- Oscuridad: una `RenderTexture` del tamaño de la vista lógica pegada a la pantalla, que se rehace en cada `resize`. Cada cuadro: limpiar, llenar con `rgb(3,6,18)` y alfa = oscuridad final, y borrar con `luz.png` en cada luz visible (stamp con modo ERASE). Escala de cada luz: `radio * 2 / 128` por el factor de parpadeo o latido de `runtime.js`.
 - Resplandor: imágenes `luz.png` teñidas, modo ADD, en el mundo, profundidad 7100.
 - Tinte y viñeta: un postFX propio (`AtmosferaFX`, un solo shader) con el color de zona en soft light al 35 % y la viñeta. En calidad baja no hay postFX: la viñeta pasa a ser una imagen de degradado radial (textura técnica) y el tinte un rectángulo en modo MULTIPLY al 12 %.
 - Calidad alta o baja en ajustes. Baja: 50 partículas, 20 luces, una sola capa de bruma, sin nubes, sin postFX. Alta: 120 partículas, 40 luces. Por defecto alta, y si el fps promedio de los primeros 10 s baja de 45 pasa sola a baja y avisa con un ícono.
@@ -343,7 +355,8 @@ interface Partida {
 ### 3.7 Pruebas
 
 - Vitest para `src/logic/` y para el kit (lee los archivos de `public/assets/kit` con `fs`).
-- Playwright, dos proyectos: `escritorio` 1280 x 720 con mouse y `tablet` 1180 x 820 con `hasTouch: true` e `isMobile: true`. `webServer` con `vite preview` en el puerto 4173.
+- Playwright, tres proyectos: `escritorio` 1280 x 720 con dpr 1 y mouse, `tablet` 1180 x 820 con `deviceScaleFactor: 2`, `hasTouch: true` e `isMobile: true` (zoom 4, vista 590 x 410), y `postales` 960 x 540 con dpr 1 solo para las capturas. `webServer` con `vite preview` en el puerto 4173.
+- Los tests del mapa y del kit nunca usan cantidades fijas: leen el mapa y exigen al menos postales >= 8, zonas >= 13, cofres secretos >= 5, puntos de guardado >= 3.
 - Si la versión de Chromium no cuadra con la de Playwright, lanzar con `executablePath: '/opt/pw-browsers/chromium'` cuando exista esa ruta. Nunca `playwright install` en la nube.
 
 ---
@@ -464,18 +477,20 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 8. `src/config/juego.ts` y `src/config/balance.ts` con todo lo de la sección 4.
 9. Escena `Boot` con el aviso de kit faltante. Escena `SalaKit` (`?kit=1`): cada personaje del manifest caminando en las 8 direcciones con un selector de animación, todos los fx en bucle, objetos, criaturas y partículas animados, las 3 fuentes con el texto "¡Ñandú, Thor! ¿Qué pasó? áéíóú", y una lista de todos los audios con botón para oír cada uno. Todo leído del manifest.
 10. `scripts/verificar-kit.ts`: todas las rutas existen, hojas con el tamaño exacto, nada pasa de 4096, cada objeto del mapa existe en `manifest.mundo.objetos`, cada criatura y partícula de zona existe con la traducción.
-11. `src/test/ganchos.ts` con `escena()`, `fps()` y `semilla()`.
+11. `src/logic/escala.ts` y el manejo de `resize` de 3.2 desde ya. La pantalla de Boot y la sala del kit se acomodan a la vista lógica, sin coordenadas de 960 x 540.
+12. `src/test/ganchos.ts` con `escena()`, `fps()`, `semilla()` y `escala()` (devuelve zoom y vista lógica).
 
 **Aceptación:**
 
 - `npm run dev` abre una pantalla negra con "GG Abyss" en `fuente_titulo` y no hay errores en la consola.
 - Si se renombra `public/assets/kit/manifest.json`, sale el aviso "No encuentro el kit. Corre npm run kit." (se prueba en e2e interceptando la petición, no tocando el kit).
-- `?kit=1` muestra los 15 personajes del manifest, los 66 fx, y suena cada audio al tocarlo.
+- `?kit=1` muestra todos los personajes y fx del manifest (hoy 15 y 66), y suena cada audio al tocarlo.
 - `npm run verificar-kit` pasa.
+- En la vista tablet `__ABYSS__.escala()` da zoom 4 y vista 590 x 410, y al cambiar el tamaño de la ventana el zoom se recalcula y sigue entero.
 
-**Tests:** kit (rutas, tamaños, 4096, objetos del mapa en el manifest, traducción de partículas sin huecos), `azar` (misma semilla, misma secuencia), `direccion` (8 vectores dan las 8 direcciones del manifest en su orden), `mapa` (120 x 90, 3 puntos de guardado, 5 cofres secretos, 13 zonas, 8 postales).
+**Tests:** kit (rutas, tamaños, 4096, objetos del mapa en el manifest, traducción de partículas sin huecos), `azar` (misma semilla, misma secuencia), `direccion` (8 vectores dan las 8 direcciones del manifest en su orden), `mapa` (ancho y alto iguales a los del manifest, y al menos 3 puntos de guardado, 5 cofres secretos, 13 zonas y 8 postales, leídos del mapa, nunca cantidades exactas), `escala` (los 3 ejemplos de 3.2, alto lógico siempre >= 400 cuando `Hp >= 400`, zoom siempre entero, pantalla de menos de 400 de alto da zoom 1).
 
-**E2E:** humo en las dos vistas: carga, escena Boot termina, sin errores. Kit faltante. Sala del kit con 15 personajes.
+**E2E:** humo en escritorio y tablet: carga, escena Boot termina, sin errores, zoom esperado. Kit faltante. Sala del kit con todos los personajes del manifest (hoy 15).
 
 **Postales:** ninguna.
 
@@ -499,20 +514,21 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 
 **Aceptación:**
 
-- Desde el inicio se llega caminando, solo tocando el piso, a las 13 zonas.
+- Desde el inicio se llega caminando, solo tocando el piso, a todas las zonas del mapa.
 - Al entrar a cada zona por primera vez sale su banner, una sola vez.
 - En el Bosque Profundo la oscuridad llega a 0.55 en 1 a 2 s y el farol de la heroína ilumina alrededor. Con `modoPeque` no pasa de 0.45.
 - Los árboles se mecen desfasados, los hechizados despiertan al acercarse, los cuervos huyen, la bruma corre, las nubes cruzan, el agua se mueve.
 - Las copas se vuelven transparentes con la heroína detrás. El pasto alto se aparta.
 - Thor sigue sin tapar a la heroína y nunca se queda trabado más de 2 s (si se traba, se teletransporta detrás de ella fuera de cámara).
 - Al cambiar de zona el ambiente sonoro cambia con fundido.
-- Las 8 postales del juego están en `docs/capturas/f1a/` y en `comparar.html`.
+- Todas las postales de la capa `postales` (al menos 8) están en `docs/capturas/f1a/` y en `comparar.html`.
+- El HUD queda pegado a los bordes en escritorio y en tablet, sin nada cortado ni flotando en el medio.
 
-**Tests:** A* (camino más corto conocido, no corta esquinas, destino bloqueado va al caminable más cercano, todas las zonas alcanzables desde `jugador_inicio`), movimiento (desliza contra pared), zonas (gana la más chica, oscuridad final con y sin modo peque, tope 0.6), traducción de partículas.
+**Tests:** A* (camino más corto conocido, no corta esquinas, destino bloqueado va al caminable más cercano, todas las zonas del mapa alcanzables desde `jugador_inicio`), movimiento (desliza contra pared), zonas (gana la más chica, oscuridad final con y sin modo peque, tope 0.6), traducción de partículas.
 
-**E2E:** caminar con toques de un punto a otro y llegar, teclado mueve en escritorio, mantener presionado mueve en tablet, `teleport` a cada zona cambia `zona()`, conteos dentro de límites en las 8 postales, postales.
+**E2E:** caminar con toques de un punto a otro y llegar, teclado mueve en escritorio, mantener presionado mueve en tablet, `teleport` a cada zona cambia `zona()`, conteos dentro de límites en cada postal del mapa, postales.
 
-**Postales:** las 8 de la capa `postales`.
+**Postales:** todas las de la capa `postales`.
 
 **Demo con las niñas:** todavía no. Rick la prueba en el iPad y en el Android y revisa `comparar.html`. Si una postal no está igual o mejor, no se pasa a F1b.
 
@@ -522,8 +538,8 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 
 **Tareas:**
 
-1. Escena `Titulo`: fondo con la postal `arena_del_minotauro` (la cueva es la entrada al abismo), encima la bruma, oscuridad 0.45 con pozos de luz en la cueva y las antorchas de esa vista (calculadas desde los objetos del mapa dentro de ese encuadre), brasas subiendo. "GG Abyss" en `fuente_titulo` x3 y "Toca para empezar" en `fuente_ui` x2 latiendo. Suena `ambiente_magia`. El toque desbloquea el audio y pasa a la selección.
-2. Escena `SeleccionJugador`: una tarjeta por cada personaje tipo `heroe` del manifest, en el orden `sophie`, `alana`, `rick`, `steph` y luego las del estudio. Cada tarjeta: `panel` 9-slice, la heroína en `idle` a escala x3 girando por las 8 direcciones cada 1.2 s, apodo en `fuente_titulo`, ícono de su arma del atlas `iconos` (`bow_1`, `wand`, `sword_1`, `staff` o el que corresponda por `base.icon`) y, si tiene partida, nivel y oro con `icono_oro`. Tocar: la tarjeta salta, aura `aura_nivel`, suena `subir_nivel`, Thor entra corriendo con `run` y se sienta al lado. Botón grande "Jugar" o "Continuar" con ícono. Borrar perfil: mantener 3 s sobre el ícono `icono_cerrar` con un anillo que se llena.
+1. Escena `Titulo`: fondo con la postal `arena_del_minotauro` a x1 centrada en la cueva y recortada a la vista lógica (la cueva es la entrada al abismo), encima la bruma, oscuridad 0.45 con pozos de luz en la cueva y las antorchas de esa vista (calculadas desde los objetos del mapa dentro de ese encuadre), brasas subiendo. "GG Abyss" en `fuente_titulo` x3 y "Toca para empezar" en `fuente_ui` x2 latiendo. Suena `ambiente_magia`. El toque desbloquea el audio y pasa a la selección.
+2. Escena `SeleccionJugador`: una tarjeta por cada personaje tipo `heroe` del manifest, en el orden `sophie`, `alana`, `rick`, `steph` y luego las del estudio. Las tarjetas se reparten a lo ancho de la vista lógica, en una fila si caben y si no en dos. Cada tarjeta: `panel` 9-slice, la heroína en `idle` a x2 (x3 si la vista lógica mide más de 720 de ancho) girando por las 8 direcciones cada 1.2 s, apodo en `fuente_titulo`, ícono de su arma del atlas `iconos` (`bow_1`, `wand`, `sword_1`, `staff` o el que corresponda por `base.icon`) y, si tiene partida, nivel y oro con `icono_oro`. Tocar: la tarjeta salta, aura `aura_nivel`, suena `subir_nivel`, Thor entra corriendo con `run` y se sienta al lado. Botón grande "Jugar" o "Continuar" con ícono. Borrar perfil: mantener 3 s sobre el ícono `icono_cerrar` con un anillo que se llena.
 3. `src/logic/perfiles.ts` y `guardado.ts` con migración y autoguardado.
 4. Paneo de presentación la primera vez de cada perfil: cámara arranca en la arena (1.5 s quieta), viaja a la postal `ruinas_y_estatua` y luego a `llegada` en 6 s con suavizado, el portal azul hace `abrir` y `girar`, la heroína sale del portal y Thor detrás. Se salta con un toque.
 5. Entidades: cofres (`cofre_<nivel>_quieto` con brillo y `cofre_<nivel>_abrir`, sale una moneda `moneda_gira` que salta y suena `cofre_abrir` y `moneda`). Todos los cofres se abren menos el `tras_jefe`, que no aparece hasta F4. Los secretos suman al contador con su banner plateado "¡Secreto!". Carteles: tocar abre un panel con el ícono grande y el texto en `fuente_ui` x2. Fogatas: tocar o pasar a menos de 48 px guarda, suena `curar`, fx `curar` sobre la heroína, cartelito "Guardado" con ícono. Portal de llegada animado.
@@ -539,13 +555,13 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 - Alana llega a jugar sin leer: todo botón tiene ícono.
 - El paneo sale solo la primera vez.
 
-**Tests:** guardado (crear, leer, migrar de una versión 0 de prueba, JSON roto va a copia), perfiles (lee heroínas del manifest, apodos, modo peque por defecto), descubrimiento (contadores 13 y 6, secretos no se cuentan dos veces).
+**Tests:** guardado (crear, leer, migrar de una versión 0 de prueba, JSON roto va a copia), perfiles (lee heroínas del manifest, apodos, modo peque por defecto), descubrimiento (los totales salen del mapa, con un mapa de prueba chico, y los secretos no se cuentan dos veces).
 
 **E2E:** flujo completo en tablet: título, tocar, elegir Alana, presentación saltada, caminar a un cofre, abrirlo, recargar la página, continuar, el cofre sigue abierto. Pausa cambia la noche y no pasa de 0.25 en Alana. Las postales de nuevo con las entidades vivas.
 
-**Postales:** las 8, en `docs/capturas/f1b/`, más `titulo.png` y `seleccion.png`.
+**Postales:** todas las del mapa en `docs/capturas/f1b/`, más `titulo.png` y `seleccion.png` en escritorio y en tablet.
 
-**Demo con las niñas:** cada una elige su tarjeta, sale del portal con Thor, busca los cofres secretos y descubre las 13 zonas. Pregunta para Sophie: "¿cuál zona te gustó más?". Para Alana: ver si encuentra sola el Anillo de las Hadas siguiendo las luces.
+**Demo con las niñas:** cada una elige su tarjeta, sale del portal con Thor, busca los cofres secretos y descubre todas las zonas. Pregunta para Sophie: "¿cuál zona te gustó más?". Para Alana: ver si encuentra sola el Anillo de las Hadas siguiendo las luces.
 
 ### F2. Combate
 
@@ -589,7 +605,7 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 1. `src/logic/botin.ts` e `inventario.ts` con las tablas de la sección 4.
 2. Drops: el ícono sale con tween de rebote (o `cae_<id>` si existe), `haz_<rareza>` del color de su rareza, suena `recoger` al tomarlo, `legendario` si es set o legendario. Oro con `oro_<tamaño>` según cantidad, Thor lo recoge.
 3. Cofres con botín real. Rompibles con `romper` y sonido `romper`.
-4. Escena `Inventario` (I o `icono_bolsa`): `ui/inventario.png` centrado a x1 (410 px de alto caben en 540, x2 no cabe), íconos del atlas de 32, equipo en los 11 casilleros del `layout` más el retrato, bolsa de 7 x 4, oro. Tocar un objeto de la bolsa lo equipa (o lo manda al cinturón si es poción). Tocar uno equipado lo devuelve a la bolsa. Mantener presionado muestra `tooltip` con nombre en el color de su rareza, stats y la comparación con `+` verde o `-` rojo de `numeros.png`.
+4. Escena `Inventario` (I o `icono_bolsa`): `ui/inventario.png` centrado a x1, con su propia cámara de un zoom entero menos cuando la vista lógica mide menos de 426 de alto (ver 3.2), íconos del atlas de 32, equipo en los 11 casilleros del `layout` más el retrato, bolsa de 7 x 4, oro. Tocar un objeto de la bolsa lo equipa (o lo manda al cinturón si es poción). Tocar uno equipado lo devuelve a la bolsa. Mantener presionado muestra `tooltip` con nombre en el color de su rareza, stats y la comparación con `+` verde o `-` rojo de `numeros.png`.
 5. Thor: el casillero `mascota` acepta `pet_armor_N` y cambia su sprite a `thor_armaduraN`.
 6. Cinturón: 4 casillas, tocar toma la poción. Las pociones del suelo van directo al cinturón si hay lugar.
 7. Guardado completo de equipo, bolsa, cinturón y rompibles.
@@ -616,7 +632,7 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 **Tareas:**
 
 1. `src/logic/jefe.ts`: máquina de estados con fases y temporizadores, sin Phaser.
-2. Entrar a la arena (radio 192 de `arena_jefe`): las 8 `piedra_arena` hacen `encendida` una tras otra, suena `musica_jefe` y `jefe_rugido`, sale el `estandarte` con "Minotauro del Bosque" y `barra_jefe` arriba. La salida de la arena se cierra mientras dure la pelea (colisión temporal en el borde).
+2. Entrar a la arena (radio 192 de `arena_jefe`): todas las `piedra_arena` de la arena hacen `encendida` una tras otra, suena `musica_jefe` y `jefe_rugido`, sale el `estandarte` con "Minotauro del Bosque" y `barra_jefe` arriba. La salida de la arena se cierra mientras dure la pelea (colisión temporal en el borde).
 3. Fase 1, 100 % a 60 %: golpe (`attack`, 10 a 14), golpe fuerte (`attack_heavy` con `aviso_jefe` en su frente, 14 a 18) y carga en línea (`charge`, aviso en línea, 16 a 22, choca con el borde y queda aturdido 1.5 s).
 4. Fase 2, 60 % a 0: pisotón (`attack_heavy` con `aviso_jefe` que se llena, radio 100, 14 a 18, `jefe_pisoton` y sacudida de cámara), salto a la posición de la heroína (`leap` con aviso que se llena en el destino, 18 a 24, radio 80) y grito (`warcry` con `grito_de_guerra`, llama 2 ratas, máximo 4 ratas vivas).
 5. Todo ataque grande avisa 1.2 s antes, 1.8 en modo peque. El minotauro no se cura nunca y su vida queda guardada si la heroína cae (al volver sigue donde quedó).
@@ -644,7 +660,7 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 
 **Tareas:**
 
-1. Medir en el iPad y el Android con `?test=1`. Ajustar límites de calidad hasta 60 fps en alta, o dejar baja por defecto en el aparato que no llegue y decirlo.
+1. Medir en el iPad y el Android con `?test=1`, con el zoom entero que dé cada uno. Ajustar límites de calidad hasta 60 fps en alta, o dejar baja por defecto en el aparato que no llegue y decirlo.
 2. PWA: `manifest.webmanifest` (`display: fullscreen`, `orientation: landscape`, íconos del kit), service worker que guarda en caché el juego y el kit al instalar. Botón de pantalla completa en Android y PC. En iPad, instrucciones con ícono para "Agregar a inicio".
 3. Aviso de girar la tablet.
 4. Audio en iOS: verificar que el primer toque lo desbloquea, que vuelve al regresar de otra app (`visibilitychange`) y que los ambientes no se cortan en el bucle.
@@ -661,7 +677,7 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 
 **Tests:** los de siempre. E2E: el service worker queda registrado en build de producción, modo sin red recarga bien.
 
-**Postales:** las 8 finales en `docs/capturas/f5/`.
+**Postales:** todas las del mapa, finales, en `docs/capturas/f5/`.
 
 **Demo con las niñas:** la app en su tablet, desde el ícono, sin Rick al lado.
 
@@ -672,7 +688,7 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 | Riesgo | Mitigación |
 |---|---|
 | Rendimiento de la atmósfera en tablet | Decorados por celdas con pool. Un solo reloj para el viento. Una RenderTexture para la oscuridad. Límites de partículas y luces por calidad. Calidad baja automática si el fps cae. Medir en aparatos reales desde F1a, no en F5 |
-| Escala no entera | 960 x 540 en una pantalla de 1180 x 820 da 1.23x y algunos pixeles salen más anchos. Se acepta para F1a. Si en la tablet se ve feo, en F5 se prueba una resolución base que dé escala entera en cada aparato (como el visor) y se dice el cambio |
+| Dibujar a resolución física | Con zoom entero el canvas va en pixeles físicos (2360 x 1640 en el iPad) y la bruma, la oscuridad y el postFX cubren toda la pantalla. La oscuridad se arma a tamaño de vista lógica. En calidad baja se usa dpr 1 con `image-rendering: pixelated` por CSS: el encuadre queda casi igual y se pinta 4 veces menos |
 | Audio en iOS | Desbloqueo con el toque de "Toca para empezar". Reanudar el contexto en `visibilitychange`. WAV de 22 kHz que Safari decodifica sin problema. Probado en el iPad en F1b y F5 |
 | Memoria de texturas en iPad | 12 trozos de suelo de 960 x 960 son unos 44 MB en la GPU. Solo se cargan los objetos del mapa. Combate, botín y jefe se cargan por fase. Si Safari se cae, los trozos lejanos se descargan por distancia |
 | Tamaño del kit (23 MB) | Carga en dos grupos con barra. La PWA guarda todo después de la primera vez. Los WAV no se convierten porque sería tocar el kit |
@@ -706,6 +722,9 @@ Vas a ejecutar la FASE F0 (Base) de PLAN.md en este repo (gg-abyss). Lee primero
 Reglas:
 - Solo la fase F0. Lo que veas de otras fases va a PLAN.md bajo "Notas para después".
 - Antes de codear, explica en 5 a 10 líneas cómo la vas a hacer. Si el plan no cuadra con el código o el kit real, dilo y propone el ajuste mínimo.
+- Arranca con el kit que está hoy en public/assets/kit. F0 no depende de nada de ASSETS_PENDIENTES.md.
+- Escala entera desde ya, como dice la sección 3.2 de PLAN.md: zoom = max(1, floor(Hp / 400)) con Hp en pixeles físicos, cámara con zoom entero, nada fijo en 960 x 540.
+- Los tests del mapa y del kit nunca usan cantidades exactas: leen el mapa y exigen "al menos".
 - Todo el arte y el audio sale del kit de PixelForja (public/assets/kit, vía manifest.json). No dibujes sprites en código, no bajes assets, no edites public/assets/kit ni tools/pixel_forja. Solo se permiten texturas técnicas: degradados para luces, ruido y un pixel para partículas. Si falta algo, anótalo en ASSETS_PENDIENTES.md con especificación exacta y usa el asset más parecido del kit.
 - Todo texto en pantalla usa las fuentes bitmap del kit (manifest.ui.fuentes). Nada de fuentes web.
 - La lógica va en src/logic/ con tests de Vitest. Phaser en src/scenes/ y src/game/. Atmósfera en src/fx/. Números en src/config/balance.ts.
@@ -731,7 +750,7 @@ Reglas:
 - Oscuridad final = clamp(noche + zona.oscuridad, 0, 0.6), noche 0.15 por defecto, tope 0.45 en modo peque. El farol de la heroína siempre encendido.
 - Todo texto con las fuentes bitmap del kit, escala entera.
 - La lógica va en src/logic/ con tests de Vitest. Phaser en src/scenes/ y src/game/. Atmósfera en src/fx/ con interruptor de calidad alta y baja.
-- El mundo tiene que verse increíble: respeta la sección 2 de PLAN.md y captura las 8 postales en docs/capturas/f1a/. Corre scripts/comparar-postales.ts y mira tú mismo cada par antes de cerrar. Si una postal del juego se ve peor que la del kit, arréglala o dilo con la razón.
+- El mundo tiene que verse increíble: respeta la sección 2 de PLAN.md y captura todas las postales de la capa postales del mapa en docs/capturas/f1a/. Corre scripts/comparar-postales.ts y mira tú mismo cada par antes de cerrar. Si una postal del juego se ve peor que la del kit, arréglala o dilo con la razón.
 - Commit por cada tarea que funcione, con mensaje claro en español. Al final: npm run typecheck, npm test, npm run build y npm run e2e en verde, y push.
 - Cierra con un resumen corto:
   - qué se hizo

@@ -14,13 +14,15 @@ Juego tipo Diablo de la familia GG (Sophie 8, Alana 5). Cada jefe abre un portal
 - Sin IA y sin red. La partida vive en localStorage (ggabyss:v1:perfil:<id>).
 - Para Alana todo con ícono y sonido. Textos en español.
 - El mundo tiene que verse increíble: dirección de arte en PLAN.md, postales en docs/capturas/.
-- Créditos LPC visibles en el juego. Repo privado. Ninguna foto de la familia entra al repo.
+- Créditos LPC visibles en el juego. Repos privados (gg-abyss y pixel_forja). Ninguna foto de la familia entra al repo.
 
 ## Código
 - src/logic/: reglas puras sin Phaser, todo con tests.
 - src/kit/: tipos y cargador del manifest. Lo que esté en el manifest se carga solo.
 - src/scenes/, src/game/: Phaser. src/fx/: atmósfera con interruptor de calidad.
 - Balance en un solo archivo de config.
+- Pixeles perfectos: zoom = max(1, floor(Hp / 400)) con Hp en pixeles físicos, cámara con zoom entero, vista lógica = Wp/zoom x Hp/zoom (PLAN.md 3.2). Nada de 960x540 fijo ni Scale.FIT. El HUD se ancla a los bordes.
+- Tests del mapa y del kit sin cantidades fijas: se lee del mapa y se exige "al menos". El taller agrega postales, zonas y cofres.
 
 ## Comandos
 - npm run dev | build | typecheck | test | e2e | kit

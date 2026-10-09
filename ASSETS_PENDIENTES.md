@@ -6,6 +6,18 @@ Formato de cada pieza: nombre en el manifest, tamaño en px, animaciones con cua
 
 Cuando el taller entregue algo: `git submodule update --remote tools/pixel_forja && npm run kit`, se marca aquí como hecho con la fecha y el juego lo toma solo desde el manifest.
 
+## En el taller ahora
+
+PixelForja ya está haciendo estas piezas. No hay que volver a pedirlas. F0 no depende de ninguna y arranca con el kit actual.
+
+- 1. Íconos de cartel
+- 2. Íconos del HUD y de pausa
+- 3. Sonidos `descubrir` y `secreto`
+- 4. Sonidos `elegir` y `guardado`
+- 5. Botín de nivel bajo
+- 6. Campamento de fogata
+- 13. Menos piedritas en los caminos y las 5 postales nuevas (el resto de los cambios al mapa sigue pendiente)
+
 ---
 
 ## Imprescindible para F1
