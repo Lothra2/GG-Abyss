@@ -69,7 +69,7 @@ test.describe('Del título al mundo', () => {
     await elegir(page, info, 'sophie')
     await gancho(page, 'saltarPresentacion')
     const cofre = (await objetivos(page, 'cofre'))[0]!
-    await gancho(page, 'teleport', cofre.parada.x, cofre.parada.y + 40)
+    await gancho(page, 'teleport', cofre.parada.x, cofre.parada.y)
     // se toca el cofre en el mundo, la heroína camina y lo abre
     await gancho(page, 'usarObjetivo', cofre.llave)
     await avanzar(page, 6, false)
@@ -165,7 +165,7 @@ test.describe('Cosas del mundo', () => {
     await gancho(page, 'usarObjetivo', ab.llave)
     await avanzar(page, 3, true)
     await expect
-      .poll(async () => (await gancho<{ anim: string }[]>(page, 'decoInfo', 'abuelo_roble')).some((d) => /sonreir/.test(d.anim)), { timeout: 20_000, intervals: [100] })
+      .poll(async () => (await gancho<{ anim: string }[]>(page, 'decoInfo', 'abuelo_roble_v3')).some((d) => /sonreir/.test(d.anim)), { timeout: 20_000, intervals: [100] })
       .toBe(true)
   })
 })

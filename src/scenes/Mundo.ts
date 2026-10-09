@@ -13,7 +13,7 @@ import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
 import { fx } from '../logic/azar'
-import { almacenDelNavegador, borrarPartida, guardarPartida, partidaNueva, type Almacen, type Partida } from '../logic/guardado'
+import { almacenDelNavegador, borrarPartida, cargarOCrear, guardarPartida, type Almacen, type Partida } from '../logic/guardado'
 import { MundoVista } from '../game/MundoVista'
 import { Decos, type Luz } from '../game/Decos'
 import { Heroina } from '../game/Heroina'
@@ -139,7 +139,7 @@ export class Mundo extends Phaser.Scene {
     const id = this.registry.get('heroeId') as string
     this.alm = (this.registry.get('almacen') as Almacen | undefined) ?? almacenDelNavegador()
     this.registry.set('almacen', this.alm)
-    this.partida = (this.registry.get('partida') as Partida | undefined) ?? partidaNueva(id)
+    this.partida = (this.registry.get('partida') as Partida | undefined) ?? cargarOCrear(this.alm, id).partida
     this.registry.set('partida', this.partida)
     this.descub = { zonas: this.partida.zonas, secretos: this.partida.secretos }
     this.tJugado = this.partida.tiempoJugado ?? 0

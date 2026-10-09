@@ -80,12 +80,24 @@ export function crearBoton(e: Phaser.Scene, o: OpcionesBoton): Boton {
   c.setSize(w, h)
 
   let activo = true
+  // el botón se hunde 1 px al presionarlo: se resta al soltar, así acepta que lo reubiquen (setPosition) en cualquier momento
+  let hundido = false
+  const subir = () => {
+    if (hundido) c.y -= 1
+    hundido = false
+  }
   zona.on('pointerover', () => activo && fondo.setFrame(1))
-  zona.on('pointerout', () => { fondo.setFrame(0); c.y = o.y })
-  zona.on('pointerdown', (p: Phaser.Input.Pointer) => { Bloqueo.tomar(p.id); if (!activo) return; fondo.setFrame(2); c.y = o.y + 1 })
+  zona.on('pointerout', () => { fondo.setFrame(0); subir() })
+  zona.on('pointerdown', (p: Phaser.Input.Pointer) => {
+    Bloqueo.tomar(p.id)
+    if (!activo) return
+    fondo.setFrame(2)
+    if (!hundido) c.y += 1
+    hundido = true
+  })
   zona.on('pointerup', () => {
     fondo.setFrame(0)
-    c.y = o.y
+    subir()
     if (!activo) return
     if (o.sonido && e.cache.audio.exists(o.sonido)) e.sound.play(o.sonido, { volume: 0.6 })
     o.alToque()
