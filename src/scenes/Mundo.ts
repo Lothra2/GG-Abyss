@@ -3,7 +3,7 @@ import type { Manifest } from '../kit/tipos'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
-import { encolarAudio, encolarBotin, encolarCriaturas, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
+import { encolarAudio, encolarBotin, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
 import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
@@ -13,6 +13,7 @@ import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
 import { fx } from '../logic/azar'
+import { statsDe } from '../logic/stats'
 import { almacenDelNavegador, borrarPartida, cargarOCrear, guardarPartida, type Almacen, type Partida } from '../logic/guardado'
 import { MundoVista } from '../game/MundoVista'
 import { Decos, type Luz } from '../game/Decos'
@@ -23,6 +24,10 @@ import { Camara } from '../game/Camara'
 import { Entrada } from '../game/Entrada'
 import { Sonido } from '../game/Sonido'
 import { Entidades, type Objetivo } from '../game/Entidades'
+import { Enemigos, type EventosEnemigos } from '../game/Enemigos'
+import { Proyectiles } from '../game/Proyectiles'
+import { Numeros } from '../game/Numeros'
+import { Combate } from '../game/Combate'
 import { Presentacion } from '../game/Presentacion'
 import { alCambiarEscala } from '../game/Pantalla'
 import { Atmosfera } from '../fx/Atmosfera'
@@ -35,12 +40,20 @@ export interface EventoDescubrimiento {
   zona?: Zona
 }
 
+/** Los efectos que usa el combate: proyectiles en sus 8 direcciones, impactos, novas, auras y escudos */
+function fxDeCombate(dirs: readonly string[]): string[] {
+  const out = ['aura_nivel', 'curar', 'escudo_de_thor', 'grito_de_guerra', 'nova_fuego', 'tajo', 'impacto_flecha', 'impacto_naturaleza', 'impacto_arcano', 'impacto_fuego', 'impacto_sagrado', 'impacto_veneno', 'onda_pisoton']
+  for (const base of ['proyectil_flecha', 'proyectil_naturaleza', 'proyectil_arcano', 'proyectil_fuego']) for (const d of dirs) out.push(`${base}_${d}`)
+  return out
+}
+
 /** Objetos del manifest que el mapa usa sin ponerlos en la capa `objetos` */
 const EXTRAS_MUNDO = ['portal_azul', 'portal_rojo', 'aviso_jefe']
 
 const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
+  'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
 ]
 
 /**
@@ -74,6 +87,10 @@ export class Mundo extends Phaser.Scene {
   private alm!: Almacen
   private entidades!: Entidades
   private presentacion: Presentacion | null = null
+  enemigos!: Enemigos
+  proyectiles!: Proyectiles
+  numeros!: Numeros
+  combate!: Combate
   private pendiente: Objetivo | null = null
   private cartelAbierto = false
   private autoguardadoEn = AUTOGUARDADO_S
@@ -126,6 +143,9 @@ export class Mundo extends Phaser.Scene {
   create(): void {
     const mapa = (this.registry.get('mapa') as MapaJuego | undefined) ?? parsearMapa(this.cache.json.get(K.mapa))
     encolarObjetosMundo(this, this.m, new Set([...mapa.decos.map((d) => d.sprite), ...EXTRAS_MUNDO]))
+    // enemigos del mapa y los efectos de combate
+    for (const t of new Set(mapa.entidades.filter((e) => e.tipo === 'enemigo').map((e) => String(e.props.enemigo ?? '')))) encolarPersonaje(this, this.m, t)
+    encolarFx(this, this.m, fxDeCombate(this.m.direcciones))
     if (this.load.list.size === 0) return this.armar()
     this.load.once(Phaser.Loader.Events.COMPLETE, () => this.armar())
     this.load.start()
@@ -193,22 +213,88 @@ export class Mundo extends Phaser.Scene {
       alAbrirCofre: () => this.guardar(),
     })
 
+    this.numeros = new Numeros(this)
+    this.proyectiles = new Proyectiles(this, m, this.grilla)
+    const evEnemigos: EventosEnemigos = {
+      golpeCuerpo: (e, rango, radio) => {
+        if (this.combate.caido) return
+        if (Math.hypot(this.heroina.x - e.x, this.heroina.y - e.y) <= radio) this.combate.golpeDeEnemigo(rango)
+      },
+      disparar: (e) => {
+        const h = this.heroina
+        const oy = e.y - e.cuerpo.alto * 0.6
+        this.proyectiles.lanzar({
+          fx: e.cfg.proyectil ?? 'proyectil_flecha',
+          impacto: e.cfg.impacto,
+          x: e.x,
+          y: oy,
+          angulo: Math.atan2(h.y - 16 - oy, h.x - e.x),
+          alcance: e.cfg.alcance + 80,
+          blancos: () => [this.combate.cuerpo],
+          alGolpear: () => this.combate.golpeDeEnemigo(e.cfg.dano),
+        })
+      },
+      golpePesado: (e, rango, radio) => {
+        if (this.combate.caido) return
+        // el aviso es una elipse en el piso: ancha y baja
+        const dx = (this.heroina.x - e.x) / radio
+        const dy = (this.heroina.y - e.y) / (radio / 2)
+        if (dx * dx + dy * dy <= 1) this.combate.golpeDeEnemigo(rango)
+      },
+      alMorir: (e) => this.combate.alMorirEnemigo(e),
+      efecto: (n, x, y) => this.proyectiles.fxEn(n, x, y),
+      sonido: (n, op) => this.sonido.efecto(n, op),
+      sacudir: () => this.cameras.main.shake(160, 0.004),
+      curo: (e) => this.numeros.mostrar(e.x, e.y - e.cuerpo.alto - 4, '+', 'verde'),
+    }
+    this.enemigos = new Enemigos(this, m, this.grilla, this.mapa.entidades, evEnemigos)
+    this.combate = new Combate({
+      escena: this,
+      m,
+      heroina: this.heroina,
+      thor: this.thor,
+      enemigos: this.enemigos,
+      proyectiles: this.proyectiles,
+      numeros: this.numeros,
+      sonido: this.sonido,
+      partida: () => this.partida,
+      puntoRescate: () => {
+        const f = this.entidades.fogatas.find((q) => q.id === this.partida.ultimaFogata)
+        const ini = entidadesDeTipo(this.mapa, 'jugador_inicio')[0]!
+        const base = f ? { x: f.e.x, y: f.e.y + 26 } : { x: ini.x, y: ini.y }
+        return this.grilla.puntoLibreCerca(base.x, base.y, 8, 120) ?? base
+      },
+      alOro: (n, x, y) => this.alOro(n, x, y),
+      bloquearEntrada: (v) => {
+        if (v) this.entrada.pausada = true
+        else if (!this.cartelAbierto && !this.presentacion?.activa) this.entrada.pausada = false
+      },
+      guardar: () => this.guardar(),
+      centrarCamara: () => this.camara.centrarEn(this.heroina.x, this.heroina.y - 12),
+    })
+
     this.entrada = new Entrada(this, {
       tocarMundo: (x, y) => this.tocarMundo(x, y),
       irA: (x, y) => {
         this.pendiente = null
+        this.combate.soltarObjetivo()
         this.irA(x, y)
       },
       seguir: (x, y) => {
         this.pendiente = null
+        this.combate.soltarObjetivo()
         if (this.heroina.seguirPunto(x, y)) this.ponerMarca(x, y)
       },
       direccion: (dx, dy) => {
-        if (dx !== 0 || dy !== 0) this.pendiente = null
+        if (dx !== 0 || dy !== 0) {
+          this.pendiente = null
+          this.combate.soltarObjetivo()
+        }
         this.heroina.caminarDir(dx, dy)
         if (dx !== 0 || dy !== 0) this.marca.setVisible(false)
       },
     })
+    this.instalarTeclasCombate()
     this.game.events.on('cartel-cerrado', this.alCerrarCartel, this)
     this.game.events.on('pausa-cerrada', this.alCerrarPausa, this)
 
@@ -243,12 +329,28 @@ export class Mundo extends Phaser.Scene {
     if (hacerPresentacion) this.guardar()
   }
 
+  /** PC: Q y E son las dos habilidades (W ya camina), 1 a 4 son las pociones del cinturón */
+  private instalarTeclasCombate(): void {
+    const kb = this.input.keyboard
+    if (!kb) return
+    const hab = (i: 0 | 1) => {
+      kb.on(i === 0 ? 'keydown-Q' : 'keydown-E', () => !this.entrada.estaPausada && this.combate.presionarHabilidad(i))
+      kb.on(i === 0 ? 'keyup-Q' : 'keyup-E', () => this.combate.soltarHabilidad(i))
+    }
+    hab(0)
+    hab(1)
+    ;(['ONE', 'TWO', 'THREE', 'FOUR'] as const).forEach((k, i) => kb.on(`keydown-${k}`, () => !this.entrada.estaPausada && this.combate.pocion(i)))
+  }
+
   private cerrar(): void {
     this.listo = false
     this.game.events.off('cartel-cerrado', this.alCerrarCartel, this)
     this.game.events.off('pausa-cerrada', this.alCerrarPausa, this)
     quitarGanchos(...NOMBRES_GANCHOS)
     this.entrada.destroy()
+    this.combate.destruir()
+    this.proyectiles.limpiar()
+    this.enemigos.destruir()
     this.sonido.detener()
     this.decos.destruir()
     this.atmosfera.destruir()
@@ -259,6 +361,10 @@ export class Mundo extends Phaser.Scene {
 
   /** Un toque: un cuervo, algo que se usa (cofre, cartel, fogata, Abuelo Roble) o el piso */
   private tocarMundo(x: number, y: number): boolean {
+    if (this.combate.tocarEnemigo(x, y)) {
+      this.pendiente = null
+      return true
+    }
     if (this.criaturas.tocar(x, y)) return true
     const o = this.entidades.golpe(x, y)
     if (!o) return false
@@ -434,6 +540,11 @@ export class Mundo extends Phaser.Scene {
     this.entrada.update()
     this.presentacion?.update(dt)
     this.heroina.update(dt)
+    if (!this.presentacion?.activa) {
+      this.enemigos.update(dt, { heroe: { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido }, modoPeque: this.combate.modoPeque, dt })
+      this.proyectiles.update(dt)
+      this.combate.update(dt)
+    }
     this.tJugado += dt
     // lo que la heroína iba a usar: cuando llega, lo usa
     const pend = this.pendiente
@@ -578,6 +689,40 @@ export class Mundo extends Phaser.Scene {
       thorInfo: () => ({ x: this.thor.x, y: this.thor.y, estado: this.thor.estado }),
       hudLayout: () => (this.scene.isActive('HUD') ? (this.scene.get('HUD') as unknown as { layout(): unknown }).layout() : null),
       noEsperar: () => this.listo,
+      combate: () => this.combate.info(),
+      danar: ((n: number) => this.combate.danar(n)) as never,
+      enemigos: () => this.enemigos.lista.map((e) => ({ id: e.id, tipo: e.tipo, x: Math.round(e.x), y: Math.round(e.y), vida: e.vida, vidaMax: e.vidaMax, vivo: e.vivo, estado: e.estado, elite: e.elite, nombre: e.nombre, casa: { x: e.ia.casaX, y: e.ia.casaY } })),
+      tocarEnemigo: ((id: number) => {
+        const e = this.enemigos.lista.find((q) => q.id === id)
+        if (!e) return false
+        this.combate.marcar(e)
+        return true
+      }) as never,
+      habilidad: ((i: 0 | 1) => this.combate.presionarHabilidad(i)) as never,
+      soltarHabilidad: ((i: 0 | 1) => this.combate.soltarHabilidad(i)) as never,
+      pocion: ((i: number) => this.combate.pocion(i)) as never,
+      darXp: ((n: number) => this.combate.darXp(n)) as never,
+      ponerNivel: ((n: number) => {
+        this.partida.nivel = n
+        this.partida.xp = 0
+        this.combate.stats = statsDe(this.combate.clase, n)
+        this.partida.vida = this.combate.stats.vidaMax
+        this.partida.mana = this.combate.stats.manaMax
+      }) as never,
+      curarTodo: () => {
+        this.partida.vida = this.combate.stats.vidaMax
+        this.partida.mana = this.combate.stats.manaMax
+      },
+      matarEnemigos: (() => {
+        for (const e of this.enemigos.vivos) this.combate.golpear(e, 0, { dano: e.vida + 1, critico: false })
+      }) as never,
+      cercaDeEnemigo: ((tipo: string, indice = 0) => {
+        const e = this.enemigos.lista.filter((q) => q.tipo === tipo && q.vivo)[indice]
+        if (!e) return null
+        const p = this.grilla.puntoLibreCerca(e.x - 70, e.y + 20, 8, 200) ?? { x: e.x - 70, y: e.y + 20 }
+        return { x: p.x, y: p.y, enemigo: e.id }
+      }) as never,
+      proyectilesActivos: () => this.proyectiles.cantidad,
       objetivos: () => this.entidades.objetivos(),
       usarObjetivo: ((llave: string) => {
         const o = this.entidades.objetivos().find((q) => q.llave === llave)

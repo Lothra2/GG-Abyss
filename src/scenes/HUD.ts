@@ -8,6 +8,7 @@ import { alCambiarEscala, escalaDe } from '../game/Pantalla'
 import { escalaQueEntra, texto } from '../game/Texto'
 import { crearBoton, type Boton } from '../game/ui/Boton'
 import { Bloqueo } from '../game/ui/Bloqueo'
+import { HudCombate } from '../game/ui/HudCombate'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import type { Mundo, EventoDescubrimiento } from './Mundo'
 
@@ -31,6 +32,11 @@ export class HUD extends Phaser.Scene {
   private bNombrePlata!: Phaser.GameObjects.BitmapText
   private fps?: Phaser.GameObjects.BitmapText
   private pausa!: Boton
+  private combate!: HudCombate
+  private bNivel!: Phaser.GameObjects.BitmapText
+  private bRescate!: Phaser.GameObjects.BitmapText
+  private alNivel = (e: { nivel: number }) => this.mostrarNivel(e.nivel)
+  private alRescate = (e: { mensaje: string }) => this.mostrarRescate(e.mensaje)
   private cartel: Phaser.GameObjects.Container | null = null
   private cartelTimer?: Phaser.Time.TimerEvent
   private cartelInfo: { icono: string; texto: string } | null = null
@@ -73,6 +79,12 @@ export class HUD extends Phaser.Scene {
     this.pausa = crearBoton(this, { x: 0, y: 0, w: 28, h: 28, icono: k('icono_pausa', 'icono_ajustes').replace('ui_', ''), origen: [1, 0], alToque: () => this.abrirPausa() })
     this.input.keyboard?.on('keydown-ESC', () => this.abrirPausa())
 
+    this.combate = new HudCombate(this, this.mundo, K.atlas('iconos', '32'))
+    this.bNivel = texto(this, 0, 0, '', 'fuente_titulo', 2, { origen: [0.5, 0.5] }).setAlpha(0).setDepth(520)
+    this.bRescate = texto(this, 0, 0, '', 'fuente_titulo', 2, { origen: [0.5, 0.5] }).setAlpha(0).setDepth(530)
+    this.game.events.on('nivel-subido', this.alNivel)
+    this.game.events.on('rescate', this.alRescate)
+
     if (params.test) this.fps = texto(this, 0, 0, '', 'fuente_ui', 1, { origen: [1, 0], tinte: 0x7affc8 })
 
     this.game.events.on('descubrimiento', this.alDescubrir)
@@ -82,7 +94,10 @@ export class HUD extends Phaser.Scene {
       this.game.events.off('descubrimiento', this.alDescubrir)
       this.game.events.off('cartel', this.alCartel)
       this.game.events.off('calidad-baja-automatica', this.alCalidad)
-      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa')
+      this.game.events.off('nivel-subido', this.alNivel)
+      this.game.events.off('rescate', this.alRescate)
+      this.combate.destruir()
+      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudNivel')
     })
     alCambiarEscala(this, () => this.acomodar())
     this.actualizarContadores()
@@ -91,6 +106,8 @@ export class HUD extends Phaser.Scene {
       hudBanner: () => ({ ...this.bannerInfo, alpha: this.banner.alpha }),
       hudCartel: () => (this.cartel ? { abierto: true, ...this.cartelInfo } : { abierto: false }),
       abrirPausa: (() => this.abrirPausa()) as never,
+      hudCombate: () => this.combate.layout(),
+      hudNivel: () => ({ texto: this.bNivel.text, alpha: this.bNivel.alpha, rescate: this.bRescate.text, alphaRescate: this.bRescate.alpha }),
     })
   }
 
@@ -134,10 +151,25 @@ export class HUD extends Phaser.Scene {
     this.bNombrePlata.setPosition(0, 6)
     this.banner.setPosition(Math.round(w / 2), Math.round(h * 0.22))
 
+    this.combate.acomodar()
+    this.bNivel.setScale(esc + 1).setPosition(Math.round(w / 2), Math.round(h * 0.34))
+    this.bRescate.setScale(esc + 1).setPosition(Math.round(w / 2), Math.round(h / 2))
     this.pausa.setPosition(w - mg, mg)
     this.fps?.setPosition(w - mg, mg + this.pausa.alto + 2)
     this.avisoCalidadImg?.setPosition(w - mg - 12, mg + this.pausa.alto + 20)
     if (this.cartel) this.mostrarCartel(this.cartelInfo!.icono, this.cartelInfo!.texto)
+  }
+
+  private mostrarNivel(n: number): void {
+    this.bNivel.setText(`¡Nivel ${n}!`).setAlpha(0)
+    this.tweens.killTweensOf(this.bNivel)
+    this.tweens.add({ targets: this.bNivel, alpha: 1, duration: 250, yoyo: false, onComplete: () => this.tweens.add({ targets: this.bNivel, alpha: 0, delay: 1800, duration: 700 }) })
+  }
+
+  private mostrarRescate(mensaje: string): void {
+    this.bRescate.setText(mensaje).setAlpha(0)
+    this.tweens.killTweensOf(this.bRescate)
+    this.tweens.add({ targets: this.bRescate, alpha: 1, duration: 300, onComplete: () => this.tweens.add({ targets: this.bRescate, alpha: 0, delay: 1100, duration: 500 }) })
   }
 
   private actualizarContadores(): void {
@@ -245,6 +277,7 @@ export class HUD extends Phaser.Scene {
   }
 
   override update(_t: number, deltaMs: number): void {
+    this.combate.update(deltaMs / 1000)
     if (this.mundo.partida && this.mundo.partida.oro !== this.oroMostrado) this.actualizarContadores()
     if (this.fps) {
       this.acumFps += deltaMs

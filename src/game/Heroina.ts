@@ -11,6 +11,19 @@ import { Sombra } from './Sombras'
 
 export type EstadoHeroina = 'idle' | 'walk' | 'run'
 
+export interface OpcionesAccion {
+  /** segundos que dura. Por defecto lo que dura la animación del manifest. Infinity hasta `liberar()`. */
+  dur?: number
+  /** momento del golpe, de 0 a 1 de la duración */
+  fraccion?: number
+  enGolpe?: () => void
+  alTerminar?: () => void
+  /** otro ataque puede cortarla (el ataque básico sí, las habilidades no) */
+  interrumpible?: boolean
+  /** dirección fija (índice de DIRECCIONES). Por defecto la que mira. */
+  dir?: number
+}
+
 export interface EventosHeroina {
   /** un pie toca el suelo */
   paso?: (x: number, y: number, corriendo: boolean) => void
@@ -42,6 +55,9 @@ export class Heroina {
   private trabadaS = 0
   /** movimiento temporal que otra cosa le impone (esquiva, embestida): px/s */
   private forzado: { vx: number; vy: number; resta: number } | null = null
+  /** acción en curso (ataque, habilidad, morir): el tiempo corre con el reloj del juego, no con el de la animación */
+  private accionActual: { resta: number; golpeEn: number; enGolpe?: () => void; alTerminar?: () => void; interrumpible: boolean; anim: string } | null = null
+  private tinteS = 0
 
   constructor(
     private escena: Phaser.Scene,
@@ -65,6 +81,63 @@ export class Heroina {
     })
     this.aplicarAnim(true)
     this.colocar()
+  }
+
+  /** hace una acción y no camina mientras dura */
+  get ocupada(): boolean {
+    return this.accionActual !== null
+  }
+
+  get accionInterrumpible(): boolean {
+    return this.accionActual?.interrumpible ?? true
+  }
+
+  get animAccion(): string | null {
+    return this.accionActual?.anim ?? null
+  }
+
+  /**
+   * Reproduce una animación de acción (ataque, habilidad, morir). Mientras dura no obedece órdenes de camino.
+   * El golpe y el final se miden con el reloj del juego para que las pruebas con `avanzar()` sean exactas.
+   */
+  accion(anim: string, op: OpcionesAccion = {}): boolean {
+    if (this.accionActual && !this.accionActual.interrumpible) return false
+    this.cancelarAccion()
+    const dirIdx = op.dir ?? this.dir
+    this.dir = dirIdx
+    const key = K.anim(this.id, anim, DIRECCIONES[dirIdx]!)
+    const def = this.personaje.anims[anim]
+    if (!def || !this.escena.anims.exists(key)) {
+      op.enGolpe?.()
+      op.alTerminar?.()
+      return false
+    }
+    const dur = op.dur ?? def.cuadros / def.fps
+    this.parar()
+    this.estado = 'idle'
+    this.accionActual = { resta: dur, golpeEn: dur * (op.fraccion ?? 0.5), enGolpe: op.enGolpe, alTerminar: op.alTerminar, interrumpible: op.interrumpible ?? false, anim }
+    this.sprite.play(key)
+    this.animActual = key
+    return true
+  }
+
+  /** Corta la acción en curso y vuelve a caminar o quedarse quieta */
+  liberar(): void {
+    const a = this.accionActual
+    if (!a) return
+    this.accionActual = null
+    this.aplicarAnim(true)
+    a.alTerminar?.()
+  }
+
+  private cancelarAccion(): void {
+    this.accionActual = null
+  }
+
+  /** Un destello de color (daño recibido) */
+  destello(color: number, seg = 0.14): void {
+    this.sprite.setTint(color)
+    this.tinteS = seg
   }
 
   get moviendo(): boolean {
@@ -133,6 +206,8 @@ export class Heroina {
   }
 
   teleport(x: number, y: number): void {
+    this.accionActual = null
+    this.forzado = null
     this.x = x
     this.y = y
     this.parar()
@@ -142,6 +217,38 @@ export class Heroina {
   }
 
   update(dt: number): void {
+    if (this.tinteS > 0) {
+      this.tinteS -= dt
+      if (this.tinteS <= 0) this.sprite.clearTint()
+    }
+    const ac = this.accionActual
+    if (ac) {
+      // en acción: solo se mueve si algo la empuja (esquiva)
+      if (this.forzado) {
+        const f = this.forzado
+        const r = caminarDireccion(this.grilla, { x: this.x, y: this.y, radio: RADIO_HEROINA }, f.vx, f.vy, Math.hypot(f.vx, f.vy), dt)
+        this.x = r.x
+        this.y = r.y
+        f.resta -= dt
+        if (f.resta <= 0) this.forzado = null
+      }
+      this.estado = 'idle'
+      this.quietaS = 0
+      const antes = ac.resta
+      ac.resta -= dt
+      if (ac.enGolpe && antes > ac.golpeEn && ac.resta <= ac.golpeEn) {
+        const g = ac.enGolpe
+        ac.enGolpe = undefined
+        g()
+      }
+      if (ac.resta <= 0 && this.accionActual === ac) {
+        this.accionActual = null
+        this.aplicarAnim(true)
+        ac.alTerminar?.()
+      }
+      this.colocar()
+      return
+    }
     let vx = 0
     let vy = 0
     let movio = false
@@ -205,6 +312,7 @@ export class Heroina {
 
   /** Pone la animación de la dirección y el estado actuales, sin saltar de cuadro al girar */
   private aplicarAnim(forzar: boolean): void {
+    if (this.accionActual) return
     const key = K.anim(this.id, this.estado, DIRECCIONES[this.dir]!)
     if (key === this.animActual && !forzar) return
     const mismoEstado = this.animActual.startsWith(`${this.id}_${this.estado}_`)

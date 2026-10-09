@@ -131,7 +131,7 @@ export const ENEMIGOS: Record<string, EnemigoBalance> = {
 
 export const TROL_ELITE = {
   golpePesadoCadaS: 6,
-  golpePesadoRadio: 70,
+  golpePesadoRadio: 48,
   golpePesadoDano: [12, 16] as [number, number],
   golpePesadoAvisoS: 1.2,
   gritoVidaPct: 50,

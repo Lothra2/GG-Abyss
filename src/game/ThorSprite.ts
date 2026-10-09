@@ -10,7 +10,7 @@ import { Sombra } from './Sombras'
 import { idThor } from '../kit/manifest'
 import type { Heroina } from './Heroina'
 
-type EstadoThor = 'idle' | 'walk' | 'run' | 'sit' | 'wag'
+type EstadoThor = 'idle' | 'walk' | 'run' | 'sit' | 'wag' | 'bite' | 'howl' | 'bark' | 'hurt'
 
 const RADIO_THOR = 6
 /** distancia por el rastro de la heroína a la que la sigue */
@@ -37,6 +37,10 @@ export class ThorSprite {
   private trabadoS = 0
   private colaS = 0
   private lado = 1
+  /** acción de combate (morder, aullar): quieto mientras dura */
+  private accion: { anim: string; resta: number; golpeEn: number; enGolpe?: () => void } | null = null
+  /** corre hasta un enemigo para morderlo */
+  private mision: { x: number; y: number; alMorder: () => void } | null = null
 
   constructor(
     private escena: Phaser.Scene,
@@ -62,6 +66,29 @@ export class ThorSprite {
     this.idPers = id
     this.personaje = this.m.personajes[id]!
     this.animActual = ''
+  }
+
+  get ocupado(): boolean {
+    return this.accion !== null || this.mision !== null
+  }
+
+  /** Corre hasta (x, y) y muerde. Si no llega en 3 s se rinde. */
+  irAMorder(x: number, y: number, alMorder: () => void): void {
+    if (this.ocupado) return
+    this.mision = { x, y, alMorder }
+    this.misionS = 3
+  }
+
+  private misionS = 0
+
+  /** Una acción quieta con su momento de golpe (howl, bark, bite) */
+  hacer(anim: string, dur?: number, fraccion = 0.5, enGolpe?: () => void): void {
+    const def = this.personaje.anims[anim]
+    if (!def) return enGolpe?.()
+    const d = dur ?? def.cuadros / def.fps
+    this.accion = { anim, resta: d, golpeEn: d * fraccion, enGolpe }
+    this.mision = null
+    this.poner(anim as EstadoThor, true)
   }
 
   /** Mueve la cola un momento (cuando algo lindo pasa) */
@@ -108,6 +135,42 @@ export class ThorSprite {
   }
 
   update(dt: number, h: Heroina): void {
+    // acción de combate en curso
+    if (this.accion) {
+      const a = this.accion
+      const antes = a.resta
+      a.resta -= dt
+      if (a.enGolpe && antes > a.golpeEn && a.resta <= a.golpeEn) {
+        const g = a.enGolpe
+        a.enGolpe = undefined
+        g()
+      }
+      if (a.resta <= 0) this.accion = null
+      this.colocar()
+      return
+    }
+    // corriendo a morder
+    if (this.mision) {
+      const m = this.mision
+      this.misionS -= dt
+      const dx = m.x - this.x
+      const dy = m.y - this.y
+      const d = Math.hypot(dx, dy)
+      if (d <= 26 || this.misionS <= 0) {
+        this.mision = null
+        this.dir = indiceDireccion(dx, dy)
+        if (d <= 40) this.hacer('bite', undefined, 0.5, m.alMorder)
+        return
+      }
+      const r = moverCuerpo(this.grilla, { x: this.x, y: this.y, radio: RADIO_THOR }, (dx / d) * THOR.correr * dt, (dy / d) * THOR.correr * dt)
+      this.x = r.x
+      this.y = r.y
+      this.dir = indiceDireccion(dx, dy)
+      this.estado = 'run'
+      this.poner('run')
+      this.colocar()
+      return
+    }
     const dh = Math.hypot(h.x - this.x, h.y - this.y)
     let meta: Punto
     if (h.moviendo) meta = dh > DISTANCIA_RASTRO + 10 ? this.puntoDelRastro(h, DISTANCIA_RASTRO) : { x: this.x, y: this.y }
@@ -169,6 +232,8 @@ export class ThorSprite {
   }
 
   teleport(x: number, y: number): void {
+    this.accion = null
+    this.mision = null
     this.x = x
     this.y = y
     this.rastro = []

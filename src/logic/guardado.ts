@@ -1,5 +1,5 @@
 import { CLAVE_GUARDADO, CLAVE_PERFILES, CLAVE_ROTO, type Calidad } from '../config/juego'
-import { MODO_PEQUE, OSCURIDAD } from '../config/balance'
+import { BOTIN, MODO_PEQUE, OSCURIDAD } from '../config/balance'
 import { nocheMaxima } from './zonas'
 
 /**
@@ -78,7 +78,7 @@ export function partidaNueva(id: string, ahora: number = Date.now()): Partida {
     jefeVencido: false,
     equipo: {},
     bolsa: Array.from({ length: 28 }, () => null),
-    cinturon: [null, null, null, null],
+    cinturon: [...BOTIN.cinturonInicial],
     ajustes: ajustesPorDefecto(id),
   }
 }

@@ -39,6 +39,10 @@ export class Entrada {
     }
   }
 
+  get estaPausada(): boolean {
+    return this.bloqueada
+  }
+
   /** Mientras está bloqueada ignora todo (cuadros de diálogo, pausa) */
   set pausada(v: boolean) {
     this.bloqueada = v

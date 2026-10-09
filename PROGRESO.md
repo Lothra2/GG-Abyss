@@ -4,7 +4,7 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 
 ## Estado
 
-- Fase actual: F1b cerrada (typecheck, 117 tests, build y 68 e2e en verde, 2 se saltan a propósito). Siguiente: F2 (combate).
+- Fase actual: F2 (combate) en curso. F1b cerrada (typecheck, 117 tests, build y 68 e2e en verde, 2 se saltan a propósito).
 - F1b hecha en código: Titulo (logo, Toca para empezar, botón Créditos), SeleccionJugador (tarjetas del manifest, aura y Thor), guardado con migración, Presentacion (paneo la primera vez), Entidades (cofres, carteles, fogatas, Abuelo), HUD (contadores, oro, pausa, panel de cartel), Pausa (Noche, Música, Efectos, calidad, modo peque, otra jugadora, créditos, seguir), Creditos (CREDITOS.txt con scroll)
 - F1a hecha: grilla, A*, movimiento, zonas, descubrimiento; MundoVista, Decos (pool por celdas, viento, hechizados, copas, pasto), Heroina, ThorSprite (sigue el rastro), Criaturas, Camara, Entrada (toque, mantener, teclado), Sonido; fx: Luces (RenderTexture con pozos), Bruma, Nubes, Particulas, AtmosferaFX (postFX soft light y viñeta), Atmosfera; escenas Mundo y HUD; postales en docs/capturas/f1a y comparar.html
 - F0 hecha: tooling (Vite, TS, Vitest, Playwright, Netlify), cargador del kit, mapa puro, azar, direccion, escala entera, config, Boot, SalaKit, verificar-kit, ganchos de prueba, 46 tests, 12 e2e (1 salta a propósito)
@@ -28,6 +28,13 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 - F1b, entrar con `?heroe=<id>` ahora carga la partida guardada de ese perfil (antes empezaba siempre nueva). Con `?heroe=` no hay paneo salvo `?presentacion=1`.
 - F1b, el botón `crearBoton` se hunde 1 px al presionarlo sin pisar la posición que le dé la escena (antes saltaba a la esquina y perdía el toque).
 - F1b, la pausa deja el mundo en pausa con `scene.pause('Mundo')` y el sonido sigue vivo para oír los deslizadores. Los créditos se limpian de direcciones web para que quepan en pantalla.
+- F2, los números y la IA van en src/logic (stats, combate, habilidades, ia, thorCombate, rescate) con tests. En Phaser: Enemigos (los 29 del mapa), Proyectiles (flecha, naturaleza, arcano y fuego del kit), Combate (ataque por toque, habilidades, pociones, XP, Thor, rescate), Numeros (ui/numeros.png) y HudCombate (orbes, XP, cinturón, botones con arco de recarga).
+- F2, teclas: Q y E son las habilidades (no W como decía el plan porque W ya camina) y 1 a 4 las pociones del cinturón.
+- F2, el golpe pesado del trol cae en una elipse de 48 px de radio (el plan decía 70): el aviso `aviso_jefe` del kit mide 96 px de ancho y escalarlo a 1.45 rompería los pixeles enteros. El número vive en `TROL_ELITE.golpePesadoRadio`.
+- F2, los reemplazos de flecha y naturaleza ya no hacen falta: el taller entregó `proyectil_flecha` y `proyectil_naturaleza` con sus impactos y los 8 íconos de habilidad.
+- F2, el oro de los enemigos entra directo a la bolsa con un número flotante. Los drops con haz y rebote llegan en F3.
+- F2, el cinturón arranca con 2 pociones de vida y 1 de maná (`BOTIN.cinturonInicial`). Una poción no se gasta si la vida o el maná ya están llenos.
+- F2, la lógica de las acciones (golpe, aviso, recarga) corre con el reloj del juego, no con el de las animaciones, así `avanzar()` es exacto en las pruebas.
 - F1b, las pruebas e2e llegan a cofres, carteles y fogatas por la parada del objeto (`teleport` a la parada): la caminata larga ya la cubre F1a.
 
 - Entrega del taller (5 tandas, submódulo en 8ba7f2a): adoptada en F1a. Decos usa tronco y copa por separado, pasto con sus anims, capa `superficie` para los pasos, 13 postales. Falta usar en sus fases: iconos de cartel (F1b), Abuelo que sonríe (F1b), títulos y logo (F1b), flecha y naturaleza (F2), botín bajo (F3), Thor cava (F3), minotauro 96 y carga (F4), íconos de app (F5). En balance se quitaron las escalas temporales del trol y del minotauro.
