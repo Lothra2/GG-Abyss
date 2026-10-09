@@ -1,0 +1,45 @@
+GG Abyss: créditos del arte
+
+Personajes, mundo, botín, interfaz y sonidos generados con PixelForja (código).
+
+Arte del personaje: piezas del proyecto LPC (Liberated Pixel Cup), recoloreadas y armadas con PixelForja.
+Fuente: Universal LPC Spritesheet Character Generator, https://github.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator
+Estas piezas exigen dar crédito a sus autores. Si las modificas y las compartes, respeta su licencia (CC-BY-SA o GPL comparten igual).
+
+head/heads/human/male_gaunt/idle.png: Stephen Challener (Redshrike),bluecarrot16. OGA-BY 3.0,CC-BY-SA 3.0,GPL 3.0. https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles,https://opengameart.org/content/lpc-folk
+head/faces/male/neutral/idle.png: JaidynReiman,ElizaWy,Stephen Challener (Redshrike). OGA-BY 3.0. https://github.com/ElizaWy/LPC/tree/main/Characters/Head,https://opengameart.org/content/ulpc-expanded-expressions
+pixelforja/hair/swept_back/idle.png: Skorpio,bluecarrot16,PixelForja (edición del peinado high_and_tight). CC-BY-SA 3.0,GPL 3.0. https://opengameart.org/content/lpc-skorpios-scifi-sprite-pack,https://opengameart.org/content/lpc-hair
+eyes/eyebrows/thick/adult/idle.png: ElizaWy. OGA-BY 3.0. https://github.com/ElizaWy/LPC/tree/main/Characters/Hair,https://opengameart.org/content/lpc-expanded-sit-run-jump-more
+head/nose/straight/adult/idle.png: Thane Brimhall (pennomi),laetissima,Matthew Krohn (makrohn). GPL 3.0,CC-BY-SA 3.0. https://opengameart.org/content/lpc-base-character-expressions
+beards/beard/basic/idle.png: JaidynReiman,Carlo Enrico Victoria (Nemisys). CC-BY-SA 3.0,GPL 3.0. https://opengameart.org/content/lpc-white-beard
+facial/glasses/nerd/adult/idle.png: JaidynReiman,Thane Brimhall (pennomi),laetissima. CC-BY-SA 3.0,GPL 3.0. https://opengameart.org/content/lpc-base-character-expressions
+
+Arte del personaje: piezas del proyecto LPC (Liberated Pixel Cup), recoloreadas y armadas con PixelForja.
+Fuente: Universal LPC Spritesheet Character Generator, https://github.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator
+Estas piezas exigen dar crédito a sus autores. Si las modificas y las compartes, respeta su licencia (CC-BY-SA o GPL comparten igual).
+
+head/heads/human/female/idle.png: bluecarrot16,Benjamin K. Smith (BenCreating),Stephen Challener (Redshrike). OGA-BY 3.0,CC-BY-SA 3.0,GPL 3.0. https://opengameart.org/content/,https://opengameart.org/content/lpc-character-bases
+head/faces/female/neutral/idle.png: JaidynReiman,ElizaWy,Stephen Challener (Redshrike). OGA-BY 3.0. https://github.com/ElizaWy/LPC/tree/main/Characters/Head,https://opengameart.org/content/ulpc-expanded-expressions
+hair/loose/adult/idle.png: JaidynReiman,Manuel Riecke (MrBeast). CC-BY-SA 3.0,GPL 3.0. https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles,https://opengameart.org/content/lpc-expanded-hair
+eyes/eyebrows/thin/adult/idle.png: ElizaWy. OGA-BY 3.0. https://github.com/ElizaWy/LPC/tree/main/Characters/Hair,https://opengameart.org/content/lpc-expanded-sit-run-jump-more
+hat/formal/tiara/adult/idle.png: Luke Mehl. CC-BY-SA 3.0,GPL 3.0. https://opengameart.org/content/female-mage-clothing-set,https://opengameart.org/content/lpc-expanded-hats-facial-helmets
+
+Arte del personaje: piezas del proyecto LPC (Liberated Pixel Cup), recoloreadas y armadas con PixelForja.
+Fuente: Universal LPC Spritesheet Character Generator, https://github.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator
+Estas piezas exigen dar crédito a sus autores. Si las modificas y las compartes, respeta su licencia (CC-BY-SA o GPL comparten igual).
+
+head/heads/human/female/idle.png: bluecarrot16,Benjamin K. Smith (BenCreating),Stephen Challener (Redshrike). OGA-BY 3.0,CC-BY-SA 3.0,GPL 3.0. https://opengameart.org/content/,https://opengameart.org/content/lpc-character-bases
+head/faces/female/neutral/idle.png: JaidynReiman,ElizaWy,Stephen Challener (Redshrike). OGA-BY 3.0. https://github.com/ElizaWy/LPC/tree/main/Characters/Head,https://opengameart.org/content/ulpc-expanded-expressions
+hair/ponytail/adult/fg/idle.png: JaidynReiman,Manuel Riecke (MrBeast). CC-BY-SA 3.0,GPL 3.0. https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles,https://opengameart.org/content/lpc-expanded-hair
+hair/ponytail/adult/bg/idle.png: JaidynReiman,Manuel Riecke (MrBeast). CC-BY-SA 3.0,GPL 3.0. https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles,https://opengameart.org/content/lpc-expanded-hair
+eyes/eyebrows/thin/adult/idle.png: ElizaWy. OGA-BY 3.0. https://github.com/ElizaWy/LPC/tree/main/Characters/Hair,https://opengameart.org/content/lpc-expanded-sit-run-jump-more
+hat/headband/thick/adult/idle.png: JaidynReiman. OGA-BY 3.0+,CC-BY 3.0+,GPL 3.0. https://opengameart.org/content/lpc-relm-hair-xlong-ponytail,https://opengameart.org/content/lpc-expanded-hats-facial-helmets
+
+Arte del personaje: piezas del proyecto LPC (Liberated Pixel Cup), recoloreadas y armadas con PixelForja.
+Fuente: Universal LPC Spritesheet Character Generator, https://github.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator
+Estas piezas exigen dar crédito a sus autores. Si las modificas y las compartes, respeta su licencia (CC-BY-SA o GPL comparten igual).
+
+head/heads/human/female/idle.png: bluecarrot16,Benjamin K. Smith (BenCreating),Stephen Challener (Redshrike). OGA-BY 3.0,CC-BY-SA 3.0,GPL 3.0. https://opengameart.org/content/,https://opengameart.org/content/lpc-character-bases
+head/faces/female/neutral/idle.png: JaidynReiman,ElizaWy,Stephen Challener (Redshrike). OGA-BY 3.0. https://github.com/ElizaWy/LPC/tree/main/Characters/Head,https://opengameart.org/content/ulpc-expanded-expressions
+hair/curly_short/adult/idle.png: ElizaWy. OGA-BY 3.0. https://opengameart.org/content/lpc-hair,https://opengameart.org/content/lpc-expanded-sit-run-jump-more
+eyes/eyebrows/thin/adult/idle.png: ElizaWy. OGA-BY 3.0. https://github.com/ElizaWy/LPC/tree/main/Characters/Hair,https://opengameart.org/content/lpc-expanded-sit-run-jump-more

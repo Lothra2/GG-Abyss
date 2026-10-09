@@ -1,0 +1,4 @@
+[submodule "tools/pixel_forja"]
+	path = tools/pixel_forja
+	url = https://github.com/Lothra2/pixel_forja
+	branch = claude/perfeccionar-ejecucion-smh3ad

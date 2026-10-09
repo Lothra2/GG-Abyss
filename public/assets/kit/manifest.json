@@ -1,0 +1,4090 @@
+{
+ "juego": "GG Abyss",
+ "generado_con": "PixelForja",
+ "version": 1,
+ "cuadro_mundo": 32,
+ "direcciones": [
+  "down",
+  "down_left",
+  "left",
+  "up_left",
+  "up",
+  "up_right",
+  "right",
+  "down_right"
+ ],
+ "notas": "Hojas de personajes: fila = dirección (orden de `direcciones`), columna = cuadro. El pivote es el punto de apoyo (pies).",
+ "personajes": {
+  "rick": {
+   "tipo": "heroe",
+   "nombre": "Rick",
+   "clase": "paladin",
+   "retrato": "personajes/retrato_rick.png",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "personajes/rick_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "personajes/rick_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "run": {
+     "archivo": "personajes/rick_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "attack": {
+     "archivo": "personajes/rick_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "attack_heavy": {
+     "archivo": "personajes/rick_attack_heavy.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "attack_thrust": {
+     "archivo": "personajes/rick_attack_thrust.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "cast": {
+     "archivo": "personajes/rick_cast.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "nova": {
+     "archivo": "personajes/rick_nova.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": false
+    },
+    "channel": {
+     "archivo": "personajes/rick_channel.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
+    },
+    "whirlwind": {
+     "archivo": "personajes/rick_whirlwind.png",
+     "cuadros": 8,
+     "fps": 16,
+     "loop": true
+    },
+    "leap": {
+     "archivo": "personajes/rick_leap.png",
+     "cuadros": 9,
+     "fps": 12,
+     "loop": false
+    },
+    "charge": {
+     "archivo": "personajes/rick_charge.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "dodge": {
+     "archivo": "personajes/rick_dodge.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "shoot_bow": {
+     "archivo": "personajes/rick_shoot_bow.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "summon": {
+     "archivo": "personajes/rick_summon.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": false
+    },
+    "warcry": {
+     "archivo": "personajes/rick_warcry.png",
+     "cuadros": 7,
+     "fps": 10,
+     "loop": false
+    },
+    "block_shield": {
+     "archivo": "personajes/rick_block_shield.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": false
+    },
+    "use_item": {
+     "archivo": "personajes/rick_use_item.png",
+     "cuadros": 7,
+     "fps": 8,
+     "loop": false
+    },
+    "throw": {
+     "archivo": "personajes/rick_throw.png",
+     "cuadros": 6,
+     "fps": 12,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "personajes/rick_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "personajes/rick_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    }
+   }
+  },
+  "steph": {
+   "tipo": "heroe",
+   "nombre": "Steph",
+   "clase": "hechicera",
+   "retrato": "personajes/retrato_steph.png",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "personajes/steph_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "personajes/steph_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "run": {
+     "archivo": "personajes/steph_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "attack": {
+     "archivo": "personajes/steph_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "attack_heavy": {
+     "archivo": "personajes/steph_attack_heavy.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "attack_thrust": {
+     "archivo": "personajes/steph_attack_thrust.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "cast": {
+     "archivo": "personajes/steph_cast.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "nova": {
+     "archivo": "personajes/steph_nova.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": false
+    },
+    "channel": {
+     "archivo": "personajes/steph_channel.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
+    },
+    "whirlwind": {
+     "archivo": "personajes/steph_whirlwind.png",
+     "cuadros": 8,
+     "fps": 16,
+     "loop": true
+    },
+    "leap": {
+     "archivo": "personajes/steph_leap.png",
+     "cuadros": 9,
+     "fps": 12,
+     "loop": false
+    },
+    "charge": {
+     "archivo": "personajes/steph_charge.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "dodge": {
+     "archivo": "personajes/steph_dodge.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "shoot_bow": {
+     "archivo": "personajes/steph_shoot_bow.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "summon": {
+     "archivo": "personajes/steph_summon.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": false
+    },
+    "warcry": {
+     "archivo": "personajes/steph_warcry.png",
+     "cuadros": 7,
+     "fps": 10,
+     "loop": false
+    },
+    "block_shield": {
+     "archivo": "personajes/steph_block_shield.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": false
+    },
+    "use_item": {
+     "archivo": "personajes/steph_use_item.png",
+     "cuadros": 7,
+     "fps": 8,
+     "loop": false
+    },
+    "throw": {
+     "archivo": "personajes/steph_throw.png",
+     "cuadros": 6,
+     "fps": 12,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "personajes/steph_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "personajes/steph_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    }
+   }
+  },
+  "sophie": {
+   "tipo": "heroe",
+   "nombre": "Sophie",
+   "clase": "amazona",
+   "retrato": "personajes/retrato_sophie.png",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "personajes/sophie_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "personajes/sophie_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "run": {
+     "archivo": "personajes/sophie_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "attack": {
+     "archivo": "personajes/sophie_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "attack_heavy": {
+     "archivo": "personajes/sophie_attack_heavy.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "attack_thrust": {
+     "archivo": "personajes/sophie_attack_thrust.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "cast": {
+     "archivo": "personajes/sophie_cast.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "nova": {
+     "archivo": "personajes/sophie_nova.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": false
+    },
+    "channel": {
+     "archivo": "personajes/sophie_channel.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
+    },
+    "whirlwind": {
+     "archivo": "personajes/sophie_whirlwind.png",
+     "cuadros": 8,
+     "fps": 16,
+     "loop": true
+    },
+    "leap": {
+     "archivo": "personajes/sophie_leap.png",
+     "cuadros": 9,
+     "fps": 12,
+     "loop": false
+    },
+    "charge": {
+     "archivo": "personajes/sophie_charge.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "dodge": {
+     "archivo": "personajes/sophie_dodge.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "shoot_bow": {
+     "archivo": "personajes/sophie_shoot_bow.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "summon": {
+     "archivo": "personajes/sophie_summon.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": false
+    },
+    "warcry": {
+     "archivo": "personajes/sophie_warcry.png",
+     "cuadros": 7,
+     "fps": 10,
+     "loop": false
+    },
+    "block_shield": {
+     "archivo": "personajes/sophie_block_shield.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": false
+    },
+    "use_item": {
+     "archivo": "personajes/sophie_use_item.png",
+     "cuadros": 7,
+     "fps": 8,
+     "loop": false
+    },
+    "throw": {
+     "archivo": "personajes/sophie_throw.png",
+     "cuadros": 6,
+     "fps": 12,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "personajes/sophie_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "personajes/sophie_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    }
+   }
+  },
+  "alana": {
+   "tipo": "heroe",
+   "nombre": "Alana",
+   "clase": "druida",
+   "retrato": "personajes/retrato_alana.png",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "personajes/alana_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "personajes/alana_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "run": {
+     "archivo": "personajes/alana_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "attack": {
+     "archivo": "personajes/alana_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "attack_heavy": {
+     "archivo": "personajes/alana_attack_heavy.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "attack_thrust": {
+     "archivo": "personajes/alana_attack_thrust.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "cast": {
+     "archivo": "personajes/alana_cast.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "nova": {
+     "archivo": "personajes/alana_nova.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": false
+    },
+    "channel": {
+     "archivo": "personajes/alana_channel.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
+    },
+    "whirlwind": {
+     "archivo": "personajes/alana_whirlwind.png",
+     "cuadros": 8,
+     "fps": 16,
+     "loop": true
+    },
+    "leap": {
+     "archivo": "personajes/alana_leap.png",
+     "cuadros": 9,
+     "fps": 12,
+     "loop": false
+    },
+    "charge": {
+     "archivo": "personajes/alana_charge.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "dodge": {
+     "archivo": "personajes/alana_dodge.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "shoot_bow": {
+     "archivo": "personajes/alana_shoot_bow.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "summon": {
+     "archivo": "personajes/alana_summon.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": false
+    },
+    "warcry": {
+     "archivo": "personajes/alana_warcry.png",
+     "cuadros": 7,
+     "fps": 10,
+     "loop": false
+    },
+    "block_shield": {
+     "archivo": "personajes/alana_block_shield.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": false
+    },
+    "use_item": {
+     "archivo": "personajes/alana_use_item.png",
+     "cuadros": 7,
+     "fps": 8,
+     "loop": false
+    },
+    "throw": {
+     "archivo": "personajes/alana_throw.png",
+     "cuadros": 6,
+     "fps": 12,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "personajes/alana_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "personajes/alana_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    }
+   }
+  },
+  "thor": {
+   "tipo": "mascota",
+   "nombre": "Thor",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "mascota/thor_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "mascota/thor_walk.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": true
+    },
+    "run": {
+     "archivo": "mascota/thor_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "bite": {
+     "archivo": "mascota/thor_bite.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": false
+    },
+    "bark": {
+     "archivo": "mascota/thor_bark.png",
+     "cuadros": 6,
+     "fps": 10,
+     "loop": true
+    },
+    "howl": {
+     "archivo": "mascota/thor_howl.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    },
+    "pickup": {
+     "archivo": "mascota/thor_pickup.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": false
+    },
+    "hurt": {
+     "archivo": "mascota/thor_hurt.png",
+     "cuadros": 4,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "mascota/thor_die.png",
+     "cuadros": 5,
+     "fps": 8,
+     "loop": false
+    },
+    "sit": {
+     "archivo": "mascota/thor_sit.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "wag": {
+     "archivo": "mascota/thor_wag.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": true
+    }
+   }
+  },
+  "thor_armadura1": {
+   "tipo": "mascota",
+   "nombre": "Thor (Arnés de cuero)",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "mascota/thor_armadura1_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "mascota/thor_armadura1_walk.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": true
+    },
+    "run": {
+     "archivo": "mascota/thor_armadura1_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "bite": {
+     "archivo": "mascota/thor_armadura1_bite.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": false
+    },
+    "howl": {
+     "archivo": "mascota/thor_armadura1_howl.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    },
+    "hurt": {
+     "archivo": "mascota/thor_armadura1_hurt.png",
+     "cuadros": 4,
+     "fps": 12,
+     "loop": false
+    }
+   }
+  },
+  "thor_armadura2": {
+   "tipo": "mascota",
+   "nombre": "Thor (Peto tachonado)",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "mascota/thor_armadura2_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "mascota/thor_armadura2_walk.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": true
+    },
+    "run": {
+     "archivo": "mascota/thor_armadura2_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "bite": {
+     "archivo": "mascota/thor_armadura2_bite.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": false
+    },
+    "howl": {
+     "archivo": "mascota/thor_armadura2_howl.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    },
+    "hurt": {
+     "archivo": "mascota/thor_armadura2_hurt.png",
+     "cuadros": 4,
+     "fps": 12,
+     "loop": false
+    }
+   }
+  },
+  "thor_armadura3": {
+   "tipo": "mascota",
+   "nombre": "Thor (Cota del guardián)",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "mascota/thor_armadura3_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "mascota/thor_armadura3_walk.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": true
+    },
+    "run": {
+     "archivo": "mascota/thor_armadura3_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "bite": {
+     "archivo": "mascota/thor_armadura3_bite.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": false
+    },
+    "howl": {
+     "archivo": "mascota/thor_armadura3_howl.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    },
+    "hurt": {
+     "archivo": "mascota/thor_armadura3_hurt.png",
+     "cuadros": 4,
+     "fps": 12,
+     "loop": false
+    }
+   }
+  },
+  "thor_armadura4": {
+   "tipo": "mascota",
+   "nombre": "Thor (Placas del campeón)",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "mascota/thor_armadura4_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "mascota/thor_armadura4_walk.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": true
+    },
+    "run": {
+     "archivo": "mascota/thor_armadura4_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "bite": {
+     "archivo": "mascota/thor_armadura4_bite.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": false
+    },
+    "howl": {
+     "archivo": "mascota/thor_armadura4_howl.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    },
+    "hurt": {
+     "archivo": "mascota/thor_armadura4_hurt.png",
+     "cuadros": 4,
+     "fps": 12,
+     "loop": false
+    }
+   }
+  },
+  "thor_armadura5": {
+   "tipo": "mascota",
+   "nombre": "Thor (Égida de Thor)",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "mascota/thor_armadura5_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "mascota/thor_armadura5_walk.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": true
+    },
+    "run": {
+     "archivo": "mascota/thor_armadura5_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "bite": {
+     "archivo": "mascota/thor_armadura5_bite.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": false
+    },
+    "howl": {
+     "archivo": "mascota/thor_armadura5_howl.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    },
+    "hurt": {
+     "archivo": "mascota/thor_armadura5_hurt.png",
+     "cuadros": 4,
+     "fps": 12,
+     "loop": false
+    }
+   }
+  },
+  "rata": {
+   "tipo": "enemigo",
+   "nombre": "rata",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/rata_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/rata_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "run": {
+     "archivo": "enemigos/rata_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "attack_thrust": {
+     "archivo": "enemigos/rata_attack_thrust.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "dodge": {
+     "archivo": "enemigos/rata_dodge.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "enemigos/rata_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/rata_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    }
+   }
+  },
+  "calabaza": {
+   "tipo": "enemigo",
+   "nombre": "calabaza",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/calabaza_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/calabaza_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "attack": {
+     "archivo": "enemigos/calabaza_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "enemigos/calabaza_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/calabaza_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    },
+    "cast": {
+     "archivo": "enemigos/calabaza_cast.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "summon": {
+     "archivo": "enemigos/calabaza_summon.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": false
+    }
+   }
+  },
+  "goblin_arquero": {
+   "tipo": "enemigo",
+   "nombre": "goblin_arquero",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/goblin_arquero_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/goblin_arquero_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "run": {
+     "archivo": "enemigos/goblin_arquero_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "shoot_bow": {
+     "archivo": "enemigos/goblin_arquero_shoot_bow.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "dodge": {
+     "archivo": "enemigos/goblin_arquero_dodge.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "enemigos/goblin_arquero_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/goblin_arquero_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    }
+   }
+  },
+  "trol": {
+   "tipo": "enemigo",
+   "nombre": "trol",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/trol_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/trol_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "attack": {
+     "archivo": "enemigos/trol_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "enemigos/trol_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/trol_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    },
+    "attack_heavy": {
+     "archivo": "enemigos/trol_attack_heavy.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "warcry": {
+     "archivo": "enemigos/trol_warcry.png",
+     "cuadros": 7,
+     "fps": 10,
+     "loop": false
+    }
+   }
+  },
+  "minotauro": {
+   "tipo": "jefe",
+   "nombre": "minotauro",
+   "celda": 64,
+   "pivote": [
+    32,
+    62
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/minotauro_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/minotauro_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "attack": {
+     "archivo": "enemigos/minotauro_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "enemigos/minotauro_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/minotauro_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    },
+    "attack_heavy": {
+     "archivo": "enemigos/minotauro_attack_heavy.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "charge": {
+     "archivo": "enemigos/minotauro_charge.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "warcry": {
+     "archivo": "enemigos/minotauro_warcry.png",
+     "cuadros": 7,
+     "fps": 10,
+     "loop": false
+    },
+    "leap": {
+     "archivo": "enemigos/minotauro_leap.png",
+     "cuadros": 9,
+     "fps": 12,
+     "loop": false
+    }
+   }
+  }
+ },
+ "fx": {
+  "proyectil_fuego_right": {
+   "archivo": "fx/proyectil_fuego_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_fuego_down_right": {
+   "archivo": "fx/proyectil_fuego_down_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_fuego_down": {
+   "archivo": "fx/proyectil_fuego_down.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_fuego_down_left": {
+   "archivo": "fx/proyectil_fuego_down_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_fuego_left": {
+   "archivo": "fx/proyectil_fuego_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_fuego_up_left": {
+   "archivo": "fx/proyectil_fuego_up_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_fuego_up": {
+   "archivo": "fx/proyectil_fuego_up.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_fuego_up_right": {
+   "archivo": "fx/proyectil_fuego_up_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "impacto_fuego": {
+   "archivo": "fx/impacto_fuego.png",
+   "cuadros": 8,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "nova_fuego": {
+   "archivo": "fx/nova_fuego.png",
+   "cuadros": 10,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "proyectil_hielo_right": {
+   "archivo": "fx/proyectil_hielo_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_hielo_down_right": {
+   "archivo": "fx/proyectil_hielo_down_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_hielo_down": {
+   "archivo": "fx/proyectil_hielo_down.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_hielo_down_left": {
+   "archivo": "fx/proyectil_hielo_down_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_hielo_left": {
+   "archivo": "fx/proyectil_hielo_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_hielo_up_left": {
+   "archivo": "fx/proyectil_hielo_up_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_hielo_up": {
+   "archivo": "fx/proyectil_hielo_up.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_hielo_up_right": {
+   "archivo": "fx/proyectil_hielo_up_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "impacto_hielo": {
+   "archivo": "fx/impacto_hielo.png",
+   "cuadros": 8,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "nova_hielo": {
+   "archivo": "fx/nova_hielo.png",
+   "cuadros": 10,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "proyectil_sagrado_right": {
+   "archivo": "fx/proyectil_sagrado_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_sagrado_down_right": {
+   "archivo": "fx/proyectil_sagrado_down_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_sagrado_down": {
+   "archivo": "fx/proyectil_sagrado_down.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_sagrado_down_left": {
+   "archivo": "fx/proyectil_sagrado_down_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_sagrado_left": {
+   "archivo": "fx/proyectil_sagrado_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_sagrado_up_left": {
+   "archivo": "fx/proyectil_sagrado_up_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_sagrado_up": {
+   "archivo": "fx/proyectil_sagrado_up.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_sagrado_up_right": {
+   "archivo": "fx/proyectil_sagrado_up_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "impacto_sagrado": {
+   "archivo": "fx/impacto_sagrado.png",
+   "cuadros": 8,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "nova_sagrado": {
+   "archivo": "fx/nova_sagrado.png",
+   "cuadros": 10,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "proyectil_veneno_right": {
+   "archivo": "fx/proyectil_veneno_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_veneno_down_right": {
+   "archivo": "fx/proyectil_veneno_down_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_veneno_down": {
+   "archivo": "fx/proyectil_veneno_down.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_veneno_down_left": {
+   "archivo": "fx/proyectil_veneno_down_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_veneno_left": {
+   "archivo": "fx/proyectil_veneno_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_veneno_up_left": {
+   "archivo": "fx/proyectil_veneno_up_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_veneno_up": {
+   "archivo": "fx/proyectil_veneno_up.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_veneno_up_right": {
+   "archivo": "fx/proyectil_veneno_up_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "impacto_veneno": {
+   "archivo": "fx/impacto_veneno.png",
+   "cuadros": 8,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "nova_veneno": {
+   "archivo": "fx/nova_veneno.png",
+   "cuadros": 10,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "proyectil_arcano_right": {
+   "archivo": "fx/proyectil_arcano_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_arcano_down_right": {
+   "archivo": "fx/proyectil_arcano_down_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_arcano_down": {
+   "archivo": "fx/proyectil_arcano_down.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_arcano_down_left": {
+   "archivo": "fx/proyectil_arcano_down_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_arcano_left": {
+   "archivo": "fx/proyectil_arcano_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_arcano_up_left": {
+   "archivo": "fx/proyectil_arcano_up_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_arcano_up": {
+   "archivo": "fx/proyectil_arcano_up.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_arcano_up_right": {
+   "archivo": "fx/proyectil_arcano_up_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "impacto_arcano": {
+   "archivo": "fx/impacto_arcano.png",
+   "cuadros": 8,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "nova_arcano": {
+   "archivo": "fx/nova_arcano.png",
+   "cuadros": 10,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "proyectil_rayo_right": {
+   "archivo": "fx/proyectil_rayo_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_rayo_down_right": {
+   "archivo": "fx/proyectil_rayo_down_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_rayo_down": {
+   "archivo": "fx/proyectil_rayo_down.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_rayo_down_left": {
+   "archivo": "fx/proyectil_rayo_down_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_rayo_left": {
+   "archivo": "fx/proyectil_rayo_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_rayo_up_left": {
+   "archivo": "fx/proyectil_rayo_up_left.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_rayo_up": {
+   "archivo": "fx/proyectil_rayo_up.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "proyectil_rayo_up_right": {
+   "archivo": "fx/proyectil_rayo_up_right.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 48
+  },
+  "impacto_rayo": {
+   "archivo": "fx/impacto_rayo.png",
+   "cuadros": 8,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "nova_rayo": {
+   "archivo": "fx/nova_rayo.png",
+   "cuadros": 10,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "tajo": {
+   "archivo": "fx/tajo.png",
+   "cuadros": 5,
+   "fps": 18,
+   "loop": false,
+   "celda": 48
+  },
+  "curar": {
+   "archivo": "fx/curar.png",
+   "cuadros": 8,
+   "fps": 12,
+   "loop": false,
+   "celda": 48
+  },
+  "escudo_de_thor": {
+   "archivo": "fx/escudo_de_thor.png",
+   "cuadros": 6,
+   "fps": 10,
+   "loop": true,
+   "celda": 48
+  },
+  "aura_nivel": {
+   "archivo": "fx/aura_nivel.png",
+   "cuadros": 8,
+   "fps": 10,
+   "loop": true,
+   "celda": 48
+  },
+  "grito_de_guerra": {
+   "archivo": "fx/grito_de_guerra.png",
+   "cuadros": 6,
+   "fps": 12,
+   "loop": false,
+   "celda": 48
+  },
+  "circulo_magico": {
+   "archivo": "fx/circulo_magico.png",
+   "cuadros": 8,
+   "fps": 10,
+   "loop": true,
+   "celda": 48
+  }
+ },
+ "botin": {
+  "atlas": {
+   "iconos": {
+    "32": "botin/iconos_32.json",
+    "64": "botin/iconos_64.json"
+   },
+   "especiales": {
+    "32": "botin/especiales_32.json",
+    "64": "botin/especiales_64.json"
+   },
+   "armadura_n5": {
+    "32": "botin/armadura_n5_32.json",
+    "64": "botin/armadura_n5_64.json"
+   }
+  },
+  "iconos": {
+   "32": "botin/iconos_32.json",
+   "64": "botin/iconos_64.json"
+  },
+  "especiales": {
+   "32": "botin/especiales_32.json",
+   "64": "botin/especiales_64.json"
+  },
+  "mundo": "botin/mundo.json",
+  "catalogo": "botin/catalogo.json",
+  "notas": "Cada objeto del catálogo dice en qué atlas está (`atlas`). Los íconos van con su casillero (borde de la rareza). Los de 8 cuadros (animated) se animan con <icon>_0 a <icon>_7. Los que caen al piso (cae_*) son solo los únicos y el set."
+ },
+ "mundo": {
+  "mapa": "mundo/mundo1_bosque.json",
+  "nombre": "Bosque GG",
+  "ancho": 120,
+  "alto": 90,
+  "cuadro": 32,
+  "trozo": 960,
+  "agua": "mundo/agua.png",
+  "suelo": [
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_0.png",
+    "x": 0,
+    "y": 0
+   },
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_1.png",
+    "x": 960,
+    "y": 0
+   },
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_2.png",
+    "x": 1920,
+    "y": 0
+   },
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_3.png",
+    "x": 2880,
+    "y": 0
+   },
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_4.png",
+    "x": 0,
+    "y": 960
+   },
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_5.png",
+    "x": 960,
+    "y": 960
+   },
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_6.png",
+    "x": 1920,
+    "y": 960
+   },
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_7.png",
+    "x": 2880,
+    "y": 960
+   },
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_8.png",
+    "x": 0,
+    "y": 1920
+   },
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_9.png",
+    "x": 960,
+    "y": 1920
+   },
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_10.png",
+    "x": 1920,
+    "y": 1920
+   },
+   {
+    "archivo": "mundo/suelo/mundo1_bosque_11.png",
+    "x": 2880,
+    "y": 1920
+   }
+  ],
+  "vista": "mundo/mundo1_vista.png",
+  "postales": {
+   "llegada": "mundo/postales/llegada.png",
+   "abuelo_roble": "mundo/postales/abuelo_roble.png",
+   "cascada_y_vado": "mundo/postales/cascada_y_vado.png",
+   "puente_del_trol": "mundo/postales/puente_del_trol.png",
+   "ruinas_y_estatua": "mundo/postales/ruinas_y_estatua.png",
+   "anillo_de_hadas": "mundo/postales/anillo_de_hadas.png",
+   "arena_del_minotauro": "mundo/postales/arena_del_minotauro.png",
+   "colina_goblin": "mundo/postales/colina_goblin.png"
+  },
+  "objetos": {
+   "arbol_roble_0": {
+    "w": 64,
+    "h": 80,
+    "apoyo": [
+     32,
+     78
+    ],
+    "solido": [
+     -8,
+     -8,
+     16,
+     8
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbol_roble_0_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "arbol_roble_1": {
+    "w": 64,
+    "h": 80,
+    "apoyo": [
+     32,
+     78
+    ],
+    "solido": [
+     -8,
+     -8,
+     16,
+     8
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbol_roble_1_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "arbol_roble_2": {
+    "w": 64,
+    "h": 80,
+    "apoyo": [
+     32,
+     78
+    ],
+    "solido": [
+     -8,
+     -8,
+     16,
+     8
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbol_roble_2_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "arbol_pino_0": {
+    "w": 48,
+    "h": 80,
+    "apoyo": [
+     24,
+     78
+    ],
+    "solido": [
+     -6,
+     -6,
+     12,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbol_pino_0_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "arbol_pino_1": {
+    "w": 48,
+    "h": 80,
+    "apoyo": [
+     24,
+     78
+    ],
+    "solido": [
+     -6,
+     -6,
+     12,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbol_pino_1_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "arbusto": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     29
+    ],
+    "solido": [
+     -9,
+     -6,
+     18,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbusto_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "arbusto_moras": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     29
+    ],
+    "solido": [
+     -9,
+     -6,
+     18,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbusto_moras_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "roca": {
+    "w": 32,
+    "h": 24,
+    "apoyo": [
+     16,
+     21
+    ],
+    "solido": [
+     -10,
+     -6,
+     20,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/roca_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "roca_grande": {
+    "w": 48,
+    "h": 40,
+    "apoyo": [
+     24,
+     37
+    ],
+    "solido": [
+     -18,
+     -10,
+     36,
+     10
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/roca_grande_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "tocon": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     24
+    ],
+    "solido": [
+     -8,
+     -5,
+     16,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/tocon_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "troncos": {
+    "w": 48,
+    "h": 32,
+    "apoyo": [
+     24,
+     28
+    ],
+    "solido": [
+     -14,
+     -6,
+     28,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/troncos_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "hongos": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     28
+    ],
+    "solido": null,
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/hongos_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "pasto_alto": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     27
+    ],
+    "solido": null,
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/pasto_alto_idle.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "cerca_h": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     27
+    ],
+    "solido": [
+     -16,
+     -4,
+     32,
+     4
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/cerca_h_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "cerca_v": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     27
+    ],
+    "solido": [
+     -3,
+     -27,
+     6,
+     30
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/cerca_v_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "cerca_post": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     27
+    ],
+    "solido": [
+     -3,
+     -3,
+     6,
+     3
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/cerca_post_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "cartel": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     29
+    ],
+    "solido": [
+     -3,
+     -3,
+     6,
+     3
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/cartel_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "fogata": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     28
+    ],
+    "solido": [
+     -8,
+     -4,
+     16,
+     4
+    ],
+    "luz": {
+     "color": "#ffa040",
+     "radius": 120,
+     "flicker": true,
+     "dy": 8
+    },
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/fogata_idle.png",
+      "cuadros": 6,
+      "fps": 10,
+      "loop": true
+     }
+    }
+   },
+   "antorcha": {
+    "w": 16,
+    "h": 48,
+    "apoyo": [
+     8,
+     46
+    ],
+    "solido": [
+     -2,
+     -2,
+     4,
+     2
+    ],
+    "luz": {
+     "color": "#ff8a3a",
+     "radius": 90,
+     "flicker": true,
+     "dy": 40
+    },
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/antorcha_idle.png",
+      "cuadros": 4,
+      "fps": 8,
+      "loop": true
+     }
+    }
+   },
+   "caja": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     28
+    ],
+    "solido": [
+     -8,
+     -5,
+     16,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/caja_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "romper": {
+      "archivo": "mundo/objetos/caja_romper.png",
+      "cuadros": 5,
+      "fps": 14,
+      "loop": false
+     }
+    }
+   },
+   "barril": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     28
+    ],
+    "solido": [
+     -8,
+     -5,
+     16,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/barril_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "romper": {
+      "archivo": "mundo/objetos/barril_romper.png",
+      "cuadros": 5,
+      "fps": 14,
+      "loop": false
+     }
+    }
+   },
+   "vasija": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     28
+    ],
+    "solido": [
+     -8,
+     -5,
+     16,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/vasija_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "romper": {
+      "archivo": "mundo/objetos/vasija_romper.png",
+      "cuadros": 5,
+      "fps": 14,
+      "loop": false
+     }
+    }
+   },
+   "cueva": {
+    "w": 96,
+    "h": 80,
+    "apoyo": [
+     48,
+     78
+    ],
+    "solido": [
+     -46,
+     -30,
+     92,
+     30
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/cueva_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "piedra_arena": {
+    "w": 32,
+    "h": 64,
+    "apoyo": [
+     16,
+     60
+    ],
+    "solido": [
+     -7,
+     -5,
+     14,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/piedra_arena_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "encendida": {
+      "archivo": "mundo/objetos/piedra_arena_encendida.png",
+      "cuadros": 4,
+      "fps": 6,
+      "loop": true
+     }
+    }
+   },
+   "portal_azul": {
+    "w": 64,
+    "h": 96,
+    "apoyo": [
+     32,
+     92
+    ],
+    "solido": null,
+    "luz": {
+     "color": "#6cb4ff",
+     "radius": 140,
+     "pulse": true,
+     "dy": 40
+    },
+    "anims": {
+     "abrir": {
+      "archivo": "mundo/objetos/portal_azul_abrir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
+     },
+     "girar": {
+      "archivo": "mundo/objetos/portal_azul_girar.png",
+      "cuadros": 8,
+      "fps": 10,
+      "loop": true
+     },
+     "cerrar": {
+      "archivo": "mundo/objetos/portal_azul_cerrar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
+     }
+    }
+   },
+   "portal_rojo": {
+    "w": 64,
+    "h": 96,
+    "apoyo": [
+     32,
+     92
+    ],
+    "solido": null,
+    "luz": {
+     "color": "#ff6a3a",
+     "radius": 140,
+     "pulse": true,
+     "dy": 40
+    },
+    "anims": {
+     "abrir": {
+      "archivo": "mundo/objetos/portal_rojo_abrir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
+     },
+     "girar": {
+      "archivo": "mundo/objetos/portal_rojo_girar.png",
+      "cuadros": 8,
+      "fps": 10,
+      "loop": true
+     },
+     "cerrar": {
+      "archivo": "mundo/objetos/portal_rojo_cerrar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
+     }
+    }
+   },
+   "aviso_jefe": {
+    "w": 96,
+    "h": 48,
+    "apoyo": [
+     48,
+     24
+    ],
+    "solido": null,
+    "anims": {
+     "llenar": {
+      "archivo": "mundo/objetos/aviso_jefe_llenar.png",
+      "cuadros": 8,
+      "fps": 8,
+      "loop": false
+     }
+    }
+   },
+   "puente": {
+    "w": 160,
+    "h": 72,
+    "apoyo": [
+     80,
+     40
+    ],
+    "solido": null,
+    "capa": "suelo",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/puente_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "piedra_vado_0": {
+    "w": 32,
+    "h": 24,
+    "apoyo": [
+     16,
+     14
+    ],
+    "solido": null,
+    "capa": "suelo",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/piedra_vado_0_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "piedra_vado_1": {
+    "w": 32,
+    "h": 24,
+    "apoyo": [
+     16,
+     14
+    ],
+    "solido": null,
+    "capa": "suelo",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/piedra_vado_1_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "nenufar": {
+    "w": 32,
+    "h": 24,
+    "apoyo": [
+     16,
+     14
+    ],
+    "solido": null,
+    "capa": "suelo",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/nenufar_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "nenufar_flor": {
+    "w": 32,
+    "h": 24,
+    "apoyo": [
+     16,
+     14
+    ],
+    "solido": null,
+    "capa": "suelo",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/nenufar_flor_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "juncos": {
+    "w": 32,
+    "h": 40,
+    "apoyo": [
+     16,
+     37
+    ],
+    "solido": null,
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/juncos_idle.png",
+      "cuadros": 4,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "cascada": {
+    "w": 128,
+    "h": 128,
+    "apoyo": [
+     64,
+     112
+    ],
+    "solido": null,
+    "luz": {
+     "color": "#bfe6ff",
+     "radius": 110,
+     "pulse": true,
+     "dy": 40
+    },
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/cascada_idle.png",
+      "cuadros": 4,
+      "fps": 10,
+      "loop": true
+     }
+    }
+   },
+   "tronco_caido": {
+    "w": 96,
+    "h": 40,
+    "apoyo": [
+     48,
+     36
+    ],
+    "solido": [
+     -42,
+     -12,
+     84,
+     12
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/tronco_caido_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "sauce": {
+    "w": 96,
+    "h": 112,
+    "apoyo": [
+     48,
+     106
+    ],
+    "solido": [
+     -10,
+     -8,
+     20,
+     8
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/sauce_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "abuelo_roble": {
+    "w": 192,
+    "h": 208,
+    "apoyo": [
+     96,
+     202
+    ],
+    "solido": [
+     -30,
+     -18,
+     60,
+     18
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/abuelo_roble_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "hongo_gigante_azul": {
+    "w": 48,
+    "h": 64,
+    "apoyo": [
+     24,
+     60
+    ],
+    "solido": [
+     -6,
+     -4,
+     12,
+     4
+    ],
+    "luz": {
+     "color": "#4ad8ff",
+     "radius": 100,
+     "pulse": true,
+     "dy": 26
+    },
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/hongo_gigante_azul_idle.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "hongo_gigante_morado": {
+    "w": 48,
+    "h": 64,
+    "apoyo": [
+     24,
+     60
+    ],
+    "solido": [
+     -6,
+     -4,
+     12,
+     4
+    ],
+    "luz": {
+     "color": "#c47aff",
+     "radius": 100,
+     "pulse": true,
+     "dy": 26
+    },
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/hongo_gigante_morado_idle.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "anillo_hadas": {
+    "w": 96,
+    "h": 64,
+    "apoyo": [
+     48,
+     36
+    ],
+    "solido": null,
+    "capa": "suelo",
+    "luz": {
+     "color": "#7affe0",
+     "radius": 120,
+     "pulse": true,
+     "dy": 4
+    },
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/anillo_hadas_idle.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "cristales": {
+    "w": 32,
+    "h": 48,
+    "apoyo": [
+     16,
+     45
+    ],
+    "solido": [
+     -10,
+     -4,
+     20,
+     4
+    ],
+    "luz": {
+     "color": "#b47aff",
+     "radius": 80,
+     "pulse": true,
+     "dy": 16
+    },
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/cristales_idle.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "pilar": {
+    "w": 32,
+    "h": 96,
+    "apoyo": [
+     16,
+     92
+    ],
+    "solido": [
+     -11,
+     -6,
+     22,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/pilar_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "pilar_roto": {
+    "w": 32,
+    "h": 64,
+    "apoyo": [
+     16,
+     60
+    ],
+    "solido": [
+     -11,
+     -6,
+     22,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/pilar_roto_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "muro_ruina": {
+    "w": 96,
+    "h": 64,
+    "apoyo": [
+     48,
+     58
+    ],
+    "solido": [
+     -44,
+     -10,
+     88,
+     10
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/muro_ruina_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "arco_ruina": {
+    "w": 128,
+    "h": 128,
+    "apoyo": [
+     64,
+     122
+    ],
+    "solido": null,
+    "solidos": [
+     [
+      -52,
+      -8,
+      22,
+      8
+     ],
+     [
+      28,
+      -8,
+      22,
+      8
+     ]
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arco_ruina_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "pozo": {
+    "w": 48,
+    "h": 64,
+    "apoyo": [
+     24,
+     58
+    ],
+    "solido": [
+     -17,
+     -10,
+     34,
+     10
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/pozo_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "estatua_thor": {
+    "w": 96,
+    "h": 150,
+    "apoyo": [
+     48,
+     146
+    ],
+    "solido": [
+     -40,
+     -14,
+     80,
+     14
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/estatua_thor_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "carpa_goblin": {
+    "w": 64,
+    "h": 64,
+    "apoyo": [
+     32,
+     58
+    ],
+    "solido": [
+     -24,
+     -10,
+     48,
+     10
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/carpa_goblin_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "carpa_familia": {
+    "w": 64,
+    "h": 64,
+    "apoyo": [
+     32,
+     58
+    ],
+    "solido": [
+     -24,
+     -10,
+     48,
+     10
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/carpa_familia_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "empalizada": {
+    "w": 32,
+    "h": 48,
+    "apoyo": [
+     16,
+     44
+    ],
+    "solido": [
+     -16,
+     -6,
+     32,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/empalizada_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "estandarte_goblin": {
+    "w": 32,
+    "h": 80,
+    "apoyo": [
+     10,
+     76
+    ],
+    "solido": [
+     -3,
+     -3,
+     6,
+     3
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/estandarte_goblin_idle.png",
+      "cuadros": 4,
+      "fps": 6,
+      "loop": true
+     }
+    }
+   },
+   "espantapajaros": {
+    "w": 32,
+    "h": 64,
+    "apoyo": [
+     16,
+     60
+    ],
+    "solido": [
+     -3,
+     -3,
+     6,
+     3
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/espantapajaros_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "calabazas_deco": {
+    "w": 32,
+    "h": 32,
+    "apoyo": [
+     16,
+     28
+    ],
+    "solido": [
+     -11,
+     -6,
+     22,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/calabazas_deco_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "farol": {
+    "w": 24,
+    "h": 56,
+    "apoyo": [
+     12,
+     54
+    ],
+    "solido": [
+     -2,
+     -2,
+     4,
+     2
+    ],
+    "luz": {
+     "color": "#ffd27a",
+     "radius": 100,
+     "flicker": true,
+     "dy": 36
+    },
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/farol_idle.png",
+      "cuadros": 4,
+      "fps": 6,
+      "loop": true
+     }
+    }
+   },
+   "roble_0": {
+    "w": 96,
+    "h": 116,
+    "apoyo": [
+     48,
+     110
+    ],
+    "solido": [
+     -8,
+     -6,
+     17,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/roble_0_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "roble_1": {
+    "w": 96,
+    "h": 116,
+    "apoyo": [
+     48,
+     110
+    ],
+    "solido": [
+     -8,
+     -6,
+     17,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/roble_1_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "roble_2": {
+    "w": 96,
+    "h": 116,
+    "apoyo": [
+     48,
+     110
+    ],
+    "solido": [
+     -8,
+     -6,
+     17,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/roble_2_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "roble_grande_0": {
+    "w": 127,
+    "h": 153,
+    "apoyo": [
+     64,
+     147
+    ],
+    "solido": [
+     -11,
+     -6,
+     21,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/roble_grande_0_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "roble_otono_1": {
+    "w": 96,
+    "h": 116,
+    "apoyo": [
+     48,
+     110
+    ],
+    "solido": [
+     -8,
+     -6,
+     17,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/roble_otono_1_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "pino_0": {
+    "w": 64,
+    "h": 124,
+    "apoyo": [
+     32,
+     119
+    ],
+    "solido": [
+     -5,
+     -5,
+     10,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/pino_0_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "pino_1": {
+    "w": 64,
+    "h": 124,
+    "apoyo": [
+     32,
+     119
+    ],
+    "solido": [
+     -5,
+     -5,
+     10,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/pino_1_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "pino_2": {
+    "w": 64,
+    "h": 124,
+    "apoyo": [
+     32,
+     119
+    ],
+    "solido": [
+     -5,
+     -5,
+     10,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/pino_2_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "arbol_hechizado_0": {
+    "w": 112,
+    "h": 128,
+    "apoyo": [
+     56,
+     122
+    ],
+    "solido": [
+     -14,
+     -8,
+     28,
+     8
+    ],
+    "anims": {
+     "dormido": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_dormido.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "despierto": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_despierto.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "parpadeo": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_parpadeo.png",
+      "cuadros": 5,
+      "fps": 12,
+      "loop": false
+     }
+    }
+   },
+   "arbol_hechizado_1": {
+    "w": 112,
+    "h": 128,
+    "apoyo": [
+     56,
+     122
+    ],
+    "solido": [
+     -14,
+     -8,
+     28,
+     8
+    ],
+    "anims": {
+     "dormido": {
+      "archivo": "mundo/objetos/arbol_hechizado_1_dormido.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "despierto": {
+      "archivo": "mundo/objetos/arbol_hechizado_1_despierto.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "parpadeo": {
+      "archivo": "mundo/objetos/arbol_hechizado_1_parpadeo.png",
+      "cuadros": 5,
+      "fps": 12,
+      "loop": false
+     }
+    }
+   },
+   "arbol_hechizado_2": {
+    "w": 112,
+    "h": 128,
+    "apoyo": [
+     56,
+     122
+    ],
+    "solido": [
+     -14,
+     -8,
+     28,
+     8
+    ],
+    "anims": {
+     "dormido": {
+      "archivo": "mundo/objetos/arbol_hechizado_2_dormido.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "despierto": {
+      "archivo": "mundo/objetos/arbol_hechizado_2_despierto.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "parpadeo": {
+      "archivo": "mundo/objetos/arbol_hechizado_2_parpadeo.png",
+      "cuadros": 5,
+      "fps": 12,
+      "loop": false
+     }
+    }
+   },
+   "arbol_seco_0": {
+    "w": 80,
+    "h": 112,
+    "apoyo": [
+     40,
+     107
+    ],
+    "solido": [
+     -5,
+     -5,
+     10,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbol_seco_0_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "arbol_seco_1": {
+    "w": 80,
+    "h": 112,
+    "apoyo": [
+     40,
+     107
+    ],
+    "solido": [
+     -5,
+     -5,
+     10,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbol_seco_1_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "sauce_v3": {
+    "w": 104,
+    "h": 124,
+    "apoyo": [
+     52,
+     119
+    ],
+    "solido": [
+     -7,
+     -6,
+     14,
+     6
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/sauce_v3_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "arbusto_verde_0": {
+    "w": 40,
+    "h": 34,
+    "apoyo": [
+     20,
+     30
+    ],
+    "solido": [
+     -12,
+     -5,
+     24,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbusto_verde_0_idle.png",
+      "cuadros": 9,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "arbusto_verde_1": {
+    "w": 40,
+    "h": 34,
+    "apoyo": [
+     20,
+     30
+    ],
+    "solido": [
+     -12,
+     -5,
+     24,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbusto_verde_1_idle.png",
+      "cuadros": 9,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "arbusto_moras_0": {
+    "w": 40,
+    "h": 34,
+    "apoyo": [
+     20,
+     30
+    ],
+    "solido": [
+     -12,
+     -5,
+     24,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbusto_moras_0_idle.png",
+      "cuadros": 9,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "arbusto_espinas_0": {
+    "w": 40,
+    "h": 34,
+    "apoyo": [
+     20,
+     30
+    ],
+    "solido": [
+     -12,
+     -5,
+     24,
+     5
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbusto_espinas_0_idle.png",
+      "cuadros": 9,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "abuelo_roble_v3": {
+    "w": 240,
+    "h": 228,
+    "apoyo": [
+     120,
+     220
+    ],
+    "solido": [
+     -28,
+     -16,
+     56,
+     16
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/abuelo_roble_v3_idle.png",
+      "cuadros": 9,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "telarana": {
+    "w": 40,
+    "h": 36,
+    "apoyo": [
+     6,
+     35
+    ],
+    "solido": null,
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/telarana_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   }
+  },
+  "particulas": {
+   "luciernaga": {
+    "archivo": "mundo/particulas/luciernaga.png",
+    "w": 8,
+    "h": 8,
+    "cuadros": 4,
+    "fps": 6
+   },
+   "hoja_verde": {
+    "archivo": "mundo/particulas/hoja_verde.png",
+    "w": 8,
+    "h": 8,
+    "cuadros": 4,
+    "fps": 6
+   },
+   "hoja_otono": {
+    "archivo": "mundo/particulas/hoja_otono.png",
+    "w": 8,
+    "h": 8,
+    "cuadros": 4,
+    "fps": 6
+   },
+   "mariposa_azul": {
+    "archivo": "mundo/particulas/mariposa_azul.png",
+    "w": 12,
+    "h": 12,
+    "cuadros": 2,
+    "fps": 8
+   },
+   "mariposa_naranja": {
+    "archivo": "mundo/particulas/mariposa_naranja.png",
+    "w": 12,
+    "h": 12,
+    "cuadros": 2,
+    "fps": 8
+   },
+   "mariposa_rosa": {
+    "archivo": "mundo/particulas/mariposa_rosa.png",
+    "w": 12,
+    "h": 12,
+    "cuadros": 2,
+    "fps": 8
+   },
+   "polen": {
+    "archivo": "mundo/particulas/polen.png",
+    "w": 4,
+    "h": 4,
+    "cuadros": 2,
+    "fps": 4
+   },
+   "brasa": {
+    "archivo": "mundo/particulas/brasa.png",
+    "w": 4,
+    "h": 4,
+    "cuadros": 3,
+    "fps": 8
+   },
+   "brillo": {
+    "archivo": "mundo/particulas/brillo.png",
+    "w": 8,
+    "h": 8,
+    "cuadros": 4,
+    "fps": 8
+   },
+   "espora": {
+    "archivo": "mundo/particulas/espora.png",
+    "w": 4,
+    "h": 4,
+    "cuadros": 2,
+    "fps": 4
+   },
+   "humo": {
+    "archivo": "mundo/particulas/humo.png",
+    "w": 16,
+    "h": 16,
+    "cuadros": 4,
+    "fps": 6
+   },
+   "polvo": {
+    "archivo": "mundo/particulas/polvo.png",
+    "w": 4,
+    "h": 4,
+    "cuadros": 2,
+    "fps": 4
+   },
+   "gota": {
+    "archivo": "mundo/particulas/gota.png",
+    "w": 4,
+    "h": 6,
+    "cuadros": 2,
+    "fps": 8
+   }
+  },
+  "criaturas": {
+   "cuervo": {
+    "w": 16,
+    "h": 16,
+    "anims": {
+     "quieto": {
+      "archivo": "mundo/criaturas/cuervo_quieto.png",
+      "cuadros": 4,
+      "fps": 3,
+      "loop": true
+     },
+     "picotear": {
+      "archivo": "mundo/criaturas/cuervo_picotear.png",
+      "cuadros": 5,
+      "fps": 8,
+      "loop": false
+     },
+     "volar": {
+      "archivo": "mundo/criaturas/cuervo_volar.png",
+      "cuadros": 4,
+      "fps": 12,
+      "loop": true
+     }
+    }
+   },
+   "cuervo_izq": {
+    "w": 16,
+    "h": 16,
+    "anims": {
+     "quieto": {
+      "archivo": "mundo/criaturas/cuervo_izq_quieto.png",
+      "cuadros": 4,
+      "fps": 3,
+      "loop": true
+     },
+     "picotear": {
+      "archivo": "mundo/criaturas/cuervo_izq_picotear.png",
+      "cuadros": 5,
+      "fps": 8,
+      "loop": false
+     },
+     "volar": {
+      "archivo": "mundo/criaturas/cuervo_izq_volar.png",
+      "cuadros": 4,
+      "fps": 12,
+      "loop": true
+     }
+    }
+   },
+   "murcielago": {
+    "w": 16,
+    "h": 8,
+    "anims": {
+     "volar": {
+      "archivo": "mundo/criaturas/murcielago_volar.png",
+      "cuadros": 2,
+      "fps": 10,
+      "loop": true
+     }
+    }
+   },
+   "ojos": {
+    "w": 16,
+    "h": 8,
+    "anims": {
+     "mirar": {
+      "archivo": "mundo/criaturas/ojos_mirar.png",
+      "cuadros": 4,
+      "fps": 2,
+      "loop": true
+     },
+     "parpadeo": {
+      "archivo": "mundo/criaturas/ojos_parpadeo.png",
+      "cuadros": 5,
+      "fps": 14,
+      "loop": false
+     }
+    }
+   },
+   "fuego_fatuo": {
+    "w": 16,
+    "h": 16,
+    "anims": {
+     "flotar": {
+      "archivo": "mundo/criaturas/fuego_fatuo_flotar.png",
+      "cuadros": 6,
+      "fps": 8,
+      "loop": true
+     }
+    }
+   },
+   "fuego_fatuo_violeta": {
+    "w": 16,
+    "h": 16,
+    "anims": {
+     "flotar": {
+      "archivo": "mundo/criaturas/fuego_fatuo_violeta_flotar.png",
+      "cuadros": 6,
+      "fps": 8,
+      "loop": true
+     }
+    }
+   }
+  },
+  "luz": "mundo/luz.png",
+  "nube": "mundo/nube.png",
+  "niebla": {
+   "nubes": "mundo/niebla_nubes.png",
+   "jirones": "mundo/niebla_jirones.png",
+   "notas": "Texturas de 256 que pegan por los 4 lados. Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla."
+  },
+  "referencia": "tools/pixel_forja/scripts/visor/runtime.js anima todo esto en Canvas 2D: es la referencia para el juego.",
+  "notas": "Orden de dibujo: agua (cuadros animados) > suelo (trozos de imagen, el agua es transparente) > objetos con capa suelo > objetos y personajes ordenados por y > luces (aditivo) > sombras de nubes. Cada zona del mapa trae musica, ambiente, luz, oscuridad y particulas."
+ },
+ "ui": {
+  "orbe_vida": {
+   "archivo": "ui/orbe_vida.png",
+   "w": 72,
+   "h": 72,
+   "cuadros": 11
+  },
+  "orbe_mana": {
+   "archivo": "ui/orbe_mana.png",
+   "w": 72,
+   "h": 72,
+   "cuadros": 11
+  },
+  "orbe_vida_ola": {
+   "archivo": "ui/orbe_vida_ola.png",
+   "w": 72,
+   "h": 72,
+   "cuadros": 4
+  },
+  "orbe_mana_ola": {
+   "archivo": "ui/orbe_mana_ola.png",
+   "w": 72,
+   "h": 72,
+   "cuadros": 4
+  },
+  "panel": {
+   "archivo": "ui/panel.png",
+   "w": 48,
+   "h": 48,
+   "cuadros": 1,
+   "nueve": [
+    12,
+    12,
+    12,
+    12
+   ]
+  },
+  "panel_hundido": {
+   "archivo": "ui/panel_hundido.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1,
+   "nueve": [
+    6,
+    6,
+    6,
+    6
+   ]
+  },
+  "tooltip": {
+   "archivo": "ui/tooltip.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1,
+   "nueve": [
+    6,
+    6,
+    6,
+    6
+   ]
+  },
+  "casillero": {
+   "archivo": "ui/casillero.png",
+   "w": 36,
+   "h": 36,
+   "cuadros": 1
+  },
+  "casillero_activo": {
+   "archivo": "ui/casillero_activo.png",
+   "w": 36,
+   "h": 36,
+   "cuadros": 1
+  },
+  "equipo_casco": {
+   "archivo": "ui/equipo_casco.png",
+   "w": 40,
+   "h": 40,
+   "cuadros": 1
+  },
+  "equipo_pecho": {
+   "archivo": "ui/equipo_pecho.png",
+   "w": 40,
+   "h": 40,
+   "cuadros": 1
+  },
+  "equipo_guantes": {
+   "archivo": "ui/equipo_guantes.png",
+   "w": 40,
+   "h": 40,
+   "cuadros": 1
+  },
+  "equipo_botas": {
+   "archivo": "ui/equipo_botas.png",
+   "w": 40,
+   "h": 40,
+   "cuadros": 1
+  },
+  "equipo_cinturon": {
+   "archivo": "ui/equipo_cinturon.png",
+   "w": 40,
+   "h": 40,
+   "cuadros": 1
+  },
+  "equipo_arma": {
+   "archivo": "ui/equipo_arma.png",
+   "w": 40,
+   "h": 40,
+   "cuadros": 1
+  },
+  "equipo_mano_libre": {
+   "archivo": "ui/equipo_mano_libre.png",
+   "w": 40,
+   "h": 40,
+   "cuadros": 1
+  },
+  "equipo_amuleto": {
+   "archivo": "ui/equipo_amuleto.png",
+   "w": 40,
+   "h": 40,
+   "cuadros": 1
+  },
+  "equipo_anillo": {
+   "archivo": "ui/equipo_anillo.png",
+   "w": 40,
+   "h": 40,
+   "cuadros": 1
+  },
+  "equipo_mascota": {
+   "archivo": "ui/equipo_mascota.png",
+   "w": 40,
+   "h": 40,
+   "cuadros": 1
+  },
+  "boton": {
+   "archivo": "ui/boton.png",
+   "w": 48,
+   "h": 20,
+   "cuadros": 3,
+   "nueve": [
+    8,
+    8,
+    6,
+    6
+   ]
+  },
+  "barra_marco": {
+   "archivo": "ui/barra_marco.png",
+   "w": 48,
+   "h": 14,
+   "cuadros": 1,
+   "nueve": [
+    6,
+    6,
+    6,
+    6
+   ]
+  },
+  "barra_jefe": {
+   "archivo": "ui/barra_jefe.png",
+   "w": 8,
+   "h": 8,
+   "cuadros": 1,
+   "nueve": [
+    1,
+    1,
+    2,
+    2
+   ]
+  },
+  "barra_xp": {
+   "archivo": "ui/barra_xp.png",
+   "w": 8,
+   "h": 4,
+   "cuadros": 1,
+   "nueve": [
+    1,
+    1,
+    1,
+    1
+   ]
+  },
+  "barra_vida_enemigo": {
+   "archivo": "ui/barra_vida_enemigo.png",
+   "w": 8,
+   "h": 3,
+   "cuadros": 1,
+   "nueve": [
+    1,
+    1,
+    1,
+    1
+   ]
+  },
+  "cinturon": {
+   "archivo": "ui/cinturon.png",
+   "w": 154,
+   "h": 44,
+   "cuadros": 1
+  },
+  "estandarte": {
+   "archivo": "ui/estandarte.png",
+   "w": 64,
+   "h": 32,
+   "cuadros": 1,
+   "nueve": [
+    10,
+    10,
+    4,
+    4
+   ]
+  },
+  "icono_bolsa": {
+   "archivo": "ui/icono_bolsa.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_cerrar": {
+   "archivo": "ui/icono_cerrar.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_ajustes": {
+   "archivo": "ui/icono_ajustes.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_mapa": {
+   "archivo": "ui/icono_mapa.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_oro": {
+   "archivo": "ui/icono_oro.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "icono_calavera": {
+   "archivo": "ui/icono_calavera.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "cursor_guantelete": {
+   "archivo": "ui/cursor_guantelete.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "cursor_mano": {
+   "archivo": "ui/cursor_mano.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 1
+  },
+  "marca_destino": {
+   "archivo": "ui/marca_destino.png",
+   "w": 24,
+   "h": 24,
+   "cuadros": 4
+  },
+  "numeros": {
+   "archivo": "ui/numeros.png",
+   "w": 7,
+   "h": 9,
+   "caracteres": "0123456789+-!",
+   "filas": [
+    "blanco",
+    "amarillo",
+    "rojo",
+    "verde",
+    "azul"
+   ]
+  },
+  "inventario": {
+   "archivo": "ui/inventario.png",
+   "w": 280,
+   "h": 410,
+   "cuadros": 1,
+   "layout": {
+    "w": 280,
+    "h": 410,
+    "titulo": [
+     8,
+     6,
+     264,
+     20
+    ],
+    "equipo": {
+     "mascota": [
+      52,
+      38,
+      40,
+      40
+     ],
+     "casco": [
+      120,
+      38,
+      40,
+      40
+     ],
+     "amuleto": [
+      188,
+      38,
+      40,
+      40
+     ],
+     "arma": [
+      52,
+      84,
+      40,
+      40
+     ],
+     "pecho": [
+      120,
+      84,
+      40,
+      40
+     ],
+     "mano_libre": [
+      188,
+      84,
+      40,
+      40
+     ],
+     "guantes": [
+      52,
+      130,
+      40,
+      40
+     ],
+     "cinturon": [
+      120,
+      130,
+      40,
+      40
+     ],
+     "anillo_2": [
+      188,
+      130,
+      40,
+      40
+     ],
+     "anillo_1": [
+      52,
+      176,
+      40,
+      40
+     ],
+     "botas": [
+      120,
+      176,
+      40,
+      40
+     ],
+     "retrato": [
+      188,
+      176,
+      40,
+      40
+     ]
+    },
+    "rejilla": {
+     "x": 14,
+     "y": 256,
+     "cols": 7,
+     "filas": 4,
+     "celda": 36
+    },
+    "oro": {
+     "icono": [
+      16,
+      228,
+      24,
+      24
+     ],
+     "texto": [
+      44,
+      232,
+      120,
+      16
+     ]
+    }
+   }
+  }
+ },
+ "audio": {
+  "espadazo": "audio/espadazo.wav",
+  "golpe": "audio/golpe.wav",
+  "critico": "audio/critico.wav",
+  "enemigo_dolor": "audio/enemigo_dolor.wav",
+  "enemigo_muere": "audio/enemigo_muere.wav",
+  "jefe_rugido": "audio/jefe_rugido.wav",
+  "jefe_pisoton": "audio/jefe_pisoton.wav",
+  "moneda": "audio/moneda.wav",
+  "oro_mucho": "audio/oro_mucho.wav",
+  "pocion": "audio/pocion.wav",
+  "curar": "audio/curar.wav",
+  "cofre_abrir": "audio/cofre_abrir.wav",
+  "romper": "audio/romper.wav",
+  "portal": "audio/portal.wav",
+  "subir_nivel": "audio/subir_nivel.wav",
+  "paso": "audio/paso.wav",
+  "ladrido": "audio/ladrido.wav",
+  "aullido": "audio/aullido.wav",
+  "mordida": "audio/mordida.wav",
+  "recoger": "audio/recoger.wav",
+  "legendario": "audio/legendario.wav",
+  "click": "audio/click.wav",
+  "abrir_inventario": "audio/abrir_inventario.wav",
+  "error": "audio/error.wav",
+  "jugador_dolor": "audio/jugador_dolor.wav",
+  "magia": "audio/magia.wav",
+  "musica_bosque": "audio/musica_bosque.wav",
+  "musica_jefe": "audio/musica_jefe.wav",
+  "musica_victoria": "audio/musica_victoria.wav",
+  "ambiente_bosque": "audio/ambiente_bosque.wav",
+  "ambiente_agua": "audio/ambiente_agua.wav",
+  "ambiente_noche": "audio/ambiente_noche.wav",
+  "ambiente_viento": "audio/ambiente_viento.wav",
+  "ambiente_cueva": "audio/ambiente_cueva.wav",
+  "ambiente_magia": "audio/ambiente_magia.wav"
+ },
+ "creditos": "CREDITOS.txt"
+}
