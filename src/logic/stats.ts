@@ -15,12 +15,30 @@ export interface StatsHeroe {
   ataquesPorSeg: number
   armadura: number
   critChance: number
+  vidaRegen: number
+  curacionPct: number
+  velocidadPct: number
+  mascotaDanoPct: number
+  mascotaArmaduraPct: number
 }
 
 export interface BonosEquipo {
   vida?: number
   mana?: number
+  /** daño del arma: se suma al mínimo y al máximo del ataque básico */
+  danoMinPlano?: number
+  danoMaxPlano?: number
+  /** igual para los dos (compatibilidad con pruebas viejas) */
   danoPlano?: number
+  /** regeneración extra de vida por segundo */
+  vidaRegen?: number
+  /** % de curación recibida */
+  curacionPct?: number
+  /** % de velocidad al caminar */
+  velocidadPct?: number
+  /** % de daño y de armadura de la mascota */
+  mascotaDanoPct?: number
+  mascotaArmaduraPct?: number
   danoPct?: number
   armadura?: number
   critChance?: number
@@ -43,19 +61,25 @@ export function statsDe(clase: ClaseId, nivel: number, bonos: BonosEquipo = {}):
   const n = Math.max(1, Math.min(PROGRESION.nivelMax, Math.floor(nivel)))
   const subidas = n - 1
   const danoMult = (1 + (subidas * PROGRESION.danoPorNivelPct) / 100) * (1 + (bonos.danoPct ?? 0) / 100)
-  const plano = bonos.danoPlano ?? 0
+  const planoMin = (bonos.danoPlano ?? 0) + (bonos.danoMinPlano ?? 0)
+  const planoMax = (bonos.danoPlano ?? 0) + (bonos.danoMaxPlano ?? 0)
   return {
     clase,
     nivel: n,
     vidaMax: b.vida + subidas * PROGRESION.vidaPorNivel + (bonos.vida ?? 0),
     manaMax: b.mana + subidas * PROGRESION.manaPorNivel + (bonos.mana ?? 0),
     danoMult,
-    danoMin: (b.dano[0] + plano) * danoMult,
-    danoMax: (b.dano[1] + plano) * danoMult,
+    danoMin: (b.dano[0] + planoMin) * danoMult,
+    danoMax: (b.dano[1] + planoMax) * danoMult,
     alcance: b.alcance,
     ataquesPorSeg: b.ataquesPorSeg * (1 + (bonos.velocidadAtaquePct ?? 0) / 100),
     armadura: bonos.armadura ?? 0,
     critChance: 0.05 + (bonos.critChance ?? 0) / 100,
+    vidaRegen: bonos.vidaRegen ?? 0,
+    curacionPct: bonos.curacionPct ?? 0,
+    velocidadPct: bonos.velocidadPct ?? 0,
+    mascotaDanoPct: bonos.mascotaDanoPct ?? 0,
+    mascotaArmaduraPct: bonos.mascotaArmaduraPct ?? 0,
   }
 }
 

@@ -217,6 +217,14 @@ export const BOTIN = {
   cofreLegendarioExtra: 'pet_armor_3',
   pociones: { vidaPct: 40, manaPct: 50, duracionS: 1 },
   cinturonInicial: ['potion_health_minor', 'potion_health_minor', 'potion_mana_minor', null] as (string | null)[],
+  /** probabilidad de que un objeto normal sorteado sea un mágico `m_*` (si hay uno que le toque a su nivel) */
+  magicoProb: 0.25,
+  /** el legendario del Claro Escondido por clase de heroína */
+  legendarioClaro: { amazona: 'pluma_de_cuervo', druida: 'ramita_del_abuelo', paladin: 'filo_del_alba', hechicera: 'rama_del_bosque_eterno' } as Record<string, string>,
+  /** pociones que sueltan los rompibles cuando sale poción */
+  pocionesSuelo: ['potion_health_minor', 'potion_mana_minor'] as string[],
+  /** el tamaño de la moneda según la cantidad de oro: hasta small, medium, large y lo demás huge */
+  oroTamano: { small: 3, medium: 8, large: 25 },
   bolsaCasillas: 28,
   cinturonCasillas: 4,
 }

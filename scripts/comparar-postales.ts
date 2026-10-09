@@ -19,11 +19,12 @@ const carpetaFase = join(raiz, fase)
 mkdirSync(raiz, { recursive: true })
 
 /** Pantallas que no son postales del mapa: se muestran aparte */
-const PANTALLAS = ['titulo', 'seleccion', 'pausa']
+const PANTALLAS_FIJAS = ['titulo', 'seleccion', 'pausa']
+const esPantalla = (n: string) => PANTALLAS_FIJAS.includes(n) || /^(combate_|botin_|inventario|victoria|jefe_|continuara)/.test(n)
 const nombres = Object.keys(manifest.mundo.postales)
 // postales que el mapa trae y el manifest todavía no (las del taller que llegan después)
 const extra = existsSync(carpetaFase)
-  ? readdirSync(carpetaFase).filter((f) => f.endsWith('.png') && !f.endsWith('_tablet.png')).map((f) => f.replace('.png', '')).filter((n) => !nombres.includes(n) && !PANTALLAS.includes(n))
+  ? readdirSync(carpetaFase).filter((f) => f.endsWith('.png') && !f.endsWith('_tablet.png')).map((f) => f.replace('.png', '')).filter((n) => !nombres.includes(n) && !esPantalla(n))
   : []
 const todas = [...nombres, ...extra]
 
@@ -41,7 +42,7 @@ const fila = (n: string) => {
 </section>`
 }
 
-const pantallas = PANTALLAS.filter((n) => existsSync(join(carpetaFase, `${n}.png`)))
+const pantallas = (existsSync(carpetaFase) ? readdirSync(carpetaFase) : []).filter((f) => f.endsWith('.png') && !f.endsWith('_tablet.png')).map((f) => f.replace('.png', '')).filter(esPantalla)
 const seccionPantallas = pantallas.length
   ? `<section><h2>Pantallas del juego</h2><div class="par">${pantallas
       .map((n) => `<figure><img src="${fase}/${n}.png" alt="${n}"><figcaption>${n} (960 x 540)</figcaption></figure>${existsSync(join(carpetaFase, `${n}_tablet.png`)) ? `<figure><img src="${fase}/${n}_tablet.png" alt="${n} tablet"><figcaption>${n} en la tablet</figcaption></figure>` : ''}`)
