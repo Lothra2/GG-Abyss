@@ -75,9 +75,11 @@ export const HUD = {
   ORBE: 72,
 }
 
-/** Tamaño de la grilla de celdas para activar decorados */
-export const CELDA_DECOS = 256
-export const MARGEN_DECOS = 260
+/**
+ * Decorados: se activan los que tocan la pantalla más `entra` px, se sueltan al pasar `sale` px.
+ * La grilla de búsqueda usa celdas de `celda` px. El tope de activos se prueba en e2e.
+ */
+export const DECOS = { celda: 128, entra: 48, sale: 96, topeActivos: 450 } as const
 
 export const CLAVE_GUARDADO = 'ggabyss:v1:perfil:'
 export const CLAVE_PERFILES = 'ggabyss:v1:perfiles'
