@@ -660,6 +660,8 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 
 **Demo con las niñas:** la pelea. Rick no ayuda. Ver cuánto tarda cada una y si Alana entiende los avisos del piso.
 
+**Notas de cierre F4:** hecho como el plan, con los radios de aviso en 48 y 96 (ver PROGRESO). La pelea se corta si la heroína se aleja más de 60 px de la arena. Para después: el jefe no persigue a la heroína fuera de la arena ni hay segunda fase de música.
+
 ### F5. Pulido y deploy
 
 **Objetivo:** que funcione bien en las tablets y quede en Netlify instalable.

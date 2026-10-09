@@ -4,7 +4,7 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 
 ## Estado
 
-- Fase actual: F4 (minotauro) en curso. F3 cerrada (botín, inventario, rompibles, Thor armado), F2 y F1b cerradas antes.
+- Fase actual: F5 (pulido y deploy) en curso. F4 cerrada (typecheck, 236 tests, build, 104 e2e en verde y 2 que se saltan a propósito). F1b a F3 cerradas antes.
 - F1b hecha en código: Titulo (logo, Toca para empezar, botón Créditos), SeleccionJugador (tarjetas del manifest, aura y Thor), guardado con migración, Presentacion (paneo la primera vez), Entidades (cofres, carteles, fogatas, Abuelo), HUD (contadores, oro, pausa, panel de cartel), Pausa (Noche, Música, Efectos, calidad, modo peque, otra jugadora, créditos, seguir), Creditos (CREDITOS.txt con scroll)
 - F1a hecha: grilla, A*, movimiento, zonas, descubrimiento; MundoVista, Decos (pool por celdas, viento, hechizados, copas, pasto), Heroina, ThorSprite (sigue el rastro), Criaturas, Camara, Entrada (toque, mantener, teclado), Sonido; fx: Luces (RenderTexture con pozos), Bruma, Nubes, Particulas, AtmosferaFX (postFX soft light y viñeta), Atmosfera; escenas Mundo y HUD; postales en docs/capturas/f1a y comparar.html
 - F0 hecha: tooling (Vite, TS, Vitest, Playwright, Netlify), cargador del kit, mapa puro, azar, direccion, escala entera, config, Boot, SalaKit, verificar-kit, ganchos de prueba, 46 tests, 12 e2e (1 salta a propósito)
@@ -50,7 +50,7 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 
 ## Lo que falta
 
-F4 (cierre), F5 (ver PLAN.md sección 5)
+F5 (cierre: medir en las tablets de verdad, publicar en Netlify) (ver PLAN.md sección 5)
 
 ## Comandos para retomar
 
@@ -93,6 +93,9 @@ npm run typecheck && npm test && npm run build && npm run e2e
 
 ### F4 (minotauro)
 - La arena está al noreste del mapa (`arena_del_minotauro` en el comparador). Entrar caminando hasta el centro dispara la pelea. Probar con nivel 6 o más (Alana con nivel 4 en modo peque).
+- Capturas en `docs/capturas/f4/`: `jefe_pelea.png` (con el aviso rojo en el piso), `victoria.png` (portal abierto, cofre, oro), `continuara.png`, y las 13 postales con la arena en pelea. Todas con su versión `_tablet`.
+- Balance: `scripts/simular-jefe.ts` corre la máquina de estados real del jefe contra un modelo simple de la heroína (esquiva la mitad de los avisos, pega el 60 % del tiempo, Thor muerde). Con ese modelo todas las clases ganan casi siempre a nivel 6 sin pociones, la druida en modo peque gana a nivel 4, y el paladín pierde seguido a nivel 1 (59 % de victorias). Es un termómetro, no el juego: la prueba de verdad es verlas pelear.
+- Para ganar rápido en una prueba: abrir `?test=1&heroe=rick` y en la consola `__ABYSS__.ponerNivel(10)`, `__ABYSS__.entrarArena()`, `__ABYSS__.danarJefe(9999)`.
 - Los avisos grandes se ven en el piso: círculo que se llena (pisotón y salto), elipse delante (golpe fuerte) y línea roja (la carga). En modo peque duran 1.8 s.
 
 ## Pasos solo de Rick
