@@ -6,6 +6,8 @@ import { instalarGanchos } from './test/ganchos'
 import { Boot } from './scenes/Boot'
 import { Titulo } from './scenes/Titulo'
 import { SalaKit } from './scenes/SalaKit'
+import { Mundo } from './scenes/Mundo'
+import { HUD } from './scenes/HUD'
 
 if (params.seed !== null) fijarSemilla(params.seed)
 
@@ -23,7 +25,7 @@ const game = new Phaser.Game({
   scale: { mode: Phaser.Scale.NONE, width: escala.ancho, height: escala.alto, zoom: escala.cssZoom },
   render: { powerPreference: 'high-performance', mipmapFilter: 'NEAREST' },
   input: { activePointers: 3, touch: { capture: true } },
-  scene: [Boot, Titulo, SalaKit],
+  scene: [Boot, Titulo, SalaKit, Mundo, HUD],
   callbacks: { preBoot: (g) => g.registry.set('escala', escala) },
 })
 

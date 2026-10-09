@@ -707,6 +707,10 @@ Aquí van las cosas que aparezcan en una fase y sean de otra. Cada nota con fech
 - Ciclo de día y noche en el Mundo 2. El control de Noche ya deja todo listo.
 - Exportar las heroínas con los 5 niveles de armadura cuando el juego lo pida.
 - Mundo 2: el `portal_jefe` ya trae `destino: mundo2`.
+- F1a: `niebla_jirones.png` no repite sin costura hacia los lados. El juego usa una copia espejada armada en código y se pidió al taller rehacerla (ASSETS_PENDIENTES.md #27).
+- F1a: la zona Arena del Minotauro pide `musica: jefe`. La música del jefe solo la controla la pelea (F4), entrar a la arena sigue con la del bosque.
+- F1a: el cálculo de decorados activos usa el rectángulo exacto de cada sprite (más 48 px para entrar y 96 para salir), no celdas de 256 px. Con eso hay unos 120 activos en la vista de la tablet y menos de 350 en 1280 x 720.
+- F1a: la escala entera se resuelve con Scale.NONE y el canvas a resolución lógica agrandado con pixelado CSS (igual que el visor), no con Scale.RESIZE y zoom de cámara. El resultado en pantalla es el mismo y pinta 4 veces menos en el iPad.
 
 ---
 

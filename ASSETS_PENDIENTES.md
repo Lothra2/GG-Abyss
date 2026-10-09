@@ -240,6 +240,14 @@ Coordenadas en cuadros de 32 px. El taller decide el detalle.
 
 ---
 
+### 27. La bruma `niebla_jirones.png` no repite hacia los lados
+
+- **Qué pasa:** el kit dice que las texturas de bruma "pegan por los 4 lados", pero `niebla_jirones.png` (256 x 256) tiene el borde izquierdo y el derecho distintos (alfa 128, 64, 32, 0 contra 0, 112, 0, 32). Arriba y abajo sí empatan. Al repetirla se ve una costura vertical cada 512 px (a escala 2), y el visor del taller la tiene igual.
+- **Pedido:** rehacer `mundo/niebla_jirones.png` para que repita sin costura en horizontal. `niebla_nubes.png` está bien.
+- **Mientras tanto:** el juego la usa junto a una copia espejada (512 x 256) armada en código, que empata en los bordes.
+
+---
+
 ## Sonidos para revisar
 
 Se llena en F0 cuando Rick oiga todo en la sala del kit (`?kit=1`). Formato: nombre, qué suena mal, cómo debería sonar.

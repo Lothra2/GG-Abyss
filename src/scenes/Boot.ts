@@ -67,6 +67,7 @@ export class Boot extends Phaser.Scene {
     const marco = e.add.nineslice(0, 0, K.ui('barra_marco'), undefined, 240, 14, 6, 6, 6, 6)
     const relleno = e.add.nineslice(0, 0, K.ui('barra_xp'), undefined, 1, 6, 1, 1, 1, 1).setOrigin(0, 0.5)
     const dibujar = (progreso: number, ancho: number, alto: number) => {
+      if (!marco.active || !relleno.active || !titulo.active) return
       const w = Math.min(240, Math.max(96, ancho - 40))
       titulo.setPosition(ancho / 2, alto / 2 - 28)
       marco.setSize(w, 14).setPosition(ancho / 2, alto / 2 + 12)
