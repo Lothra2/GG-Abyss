@@ -37,6 +37,7 @@ export interface ContextoJefe {
 }
 
 interface Telegrafo {
+  ataque: string
   s?: Phaser.GameObjects.Sprite
   g?: Phaser.GameObjects.Graphics
   resta: number
@@ -301,7 +302,7 @@ export class JefeSprite implements Atacable {
 
   private mostrarAviso(a: NonNullable<OrdenJefe['aviso']>): void {
     const tex = K.obj('aviso_jefe', 'llenar')
-    const t: Telegrafo = { resta: a.seg, total: a.seg }
+    const t: Telegrafo = { ataque: a.ataque, resta: a.seg, total: a.seg }
     if (a.forma === 'linea') {
       t.linea = { x: a.x, y: a.y, dx: a.dx, dy: a.dy, largo: a.largo, ancho: a.ancho }
       t.g = this.escena.add.graphics().setDepth(PROF.SOMBRAS + 2)
@@ -370,8 +371,8 @@ export class JefeSprite implements Atacable {
   }
 
   /** Para las pruebas: cuántos avisos hay y sus datos */
-  avisos(): { forma: string; resta: number; total: number }[] {
-    return this.telegrafos.map((t) => ({ forma: t.linea ? 'linea' : t.s ? 'circulo' : 'otro', resta: Math.round(t.resta * 100) / 100, total: t.total }))
+  avisos(): { ataque: string; forma: string; resta: number; total: number }[] {
+    return this.telegrafos.map((t) => ({ ataque: t.ataque, forma: t.linea ? 'linea' : t.s ? 'circulo' : 'otro', resta: Math.round(t.resta * 100) / 100, total: t.total }))
   }
 
   private poner(anim: string, forzar = false, fps?: number): void {

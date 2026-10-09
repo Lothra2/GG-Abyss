@@ -28,6 +28,8 @@ const VOL_MUSICA = 0.45
 export class Sonido {
   private lazos = new Map<string, Lazo>()
   private ambienteMeta: string | null = null
+  private musicaFija: string | null = null
+  private ultimaMusicaZona = 'musica_bosque'
   private musicaMeta: string | null = null
   private ultimoPaso = 0
   private ultimaVariante = -1
@@ -42,12 +44,15 @@ export class Sonido {
   fijarZona(zona: Zona | null): void {
     this.ambienteMeta = `ambiente_${zona?.ambiente ?? 'bosque'}`
     const musica = zona?.musica && zona.musica !== 'jefe' ? zona.musica : 'bosque'
-    this.musicaMeta = `musica_${musica}`
+    // la música de la pelea (o de la victoria) no se pisa al cambiar de zona
+    this.musicaMeta = this.musicaFija ?? `musica_${musica}`
+    this.ultimaMusicaZona = `musica_${musica}`
   }
 
-  /** La pelea con el jefe manda la música */
+  /** La pelea con el jefe manda la música. Con null se suelta y vuelve la de la zona. */
   fijarMusica(nombre: string | null): void {
-    this.musicaMeta = nombre
+    this.musicaFija = nombre
+    this.musicaMeta = nombre ?? this.ultimaMusicaZona
   }
 
   private asegurar(nombre: string, fundido: number): Lazo | null {

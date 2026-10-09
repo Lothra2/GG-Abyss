@@ -5,7 +5,7 @@ import { abrirMundo, esperarEscena, gancho, sinErrores, vigilarErrores } from '.
 
 interface Jefe {
   existe: boolean; estado: string; fase: number; vida: number; vidaMax: number; peleando: boolean; vivo: boolean; x: number; y: number
-  ratas: number; anillo: boolean; avisos: { forma: string; resta: number; total: number }[]; vencido: boolean; portal: boolean; cofreJefe: boolean
+  ratas: number; anillo: boolean; avisos: { ataque: string; forma: string; resta: number; total: number }[]; vencido: boolean; portal: boolean; cofreJefe: boolean
   piedras: number; arena: { x: number; y: number; radio: number }
 }
 
@@ -88,7 +88,7 @@ test.describe('El minotauro', () => {
       for (let t = 0; t < 120; t += 0.1) {
         await gancho(page, 'curarTodo')
         await avanzar(page, 0.1)
-        for (const a of (await jefe(page)).avisos) if (a.total >= 1) totales.add(Math.round(a.total * 100) / 100)
+        for (const a of (await jefe(page)).avisos) if (a.ataque !== 'grito') totales.add(Math.round(a.total * 100) / 100)
         if (totales.size > 0 && t > 40) break
       }
       expect(totales.size, `${heroe}: no vio avisos grandes`).toBeGreaterThan(0)

@@ -106,6 +106,8 @@ export class Mundo extends Phaser.Scene {
   private portalJefe: { s: Phaser.GameObjects.Sprite; x: number; y: number; luz: string } | null = null
   private saliendoAContinuara = false
   private piedrasEncendidas = 0
+  private timersPiedras: Phaser.Time.TimerEvent[] = []
+  private musicaVictoriaPuesta = false
   private victoriaVista = false
   cat!: Catalogo
   private pendiente: Objetivo | null = null
@@ -420,6 +422,12 @@ export class Mundo extends Phaser.Scene {
     // si la heroína se va lejos de la arena (un salto de prueba, por ejemplo) la pelea se corta sin curar al jefe
     if (j.peleando && Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) > a.radio + 60) this.alCaerEnArena()
     j.update({ dt, heroeX: this.heroina.x, heroeY: this.heroina.y, heroeVivo: !this.combate.caido, modoPeque: this.combate.modoPeque, ratasVivas: this.enemigos.invocadasVivas })
+    // al salir de la arena después de ganar, vuelve la música del bosque
+    if (this.musicaVictoriaPuesta && Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) > a.radio + 40) {
+      this.musicaVictoriaPuesta = false
+      this.sonido.fijarMusica(null)
+      this.sonido.fijarZona(this.atmosfera.zona)
+    }
     // el portal: se entra caminando
     const p = this.portalJefe
     if (p && !this.saliendoAContinuara && !this.combate.caido && Math.hypot(this.heroina.x - p.x, this.heroina.y - (p.y - 16)) < 30) this.irAContinuara()
@@ -469,11 +477,13 @@ export class Mundo extends Phaser.Scene {
         if (!rapido) this.sonido.efecto('magia', { volumen: 0.35, rate: 0.8 + i * 0.05 })
       }
       if (rapido) f()
-      else this.time.delayedCall(i * 260, f)
+      else this.timersPiedras.push(this.time.delayedCall(i * 260, f))
     })
   }
 
   private apagarPiedras(): void {
+    for (const t of this.timersPiedras) t.remove(false)
+    this.timersPiedras = []
     const a = this.arena
     if (!a) return
     for (const p of this.decos.posicionesDe('piedra_arena')) if (Math.hypot(p.x - a.x, p.y - a.y) <= a.radio + 80) this.decos.fijarAnim('piedra_arena', p.x, p.y, 'idle')
@@ -487,6 +497,7 @@ export class Mundo extends Phaser.Scene {
     this.enemigos.quitarInvocadas()
     this.soltarAnillo()
     this.apagarPiedras()
+    this.sonido.fijarMusica(null)
     this.sonido.fijarZona(this.atmosfera.zona)
     this.guardar()
   }
@@ -507,6 +518,7 @@ export class Mundo extends Phaser.Scene {
     }
     if (!yaVencido) {
       this.sonido.fijarMusica('musica_victoria')
+      this.musicaVictoriaPuesta = true
       this.sonido.efecto('legendario', { volumen: 0.8 })
       if (a) {
         if (this.anims.exists('lluvia_de_oro')) {

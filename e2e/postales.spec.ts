@@ -130,3 +130,41 @@ test('captura el botín en el piso y el inventario', async ({ browser }) => {
     await ctx.close()
   }
 })
+
+/** F4: la pelea con un aviso en el piso, la victoria con el portal abierto y la pantalla de Continuará */
+test('captura la pelea, la victoria y Continuará', async ({ browser }) => {
+  test.setTimeout(400_000)
+  mkdirSync(carpeta, { recursive: true })
+  const vistas = [
+    { sufijo: '', ctx: { viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 } },
+    { sufijo: '_tablet', ctx: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
+  ]
+  for (const v of vistas) {
+    const ctx = await browser.newContext(v.ctx)
+    const page = await ctx.newPage()
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'rick')
+    await gancho(page, 'ponerNivel', 10)
+    await gancho(page, 'entrarArena')
+    await gancho(page, 'avanzar', 0.3)
+    await gancho(page, 'danarJefe', 650 * 0.41)
+    // se avanza hasta que haya un aviso en el piso (círculo o frente) con el reloj a la mitad
+    for (let t = 0; t < 120; t += 0.1) {
+      await gancho(page, 'curarTodo')
+      await gancho(page, 'avanzar', 0.1)
+      const j = await gancho<{ avisos: { forma: string; resta: number; total: number; ataque: string }[] }>(page, 'jefe')
+      if (j.avisos.some((a) => a.forma !== 'otro' && a.ataque !== 'grito' && a.resta < a.total * 0.5 && a.resta > 0.2)) break
+    }
+    await page.waitForTimeout(600)
+    await page.screenshot({ path: join(carpeta, `jefe_pelea${v.sufijo}.png`) })
+    await gancho(page, 'danarJefe', 9999)
+    await page.waitForTimeout(9000)
+    await page.screenshot({ path: join(carpeta, `victoria${v.sufijo}.png`) })
+    await gancho(page, 'irAlPortal')
+    await esperarEscena(page, 'Continuara')
+    await page.waitForTimeout(2500)
+    await page.screenshot({ path: join(carpeta, `continuara${v.sufijo}.png`) })
+    await sinErrores(errores)
+    await ctx.close()
+  }
+})
