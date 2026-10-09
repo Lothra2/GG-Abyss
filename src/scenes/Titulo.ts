@@ -19,6 +19,7 @@ export class Titulo extends Phaser.Scene {
   private logoTexto?: Phaser.GameObjects.BitmapText
   private toca!: Phaser.GameObjects.BitmapText
   private icono!: Phaser.GameObjects.Image
+  private placa!: Phaser.GameObjects.NineSlice
   private botonCreditos!: Boton
   private empezando = false
   private musica?: Phaser.Sound.BaseSound
@@ -37,9 +38,10 @@ export class Titulo extends Phaser.Scene {
       if (this.anims.exists('logo')) this.logo.play('logo')
     } else this.logoTexto = texto(this, 0, 0, 'GG Abyss', 'fuente_titulo', 3, { origen: [0.5, 0.5], profundidad: 100 })
 
+    this.placa = this.add.nineslice(0, 0, K.ui('panel_hundido'), undefined, 100, 40, 6, 6, 6, 6).setOrigin(0.5, 0.5).setAlpha(0.85).setDepth(99)
     this.toca = texto(this, 0, 0, 'Toca para empezar', 'fuente_ui', 2, { origen: [0.5, 0.5], tinte: 0xffd27a, profundidad: 100 })
     this.icono = this.add.image(0, 0, K.ui('icono_jugar')).setDepth(100)
-    this.tweens.add({ targets: [this.toca, this.icono], alpha: 0.3, duration: 900, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' })
+    this.tweens.add({ targets: [this.toca, this.icono], alpha: 0.6, duration: 900, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' })
 
     // la música arranca sola cuando el navegador deja (el primer toque la desbloquea)
     const nombre = this.cache.audio.exists(K.aud('musica_titulo')) ? 'musica_titulo' : 'ambiente_magia'
@@ -90,6 +92,7 @@ export class Titulo extends Phaser.Scene {
     const total = 24 + 8 + this.toca.displayWidth
     const y = Math.round(h * 0.78)
     this.botonCreditos.setPosition(w - 6, h - 6)
+    this.placa.setPosition(Math.round(w / 2), y).setSize(total + 28, Math.max(36, this.toca.displayHeight + 16))
     this.icono.setPosition(Math.round(w / 2 - total / 2 + 12), y)
     this.toca.setPosition(Math.round(w / 2 - total / 2 + 24 + 8 + this.toca.displayWidth / 2), y)
   }

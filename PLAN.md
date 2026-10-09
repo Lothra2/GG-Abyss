@@ -563,6 +563,8 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 
 **Demo con las niñas:** cada una elige su tarjeta, sale del portal con Thor, busca los cofres secretos y descubre todas las zonas. Pregunta para Sophie: "¿cuál zona te gustó más?". Para Alana: ver si encuentra sola el Anillo de las Hadas siguiendo las luces.
 
+**Notas de cierre F1b:** hecho con FondoAbismo en vez de recortar la postal a mano. La pausa usa `icono_pausa` (el taller lo entregó) en vez de `icono_ajustes`. Quedó para después: el Abuelo Roble solo sonríe al tocarlo, no al pasar cerca.
+
 ### F2. Combate
 
 **Objetivo:** pelear con ratas, calabazas, goblins y el trol, con habilidades por clase, números de daño, orbes, XP y el rescate de Thor.

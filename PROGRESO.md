@@ -4,7 +4,7 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 
 ## Estado
 
-- Fase actual: F1b en cierre (título, selección, guardado, pausa, créditos). F1a cerrada antes.
+- Fase actual: F1b cerrada (typecheck, 117 tests, build y 68 e2e en verde, 2 se saltan a propósito). Siguiente: F2 (combate).
 - F1b hecha en código: Titulo (logo, Toca para empezar, botón Créditos), SeleccionJugador (tarjetas del manifest, aura y Thor), guardado con migración, Presentacion (paneo la primera vez), Entidades (cofres, carteles, fogatas, Abuelo), HUD (contadores, oro, pausa, panel de cartel), Pausa (Noche, Música, Efectos, calidad, modo peque, otra jugadora, créditos, seguir), Creditos (CREDITOS.txt con scroll)
 - F1a hecha: grilla, A*, movimiento, zonas, descubrimiento; MundoVista, Decos (pool por celdas, viento, hechizados, copas, pasto), Heroina, ThorSprite (sigue el rastro), Criaturas, Camara, Entrada (toque, mantener, teclado), Sonido; fx: Luces (RenderTexture con pozos), Bruma, Nubes, Particulas, AtmosferaFX (postFX soft light y viñeta), Atmosfera; escenas Mundo y HUD; postales en docs/capturas/f1a y comparar.html
 - F0 hecha: tooling (Vite, TS, Vitest, Playwright, Netlify), cargador del kit, mapa puro, azar, direccion, escala entera, config, Boot, SalaKit, verificar-kit, ganchos de prueba, 46 tests, 12 e2e (1 salta a propósito)
@@ -24,12 +24,17 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 - F1a, las pruebas con ganchos: `avanzar(seg, parar)` mueve el mundo en pasos de 1/60 (uno completo cada 3), `teleport`, `irAPostal`, etc. Chromium sin GPU dibuja lento (5 a 25 fps en 1280 x 720), por eso los gestos reales se esperan con poll.
 - F1a, postales: la heroína se para en el punto libre más cercano a (postal + 36, +56) para no tapar lo que muestra la postal. Con `?postal=1` no se abre el HUD.
 - Calidad automática por fps: desactivada con `?test=1`.
+- F1b, el título usa FondoAbismo (postal de la arena como fondo, luces desde los objetos del mapa, bruma y partículas) y la selección usa el mismo fondo más oscuro.
+- F1b, entrar con `?heroe=<id>` ahora carga la partida guardada de ese perfil (antes empezaba siempre nueva). Con `?heroe=` no hay paneo salvo `?presentacion=1`.
+- F1b, el botón `crearBoton` se hunde 1 px al presionarlo sin pisar la posición que le dé la escena (antes saltaba a la esquina y perdía el toque).
+- F1b, la pausa deja el mundo en pausa con `scene.pause('Mundo')` y el sonido sigue vivo para oír los deslizadores. Los créditos se limpian de direcciones web para que quepan en pantalla.
+- F1b, las pruebas e2e llegan a cofres, carteles y fogatas por la parada del objeto (`teleport` a la parada): la caminata larga ya la cubre F1a.
 
 - Entrega del taller (5 tandas, submódulo en 8ba7f2a): adoptada en F1a. Decos usa tronco y copa por separado, pasto con sus anims, capa `superficie` para los pasos, 13 postales. Falta usar en sus fases: iconos de cartel (F1b), Abuelo que sonríe (F1b), títulos y logo (F1b), flecha y naturaleza (F2), botín bajo (F3), Thor cava (F3), minotauro 96 y carga (F4), íconos de app (F5). En balance se quitaron las escalas temporales del trol y del minotauro.
 
 ## Lo que falta
 
-F0, F1a, F1b, F2, F3, F4, F5 (ver PLAN.md sección 5)
+F2, F3, F4, F5 (ver PLAN.md sección 5)
 
 ## Comandos para retomar
 
@@ -48,6 +53,13 @@ npm run typecheck && npm test && npm run build && npm run e2e
 - Mi opinión honesta: el Anillo de las Hadas, la Arena y el Abuelo Roble se ven mejor que las postales del kit (luz, bruma, brillos). El Puente del Trol y Las Ruinas se ven más apagados que las del kit por la bruma (niebla 0.4 a 0.5): si te parecen lavadas, bajo el alfa de la bruma o su escala.
 - Probar en el iPad y el Android: `npm run build && npm run preview`, abrir `http://<ip>:4173/?heroe=sophie` (o `alana`, `rick`, `steph`). Con `&test=1` aparece el medidor de fps arriba a la derecha. Tocar el piso camina, mantener presionado sigue al dedo. Lo que no pude medir: los fps reales en tablet.
 - Sonidos: la sala del kit (`?kit=1`, pestaña Audio) para oír los 35 y anotar los que suenen feos en ASSETS_PENDIENTES.md, sección "Sonidos para revisar".
+
+### F1b (título, jugadoras, guardado)
+- `docs/capturas/comparar.html`: arriba trae la sección "Pantallas del juego" con título, selección y pausa en escritorio y tablet. Las postales de `docs/capturas/f1b/` son las 13 del mapa con las entidades vivas.
+- Para probar en la tablet: `npm run build && npm run preview`, abrir `http://<ip>:4173/` sin parámetros. Tocar el título, tocar tu tarjeta, tocar para saltar el paneo, caminar tocando el piso. El botón de pausa está arriba a la derecha.
+- Cosas para mirar con las niñas: Sophie, "¿cuál zona te gustó más?". Alana, si encuentra sola el Anillo de las Hadas siguiendo las luces. Alana arranca con modo peque (Noche máximo 0.25, enemigos más suaves en F2).
+- Para borrar un perfil: mantener 3 segundos el ícono de cerrar de su tarjeta. La partida borrada queda en una copia `ggabyss:v1:roto:<id>:borrada:<fecha>`.
+- No pude medir fps reales en tablet. En Chromium con WebGL por software corre entre 5 y 25 fps, así que los números de rendimiento reales son tuyos.
 
 ## Pasos solo de Rick
 
