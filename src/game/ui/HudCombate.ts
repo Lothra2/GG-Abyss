@@ -43,6 +43,10 @@ export class HudCombate {
   private numVida: Phaser.GameObjects.BitmapText
   private numMana: Phaser.GameObjects.BitmapText
   private flashMana = 0
+  private marcoJefe: Phaser.GameObjects.NineSlice
+  private rellenoJefe: Phaser.GameObjects.NineSlice
+  private nombreJefe: Phaser.GameObjects.BitmapText
+  private anchoJefe = 240
   private xpAncho = ANCHO_CINTURON
   /** las piezas, por si las pruebas quieren saber dónde cayeron */
   readonly piezas: Record<string, Phaser.GameObjects.GameObject> = {}
@@ -75,6 +79,11 @@ export class HudCombate {
     this.marcoXp = escena.add.nineslice(0, 0, k('barra_marco'), undefined, ANCHO_CINTURON, 12, 6, 6, 6, 6).setOrigin(0, 1)
     this.rellenoXp = escena.add.nineslice(0, 0, k('barra_xp'), undefined, 1, 4, 1, 1, 1, 1).setOrigin(0, 0.5).setTint(0x6ab8ff)
     this.txtNivel = texto(escena, 0, 0, 'Nv 1', 'fuente_ui', 1, { origen: [1, 0.5], tinte: 0xffd27a })
+
+    // la barra del jefe: arriba al centro, solo mientras dura la pelea
+    this.marcoJefe = escena.add.nineslice(0, 0, k('barra_marco'), undefined, 240, 14, 6, 6, 6, 6).setOrigin(0.5, 0).setVisible(false)
+    this.rellenoJefe = escena.add.nineslice(0, 0, k('barra_jefe'), undefined, 10, 6, 1, 1, 2, 2).setOrigin(0, 0).setVisible(false)
+    this.nombreJefe = texto(escena, 0, 0, 'Minotauro del Bosque', 'fuente_ui', 1, { origen: [0.5, 1], tinte: 0xffd27a }).setVisible(false)
 
     const ids = this.mundo.combate.habilidades
     for (const i of [0, 1] as const) {
@@ -131,6 +140,11 @@ export class HudCombate {
     this.rellenoXp.setPosition(cx + 3, yXp - 6)
     this.txtNivel.setScale(e.zoom >= 3 ? 1 : 2).setPosition(cx - 6, yXp - 6)
 
+    this.anchoJefe = Math.min(260, Math.max(120, w - 2 * 150))
+    this.marcoJefe.setPosition(Math.round(w / 2), mg + 14).setSize(this.anchoJefe, 14)
+    this.rellenoJefe.setPosition(Math.round(w / 2 - this.anchoJefe / 2 + 3), mg + 14 + 4)
+    this.nombreJefe.setPosition(Math.round(w / 2), mg + 12)
+
     // botones de habilidad: a la izquierda del orbe de maná, con la separación y el área táctil que pide el modo
     const mult = peque ? MODO_PEQUE.botones : 1
     const min = toqueMinimo(e, peque)
@@ -163,6 +177,7 @@ export class HudCombate {
       orbeMana: this.orbeMana.getBounds(),
       cinturon: this.cinturon.getBounds(),
       xp: this.marcoXp.getBounds(),
+      jefe: { visible: this.marcoJefe.visible, marco: this.marcoJefe.getBounds(), relleno: this.rellenoJefe.getBounds() },
       botones: this.botones.map((b) => ({ id: b.id, x: b.x, y: b.y, lado: b.lado })),
     }
   }
@@ -179,6 +194,14 @@ export class HudCombate {
     this.flashMana = Math.max(0, this.flashMana - dt)
     if (this.flashMana > 0) this.orbeMana.setTint(0xff7070)
     else this.orbeMana.clearTint()
+
+    // barra del jefe
+    const j = this.mundo.jefe
+    const verJefe = !!j && j.peleando && j.vivo
+    this.marcoJefe.setVisible(verJefe)
+    this.rellenoJefe.setVisible(verJefe)
+    this.nombreJefe.setVisible(verJefe)
+    if (verJefe && j) this.rellenoJefe.setSize(Math.max(1, Math.round((this.anchoJefe - 6) * (j.vida / j.vidaMax))), 6)
 
     // XP y nivel
     const ancho = Math.max(1, Math.round((this.xpAncho - 6) * c.fraccionXp))

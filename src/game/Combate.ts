@@ -13,11 +13,11 @@ import { RelojDesenterrar, RelojesThor, rangoMordida } from '../logic/thorCombat
 import { bonosDeEquipo } from '../logic/equipo'
 import { sortearNormal } from '../logic/botin'
 import type { Catalogo } from '../logic/catalogo'
-import { BOTIN, COMBATE, ENEMIGOS, GOLPE_EN, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, CLASES, type ClaseId } from '../config/balance'
+import { BOTIN, COMBATE, ENEMIGOS, GOLPE_EN, JEFE, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, CLASES, type ClaseId } from '../config/balance'
 import { PROF } from '../config/juego'
 import type { Heroina } from './Heroina'
 import type { ThorSprite } from './ThorSprite'
-import type { Enemigo, Enemigos } from './Enemigos'
+import type { Atacable, Enemigos } from './Enemigos'
 import type { Proyectiles, Blanco } from './Proyectiles'
 import type { Numeros } from './Numeros'
 import type { Sonido } from './Sonido'
@@ -37,7 +37,7 @@ export interface DepsCombate {
   puntoRescate: () => { x: number; y: number }
   cat: Catalogo
   /** un enemigo cayó: Mundo sortea su botín y lo suelta */
-  alBotinEnemigo: (e: Enemigo) => void
+  alBotinEnemigo: (e: Atacable) => void
   /** Thor desenterró un objeto */
   soltarObjeto: (id: string, x: number, y: number) => void
   /** bloquea y desbloquea la entrada del jugador (al caer y al volver) */
@@ -65,7 +65,7 @@ export class Combate {
   readonly clase: ClaseId
   stats: StatsHeroe
   readonly recargas: Recargas
-  objetivo: Enemigo | null = null
+  objetivo: Atacable | null = null
   escudo = 0
   escudoS = 0
   invulnerableS = 0
@@ -154,7 +154,7 @@ export class Combate {
     return true
   }
 
-  marcar(e: Enemigo | null): void {
+  marcar(e: Atacable | null): void {
     if (this.objetivo && this.objetivo !== e) this.objetivo.marcar(false)
     this.objetivo = e
     e?.marcar(true)
@@ -175,9 +175,9 @@ export class Combate {
     return Math.atan2(e.y - altura - o.y, e.x - o.x)
   }
 
-  private blancosEnemigos = (): readonly Blanco[] => this.d.enemigos.lista
+  private blancosEnemigos = (): readonly Blanco[] => this.d.enemigos.todos
 
-  private ataqueBasico(e: Enemigo): void {
+  private ataqueBasico(e: Atacable): void {
     const h = this.d.heroina
     const base = CLASES[this.clase]
     h.mirarA(e.x, e.y)
@@ -213,12 +213,12 @@ export class Combate {
       angulo,
       alcance: this.stats.alcance + 80,
       blancos: this.blancosEnemigos,
-      alGolpear: (b) => this.golpear(b as Enemigo, mult),
+      alGolpear: (b) => this.golpear(b as Atacable, mult),
     })
   }
 
   /** Daño de la heroína a un enemigo, con números, sonido y la muerte */
-  golpear(e: Enemigo, mult: number, golpePrevio?: Golpe): void {
+  golpear(e: Atacable, mult: number, golpePrevio?: Golpe): void {
     if (!e.vivo) return
     const g = golpePrevio ?? this.tirar(mult)
     const murio = e.recibir(g.dano, this.d.heroina.x, this.d.heroina.y)
@@ -228,12 +228,11 @@ export class Combate {
   }
 
   /** XP y oro por un enemigo derrotado (el botín de verdad llega en F3) */
-  alMorirEnemigo(e: Enemigo): void {
+  alMorirEnemigo(e: Atacable): void {
     this.muertes++
     if (this.objetivo === e) this.marcar(null)
-    const cfg = ENEMIGOS[e.tipo]
-    if (!cfg) return
-    this.darXp(cfg.xp)
+    const xp = ENEMIGOS[e.tipo]?.xp ?? (e.esJefe ? JEFE.xp : 0)
+    if (xp > 0) this.darXp(xp)
     this.d.alBotinEnemigo(e)
   }
 
@@ -369,7 +368,7 @@ export class Combate {
     })
   }
 
-  private golpearConThor(e: Enemigo, g: Golpe, mult = 1): void {
+  private golpearConThor(e: Atacable, g: Golpe, mult = 1): void {
     const dano = Math.max(1, Math.round(g.dano * mult))
     const murio = e.recibir(dano, this.d.thor.x, this.d.thor.y)
     this.d.numeros.mostrar(e.x, e.y - e.cuerpo.alto - 4, String(dano), 'blanco')
@@ -411,9 +410,9 @@ export class Combate {
 
   /* ---------- habilidades ---------- */
 
-  private apuntar(): { x: number; y: number; angulo: number; enemigo: Enemigo | null } {
+  private apuntar(): { x: number; y: number; angulo: number; enemigo: Atacable | null } {
     const h = this.d.heroina
-    let e: Enemigo | null = this.objetivo && this.objetivo.vivo ? this.objetivo : null
+    let e: Atacable | null = this.objetivo && this.objetivo.vivo ? this.objetivo : null
     if (!e) e = this.d.enemigos.masCercano(h.x, h.y, this.stats.alcance + 40)
     if (e) return { x: e.x, y: e.y, angulo: this.anguloHacia(e), enemigo: e }
     const v = vectorDe(DIRECCIONES[h.dir]!)

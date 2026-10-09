@@ -358,6 +358,23 @@ export class Decos {
     }
   }
 
+  /** Posiciones de todos los decorados con ese nombre (las piedras de la arena) */
+  posicionesDe(nombre: string): { x: number; y: number }[] {
+    return this.defs.filter((d) => d.nombre === nombre).map((d) => ({ x: d.x, y: d.y }))
+  }
+
+  /** Cambia la animación de fondo de un decorado en (x, y): las piedras de la arena que se encienden una tras otra */
+  fijarAnim(nombre: string, x: number, y: number, anim: string): boolean {
+    let hubo = false
+    for (const d of this.defs) {
+      if (d.nombre === nombre && Math.abs(d.x - x) < 2 && Math.abs(d.y - y) < 2 && d.def.anims[anim]) {
+        d.anim = anim
+        hubo = true
+      }
+    }
+    return hubo
+  }
+
   /** Toca una animación una vez sobre los decorados activos con ese nombre (el portal que se abre) */
   reproducir(t: number, nombre: string, anim: string): boolean {
     let hubo = false

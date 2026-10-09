@@ -8,7 +8,7 @@ import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
 import { PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S } from '../config/juego'
-import { AUTOGUARDADO_S } from '../config/balance'
+import { AUTOGUARDADO_S, BOTIN, JEFE } from '../config/balance'
 import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
@@ -33,6 +33,7 @@ import { Proyectiles } from '../game/Proyectiles'
 import { Numeros } from '../game/Numeros'
 import { Combate } from '../game/Combate'
 import { Botin } from '../game/Botin'
+import { JefeSprite, type EventosJefe } from '../game/Jefe'
 import { Presentacion } from '../game/Presentacion'
 import { alCambiarEscala } from '../game/Pantalla'
 import { Atmosfera } from '../fx/Atmosfera'
@@ -59,6 +60,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -98,6 +100,13 @@ export class Mundo extends Phaser.Scene {
   numeros!: Numeros
   combate!: Combate
   botin!: Botin
+  jefe?: JefeSprite
+  arena?: { x: number; y: number; radio: number }
+  private anillo: (() => void)[] = []
+  private portalJefe: { s: Phaser.GameObjects.Sprite; x: number; y: number; luz: string } | null = null
+  private saliendoAContinuara = false
+  private piedrasEncendidas = 0
+  private victoriaVista = false
   cat!: Catalogo
   private pendiente: Objetivo | null = null
   private cartelAbierto = false
@@ -155,7 +164,7 @@ export class Mundo extends Phaser.Scene {
     // lo que se rompe y las armaduras de Thor que se pueden conseguir en el Mundo 1
     encolarObjetosMundo(this, this.m, new Set(mapa.entidades.filter((e) => e.tipo === 'rompible').map((e) => String(e.props.objeto ?? 'caja'))))
     for (const n of [1, 2, 3]) encolarPersonaje(this, this.m, `thor_armadura${n}`, ['idle', 'walk', 'run', 'sit', 'wag', 'bite', 'howl', 'bark', 'pickup', 'dig', 'hurt'])
-    for (const t of new Set(mapa.entidades.filter((e) => e.tipo === 'enemigo').map((e) => String(e.props.enemigo ?? '')))) encolarPersonaje(this, this.m, t)
+    for (const t of new Set(mapa.entidades.filter((e) => e.tipo === 'enemigo' || e.tipo === 'jefe').map((e) => String(e.props.enemigo ?? '')))) encolarPersonaje(this, this.m, t)
     encolarFx(this, this.m, fxDeCombate(this.m.direcciones))
     if (this.load.list.size === 0) return this.armar()
     this.load.once(Phaser.Loader.Events.COMPLETE, () => this.armar())
@@ -301,6 +310,7 @@ export class Mundo extends Phaser.Scene {
       centrarCamara: () => this.camara.centrarEn(this.heroina.x, this.heroina.y - 12),
     })
 
+    this.crearJefe(evEnemigos)
     this.alCambioInventario(false)
 
     this.entrada = new Entrada(this, {
@@ -358,6 +368,193 @@ export class Mundo extends Phaser.Scene {
     this.cameras.main.fadeIn(350, 7, 10, 18)
     this.listo = true
     if (hacerPresentacion) this.guardar()
+  }
+
+  /* ---------- el minotauro ---------- */
+
+  private crearJefe(evEnemigos: EventosEnemigos): void {
+    const ent = entidadesDeTipo(this.mapa, 'jefe')[0]
+    const are = entidadesDeTipo(this.mapa, 'arena_jefe')[0]
+    if (!ent || !are || !this.m.personajes.minotauro || !this.textures.exists(K.pers('minotauro', 'idle'))) return
+    this.arena = { x: are.x, y: are.y, radio: Number(are.props.radio ?? JEFE.arenaRadio) }
+    const ev: EventosJefe = {
+      golpeCirculo: (x, y, radio, dano, elipse) => {
+        if (this.combate.caido) return
+        const dx = (this.heroina.x - x) / radio
+        const dy = (this.heroina.y - y) / (elipse ? radio / 2 : radio)
+        if (dx * dx + dy * dy <= 1) this.combate.golpeDeEnemigo(dano)
+      },
+      golpeCarga: (dano) => {
+        if (!this.combate.caido) this.combate.golpeDeEnemigo(dano)
+      },
+      invocar: (n, x, y) => {
+        const hay = this.enemigos.invocadasVivas
+        for (let k = 0; k < Math.min(n, JEFE.grito.maxRatas - hay); k++) {
+          const ang = (Math.PI * 2 * k) / Math.max(1, n) + 0.7
+          const p = this.grilla.puntoLibreCerca(x + Math.cos(ang) * 46, y + Math.sin(ang) * 30, 8, 80) ?? { x, y }
+          this.enemigos.invocar(this, this.m, this.grilla, 'rata', p.x, p.y, evEnemigos)
+        }
+      },
+      efecto: (n, x, y, esc) => this.proyectiles.fxEn(n, x, y, esc ?? 1),
+      sonido: (n, op) => this.sonido.efecto(n, op),
+      sacudir: (fuerte) => this.cameras.main.shake(fuerte ? 280 : 150, fuerte ? 0.009 : 0.004),
+      alFase2: () => this.game.events.emit('jefe-fase2'),
+      alMorir: () => this.victoria(),
+    }
+    this.jefe = new JefeSprite(this, this.m, this.grilla, ent, this.arena, this.partida.jefeVida ?? JEFE.vida, ev)
+    this.enemigos.adicionales.push(this.jefe)
+    this.game.events.on('heroina-cae', this.alCaerEnArena, this)
+    if (this.partida.jefeVencido) {
+      this.jefe.quitar()
+      this.victoria(true)
+    }
+  }
+
+  private actualizarJefe(dt: number): void {
+    const j = this.jefe
+    const a = this.arena
+    if (!j || !a) return
+    if (!j.peleando && j.vivo && !this.partida.jefeVencido && !this.combate.caido) {
+      if (Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) <= a.radio - JEFE.entradaMargen) this.empezarJefe()
+    }
+    j.update({ dt, heroeX: this.heroina.x, heroeY: this.heroina.y, heroeVivo: !this.combate.caido, modoPeque: this.combate.modoPeque, ratasVivas: this.enemigos.invocadasVivas })
+    // el portal: se entra caminando
+    const p = this.portalJefe
+    if (p && !this.saliendoAContinuara && !this.combate.caido && Math.hypot(this.heroina.x - p.x, this.heroina.y - (p.y - 16)) < 30) this.irAContinuara()
+  }
+
+  private empezarJefe(): void {
+    if (!this.jefe || !this.arena || !this.jefe.empezar()) return
+    this.sonido.fijarMusica('musica_jefe')
+    this.cerrarAnillo()
+    this.encenderPiedras()
+    this.game.events.emit('jefe-empieza')
+  }
+
+  /** La salida de la arena se cierra mientras dura la pelea: un anillo de cuadros bloqueados justo afuera del borde */
+  private cerrarAnillo(): void {
+    const a = this.arena
+    if (!a || this.anillo.length > 0) return
+    const c = this.mapa.cuadro
+    const r0 = a.radio
+    const r1 = a.radio + 28
+    for (let ty = Math.floor((a.y - r1) / c); ty <= Math.floor((a.y + r1) / c); ty++) {
+      for (let tx = Math.floor((a.x - r1) / c); tx <= Math.floor((a.x + r1) / c); tx++) {
+        const d = Math.hypot(tx * c + c / 2 - a.x, ty * c + c / 2 - a.y)
+        if (d >= r0 && d <= r1) this.anillo.push(this.grilla.bloquearRect(tx, ty, tx, ty))
+      }
+    }
+  }
+
+  private soltarAnillo(): void {
+    for (const f of this.anillo) f()
+    this.anillo = []
+  }
+
+  /** Las piedras de la arena se encienden una tras otra */
+  private encenderPiedras(rapido = false): void {
+    const a = this.arena
+    if (!a) return
+    const pts = this.decos
+      .posicionesDe('piedra_arena')
+      .filter((p) => Math.hypot(p.x - a.x, p.y - a.y) <= a.radio + 80)
+      .sort((p, q) => Math.atan2(p.y - a.y, p.x - a.x) - Math.atan2(q.y - a.y, q.x - a.x))
+    this.piedrasEncendidas = 0
+    pts.forEach((p, i) => {
+      const f = () => {
+        this.decos.fijarAnim('piedra_arena', p.x, p.y, 'encendida')
+        this.piedrasEncendidas++
+        if (!rapido) this.sonido.efecto('magia', { volumen: 0.35, rate: 0.8 + i * 0.05 })
+      }
+      if (rapido) f()
+      else this.time.delayedCall(i * 260, f)
+    })
+  }
+
+  private apagarPiedras(): void {
+    const a = this.arena
+    if (!a) return
+    for (const p of this.decos.posicionesDe('piedra_arena')) if (Math.hypot(p.x - a.x, p.y - a.y) <= a.radio + 80) this.decos.fijarAnim('piedra_arena', p.x, p.y, 'idle')
+    this.piedrasEncendidas = 0
+  }
+
+  /** Thor rescató a la heroína: el jefe se duerme sin curarse, la arena se abre y vuelve la música del bosque */
+  private alCaerEnArena(): void {
+    if (!this.jefe || !this.jefe.peleando) return
+    this.jefe.reposar()
+    this.enemigos.quitarInvocadas()
+    this.soltarAnillo()
+    this.apagarPiedras()
+    this.sonido.fijarZona(this.atmosfera.zona)
+    this.guardar()
+  }
+
+  /** Victoria: el jefe cae, suena la música de victoria, llueve oro, se abre el portal y aparece el cofre legendario */
+  private victoria(yaVencido = false): void {
+    if (this.victoriaVista) return
+    this.victoriaVista = true
+    const a = this.arena
+    this.partida.jefeVencido = true
+    this.partida.jefeVida = undefined
+    this.soltarAnillo()
+    this.enemigos.quitarInvocadas()
+    this.entidades.mostrarCofresTrasJefe()
+    if (a && yaVencido) {
+      this.encenderPiedras(true)
+      this.abrirPortalJefe(false)
+    }
+    if (!yaVencido) {
+      this.sonido.fijarMusica('musica_victoria')
+      this.sonido.efecto('legendario', { volumen: 0.8 })
+      if (a) {
+        if (this.anims.exists('lluvia_de_oro')) {
+          const lluvia = this.add.sprite(a.x, a.y + 20, 'atlas_mundo', 'lluvia_de_oro_0').setOrigin(0.5, 0.9).setScale(2).setDepth(PROF.OBJETOS + a.y + 900)
+          lluvia.play('lluvia_de_oro')
+          lluvia.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => lluvia.destroy())
+        }
+        BOTIN.lluviaDeOro.forEach((oro, i) => {
+          const ang = (Math.PI * 2 * i) / BOTIN.lluviaDeOro.length
+          this.time.delayedCall(250 + i * 140, () => this.botin.soltarOro(oro, a.x + Math.cos(ang) * 70, a.y + 30 + Math.sin(ang) * 40))
+        })
+      }
+      this.time.delayedCall(2600, () => this.abrirPortalJefe(true))
+      this.guardar()
+    }
+  }
+
+  private abrirPortalJefe(animar: boolean): void {
+    if (this.portalJefe) return
+    const ent = entidadesDeTipo(this.mapa, 'portal_jefe')[0]
+    if (!ent) return
+    const color = ent.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul'
+    const def = this.m.mundo.objetos[color]
+    if (!def || !this.textures.exists(K.obj(color, 'girar'))) return
+    for (const an of ['abrir', 'girar'] as const) {
+      const key = `${color}_${an}`
+      const info = def.anims[an]
+      if (info && !this.anims.exists(key)) this.anims.create({ key, frames: this.anims.generateFrameNumbers(K.obj(color, an), { start: 0, end: info.cuadros - 1 }), frameRate: info.fps, repeat: info.loop ? -1 : 0 })
+    }
+    const s = this.add.sprite(ent.x, ent.y, K.obj(color, animar ? 'abrir' : 'girar'), 0).setOrigin(def.apoyo[0] / def.w, def.apoyo[1] / def.h).setDepth(PROF.OBJETOS + ent.y)
+    if (animar) {
+      s.play(`${color}_abrir`)
+      s.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => s.play(`${color}_girar`))
+      this.sonido.efecto('portal', { volumen: 0.8 })
+    } else s.play(`${color}_girar`)
+    this.portalJefe = { s, x: ent.x, y: ent.y, luz: def.luz?.color ?? '#6cb4ff' }
+  }
+
+  /** El portal del jefe lleva a "Continuará": se guarda cerca del portal para que al volver no vuelva a entrar */
+  irAContinuara(): void {
+    const p = this.portalJefe
+    if (!p || this.saliendoAContinuara) return
+    this.saliendoAContinuara = true
+    this.entrada.pausada = true
+    this.heroina.parar()
+    this.partida.posicion = { x: Math.round(p.x), y: Math.round(p.y + 110) }
+    this.guardar()
+    this.sonido.efecto('portal', { volumen: 0.8 })
+    this.cameras.main.fadeOut(700, 5, 6, 12)
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('Continuara'))
   }
 
   /* ---------- botín e inventario ---------- */
@@ -423,8 +620,11 @@ export class Mundo extends Phaser.Scene {
     this.game.events.off('cartel-cerrado', this.alCerrarCartel, this)
     this.game.events.off('pausa-cerrada', this.alCerrarPausa, this)
     this.game.events.off('inventario-cerrado', this.alCerrarPausa, this)
+    this.game.events.off('heroina-cae', this.alCaerEnArena, this)
     quitarGanchos(...NOMBRES_GANCHOS)
     this.entrada.destroy()
+    this.soltarAnillo()
+    this.jefe?.destruir()
     this.combate.destruir()
     this.botin.limpiar()
     this.proyectiles.limpiar()
@@ -550,6 +750,7 @@ export class Mundo extends Phaser.Scene {
     this.partida.zonas = this.descub.zonas
     this.partida.secretos = this.descub.secretos
     this.partida.tiempoJugado = Math.round(this.tJugado)
+    if (this.jefe && !this.partida.jefeVencido) this.partida.jefeVida = Math.round(this.jefe.vida)
     guardarPartida(this.alm, this.partida)
     this.autoguardadoEn = AUTOGUARDADO_S
   }
@@ -629,6 +830,7 @@ export class Mundo extends Phaser.Scene {
       this.enemigos.update(dt, { heroe: { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido }, modoPeque: this.combate.modoPeque, dt })
       this.proyectiles.update(dt)
       this.combate.update(dt)
+      this.actualizarJefe(dt)
     }
     this.botin.update(dt)
     this.tJugado += dt
@@ -651,6 +853,7 @@ export class Mundo extends Phaser.Scene {
     this.vista.update(this.t, vista)
 
     const luces: Luz[] = []
+    if (this.portalJefe) luces.push({ x: this.portalJefe.x, y: this.portalJefe.y - 40, r: 150, color: this.portalJefe.luz, pulse: true, ph: 0.3 })
     const heroe = { x: this.heroina.x, y: this.heroina.y }
     this.entidades.update(this.t, heroe, !this.presentacion?.activa)
     this.autoguardadoEn -= dtVisual
@@ -776,6 +979,23 @@ export class Mundo extends Phaser.Scene {
       hudLayout: () => (this.scene.isActive('HUD') ? (this.scene.get('HUD') as unknown as { layout(): unknown }).layout() : null),
       noEsperar: () => this.listo,
       combate: () => this.combate.info(),
+      jefe: () => {
+        const j = this.jefe
+        return j
+          ? { existe: true, estado: j.estado, fase: j.fase, vida: j.vida, vidaMax: j.vidaMax, peleando: j.peleando, vivo: j.vivo, x: Math.round(j.x), y: Math.round(j.y), ratas: this.enemigos.invocadasVivas, anillo: this.anillo.length > 0, avisos: j.avisos(), vencido: this.partida.jefeVencido, portal: !!this.portalJefe, cofreJefe: this.entidades.cofres.some((c) => c.e.props.tras_jefe === true), piedras: this.piedrasEncendidas, arena: this.arena }
+          : { existe: false }
+      },
+      danarJefe: ((n: number) => (this.jefe && this.jefe.peleando ? this.combate.golpear(this.jefe, 0, { dano: n, critico: false }) : undefined)) as never,
+      entrarArena: (() => {
+        const a = this.arena
+        if (!a) return null
+        const p = this.grilla.puntoLibreCerca(a.x - 110, a.y + 70, 8, 80) ?? { x: a.x - 110, y: a.y + 70 }
+        this.heroina.teleport(p.x, p.y)
+        this.camara.manual = false
+        this.camara.centrarEn(p.x, p.y)
+        return p
+      }) as never,
+      irAlPortal: (() => this.irAContinuara()) as never,
       botin: () => this.botin.info(),
       inventario: () => ({ equipo: { ...this.partida.equipo }, bolsa: [...this.partida.bolsa], cinturon: [...this.partida.cinturon], armaduraThor: this.thor.nivelArmadura, oro: this.partida.oro, velMult: this.heroina.velMult }),
       soltarObjeto: ((id: string, dx = 70) => this.botin.soltar(id, this.heroina.x + dx, this.heroina.y + 4)) as never,

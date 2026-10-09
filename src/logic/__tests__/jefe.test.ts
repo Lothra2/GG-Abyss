@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { Azar } from '../azar'
-import { avisoDe, danarJefe, despertar, distanciaAlBorde, distanciaASegmento, nuevoJefe, pensarJefe, type AtaqueJefe, type EntradaJefe, type Jefe, type OrdenJefe } from '../jefe'
+import { avisoDe, danarJefe, despertar, reposar, distanciaAlBorde, distanciaASegmento, nuevoJefe, pensarJefe, type AtaqueJefe, type EntradaJefe, type Jefe, type OrdenJefe } from '../jefe'
 import { JEFE } from '../../config/balance'
 
 const entrada = (j: Jefe, extra: Partial<EntradaJefe> = {}): EntradaJefe => ({ dt: 0.05, heroeX: j.cx - 90, heroeY: j.cy + 10, heroeVivo: true, modoPeque: false, ratasVivas: 0, ...extra })
@@ -260,6 +260,30 @@ describe('jefe: nunca se cura', () => {
     danarJefe(j, 650 * 0.41)
     expect(j.estado).toBe('intro')
     expect(j.ataque).toBeNull()
+  })
+})
+
+describe('jefe: reposo tras el rescate', () => {
+  it('vuelve al centro y se duerme con la misma vida y la misma fase', () => {
+    const j = despierto()
+    danarJefe(j, 400)
+    j.x = j.cx + 90
+    j.y = j.cy - 40
+    const vida = j.vida
+    reposar(j)
+    expect(j.estado).toBe('dormido')
+    expect(j.vida).toBe(vida)
+    expect(j.fase).toBe(2)
+    expect([j.x, j.y]).toEqual([j.cx, j.cy])
+    // al volver a entrar, despierta otra vez
+    expect(despertar(j)).toBe(true)
+    expect(j.vida).toBe(vida)
+  })
+  it('un jefe vencido no vuelve', () => {
+    const j = despierto()
+    danarJefe(j, 9999)
+    reposar(j)
+    expect(j.estado).toBe('muerto')
   })
 })
 

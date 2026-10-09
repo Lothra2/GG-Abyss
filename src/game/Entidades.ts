@@ -99,6 +99,8 @@ export class Entidades {
   readonly fogatas: Fogata[] = []
   readonly rompibles: Rompible[] = []
   private abuelos: { x: number; y: number }[] = []
+  private mapa: MapaJuego
+  private cofresJefeListos = false
 
   constructor(
     private escena: Phaser.Scene,
@@ -106,19 +108,11 @@ export class Entidades {
     mapa: MapaJuego,
     private deps: DepsEntidades,
   ) {
-    const ya = new Set(deps.partida().cofres)
+    this.mapa = mapa
     for (const c of entidadesDeTipo(mapa, 'cofre')) {
       // el cofre del jefe aparece recién cuando se vence al minotauro (F4)
       if (c.props.tras_jefe === true) continue
-      const nivel = String(c.props.nivel ?? 'madera')
-      const quieto = `cofre_${nivel}_quieto`
-      if (!escena.anims.exists(quieto)) continue
-      const llave = llaveEntidad(c)
-      const abierto = ya.has(llave)
-      const s = escena.add.sprite(c.x, c.y, 'atlas_mundo', `${quieto}_0`).setOrigin(0.5, 0.9).setDepth(PROF.OBJETOS + c.y)
-      if (abierto) s.setFrame(`cofre_${nivel}_abrir_9`)
-      else s.play({ key: quieto, startFrame: Math.floor(hash2(c.x, c.y) * 8) % 8 })
-      this.cofres.push({ e: c, s, nivel, llave, abierto, abriendo: false, secreto: c.props.secreto === true })
+      this.crearCofre(c)
     }
     for (const c of entidadesDeTipo(mapa, 'cartel')) {
       const icono = String(c.props.icono ?? 'flecha_norte')
@@ -177,6 +171,34 @@ export class Entidades {
   }
   private objAbuelo(a: { x: number; y: number }): Objetivo {
     return { tipo: 'abuelo', x: a.x, y: a.y, radio: 64, parada: { x: a.x, y: a.y + 30 }, llave: `abuelo:${a.x}:${a.y}` }
+  }
+
+  private crearCofre(c: Entidad): void {
+    const escena = this.escena
+    const ya = new Set(this.deps.partida().cofres)
+    const nivel = String(c.props.nivel ?? 'madera')
+    const quieto = `cofre_${nivel}_quieto`
+    if (!escena.anims.exists(quieto)) return
+    const llave = llaveEntidad(c)
+    const abierto = ya.has(llave)
+    const s = escena.add.sprite(c.x, c.y, 'atlas_mundo', `${quieto}_0`).setOrigin(0.5, 0.9).setDepth(PROF.OBJETOS + c.y)
+    if (abierto) s.setFrame(`cofre_${nivel}_abrir_9`)
+    else s.play({ key: quieto, startFrame: Math.floor(hash2(c.x, c.y) * 8) % 8 })
+    this.cofres.push({ e: c, s, nivel, llave, abierto, abriendo: false, secreto: c.props.secreto === true })
+  }
+
+  /** El cofre legendario del jefe aparece al vencerlo, con su haz de luz del set */
+  mostrarCofresTrasJefe(): void {
+    if (this.cofresJefeListos) return
+    this.cofresJefeListos = true
+    for (const c of entidadesDeTipo(this.mapa, 'cofre')) {
+      if (c.props.tras_jefe !== true) continue
+      this.crearCofre(c)
+      const nuevo = this.cofres[this.cofres.length - 1]
+      if (!nuevo || nuevo.abierto || !this.escena.anims.exists('haz_set')) continue
+      const haz = this.escena.add.sprite(c.x, c.y, 'atlas_mundo', 'haz_set_0').setOrigin(0.5, 0.92).setDepth(PROF.OBJETOS + c.y - 1).setAlpha(0.9)
+      haz.play('haz_set')
+    }
   }
 
   /** Todo lo que se puede usar, para las pruebas */

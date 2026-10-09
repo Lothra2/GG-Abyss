@@ -42,8 +42,21 @@ export interface EventosEnemigos {
   curo(e: Enemigo): void
 }
 
+/** Todo lo que la heroína puede marcar y golpear: los enemigos del mapa y el jefe */
+export interface Atacable extends Blanco {
+  readonly id: number
+  readonly tipo: string
+  readonly vida: number
+  readonly vidaMax: number
+  readonly cuerpo: { alto: number; radio: number }
+  readonly esJefe?: boolean
+  golpe(x: number, y: number, margen?: number): boolean
+  marcar(v: boolean): void
+  recibir(dano: number, desdeX?: number, desdeY?: number): boolean
+}
+
 /** Un enemigo del mapa: sprite en 8 direcciones, sombra, barra de vida (solo si recibió daño) y su cabeza (logic/ia). */
-export class Enemigo implements Blanco {
+export class Enemigo implements Atacable {
   readonly tipo: string
   readonly cfg: EnemigoBalance
   readonly ia: EnemigoIA
@@ -362,6 +375,12 @@ export class Enemigo implements Blanco {
 /** Todos los enemigos del mapa */
 export class Enemigos {
   readonly lista: Enemigo[] = []
+  /** el jefe y lo que se sume después: se marcan y se golpean igual que los demás */
+  readonly adicionales: Atacable[] = []
+
+  get todos(): Atacable[] {
+    return [...this.lista, ...this.adicionales]
+  }
 
   constructor(escena: Phaser.Scene, m: Manifest, grilla: Grilla, entidades: readonly Entidad[], ev: EventosEnemigos) {
     for (const e of entidades) {
@@ -378,10 +397,10 @@ export class Enemigos {
   }
 
   /** El enemigo bajo un toque, o null */
-  golpe(x: number, y: number): Enemigo | null {
-    let mejor: Enemigo | null = null
+  golpe(x: number, y: number): Atacable | null {
+    let mejor: Atacable | null = null
     let mejorD = Infinity
-    for (const e of this.lista) {
+    for (const e of this.todos) {
       if (!e.golpe(x, y)) continue
       const d = Math.hypot(e.x - x, e.y - 14 - y)
       if (d < mejorD) {
@@ -393,13 +412,13 @@ export class Enemigos {
   }
 
   /** Vivos dentro de un radio de (x, y), del más cercano al más lejano */
-  enRadio(x: number, y: number, radio: number): Enemigo[] {
-    return this.lista
+  enRadio(x: number, y: number, radio: number): Atacable[] {
+    return this.todos
       .filter((e) => e.vivo && Math.hypot(e.x - x, e.y - y) <= radio)
       .sort((a, b) => Math.hypot(a.x - x, a.y - y) - Math.hypot(b.x - x, b.y - y))
   }
 
-  masCercano(x: number, y: number, radio: number): Enemigo | null {
+  masCercano(x: number, y: number, radio: number): Atacable | null {
     return this.enRadio(x, y, radio)[0] ?? null
   }
 
@@ -416,6 +435,29 @@ export class Enemigos {
       e.update(dt, ctx)
       e.actualizarVista()
     }
+  }
+
+  /** Una rata invocada por el grito del jefe: pelea como las del mapa y se cuenta aparte */
+  invocar(escena: Phaser.Scene, m: Manifest, grilla: Grilla, tipo: string, x: number, y: number, ev: EventosEnemigos): Enemigo | null {
+    if (!m.personajes[tipo]) return null
+    const id = 900000 + this.lista.length
+    const ent: Entidad = { id, tipo: 'enemigo', x, y, props: { enemigo: tipo, invocada: true } }
+    const e = new Enemigo(escena, m, grilla, ent, ev)
+    // salen persiguiendo, no paseando
+    e.ia.cd = 0.6
+    this.lista.push(e)
+    return e
+  }
+
+  /** Cuántas invocadas siguen vivas */
+  get invocadasVivas(): number {
+    return this.lista.filter((e) => e.vivo && e.ent.props.invocada === true).length
+  }
+
+  /** Quita las invocadas (al terminar o reiniciar la pelea) */
+  quitarInvocadas(): void {
+    for (const e of this.lista) if (e.ent.props.invocada === true && !e.destruido) e.destruir()
+    for (let i = this.lista.length - 1; i >= 0; i--) if (this.lista[i]!.ent.props.invocada === true) this.lista.splice(i, 1)
   }
 
   /** Tras el rescate de Thor: todos vuelven a casa */

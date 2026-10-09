@@ -225,6 +225,8 @@ export const BOTIN = {
   pocionesSuelo: ['potion_health_minor', 'potion_mana_minor'] as string[],
   /** el tamaño de la moneda según la cantidad de oro: hasta small, medium, large y lo demás huge */
   oroTamano: { small: 3, medium: 8, large: 25 },
+  /** la lluvia de oro al vencer al jefe: una moneda por número */
+  lluviaDeOro: [40, 30, 25, 20, 15, 10, 8, 5],
   bolsaCasillas: 28,
   cinturonCasillas: 4,
 }

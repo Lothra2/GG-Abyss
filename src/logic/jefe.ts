@@ -89,6 +89,22 @@ export function despertar(j: Jefe): boolean {
   return true
 }
 
+/**
+ * La heroína cayó y Thor la rescató: el jefe vuelve al centro de la arena y se duerme, con la vida que tenía.
+ * No se cura (PLAN.md F4): cuando ella vuelva a entrar, sigue donde quedó.
+ */
+export function reposar(j: Jefe): void {
+  if (j.estado === 'muerto') return
+  j.estado = 'dormido'
+  j.ataque = null
+  j.t = 0
+  j.pausaS = 1
+  j.x = j.cx
+  j.y = j.cy
+  j.gritoEnS = 4
+  j.cargaPego = false
+}
+
 /** El golpe que recibe el jefe. La vida solo baja: no hay manera de curarlo. Devuelve si cambió de fase o murió. */
 export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boolean } {
   if (j.estado === 'muerto' || dano <= 0) return { fase2: false, murio: false }
