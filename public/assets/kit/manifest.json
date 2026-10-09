@@ -4047,6 +4047,27 @@
      ]
     }
    }
+  },
+  "fuentes": {
+   "fuente_ui": {
+    "png": "ui/fuentes/fuente_ui.png",
+    "fnt": "ui/fuentes/fuente_ui.fnt",
+    "alto_linea": 11,
+    "base": 8
+   },
+   "fuente_titulo": {
+    "png": "ui/fuentes/fuente_titulo.png",
+    "fnt": "ui/fuentes/fuente_titulo.fnt",
+    "alto_linea": 22,
+    "base": 17
+   },
+   "fuente_titulo_plata": {
+    "png": "ui/fuentes/fuente_titulo_plata.png",
+    "fnt": "ui/fuentes/fuente_titulo_plata.fnt",
+    "alto_linea": 22,
+    "base": 17
+   },
+   "notas": "BMFont XML: this.load.bitmapFont(nombre, png, fnt). fuente_ui (8 px, blanca con sombra, se tiñe con setTint; usar escala entera x2 o x3), fuente_titulo y fuente_titulo_plata (16 px, ya pintadas). Tienen ñ, tildes, ¡ y ¿."
   }
  },
  "audio": {

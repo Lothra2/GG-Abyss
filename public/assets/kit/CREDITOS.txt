@@ -2,6 +2,8 @@ GG Abyss: créditos del arte
 
 Personajes, mundo, botín, interfaz y sonidos generados con PixelForja (código).
 
+Fuentes: Silkscreen, de Jason Kottke. SIL Open Font License 1.1 (https://openfontlicense.org).
+
 Arte del personaje: piezas del proyecto LPC (Liberated Pixel Cup), recoloreadas y armadas con PixelForja.
 Fuente: Universal LPC Spritesheet Character Generator, https://github.com/LiberatedPixelCup/Universal-LPC-Spritesheet-Character-Generator
 Estas piezas exigen dar crédito a sus autores. Si las modificas y las compartes, respeta su licencia (CC-BY-SA o GPL comparten igual).

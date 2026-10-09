@@ -67911,7 +67911,7 @@
       {
        "name": "oscuridad",
        "type": "float",
-       "value": 0.35
+       "value": 0.4
       },
       {
        "name": "particulas",
@@ -67959,7 +67959,7 @@
       {
        "name": "oscuridad",
        "type": "float",
-       "value": 0.3
+       "value": 0.4
       },
       {
        "name": "particulas",
@@ -68007,7 +68007,7 @@
       {
        "name": "oscuridad",
        "type": "float",
-       "value": 0.2
+       "value": 0.3
       },
       {
        "name": "particulas",
@@ -68318,7 +68318,7 @@
       {
        "name": "oscuridad",
        "type": "float",
-       "value": 0.15
+       "value": 0.4
       },
       {
        "name": "particulas",
