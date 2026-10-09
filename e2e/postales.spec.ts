@@ -74,3 +74,27 @@ test('captura el título, la selección, la pausa y los créditos', async ({ bro
     await ctx.close()
   }
 })
+
+/** F2: cada clase usando su primera habilidad contra enemigos reales, con la interfaz de combate puesta */
+test('captura el combate de cada clase', async ({ browser }) => {
+  test.setTimeout(400_000)
+  mkdirSync(carpeta, { recursive: true })
+  for (const [heroe, clase] of [['sophie', 'amazona'], ['alana', 'druida'], ['rick', 'paladin'], ['steph', 'hechicera']] as const) {
+    const ctx = await browser.newContext({ viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 })
+    const page = await ctx.newPage()
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, heroe)
+    const c = await gancho<{ x: number; y: number; enemigo: number }>(page, 'cercaDeEnemigo', 'calabaza', 0)
+    await gancho(page, 'teleport', c.x, c.y)
+    await gancho(page, 'tocarEnemigo', c.enemigo)
+    // rick necesita estar al lado para que el torbellino pegue
+    if (clase === 'paladin') await gancho(page, 'teleport', c.x + 25, c.y + 4)
+    await gancho(page, 'habilidad', 0)
+    // se avanza hasta el momento del efecto y se deja que Phaser lo dibuje
+    await gancho(page, 'avanzar', clase === 'druida' ? 0.9 : 0.6)
+    await page.waitForTimeout(500)
+    await page.screenshot({ path: join(carpeta, `combate_${clase}.png`) })
+    await sinErrores(errores)
+    await ctx.close()
+  }
+})
