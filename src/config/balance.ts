@@ -276,12 +276,24 @@ export const JEFE = {
   arenaRadio: 192,
   fase2Pct: 60,
   golpe: { dano: [10, 14] as [number, number], radio: 50 },
-  golpeFuerte: { dano: [14, 18] as [number, number], radio: 70, avisoS: 1.2 },
+  /** el aviso `aviso_jefe` mide 96 px de ancho: el golpe fuerte usa su tamaño x1 (radio 48), el pisotón y el salto x2 (radio 96) para no escalar con decimales */
+  golpeFuerte: { dano: [14, 18] as [number, number], radio: 48, avisoS: 1.2, delante: 44 },
   carga: { dano: [16, 22] as [number, number], avisoS: 1.2, velocidad: 330, aturdidoS: 1.5, ancho: 40 },
-  pisoton: { dano: [14, 18] as [number, number], radio: 100, avisoS: 1.2 },
-  salto: { dano: [18, 24] as [number, number], radio: 80, avisoS: 1.2 },
-  grito: { ratas: 2, maxRatas: 4, avisoS: 0.8 },
+  pisoton: { dano: [14, 18] as [number, number], radio: 96, avisoS: 1.2 },
+  salto: { dano: [18, 24] as [number, number], radio: 96, avisoS: 1.2, duracionS: 0.4 },
+  grito: { ratas: 2, maxRatas: 4, avisoS: 0.8, cadaS: 12 },
   pausaEntreAtaquesS: [1.4, 2.4] as [number, number],
+  /** el golpe normal tarda esto en caer tras empezar (sin aviso grande: es chico) */
+  golpeVentanaS: 0.45,
+  introS: 2.5,
+  fase2RugidoS: 1.4,
+  /** el borde de la arena queda a esto del radio: el jefe y la carga no pasan de ahí */
+  margenBorde: 24,
+  /** la heroína al entrar queda a este margen del borde */
+  entradaMargen: 24,
+  /** el cuerpo del jefe para recibir disparos */
+  cuerpoRadio: 30,
+  cuerpoAlto: 72,
   xp: 400,
   velocidad: 70,
 }

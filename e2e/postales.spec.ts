@@ -98,3 +98,35 @@ test('captura el combate de cada clase', async ({ browser }) => {
     await ctx.close()
   }
 })
+
+/** F3: el botín en el piso (con sus haces de luz) y el inventario con Thor ya armado */
+test('captura el botín en el piso y el inventario', async ({ browser }) => {
+  test.setTimeout(300_000)
+  mkdirSync(carpeta, { recursive: true })
+  const vistas = [
+    { sufijo: '', ctx: { viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 } },
+    { sufijo: '_tablet', ctx: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
+  ]
+  for (const v of vistas) {
+    const ctx = await browser.newContext(v.ctx)
+    const page = await ctx.newPage()
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'rick')
+    for (const id of ['m_espada_cruel', 'm_jubon_robusto', 'm_casco_robusto', 'pet_armor_1', 'm_anillo_vida', 'shield_heater_1', 'r_muralla_del_alba', 'r_juramento_de_hierro', 'pluma_de_cuervo', 'potion_health_minor']) await gancho(page, 'darObjeto', id)
+    for (let i = 0; i < 6; i++) await gancho(page, 'equipar', i)
+    await gancho(page, 'matarEnemigos')
+    await gancho(page, 'soltarObjeto', 'r_aguijon_de_cuervo', 70)
+    await gancho(page, 'soltarObjeto', 'pluma_de_cuervo', -70)
+    await gancho(page, 'soltarObjeto', 'm_botas_viento', 120)
+    await gancho(page, 'soltarOro', 30, 30)
+    await gancho(page, 'avanzar', 0.4)
+    // el banner de nivel (por la XP de los enemigos) se va en unos 3 s
+    await page.waitForTimeout(4500)
+    await page.screenshot({ path: join(carpeta, `botin_en_el_piso${v.sufijo}.png`) })
+    await gancho(page, 'abrirInventario')
+    await page.waitForTimeout(1500)
+    await page.screenshot({ path: join(carpeta, `inventario${v.sufijo}.png`) })
+    await sinErrores(errores)
+    await ctx.close()
+  }
+})
