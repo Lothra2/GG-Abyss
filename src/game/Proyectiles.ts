@@ -54,7 +54,7 @@ export class Proyectiles {
   constructor(
     private escena: Phaser.Scene,
     private m: Manifest,
-    private grilla: Grilla,
+    _grilla?: Grilla,
   ) {}
 
   get cantidad(): number {
@@ -95,10 +95,8 @@ export class Proyectiles {
           break
         }
       }
-      // las paredes y árboles frenan los disparos (a la altura de los pies)
-      const choca = !golpeo && !this.grilla.circuloLibre(p.x, p.y + 14, 2)
-      if (golpeo || choca || p.recorrido >= p.d.alcance || p.vidaS > PROYECTIL.vidaMaxS) {
-        if (choca) this.impacto(p.d.impacto, p.x, p.y)
+      // los disparos pasan por encima de árboles y arbustos: a las niñas les importa más acertar que el camino del tiro
+      if (golpeo || p.recorrido >= p.d.alcance || p.vidaS > PROYECTIL.vidaMaxS) {
         p.s.destroy()
         this.activos.splice(i, 1)
       }

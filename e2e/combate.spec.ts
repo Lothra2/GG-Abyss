@@ -287,7 +287,8 @@ const CLASES: { id: string; clase: string; ver: [(page: Page, id: number) => Pro
         expect((await combate(page)).escudo).toBeGreaterThanOrEqual(25)
       },
       async (page) => {
-        await gancho(page, 'danar', 25)
+        // el escudo de Thor de la primera habilidad se comería el daño: se le gana con un golpe grande
+        await gancho(page, 'danar', 55)
         const v0 = (await combate(page)).vida
         await gancho(page, 'habilidad', 1)
         await avanzar(page, 1.5)
@@ -300,6 +301,9 @@ const CLASES: { id: string; clase: string; ver: [(page: Page, id: number) => Pro
     clase: 'paladin',
     ver: [
       async (page, id) => {
+        // el torbellino pega a 60 px: la heroína se para al lado
+        const e = await enemigo(page, id)
+        await gancho(page, 'teleport', e.x - 30, e.y)
         const v0 = (await enemigo(page, id)).vida
         await gancho(page, 'habilidad', 0)
         await avanzar(page, 1.6)
