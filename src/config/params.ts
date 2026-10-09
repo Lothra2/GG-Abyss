@@ -9,6 +9,8 @@ export interface Params {
   /** entrar con ?heroe= también hace la presentación */
   presentacion: boolean
   calidad: 'alta' | 'baja' | null
+  /** ?sw=1 deja que el service worker corra también con ?test=1 (las pruebas de la PWA) */
+  sw: boolean
 }
 
 export function leerParams(search: string = typeof location !== 'undefined' ? location.search : ''): Params {
@@ -24,6 +26,7 @@ export function leerParams(search: string = typeof location !== 'undefined' ? lo
     sinTitulo: q.get('sinTitulo') === '1',
     presentacion: q.get('presentacion') === '1',
     calidad: cal === 'alta' || cal === 'baja' ? cal : null,
+    sw: q.get('sw') === '1',
   }
 }
 

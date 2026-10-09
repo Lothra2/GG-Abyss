@@ -6,6 +6,7 @@ import { texto } from '../game/Texto'
 import { crearBoton, type Boton } from '../game/ui/Boton'
 import { Bloqueo } from '../game/ui/Bloqueo'
 import { nocheMaxima } from '../logic/zonas'
+import { alternarPantallaCompleta, esIOS, instaladaComoApp, puedePantallaCompleta } from '../pwa'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import type { Mundo } from './Mundo'
 
@@ -39,6 +40,7 @@ export class Pausa extends Phaser.Scene {
   private cambiar!: Boton
   private creditos!: Boton
   private seguir!: Boton
+  private pantalla: Boton | null = null
   private arrastrando: Deslizador | null = null
   private cerrando = false
   private nombresVisibles = true
@@ -68,6 +70,10 @@ export class Pausa extends Phaser.Scene {
     this.peque = crearBoton(this, { x: 0, y: 0, icono: 'icono_peque', etiqueta: 'Modo peque: no', alToque: () => this.alternarPeque() })
     this.cambiar = crearBoton(this, { x: 0, y: 0, icono: 'icono_jugadora', etiqueta: 'Otra jugadora', alToque: () => this.cambiarJugadora() })
     this.creditos = crearBoton(this, { x: 0, y: 0, icono: 'icono_guardado', etiqueta: 'Créditos', alToque: () => this.abrirCreditos() })
+    // pantalla completa en Android y PC; en el iPad no existe y se explica cómo instalarla
+    this.pantalla = null
+    if (puedePantallaCompleta()) this.pantalla = crearBoton(this, { x: 0, y: 0, icono: 'icono_mapa', etiqueta: 'Pantalla completa', alToque: () => alternarPantallaCompleta() })
+    else if (esIOS() && !instaladaComoApp()) this.pantalla = crearBoton(this, { x: 0, y: 0, icono: 'icono_guardado', etiqueta: 'Instalar', alToque: () => this.abrirInstalar() })
     this.seguir = crearBoton(this, { x: 0, y: 0, icono: 'icono_jugar', etiqueta: 'Seguir', alToque: () => this.continuar() })
 
     this.input.on('pointermove', (p: Phaser.Input.Pointer) => this.arrastrando && p.isDown && this.mover(this.arrastrando, p.x))
@@ -84,6 +90,7 @@ export class Pausa extends Phaser.Scene {
       pausa: () => ({
         abierta: true,
         deslizadores: this.deslizadores.map((d) => ({ nombre: d.nombre, x: d.x, y: Math.round(d.riel.y), w: d.w, valor: this.valorDe(d.nombre) })),
+        pantalla: this.pantalla ? this.pantalla.getBounds() : null,
         botones: { calidad: this.calidad.getBounds(), peque: this.peque.getBounds(), cambiar: this.cambiar.getBounds(), creditos: this.creditos.getBounds(), seguir: this.seguir.getBounds() },
         ajustes: { ...aj() },
       }),
@@ -183,7 +190,8 @@ export class Pausa extends Phaser.Scene {
     const fila = Math.max(toqueMinimo(e, this.mundo.partida.ajustes.modoPeque), 26)
     const pw = Math.min(w - 16, Math.max(280, Math.floor(w * 0.62)))
     const lado = this.calidad.ancho + 8 + this.peque.ancho <= pw - 20
-    const ancho3 = this.cambiar.ancho + this.creditos.ancho + this.seguir.ancho + 16
+    const fila2 = [this.cambiar, this.creditos, ...(this.pantalla ? [this.pantalla] : []), this.seguir]
+    const ancho3 = fila2.reduce((t, b) => t + b.ancho, 0) + 8 * (fila2.length - 1)
     const tres = ancho3 <= pw - 20
     this.titulo.setScale(esc)
     const alto = 10 + this.titulo.displayHeight + 8 + fila * 3 + 6 + (lado ? fila + 6 : fila * 2 + 10) + (tres ? fila : fila * 2 + 4) + 12
@@ -220,14 +228,22 @@ export class Pausa extends Phaser.Scene {
     }
     if (tres) {
       let cx = px + (pw - ancho3) / 2
-      for (const b of [this.cambiar, this.creditos, this.seguir]) {
+      for (const b of fila2) {
         centrar(b, cx + b.ancho / 2, y + fila / 2)
         cx += b.ancho + 8
       }
     } else {
-      centrar(this.cambiar, px + pw / 2, y + fila / 2)
-      centrar(this.creditos, px + pw / 4, y + fila * 1.5 + 4)
-      centrar(this.seguir, px + (pw * 3) / 4, y + fila * 1.5 + 4)
+      // dos filas: la mitad de los botones arriba y la otra mitad abajo
+      const mitad = Math.ceil(fila2.length / 2)
+      const reparto = [fila2.slice(0, mitad), fila2.slice(mitad)]
+      reparto.forEach((fl, i) => {
+        const tot = fl.reduce((t, b) => t + b.ancho, 0) + 8 * (fl.length - 1)
+        let cx = px + (pw - tot) / 2
+        for (const b of fl) {
+          centrar(b, cx + b.ancho / 2, y + fila * (i + 0.5) + i * 4)
+          cx += b.ancho + 8
+        }
+      })
     }
     this.refrescar()
   }
@@ -249,6 +265,12 @@ export class Pausa extends Phaser.Scene {
     this.game.registry.remove('heroeId')
     this.scene.stop('Mundo')
     this.scene.start('SeleccionJugador')
+  }
+
+  private abrirInstalar(): void {
+    this.scene.pause()
+    this.scene.launch('Instalar', { desde: 'Pausa' })
+    this.scene.bringToTop('Instalar')
   }
 
   private abrirCreditos(): void {

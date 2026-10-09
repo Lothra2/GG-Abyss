@@ -16,6 +16,12 @@ Cuando el taller entregue algo: `git submodule update --remote tools/pixel_forja
 - **Pedido:** rehacer `mundo/niebla_jirones.png` para que repita sin costura en horizontal. `niebla_nubes.png` está bien.
 - **Mientras tanto:** el juego la usa junto a una copia espejada (512 x 256) armada en código, que empata en los bordes.
 
+### 28. Íconos para instalar en el iPad y para la pantalla completa
+
+- **Qué pasa:** la pausa tiene un botón "Pantalla completa" (Android y PC) y, en el iPad, un panel "Instalar" con 3 pasos. Hoy los pasos son solo texto porque el kit no trae los íconos de Safari. Alana no lee: necesita ícono.
+- **Pedido:** `ui/icono_compartir.png` (24 x 24, el cuadrado con la flecha hacia arriba de Safari), `ui/icono_agregar_inicio.png` (24 x 24, un cuadrado con un +) y `ui/icono_pantalla_completa.png` (24 x 24, cuatro esquinas apuntando hacia afuera). Una sola imagen cada uno, sin animación.
+- **Mientras tanto:** el botón usa `icono_mapa` (pantalla completa) o `icono_guardado` (instalar) y el panel de instalar muestra el ícono de la app (`manifest.app.icono_192`).
+
 ---
 
 ## Entregado por el taller

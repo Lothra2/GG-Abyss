@@ -1,0 +1,26 @@
+# Plan B del despliegue (PLAN.md F5). El kit ya está guardado en el repo (public/assets/kit), así que construir el juego NO necesita
+# el submódulo privado `pixel_forja`: este flujo no lo clona. Se corre a mano desde la pestaña Actions ("Run workflow").
+# Necesita dos secretos del repo (Settings, Secrets and variables, Actions):
+#   NETLIFY_AUTH_TOKEN  token personal de Netlify (User settings, Applications, Personal access tokens)
+#   NETLIFY_SITE_ID     el id del sitio (Site configuration, Site information, "Site ID")
+name: Desplegar a Netlify
+on: workflow_dispatch
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Subir a Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: npx --yes netlify-cli deploy --prod --dir dist --site "$NETLIFY_SITE_ID"

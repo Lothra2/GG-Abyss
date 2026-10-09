@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-const OVERLAY = new Set(['HUD', 'Inventario', 'Pausa', 'Creditos'])
+const OVERLAY = new Set(['HUD', 'Inventario', 'Pausa', 'Creditos', 'Instalar'])
 
 export function instalarGanchos(game: Phaser.Game): void {
   if (!params.test) return
