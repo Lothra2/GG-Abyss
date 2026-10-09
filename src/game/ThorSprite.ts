@@ -8,6 +8,7 @@ import { THOR } from '../config/balance'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
 import { idThor } from '../kit/manifest'
+import { crearAnimsPersonaje } from '../kit/anims'
 import type { Heroina } from './Heroina'
 
 type EstadoThor = 'idle' | 'walk' | 'run' | 'sit' | 'wag' | 'bite' | 'howl' | 'bark' | 'hurt'
@@ -38,7 +39,7 @@ export class ThorSprite {
   private colaS = 0
   private lado = 1
   /** acción de combate (morder, aullar): quieto mientras dura */
-  private accion: { anim: string; resta: number; golpeEn: number; enGolpe?: () => void } | null = null
+  private accion: { anim: string; resta: number; golpeEn: number; enGolpe?: () => void; alTerminar?: () => void } | null = null
   /** corre hasta un enemigo para morderlo */
   private mision: { x: number; y: number; alMorder: () => void } | null = null
 
@@ -63,9 +64,15 @@ export class ThorSprite {
   ponerArmadura(nivel: number): void {
     const id = idThor(nivel)
     if (!this.m.personajes[id] || id === this.idPers) return
+    crearAnimsPersonaje(this.escena, this.m, id)
     this.idPers = id
     this.personaje = this.m.personajes[id]!
     this.animActual = ''
+  }
+
+  get nivelArmadura(): number {
+    const m = /thor_armadura(\d)/.exec(this.idPers)
+    return m ? Number(m[1]) : 0
   }
 
   get ocupado(): boolean {
@@ -82,11 +89,15 @@ export class ThorSprite {
   private misionS = 0
 
   /** Una acción quieta con su momento de golpe (howl, bark, bite) */
-  hacer(anim: string, dur?: number, fraccion = 0.5, enGolpe?: () => void): void {
+  hacer(anim: string, dur?: number, fraccion = 0.5, enGolpe?: () => void, alTerminar?: () => void): void {
     const def = this.personaje.anims[anim]
-    if (!def) return enGolpe?.()
+    if (!def) {
+      enGolpe?.()
+      alTerminar?.()
+      return
+    }
     const d = dur ?? def.cuadros / def.fps
-    this.accion = { anim, resta: d, golpeEn: d * fraccion, enGolpe }
+    this.accion = { anim, resta: d, golpeEn: d * fraccion, enGolpe, alTerminar }
     this.mision = null
     this.poner(anim as EstadoThor, true)
   }
@@ -145,7 +156,10 @@ export class ThorSprite {
         a.enGolpe = undefined
         g()
       }
-      if (a.resta <= 0) this.accion = null
+      if (a.resta <= 0) {
+        this.accion = null
+        a.alTerminar?.()
+      }
       this.colocar()
       return
     }

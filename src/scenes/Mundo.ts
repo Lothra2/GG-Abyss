@@ -12,8 +12,12 @@ import { AUTOGUARDADO_S } from '../config/balance'
 import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
-import { fx } from '../logic/azar'
+import { fx, juego } from '../logic/azar'
 import { statsDe } from '../logic/stats'
+import { leerCatalogo, type Catalogo } from '../logic/catalogo'
+import { tirarBotin, type Fuente, type Premio } from '../logic/botin'
+import { equipar as equiparInv, desequipar as desequiparInv, normalizar, recoger as recogerInv, type Inv } from '../logic/inventario'
+import { nivelArmaduraThor } from '../logic/equipo'
 import { almacenDelNavegador, borrarPartida, cargarOCrear, guardarPartida, type Almacen, type Partida } from '../logic/guardado'
 import { MundoVista } from '../game/MundoVista'
 import { Decos, type Luz } from '../game/Decos'
@@ -28,6 +32,7 @@ import { Enemigos, type EventosEnemigos } from '../game/Enemigos'
 import { Proyectiles } from '../game/Proyectiles'
 import { Numeros } from '../game/Numeros'
 import { Combate } from '../game/Combate'
+import { Botin } from '../game/Botin'
 import { Presentacion } from '../game/Presentacion'
 import { alCambiarEscala } from '../game/Pantalla'
 import { Atmosfera } from '../fx/Atmosfera'
@@ -54,6 +59,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
+  'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
 /**
@@ -91,6 +97,8 @@ export class Mundo extends Phaser.Scene {
   proyectiles!: Proyectiles
   numeros!: Numeros
   combate!: Combate
+  botin!: Botin
+  cat!: Catalogo
   private pendiente: Objetivo | null = null
   private cartelAbierto = false
   private autoguardadoEn = AUTOGUARDADO_S
@@ -130,7 +138,7 @@ export class Mundo extends Phaser.Scene {
     encolarMundoBase(this, m)
     encolarCriaturas(this, m)
     encolarParticulas(this, m)
-    encolarBotin(this, m, { atlas: [], mundo: true, catalogo: false })
+    encolarBotin(this, m, { atlas: Object.keys(m.botin.atlas), tamanos: ['32'], mundo: true, catalogo: true })
     encolarPostales(this, m)
     encolarPersonaje(this, m, id)
     encolarPersonaje(this, m, 'thor')
@@ -144,6 +152,9 @@ export class Mundo extends Phaser.Scene {
     const mapa = (this.registry.get('mapa') as MapaJuego | undefined) ?? parsearMapa(this.cache.json.get(K.mapa))
     encolarObjetosMundo(this, this.m, new Set([...mapa.decos.map((d) => d.sprite), ...EXTRAS_MUNDO]))
     // enemigos del mapa y los efectos de combate
+    // lo que se rompe y las armaduras de Thor que se pueden conseguir en el Mundo 1
+    encolarObjetosMundo(this, this.m, new Set(mapa.entidades.filter((e) => e.tipo === 'rompible').map((e) => String(e.props.objeto ?? 'caja'))))
+    for (const n of [1, 2, 3]) encolarPersonaje(this, this.m, `thor_armadura${n}`, ['idle', 'walk', 'run', 'sit', 'wag', 'bite', 'howl', 'bark', 'pickup', 'dig', 'hurt'])
     for (const t of new Set(mapa.entidades.filter((e) => e.tipo === 'enemigo').map((e) => String(e.props.enemigo ?? '')))) encolarPersonaje(this, this.m, t)
     encolarFx(this, this.m, fxDeCombate(this.m.direcciones))
     if (this.load.list.size === 0) return this.armar()
@@ -161,6 +172,8 @@ export class Mundo extends Phaser.Scene {
     this.registry.set('almacen', this.alm)
     this.partida = (this.registry.get('partida') as Partida | undefined) ?? cargarOCrear(this.alm, id).partida
     this.registry.set('partida', this.partida)
+    this.cat = leerCatalogo(this.cache.json.get(K.catalogo))
+    normalizar(this.inv())
     this.descub = { zonas: this.partida.zonas, secretos: this.partida.secretos }
     this.tJugado = this.partida.tiempoJugado ?? 0
     this.mapa = (this.registry.get('mapa') as MapaJuego | undefined) ?? parsearMapa(this.cache.json.get(K.mapa))
@@ -207,7 +220,7 @@ export class Mundo extends Phaser.Scene {
       sonido: this.sonido,
       alGuardar: (f) => this.alGuardarEnFogata(f),
       alSecreto: (llave, nombre) => this.alSecretoDeCofre(llave, nombre),
-      alOro: (n, x, y) => this.alOro(n, x, y),
+      alPremio: (f, x, y) => this.soltarPremio(f, x, y),
       alLeerCartel: (icono, texto) => this.alLeerCartel(icono, texto),
       alAbrazar: (x, y) => this.alAbrazar(x, y),
       alAbrirCofre: () => this.guardar(),
@@ -247,6 +260,19 @@ export class Mundo extends Phaser.Scene {
       sacudir: () => this.cameras.main.shake(160, 0.004),
       curo: (e) => this.numeros.mostrar(e.x, e.y - e.cuerpo.alto - 4, '+', 'verde'),
     }
+    this.botin = new Botin({
+      escena: this,
+      cat: this.cat,
+      heroina: this.heroina,
+      thor: this.thor,
+      sonido: this.sonido,
+      recoger: (id) => {
+        const r = recogerInv(this.inv(), this.cat, id)
+        if (r.ok) this.alCambioInventario()
+        return r
+      },
+      alOro: (n, x, y) => this.alOro(n, x, y),
+    })
     this.enemigos = new Enemigos(this, m, this.grilla, this.mapa.entidades, evEnemigos)
     this.combate = new Combate({
       escena: this,
@@ -264,7 +290,9 @@ export class Mundo extends Phaser.Scene {
         const base = f ? { x: f.e.x, y: f.e.y + 26 } : { x: ini.x, y: ini.y }
         return this.grilla.puntoLibreCerca(base.x, base.y, 8, 120) ?? base
       },
-      alOro: (n, x, y) => this.alOro(n, x, y),
+      cat: this.cat,
+      alBotinEnemigo: (e) => this.soltarPremio({ tipo: 'enemigo', enemigo: e.tipo }, e.x, e.y),
+      soltarObjeto: (id, x, y) => this.botin.soltar(id, x, y),
       bloquearEntrada: (v) => {
         if (v) this.entrada.pausada = true
         else if (!this.cartelAbierto && !this.presentacion?.activa) this.entrada.pausada = false
@@ -272,6 +300,8 @@ export class Mundo extends Phaser.Scene {
       guardar: () => this.guardar(),
       centrarCamara: () => this.camara.centrarEn(this.heroina.x, this.heroina.y - 12),
     })
+
+    this.alCambioInventario(false)
 
     this.entrada = new Entrada(this, {
       tocarMundo: (x, y) => this.tocarMundo(x, y),
@@ -329,6 +359,50 @@ export class Mundo extends Phaser.Scene {
     if (hacerPresentacion) this.guardar()
   }
 
+  /* ---------- botín e inventario ---------- */
+
+  /** El inventario de la partida: son los mismos arreglos, lo que se hace aquí queda guardado */
+  inv(): Inv {
+    const p = this.partida
+    return { equipo: p.equipo, bolsa: p.bolsa, cinturon: p.cinturon }
+  }
+
+  /** Sortea el botín de una fuente y lo deja en el piso */
+  private soltarPremio(f: Fuente, x: number, y: number): void {
+    const premio: Premio = tirarBotin(juego(), this.cat, { nivelHeroe: this.partida.nivel, clase: this.combate.clase, idHeroe: this.heroina.id }, f)
+    this.botin.soltarObjetos(premio.objetos, x, y)
+    this.botin.soltarOro(premio.oro, x + (juego().next() - 0.5) * 30, y + 10)
+  }
+
+  /** Se equipó, se sacó o se recogió algo: stats, armadura de Thor y velocidad se ponen al día */
+  alCambioInventario(guardar = true): void {
+    this.combate.refrescarStats()
+    this.thor.ponerArmadura(nivelArmaduraThor(this.cat, this.partida.equipo))
+    this.heroina.velMult = 1 + this.combate.stats.velocidadPct / 100
+    if (guardar) this.guardar()
+  }
+
+  /** El inventario con su tecla (I) o su botón: el mundo se pausa y se abre la escena Inventario */
+  abrirInventario(): void {
+    if (this.scene.isActive('Inventario') || this.scene.isPaused('Mundo') || this.combate.caido) return
+    this.alAbrirPausa()
+    this.scene.pause('Mundo')
+    this.scene.launch('Inventario')
+    this.scene.bringToTop('Inventario')
+  }
+
+  equiparDeBolsa(i: number) {
+    const r = equiparInv(this.inv(), this.cat, i)
+    if (r.ok) this.alCambioInventario()
+    return r
+  }
+
+  desequiparRanura(r: Parameters<typeof desequiparInv>[1]) {
+    const res = desequiparInv(this.inv(), r)
+    if (res.ok) this.alCambioInventario()
+    return res
+  }
+
   /** PC: Q y E son las dos habilidades (W ya camina), 1 a 4 son las pociones del cinturón */
   private instalarTeclasCombate(): void {
     const kb = this.input.keyboard
@@ -339,6 +413,7 @@ export class Mundo extends Phaser.Scene {
     }
     hab(0)
     hab(1)
+    kb.on('keydown-I', () => !this.entrada.estaPausada && this.abrirInventario())
     ;(['ONE', 'TWO', 'THREE', 'FOUR'] as const).forEach((k, i) => kb.on(`keydown-${k}`, () => !this.entrada.estaPausada && this.combate.pocion(i)))
   }
 
@@ -349,6 +424,7 @@ export class Mundo extends Phaser.Scene {
     quitarGanchos(...NOMBRES_GANCHOS)
     this.entrada.destroy()
     this.combate.destruir()
+    this.botin.limpiar()
     this.proyectiles.limpiar()
     this.enemigos.destruir()
     this.sonido.detener()
@@ -363,6 +439,13 @@ export class Mundo extends Phaser.Scene {
   private tocarMundo(x: number, y: number): boolean {
     if (this.combate.tocarEnemigo(x, y)) {
       this.pendiente = null
+      return true
+    }
+    const suelo = this.botin.golpe(x, y)
+    if (suelo) {
+      this.pendiente = null
+      this.combate.soltarObjetivo()
+      if (this.heroina.irA(suelo.x, suelo.y)) this.ponerMarca(suelo.x, suelo.y)
       return true
     }
     if (this.criaturas.tocar(x, y)) return true
@@ -545,6 +628,7 @@ export class Mundo extends Phaser.Scene {
       this.proyectiles.update(dt)
       this.combate.update(dt)
     }
+    this.botin.update(dt)
     this.tJugado += dt
     // lo que la heroína iba a usar: cuando llega, lo usa
     const pend = this.pendiente
@@ -690,6 +774,24 @@ export class Mundo extends Phaser.Scene {
       hudLayout: () => (this.scene.isActive('HUD') ? (this.scene.get('HUD') as unknown as { layout(): unknown }).layout() : null),
       noEsperar: () => this.listo,
       combate: () => this.combate.info(),
+      botin: () => this.botin.info(),
+      inventario: () => ({ equipo: { ...this.partida.equipo }, bolsa: [...this.partida.bolsa], cinturon: [...this.partida.cinturon], armaduraThor: this.thor.nivelArmadura, oro: this.partida.oro, velMult: this.heroina.velMult }),
+      soltarObjeto: ((id: string) => this.botin.soltar(id, this.heroina.x + 20, this.heroina.y + 4)) as never,
+      soltarOro: ((n: number) => this.botin.soltarOro(n, this.heroina.x + 26, this.heroina.y + 6)) as never,
+      darObjeto: ((id: string) => {
+        const r = recogerInv(this.inv(), this.cat, id)
+        if (r.ok) this.alCambioInventario()
+        return r
+      }) as never,
+      llenarBolsa: ((id: string) => {
+        for (let i = 0; i < this.partida.bolsa.length; i++) if (!this.partida.bolsa[i]) this.partida.bolsa[i] = id
+      }) as never,
+      equipar: ((i: number) => this.equiparDeBolsa(i)) as never,
+      desequipar: ((r: string) => this.desequiparRanura(r as never)) as never,
+      abrirInventario: () => this.abrirInventario(),
+      desenterrar: () => this.combate.desenterrar(),
+      premioDe: ((f: Fuente) => tirarBotin(juego(), this.cat, { nivelHeroe: this.partida.nivel, clase: this.combate.clase, idHeroe: this.heroina.id }, f)) as never,
+      romper: ((llave: string) => this.entidades.romper(llave)) as never,
       danar: ((n: number) => this.combate.danar(n)) as never,
       enemigos: () => this.enemigos.lista.map((e) => ({ id: e.id, tipo: e.tipo, x: Math.round(e.x), y: Math.round(e.y), vida: e.vida, vidaMax: e.vidaMax, vivo: e.vivo, estado: e.estado, elite: e.elite, nombre: e.nombre, casa: { x: e.ia.casaX, y: e.ia.casaY } })),
       tocarEnemigo: ((id: number) => {

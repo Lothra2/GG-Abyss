@@ -1,4 +1,5 @@
 import { THOR } from '../config/balance'
+import type { Azar } from './azar'
 
 export interface EntradaThor {
   dt: number
@@ -48,4 +49,33 @@ export class RelojesThor {
 export function rangoMordida(nivel: number): [number, number] {
   const extra = THOR.mordidaPorNivel * (nivel - 1)
   return [THOR.mordidaBase[0] + extra, THOR.mordidaBase[1] + extra]
+}
+
+/**
+ * Thor desentierra algo (PLAN.md 4): fuera de combate, cada 60 a 90 s hay 25 % de probabilidad de que ladre, cave y
+ * traiga un objeto normal. Sin Phaser: el reloj lo mueve quien llama.
+ */
+export class RelojDesenterrar {
+  private resta: number
+
+  constructor(private rng: Azar) {
+    this.resta = this.proxima()
+  }
+
+  private proxima(): number {
+    return this.rng.rango(THOR.desenterrarCadaS[0], THOR.desenterrarCadaS[1])
+  }
+
+  /** `libre` es true cuando no hay combate. Devuelve true el instante en que Thor debe ir a cavar. */
+  tick(dt: number, libre: boolean): boolean {
+    if (!libre) return false
+    this.resta -= dt
+    if (this.resta > 0) return false
+    this.resta = this.proxima()
+    return this.rng.prob(THOR.desenterrarProb)
+  }
+
+  get faltan(): number {
+    return this.resta
+  }
 }

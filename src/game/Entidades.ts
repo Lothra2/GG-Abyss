@@ -2,14 +2,14 @@ import Phaser from 'phaser'
 import type { Manifest } from '../kit/tipos'
 import { entidadesDeTipo, llaveEntidad, type Entidad, type MapaJuego } from '../kit/mapa'
 import { K } from '../kit/claves'
-import { BOTIN } from '../config/balance'
 import { PROF } from '../config/juego'
-import { juego, hash2 } from '../logic/azar'
+import { hash2 } from '../logic/azar'
+import type { Fuente } from '../logic/botin'
 import type { Partida } from '../logic/guardado'
 import type { Sonido } from './Sonido'
 import { texto } from './Texto'
 
-export type TipoObjetivo = 'cofre' | 'cartel' | 'fogata' | 'abuelo'
+export type TipoObjetivo = 'cofre' | 'cartel' | 'fogata' | 'abuelo' | 'rompible'
 
 /** Algo del mundo que se puede tocar: la heroína camina hasta ahí y lo usa */
 export interface Objetivo {
@@ -31,6 +31,14 @@ interface Cofre {
   abierto: boolean
   abriendo: boolean
   secreto: boolean
+}
+
+interface Rompible {
+  e: Entidad
+  s: Phaser.GameObjects.Sprite
+  objeto: string
+  llave: string
+  roto: boolean
 }
 
 interface Cartel {
@@ -55,8 +63,8 @@ export interface DepsEntidades {
   alGuardar: (f: { id: string; nombre: string; x: number; y: number }) => void
   /** el cofre abierto era un secreto nuevo */
   alSecreto: (llave: string, nombre: string) => void
-  /** un cofre dio oro */
-  alOro: (cantidad: number, x: number, y: number) => void
+  /** un cofre o un rompible suelta su premio en el piso (lo sortea quien lo recibe) */
+  alPremio: (fuente: Fuente, x: number, y: number) => void
   /** abrir un cartel: su ícono y su texto */
   alLeerCartel: (icono: string, texto: string) => void
   /** abrazar al Abuelo Roble */
@@ -89,6 +97,7 @@ export class Entidades {
   readonly cofres: Cofre[] = []
   readonly carteles: Cartel[] = []
   readonly fogatas: Fogata[] = []
+  readonly rompibles: Rompible[] = []
   private abuelos: { x: number; y: number }[] = []
 
   constructor(
@@ -120,6 +129,17 @@ export class Entidades {
     for (const c of entidadesDeTipo(mapa, 'punto_guardado')) {
       this.fogatas.push({ e: c, id: String(c.props.id ?? llaveEntidad(c)), nombre: String(c.props.nombre ?? ''), listo: true })
     }
+    const rotos = new Set(deps.partida().rompibles)
+    for (const c of entidadesDeTipo(mapa, 'rompible')) {
+      const objeto = String(c.props.objeto ?? 'caja')
+      const def = m.mundo.objetos[objeto]
+      const tex = K.obj(objeto, 'idle')
+      if (!def || !escena.textures.exists(tex)) continue
+      const llave = llaveEntidad(c)
+      const roto = rotos.has(llave)
+      const s = escena.add.sprite(c.x, c.y, tex, 0).setOrigin(def.apoyo[0] / def.w, def.apoyo[1] / def.h).setDepth(PROF.OBJETOS + c.y).setVisible(!roto)
+      this.rompibles.push({ e: c, s, objeto, llave, roto })
+    }
     for (const d of mapa.decos) if (d.sprite === 'abuelo_roble_v3') this.abuelos.push({ x: d.x, y: d.y })
   }
 
@@ -138,12 +158,16 @@ export class Entidades {
     for (const c of this.cofres) probar(this.objCofre(c), Math.abs(x - c.e.x) < 24 + PAD && y > c.e.y - 46 - PAD && y < c.e.y + 8 + PAD)
     for (const f of this.fogatas) probar(this.objFogata(f), Math.abs(x - f.e.x) < 34 + PAD && y > f.e.y - 58 - PAD && y < f.e.y + 14 + PAD)
     for (const c of this.carteles) probar(this.objCartel(c), Math.abs(x - c.e.x) < 16 + PAD && y > c.e.y - 28 - PAD && y < c.e.y + 30 + PAD)
+    for (const r of this.rompibles) if (!r.roto) probar(this.objRompible(r), Math.abs(x - r.e.x) < 18 + PAD && y > r.e.y - 34 - PAD && y < r.e.y + 6 + PAD)
     for (const a of this.abuelos) probar(this.objAbuelo(a), Math.abs(x - a.x) < 44 && y > a.y - 80 && y < a.y + 34)
     return mejor
   }
 
   private objCofre(c: Cofre): Objetivo {
     return { tipo: 'cofre', x: c.e.x, y: c.e.y, radio: 40, parada: { x: c.e.x, y: c.e.y + 22 }, llave: c.llave }
+  }
+  private objRompible(r: Rompible): Objetivo {
+    return { tipo: 'rompible', x: r.e.x, y: r.e.y, radio: 36, parada: { x: r.e.x, y: r.e.y + 22 }, llave: r.llave }
   }
   private objCartel(c: Cartel): Objetivo {
     return { tipo: 'cartel', x: c.e.x, y: c.e.y, radio: 46, parada: { x: c.e.x, y: c.e.y + 26 }, llave: llaveEntidad(c.e) }
@@ -157,11 +181,12 @@ export class Entidades {
 
   /** Todo lo que se puede usar, para las pruebas */
   objetivos(): Objetivo[] {
-    return [...this.cofres.map((c) => this.objCofre(c)), ...this.carteles.map((c) => this.objCartel(c)), ...this.fogatas.map((f) => this.objFogata(f)), ...this.abuelos.map((a) => this.objAbuelo(a))]
+    return [...this.cofres.map((c) => this.objCofre(c)), ...this.carteles.map((c) => this.objCartel(c)), ...this.fogatas.map((f) => this.objFogata(f)), ...this.rompibles.filter((r) => !r.roto).map((r) => this.objRompible(r)), ...this.abuelos.map((a) => this.objAbuelo(a))]
   }
 
   usar(o: Objetivo): void {
     if (o.tipo === 'cofre') this.abrirCofre(o.llave)
+    else if (o.tipo === 'rompible') this.romper(o.llave)
     else if (o.tipo === 'cartel') {
       const c = this.carteles.find((q) => llaveEntidad(q.e) === o.llave)
       if (c) this.deps.alLeerCartel(c.icono, c.texto)
@@ -196,9 +221,31 @@ export class Entidades {
     return true
   }
 
+  /** Rompe una caja, barril o vasija: sale su premio y queda guardado que ya se rompió */
+  romper(llave: string): boolean {
+    const r = this.rompibles.find((q) => q.llave === llave)
+    if (!r || r.roto) return false
+    r.roto = true
+    const rom = K.obj(r.objeto, 'romper')
+    this.deps.sonido.efecto('romper', { volumen: 0.8, rate: 0.9 + hash2(r.e.x, r.e.y) * 0.3 })
+    if (this.escena.textures.exists(rom)) {
+      const def = this.m.mundo.objetos[r.objeto]!
+      const key = `romper_${r.objeto}`
+      if (!this.escena.anims.exists(key)) {
+        const a = def.anims.romper!
+        this.escena.anims.create({ key, frames: this.escena.anims.generateFrameNumbers(rom, { start: 0, end: a.cuadros - 1 }), frameRate: a.fps, repeat: 0 })
+      }
+      r.s.play(key)
+      r.s.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => r.s.setVisible(false))
+    } else r.s.setVisible(false)
+    const p = this.deps.partida()
+    if (!p.rompibles.includes(r.llave)) p.rompibles.push(r.llave)
+    this.deps.alPremio({ tipo: 'rompible' }, r.e.x, r.e.y)
+    this.deps.alAbrirCofre(r.llave)
+    return true
+  }
+
   private salirMoneda(c: Cofre): void {
-    const rango = BOTIN.cofres[c.nivel as keyof typeof BOTIN.cofres]?.oro ?? [5, 10]
-    const cantidad = juego().entero(rango[0], rango[1])
     if (this.escena.textures.exists('atlas_mundo') && this.escena.anims.exists('moneda_gira')) {
       const moneda = this.escena.add.sprite(c.e.x, c.e.y - 24, 'atlas_mundo', 'moneda_gira_0').setDepth(PROF.OBJETOS + c.e.y + 700)
       moneda.play('moneda_gira')
@@ -206,7 +253,7 @@ export class Entidades {
       this.escena.tweens.add({ targets: moneda, alpha: 0, delay: 520, duration: 260, onComplete: () => moneda.destroy() })
     }
     this.deps.sonido.efecto('moneda', { volumen: 0.8 })
-    this.deps.alOro(cantidad, c.e.x, c.e.y - 40)
+    this.deps.alPremio({ tipo: 'cofre', nivel: c.nivel, pista: c.secreto ? String(c.e.props.pista ?? '') : undefined, tutorial: c.e.props.tutorial === true }, c.e.x, c.e.y + 6)
   }
 
   /* ---------- fogatas ---------- */

@@ -4,7 +4,7 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 
 ## Estado
 
-- Fase actual: F2 (combate) en curso. F1b cerrada (typecheck, 117 tests, build y 68 e2e en verde, 2 se saltan a propósito).
+- Fase actual: F3 (botín) en curso. F2 cerrada (typecheck, 174 tests, build, e2e escritorio y tablet en verde, capturas en docs/capturas/f2). F1b cerrada antes.
 - F1b hecha en código: Titulo (logo, Toca para empezar, botón Créditos), SeleccionJugador (tarjetas del manifest, aura y Thor), guardado con migración, Presentacion (paneo la primera vez), Entidades (cofres, carteles, fogatas, Abuelo), HUD (contadores, oro, pausa, panel de cartel), Pausa (Noche, Música, Efectos, calidad, modo peque, otra jugadora, créditos, seguir), Creditos (CREDITOS.txt con scroll)
 - F1a hecha: grilla, A*, movimiento, zonas, descubrimiento; MundoVista, Decos (pool por celdas, viento, hechizados, copas, pasto), Heroina, ThorSprite (sigue el rastro), Criaturas, Camara, Entrada (toque, mantener, teclado), Sonido; fx: Luces (RenderTexture con pozos), Bruma, Nubes, Particulas, AtmosferaFX (postFX soft light y viñeta), Atmosfera; escenas Mundo y HUD; postales en docs/capturas/f1a y comparar.html
 - F0 hecha: tooling (Vite, TS, Vitest, Playwright, Netlify), cargador del kit, mapa puro, azar, direccion, escala entera, config, Boot, SalaKit, verificar-kit, ganchos de prueba, 46 tests, 12 e2e (1 salta a propósito)
@@ -67,6 +67,14 @@ npm run typecheck && npm test && npm run build && npm run e2e
 - Cosas para mirar con las niñas: Sophie, "¿cuál zona te gustó más?". Alana, si encuentra sola el Anillo de las Hadas siguiendo las luces. Alana arranca con modo peque (Noche máximo 0.25, enemigos más suaves en F2).
 - Para borrar un perfil: mantener 3 segundos el ícono de cerrar de su tarjeta. La partida borrada queda en una copia `ggabyss:v1:roto:<id>:borrada:<fecha>`.
 - No pude medir fps reales en tablet. En Chromium con WebGL por software corre entre 5 y 25 fps, así que los números de rendimiento reales son tuyos.
+
+### F2 (combate)
+- `docs/capturas/f2/`: las 13 postales con enemigos vivos, `combate_amazona.png`, `combate_druida.png`, `combate_paladin.png` y `combate_hechicera.png` (cada clase usando su primera habilidad con la interfaz de combate puesta). `docs/capturas/comparar.html` las muestra junto con título, selección y pausa.
+- Probar con las niñas: tocar una rata (el enemigo se pone rojizo suave y la heroína camina hasta su alcance y ataca sola). Los dos botones redondos abajo a la derecha son las habilidades, el arco oscuro es la recarga. Abajo al centro están el cinturón (tocar una poción la toma) y la barra de XP. Orbe rojo es la vida y azul el maná.
+- En PC: Q y E son las habilidades (W ya camina), 1 a 4 son las pociones, clic para atacar.
+- Para Alana (modo peque): ataca sola al enemigo que tenga cerca, los botones son más grandes, los enemigos pegan la mitad y avisan 1.8 s. Preguntar si entiende los dos botones sin explicación y si el aullido de Thor la hace reír.
+- Thor: muerde cada 2 s lo que esté a menos de 160 px de la heroína y aúlla con un escudo si la vida baja de 30 %. Si la heroína cae, Thor aúlla, la pantalla se va a negro y reaparece en la última fogata con todo lleno ("¡Thor te salvó!"). No se pierde nada.
+- Lo que no pude medir: cómo se siente el combate con el dedo en la tablet de verdad y los fps con 29 enemigos. Los lejanos (más de 900 px) ni piensan ni se dibujan.
 
 ## Pasos solo de Rick
 

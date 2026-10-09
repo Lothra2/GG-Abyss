@@ -58,6 +58,8 @@ export class Heroina {
   /** acción en curso (ataque, habilidad, morir): el tiempo corre con el reloj del juego, no con el de la animación */
   private accionActual: { resta: number; golpeEn: number; enGolpe?: () => void; alTerminar?: () => void; interrumpible: boolean; anim: string } | null = null
   private tinteS = 0
+  /** multiplicador de velocidad del equipo (botas del viento...) */
+  velMult = 1
 
   constructor(
     private escena: Phaser.Scene,
@@ -263,14 +265,14 @@ export class Heroina {
       if (f.resta <= 0) this.forzado = null
       movio = false
     } else if (this.teclado) {
-      const r = caminarDireccion(this.grilla, c, this.teclado.x, this.teclado.y, COMBATE.velocidadHeroe, dt)
+      const r = caminarDireccion(this.grilla, c, this.teclado.x, this.teclado.y, COMBATE.velocidadHeroe * this.velMult, dt)
       this.x = r.x
       this.y = r.y
       vx = r.vx
       vy = r.vy
       movio = r.vx !== 0 || r.vy !== 0
     } else if (this.camino.length > 0) {
-      const v = this.corriendo ? COMBATE.velocidadHeroeCorrer : COMBATE.velocidadHeroe
+      const v = (this.corriendo ? COMBATE.velocidadHeroeCorrer : COMBATE.velocidadHeroe) * this.velMult
       const r = seguirCamino(this.grilla, c, this.camino, v, dt)
       this.x = r.x
       this.y = r.y

@@ -598,6 +598,8 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 
 **Demo con las niñas:** cada una pelea hasta nivel 3. Mirar si Alana entiende los dos botones sin explicación y si el aullido de Thor la hace reír.
 
+**Notas de cierre F2:** hecho como dice el plan salvo tres ajustes: habilidades en Q y E (W camina), golpe pesado del trol con radio 48 (el aviso del kit mide 96) y los disparos pasan por encima de árboles y arbustos. Para después: el oro de los enemigos pasa a monedas del piso en F3.
+
 ### F3. Botín
 
 **Objetivo:** el botín como en Diablo: cae, brilla, se recoge, se equipa y se nota.

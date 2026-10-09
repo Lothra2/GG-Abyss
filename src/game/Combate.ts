@@ -9,7 +9,10 @@ import { rescatar } from '../logic/rescate'
 import { claseDe, fraccionXp, ganarXp, regenerar, statsDe, type StatsHeroe } from '../logic/stats'
 import { danoEnemigo, escudoDeThor, recibirDano, tirarGolpe, type Golpe } from '../logic/combate'
 import { abanico, Recargas } from '../logic/habilidades'
-import { RelojesThor, rangoMordida } from '../logic/thorCombate'
+import { RelojDesenterrar, RelojesThor, rangoMordida } from '../logic/thorCombate'
+import { bonosDeEquipo } from '../logic/equipo'
+import { sortearNormal } from '../logic/botin'
+import type { Catalogo } from '../logic/catalogo'
 import { BOTIN, COMBATE, ENEMIGOS, GOLPE_EN, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, CLASES, type ClaseId } from '../config/balance'
 import { PROF } from '../config/juego'
 import type { Heroina } from './Heroina'
@@ -32,7 +35,11 @@ export interface DepsCombate {
   claseManifest?: string
   /** dónde reaparece la heroína tras el rescate (la última fogata) */
   puntoRescate: () => { x: number; y: number }
-  alOro: (n: number, x: number, y: number) => void
+  cat: Catalogo
+  /** un enemigo cayó: Mundo sortea su botín y lo suelta */
+  alBotinEnemigo: (e: Enemigo) => void
+  /** Thor desenterró un objeto */
+  soltarObjeto: (id: string, x: number, y: number) => void
   /** bloquea y desbloquea la entrada del jugador (al caer y al volver) */
   bloquearEntrada: (v: boolean) => void
   guardar: () => void
@@ -76,6 +83,7 @@ export class Combate {
   private torbellino: { resta: number; cada: number } | null = null
   private curacion: { vida: number; mana: number; resta: number } | null = null
   private relojes = new RelojesThor()
+  private reloj_desenterrar = new RelojDesenterrar(juego())
   private auras: Aura[] = []
   private fxEscudo?: Phaser.GameObjects.Sprite
   /** cuerpo de la heroína para los proyectiles enemigos */
@@ -84,7 +92,7 @@ export class Combate {
   constructor(private d: DepsCombate) {
     const p = d.partida()
     this.clase = claseDe(d.heroina.id, d.claseManifest ?? d.m.personajes[d.heroina.id]?.clase)
-    this.stats = statsDe(this.clase, p.nivel)
+    this.stats = this.calcularStats()
     this.recargas = new Recargas(this.clase)
     // una partida recién creada tiene vida 0: arranca llena
     if (p.vida <= 0) {
@@ -111,6 +119,20 @@ export class Combate {
 
   get partida(): Partida {
     return this.d.partida()
+  }
+
+  /** Los stats con el nivel y lo que lleva puesto */
+  private calcularStats(): StatsHeroe {
+    const p = this.d.partida()
+    return statsDe(this.clase, p.nivel, bonosDeEquipo(this.d.cat, p.equipo, this.clase))
+  }
+
+  /** Se equipó o se sacó algo: se recalculan los stats y la vida y el maná no pasan del nuevo máximo */
+  refrescarStats(): void {
+    this.stats = this.calcularStats()
+    const p = this.partida
+    p.vida = Math.min(p.vida, this.stats.vidaMax)
+    p.mana = Math.min(p.mana, this.stats.manaMax)
   }
 
   get modoPeque(): boolean {
@@ -212,10 +234,7 @@ export class Combate {
     const cfg = ENEMIGOS[e.tipo]
     if (!cfg) return
     this.darXp(cfg.xp)
-    const tabla = BOTIN[e.tipo as keyof typeof BOTIN] as { oro?: number } | undefined
-    if (tabla && typeof tabla.oro === 'number' && juego().prob(tabla.oro)) {
-      this.d.alOro(juego().entero(cfg.oro[0], cfg.oro[1]), e.x, e.y - 20)
-    }
+    this.d.alBotinEnemigo(e)
   }
 
   darXp(n: number): void {
@@ -224,7 +243,7 @@ export class Combate {
     p.xp = r.xp
     if (r.subio.length > 0) {
       p.nivel = r.nivel
-      this.stats = statsDe(this.clase, p.nivel)
+      this.stats = this.calcularStats()
       p.vida = this.stats.vidaMax
       p.mana = this.stats.manaMax
       this.ultimoNivel = r.nivel
@@ -346,7 +365,7 @@ export class Combate {
       if (!e.vivo) return
       const r = rangoMordida(this.partida.nivel)
       const g = tirarGolpe(juego(), { min: r[0], max: r[1], puedeCritar: false })
-      this.golpearConThor(e, g)
+      this.golpearConThor(e, g, 1 + this.stats.mascotaDanoPct / 100)
     })
   }
 
@@ -365,6 +384,19 @@ export class Combate {
     this.d.thor.hacer('howl', 1.2)
     this.d.sonido.efecto('aullido', { volumen: 0.9 })
     this.ponerFxEscudo()
+  }
+
+  /** Ladra, cava y trae un objeto normal (PLAN.md 4, tabla de Thor). Público para las pruebas. */
+  desenterrar(): void {
+    const t = this.d.thor
+    if (t.ocupado || this.caido) return
+    t.hacer('bark', undefined, 0.5, () => this.d.sonido.efecto('ladrido', { volumen: 0.7 }), () => {
+      t.hacer('dig', 1.4, 0.75, () => {
+        this.d.proyectiles.fxEn('tierra_cavada', t.x, t.y + 4)
+        this.d.sonido.efecto('recoger', { volumen: 0.5, rate: 0.8 })
+        this.d.soltarObjeto(sortearNormal(juego(), this.d.cat, this.partida.nivel), t.x, t.y + 6)
+      }, () => t.hacer('pickup'))
+    })
   }
 
   private ponerFxEscudo(): void {
@@ -475,7 +507,7 @@ export class Combate {
         h.accion('cast', {
           fraccion: 0.5,
           enGolpe: () => {
-            const cura = Math.round((this.stats.vidaMax * prm.curaPct!) / 100)
+            const cura = Math.round(((this.stats.vidaMax * prm.curaPct!) / 100) * (1 + this.stats.curacionPct / 100))
             const antes = p.vida
             p.vida = Math.min(this.stats.vidaMax, p.vida + cura)
             this.d.numeros.mostrar(h.x, h.y - 44, `+${Math.round(p.vida - antes)}`, 'verde')
@@ -594,7 +626,7 @@ export class Combate {
     }
 
     // regeneración y pociones
-    const r = regenerar({ vida: p.vida, mana: p.mana, vidaMax: this.stats.vidaMax, manaMax: this.stats.manaMax, sinDanoS: this.sinDanoS, dt, canalizando: this.canalizando })
+    const r = regenerar({ vida: p.vida, mana: p.mana, vidaMax: this.stats.vidaMax, manaMax: this.stats.manaMax, sinDanoS: this.sinDanoS, dt, canalizando: this.canalizando, vidaRegenExtra: this.stats.vidaRegen })
     p.vida = r.vida
     p.mana = r.mana
     if (this.curacion) {
@@ -611,6 +643,10 @@ export class Combate {
     const accion = this.relojes.tick({ dt, vidaPct: p.vida / this.stats.vidaMax, enemigoCerca: !!cerca && !this.d.thor.ocupado, heroeVivo: true })
     if (accion === 'morder') this.thorMorder()
     else if (accion === 'aullar') this.thorAullar()
+
+    // Thor desentierra algo cuando no hay pelea
+    const libre = !this.d.enemigos.masCercano(h.x, h.y, 360) && !h.ocupada && !this.d.thor.ocupado
+    if (this.reloj_desenterrar.tick(dt, libre)) this.desenterrar()
 
     // torbellino
     if (this.torbellino) {

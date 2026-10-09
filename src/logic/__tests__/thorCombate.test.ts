@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { RelojesThor, rangoMordida } from '../thorCombate'
+import { RelojDesenterrar, RelojesThor, rangoMordida } from '../thorCombate'
+import { Azar } from '../azar'
 import { rescatar } from '../rescate'
 import { partidaNueva } from '../guardado'
 
@@ -56,5 +57,30 @@ describe('rescate de Thor', () => {
     const p = partidaNueva('alana', 1)
     rescatar(p, { x: 5, y: 5 }, 55, 50)
     expect(p.posicion).toEqual({ x: 0, y: 0 })
+  })
+})
+
+describe('Thor desentierra', () => {
+  it('cada 60 a 90 s hay 25 % de probabilidad', () => {
+    const r = new RelojDesenterrar(new Azar(3))
+    expect(r.faltan).toBeGreaterThanOrEqual(60)
+    expect(r.faltan).toBeLessThanOrEqual(90)
+    let sacos = 0
+    let intentos = 0
+    const t = 0.5
+    for (let s = 0; s < 3600 * 40; s += t) {
+      const antes = r.faltan
+      if (r.tick(t, true)) sacos++
+      if (r.faltan > antes) intentos++
+    }
+    expect(intentos).toBeGreaterThan(1500)
+    expect(sacos / intentos).toBeGreaterThan(0.21)
+    expect(sacos / intentos).toBeLessThan(0.29)
+  })
+  it('en combate el reloj no avanza', () => {
+    const r = new RelojDesenterrar(new Azar(1))
+    const f = r.faltan
+    for (let i = 0; i < 1000; i++) expect(r.tick(1, false)).toBe(false)
+    expect(r.faltan).toBe(f)
   })
 })

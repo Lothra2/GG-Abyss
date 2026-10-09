@@ -302,6 +302,8 @@ test.describe('Bosque GG vivo', () => {
   test('Thor sigue a la heroína sin quedarse trabado, y se sienta cuando ella para', async ({ page }) => {
     test.setTimeout(120_000)
     await abrirMundo(page)
+    // desde F2 hay enemigos en el camino y Thor sale a morderlos: esta prueba mide solo cómo sigue, sin pelea
+    await gancho(page, 'matarEnemigos')
     const mapa = await info(page)
     const meta = await puntoLibre(page, mapa.inicio.x + 900, mapa.inicio.y - 300)
     await gancho(page, 'tocar', meta.x, meta.y)
