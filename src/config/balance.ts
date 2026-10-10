@@ -318,6 +318,21 @@ export const IMPACTO = {
   destelloMs: 70,
 }
 
+/**
+ * La tienda de la fogata: se abre al tocar una fogata. Pociones para el cinturón y las armaduras de Thor, que se le ponen
+ * enseguida. Los precios están pensados para lo que se junta en el Mundo 1 (un cofre de madera da 5 a 10, un trol 20 a 35).
+ */
+export const TIENDA = {
+  ofertas: [
+    { id: 'potion_health_minor', precio: 10 },
+    { id: 'potion_mana_minor', precio: 10 },
+    { id: 'potion_rejuv_minor', precio: 18 },
+    { id: 'pet_armor_1', precio: 40 },
+    { id: 'pet_armor_2', precio: 120 },
+    { id: 'pet_armor_3', precio: 260 },
+  ],
+}
+
 export const CAMARA = {
   lerp: 0.12,
   adelanto: 40,

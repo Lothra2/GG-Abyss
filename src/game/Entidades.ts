@@ -71,6 +71,8 @@ export interface DepsEntidades {
   alAbrazar: (x: number, y: number) => void
   /** un cofre se abrió (autoguardado) */
   alAbrirCofre: (llave: string) => void
+  /** se tocó una fogata (además de guardar): abre la tienda */
+  alUsarFogata?: (f: { id: string; nombre: string; x: number; y: number }) => void
 }
 
 /** Nombre legible de la pista de un cofre secreto */
@@ -214,7 +216,10 @@ export class Entidades {
       if (c) this.deps.alLeerCartel(c.icono, c.texto)
     } else if (o.tipo === 'fogata') {
       const f = this.fogatas.find((q) => q.id === o.llave)
-      if (f) this.guardarEn(f)
+      if (f) {
+        this.guardarEn(f)
+        this.deps.alUsarFogata?.({ id: f.id, nombre: f.nombre, x: f.e.x, y: f.e.y })
+      }
     } else this.deps.alAbrazar(o.x, o.y)
   }
 

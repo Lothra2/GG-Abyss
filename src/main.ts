@@ -14,6 +14,7 @@ import { HUD } from './scenes/HUD'
 import { Pausa } from './scenes/Pausa'
 import { Creditos } from './scenes/Creditos'
 import { Inventario } from './scenes/Inventario'
+import { Tienda } from './scenes/Tienda'
 import { Continuara } from './scenes/Continuara'
 import { Instalar } from './scenes/Instalar'
 
@@ -33,7 +34,7 @@ const game = new Phaser.Game({
   scale: { mode: Phaser.Scale.NONE, width: escala.ancho, height: escala.alto, zoom: escala.cssZoom },
   render: { powerPreference: 'high-performance', mipmapFilter: 'NEAREST' },
   input: { activePointers: 3, touch: { capture: true } },
-  scene: [Boot, Titulo, SeleccionJugador, SalaKit, Mundo, HUD, Pausa, Creditos, Inventario, Continuara, Instalar],
+  scene: [Boot, Titulo, SeleccionJugador, SalaKit, Mundo, HUD, Pausa, Creditos, Inventario, Tienda, Continuara, Instalar],
   callbacks: { preBoot: (g) => g.registry.set('escala', escala) },
 })
 

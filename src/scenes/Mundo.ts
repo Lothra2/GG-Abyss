@@ -61,7 +61,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -242,6 +242,7 @@ export class Mundo extends Phaser.Scene {
       alLeerCartel: (icono, texto) => this.alLeerCartel(icono, texto),
       alAbrazar: (x, y) => this.alAbrazar(x, y),
       alAbrirCofre: () => this.guardar(),
+      alUsarFogata: () => this.abrirTienda(),
     })
 
     this.numeros = new Numeros(this)
@@ -609,6 +610,15 @@ export class Mundo extends Phaser.Scene {
     this.scene.pause('Mundo')
     this.scene.launch('Inventario')
     this.scene.bringToTop('Inventario')
+  }
+
+  /** La tienda de la fogata: el mundo se pausa como con el inventario */
+  abrirTienda(): void {
+    if (this.scene.isActive('Tienda') || this.scene.isActive('Inventario') || this.scene.isPaused('Mundo') || this.combate.caido) return
+    this.alAbrirPausa()
+    this.scene.pause('Mundo')
+    this.scene.launch('Tienda')
+    this.scene.bringToTop('Tienda')
   }
 
   equiparDeBolsa(i: number) {
@@ -1030,6 +1040,10 @@ export class Mundo extends Phaser.Scene {
       hudLayout: () => (this.scene.isActive('HUD') ? (this.scene.get('HUD') as unknown as { layout(): unknown }).layout() : null),
       noEsperar: () => this.listo,
       combate: () => this.combate.info(),
+      abrirTienda: (() => this.abrirTienda()) as never,
+      darOro: ((n: number) => {
+        this.partida.oro += n
+      }) as never,
       impactos: () => ({ ultimo: this.ultimoImpacto, pausa: this.pausaGolpe, lento: { ...this.lento }, escalaAnims: this.anims.globalTimeScale }),
       jefe: () => {
         const j = this.jefe
