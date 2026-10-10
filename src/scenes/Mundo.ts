@@ -4,6 +4,7 @@ import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
 import { existeMundo, idMundo, manifestParaMundo, MUNDO_BOSQUE } from '../kit/mundos'
 import { Mecanismos, OBJETOS_MECANISMOS } from '../game/Mecanismos'
+import { ID_MERCADER, Mercader } from '../game/Mercader'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
 import { encolarAudio, encolarBotin, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
 import { crearAnimsPersonaje } from '../kit/anims'
@@ -72,7 +73,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual', 'mecanismos', 'darBrasas',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual', 'mecanismos', 'darBrasas', 'mercader',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -82,6 +83,14 @@ const NOMBRES_GANCHOS = [
  */
 export class Mundo extends Phaser.Scene {
   private m!: Manifest
+  /** El manifest del mundo de ahora (para las escenas de interfaz) */
+  get manifest(): Manifest {
+    return this.m
+  }
+  /** El id del mundo de ahora (mundo1, mundo2...) */
+  get idMundo(): string {
+    return idMundo(this.m.mundo)
+  }
   mapa!: MapaJuego
   grilla!: Grilla
   partida!: Partida
@@ -110,6 +119,9 @@ export class Mundo extends Phaser.Scene {
   private peligroAgua = new Set<number>()
   /** F8: las brasas de la forja y lo que abren (solo en la Catedral) */
   mecanismos: Mecanismos | null = null
+  mercader!: Mercader
+  /** la tienda mientras dura este mundo: lo que ya se compró del surtido y lo vendido (se puede recomprar) */
+  tiendaSesion: { comprados: string[]; recompra: { id: string; precio: number }[] } = { comprados: [], recompra: [] }
   private destinoBrasa: { firma: string; p: { x: number; y: number } | null } = { firma: '', p: null }
   private ultimaSegura = { x: 0, y: 0 }
   /** F8: las raíces de la llamada que siguen en pie (se van solas, o todas juntas cuando termina la pelea) */
@@ -248,6 +260,8 @@ export class Mundo extends Phaser.Scene {
     encolarObjetosMundo(this, this.m, new Set(mapa.entidades.filter((e) => e.tipo === 'rompible').map((e) => String(e.props.objeto ?? 'caja'))))
     for (const n of [1, 2, 3]) encolarPersonaje(this, this.m, `thor_armadura${n}`, ['idle', 'walk', 'run', 'sit', 'wag', 'bite', 'howl', 'bark', 'pickup', 'dig', 'hurt'])
     for (const t of new Set(mapa.entidades.filter((e) => e.tipo === 'enemigo' || e.tipo === 'jefe').map((e) => String(e.props.enemigo ?? '')))) encolarPersonaje(this, this.m, t)
+    // el mercader de las fogatas (si el kit lo trae)
+    if (this.m.personajes[ID_MERCADER]) encolarPersonaje(this, this.m, ID_MERCADER)
     encolarFx(this, this.m, fxDeCombate(this.m.direcciones))
     if (this.load.list.size === 0) return this.armar()
     this.load.once(Phaser.Loader.Events.COMPLETE, () => this.armar())
@@ -337,8 +351,11 @@ export class Mundo extends Phaser.Scene {
       alLeerCartel: (icono, texto) => this.alLeerCartel(icono, texto),
       alAbrazar: (x, y) => this.alAbrazar(x, y),
       alAbrirCofre: () => this.guardar(),
-      alUsarFogata: () => this.abrirTienda(),
+      // con el mercader al lado, la fogata solo guarda: la tienda es él
+      alUsarFogata: () => !this.mercader?.hay && this.abrirTienda(),
     })
+    this.mercader = new Mercader(this, m, this.grilla, this.entidades.fogatas.map((f) => ({ x: f.e.x, y: f.e.y })))
+    this.tiendaSesion = { comprados: [], recompra: [] }
 
     this.numeros = new Numeros(this)
     this.proyectiles = new Proyectiles(this, m, this.grilla)
@@ -974,6 +991,7 @@ export class Mundo extends Phaser.Scene {
     this.proyectiles.limpiar()
     this.enemigos.destruir()
     this.mecanismos?.destruir()
+    this.mercader?.destruir()
     this.mecanismos = null
     this.sonido.detener()
     this.decos.destruir()
@@ -1002,6 +1020,11 @@ export class Mundo extends Phaser.Scene {
       return true
     }
     if (this.criaturas.tocar(x, y)) return true
+    const mo = this.mercader.golpe(x, y)
+    if (mo) {
+      this.irAUsar(mo)
+      return true
+    }
     const o = this.entidades.golpe(x, y)
     if (!o) return false
     this.irAUsar(o)
@@ -1210,10 +1233,16 @@ export class Mundo extends Phaser.Scene {
   }
 
   /** La heroína camina hasta el objeto y lo usa. Si ya está al lado, lo usa de una. */
+  /** Usar algo del mundo: el mercader abre la tienda, lo demás lo resuelve Entidades */
+  private usar(o: Objetivo): void {
+    if (o.tipo === 'mercader') this.abrirTienda()
+    else this.entidades.usar(o)
+  }
+
   private irAUsar(o: Objetivo): void {
     if (Math.hypot(this.heroina.x - o.x, this.heroina.y - o.y) <= o.radio) {
       this.heroina.parar()
-      this.entidades.usar(o)
+      this.usar(o)
       return
     }
     const p = this.grilla.puntoLibreCerca(o.parada.x, o.parada.y, 8, 90) ?? o.parada
@@ -1493,7 +1522,7 @@ export class Mundo extends Phaser.Scene {
       if (Math.hypot(this.heroina.x - pend.x, this.heroina.y - pend.y) <= pend.radio) {
         this.pendiente = null
         this.heroina.parar()
-        this.entidades.usar(pend)
+        this.usar(pend)
       } else if (!this.heroina.tieneOrden) this.pendiente = null
     }
     this.thor.registrarRastro(this.heroina)
@@ -1509,6 +1538,7 @@ export class Mundo extends Phaser.Scene {
     if (this.portalJefe) luces.push({ x: this.portalJefe.x, y: this.portalJefe.y - 40, r: 150, color: this.portalJefe.luz, pulse: true, ph: 0.3 })
     const heroe = { x: this.heroina.x, y: this.heroina.y }
     this.entidades.update(this.t, heroe, !this.presentacion?.activa)
+    this.mercader.update(this.t, heroe)
     this.autoguardadoEn -= dtVisual
     if (this.autoguardadoEn <= 0) this.guardar()
     this.decos.actualizar(this.tViento, dtVisual, vista, heroe, luces)
@@ -1729,9 +1759,10 @@ export class Mundo extends Phaser.Scene {
         return { x: p.x, y: p.y, enemigo: e.id }
       }) as never,
       proyectilesActivos: () => this.proyectiles.cantidad,
-      objetivos: () => this.entidades.objetivos(),
+      objetivos: () => [...this.entidades.objetivos(), ...this.mercader.objetivos()],
+      mercader: () => this.mercader.info(),
       usarObjetivo: ((llave: string) => {
-        const o = this.entidades.objetivos().find((q) => q.llave === llave)
+        const o = [...this.entidades.objetivos(), ...this.mercader.objetivos()].find((q) => q.llave === llave)
         if (o) this.irAUsar(o)
         return !!o
       }) as never,

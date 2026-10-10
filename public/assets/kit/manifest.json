@@ -1563,6 +1563,29 @@
      "loop": false
     }
    }
+  },
+  "mercader": {
+   "tipo": "npc",
+   "nombre": "Don Cachivache",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "personajes/mercader_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "cast": {
+     "archivo": "personajes/mercader_cast.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    }
+   }
   }
  },
  "fx": {

@@ -365,6 +365,20 @@ export const TIENDA = {
     { id: 'pet_armor_2', precio: 120 },
     { id: 'pet_armor_3', precio: 260 },
   ],
+  /** el equipo que trae el mercader: precio = base de la rareza + nivel x porNivel */
+  precioBase: { normal: 15, magic: 45, rare: 120, set: 220, unique: 260, legendary: 300 } as Record<string, number>,
+  precioPorNivel: 3,
+  /** lo que paga el mercader por algo de la bolsa: esta parte del precio (al menos 1) */
+  ventaPct: 30,
+  /** cuántas piezas de equipo trae (una es un arma de la clase de la heroína) */
+  surtido: 3,
+  /** las armas que el mercader le guarda a cada clase (por el ícono base del catálogo) */
+  armasDeClase: {
+    amazona: ['bow', 'longbow', 'crossbow', 'javelin', 'spear'],
+    druida: ['wand', 'staff', 'scepter', 'club'],
+    paladin: ['sword', 'mace', 'axe', 'warhammer', 'morning_star', 'scimitar'],
+    hechicera: ['staff', 'wand', 'scepter'],
+  } as Record<string, string[]>,
 }
 
 /**

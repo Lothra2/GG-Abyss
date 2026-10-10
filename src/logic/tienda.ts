@@ -1,5 +1,7 @@
-import { TIENDA } from '../config/balance'
-import { esPocion, itemDe, type Catalogo } from './catalogo'
+import { BOTIN, CLASES, TIENDA } from '../config/balance'
+import { Azar } from './azar'
+import { tablaMagicos, tablaNormal } from './botin'
+import { esPocion, itemDe, type Catalogo, type ItemCat } from './catalogo'
 import type { Inv } from './inventario'
 
 export type EstadoOferta = 'ok' | 'caro' | 'lleno' | 'tiene'
@@ -63,4 +65,75 @@ export function comprar(p: { oro: number }, inv: Inv, cat: Catalogo, id: string,
   }
   inv.bolsa[inv.bolsa.indexOf(null)] = id
   return { ok: true, donde: 'bolsa', oro: p.oro }
+}
+
+/* ---------- el mercader: su equipo, vender y recomprar ---------- */
+
+/** Lo que cuesta un objeto de equipo en el mercader */
+export function precioDe(i: ItemCat): number {
+  return (TIENDA.precioBase[i.rarity] ?? TIENDA.precioBase.normal!) + i.level * TIENDA.precioPorNivel
+}
+
+/** Lo que paga el mercader por algo: una parte del precio, nunca 0 */
+export function precioVenta(i: ItemCat): number {
+  const fija = TIENDA.ofertas.find((o) => o.id === i.id)?.precio
+  return Math.max(1, Math.round(((fija ?? precioDe(i)) * TIENDA.ventaPct) / 100))
+}
+
+/** Las armas de la familia no se venden (son de cada una, salen del cofre legendario) */
+export function sePuedeVender(i: ItemCat | null): boolean {
+  if (!i) return false
+  const personales = new Set<string>([...Object.values(BOTIN.armaPersonal), BOTIN.armaPersonalDefecto, ...Object.values(CLASES).map((c) => c.armaPersonal)])
+  return !personales.has(i.id)
+}
+
+/** Semilla del surtido: cambia con el mundo y al subir de nivel (trae cosas nuevas) */
+export function semillaSurtido(idPartida: string, mundo: string, nivel: number): number {
+  let h = 2166136261
+  for (const ch of `${idPartida}|${mundo}|${nivel}`) h = Math.imul(h ^ ch.charCodeAt(0), 16777619)
+  return h >>> 0
+}
+
+/**
+ * El equipo del mercader: un arma de la clase de la heroína y piezas de armadura o mano libre, de su nivel
+ * (como el botín normal y mágico). Siempre el mismo para la misma semilla.
+ */
+export function surtido(cat: Catalogo, nivel: number, clase: string, semilla: number, n = TIENDA.surtido): { id: string; precio: number }[] {
+  const rng = new Azar(semilla)
+  const tabla = [...tablaNormal(cat, nivel), ...tablaMagicos(cat, nivel)].filter((i) => !TIENDA.ofertas.some((o) => o.id === i.id))
+  const elegir = (l: ItemCat[]) => (l.length ? l[Math.floor(rng.next() * l.length)]! : null)
+  const fuera = new Set<string>()
+  const lista: ItemCat[] = []
+  const armas = TIENDA.armasDeClase[clase] ?? []
+  const arma = elegir(tabla.filter((i) => i.base.cat === 'weapon' && armas.includes(i.base.icon ?? '')))
+  if (arma) {
+    lista.push(arma)
+    fuera.add(arma.id)
+  }
+  // lo demás: armadura o mano libre, sin repetir casillero
+  const casilleros = new Set<string>()
+  for (let k = 0; k < 40 && lista.length < n; k++) {
+    const i = elegir(tabla.filter((q) => !fuera.has(q.id) && (q.base.cat === 'armor' || q.base.cat === 'offhand')))
+    if (!i) break
+    fuera.add(i.id)
+    const cas = `${i.base.cat}:${i.base.slot ?? ''}`
+    if (casilleros.has(cas)) continue
+    casilleros.add(cas)
+    lista.push(i)
+  }
+  return lista.map((i) => ({ id: i.id, precio: precioDe(i) }))
+}
+
+export type Venta = { ok: true; id: string; oro: number; precio: number } | { ok: false; motivo: 'vacio' | 'no-vende' }
+
+/** Vende lo que hay en un hueco de la bolsa: el oro se suma y el hueco queda libre */
+export function vender(p: { oro: number }, inv: Inv, cat: Catalogo, indiceBolsa: number): Venta {
+  const id = inv.bolsa[indiceBolsa]
+  const i = itemDe(cat, id)
+  if (!id || !i) return { ok: false, motivo: 'vacio' }
+  if (!sePuedeVender(i)) return { ok: false, motivo: 'no-vende' }
+  const precio = precioVenta(i)
+  inv.bolsa[indiceBolsa] = null
+  p.oro += precio
+  return { ok: true, id, oro: p.oro, precio }
 }
