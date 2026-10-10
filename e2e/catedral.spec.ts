@@ -27,20 +27,21 @@ export async function bajarALaCatedral(page: Page, heroe = 'rick', extra = ''): 
 }
 
 test.describe('La Catedral de las Raíces', () => {
-  test('baja sin errores: su mapa, sus zonas, sin jefe todavía, y suena la catedral', async ({ page }) => {
+  test('baja sin errores: su mapa, sus zonas, su jefe, y suena la catedral', async ({ page }) => {
     const errores = vigilarErrores(page)
     await bajarALaCatedral(page)
     const m = await mundo(page)
     expect(m.nombre).toBe('La Catedral de las Raíces')
-    expect(m.jefe).toBe(false)
+    // el Guardián de la Campana espera en el campanario
+    expect(m.jefe).toBe(true)
     for (const z of ['La Escalera Hundida', 'El Atrio de las Luciérnagas', 'Los Claustros Quebrados']) expect(m.zonas).toContain(z)
     // llega arriba de la escalera
     expect(await gancho<string | null>(page, 'zona')).toBe('La Escalera Hundida')
     await avanzar(page, 3)
     await expect.poll(async () => Object.keys(await gancho<Record<string, number>>(page, 'sonido')).join(','), { timeout: 20_000 }).toMatch(/musica_catedral|ambiente_catedral/)
-    // el chip no manda a vencer a un jefe que no está
+    // el objetivo de la Catedral son las brasas, aunque tenga nivel para el jefe
     await gancho(page, 'ponerNivel', 8)
-    await expect.poll(async () => (await gancho<{ clave: string }>(page, 'hudObjetivo')).clave, { timeout: 10_000 }).toBe('explorar')
+    await expect.poll(async () => (await gancho<{ clave: string }>(page, 'hudObjetivo')).clave, { timeout: 10_000 }).toBe('brasas')
     await sinErrores(errores)
   })
 
@@ -48,6 +49,10 @@ test.describe('La Catedral de las Raíces', () => {
     test.setTimeout(240_000)
     await bajarALaCatedral(page, 'sophie')
     await gancho(page, 'matarEnemigos')
+    // con las tres brasas están abiertas todas las compuertas (que se llegue sin ellas se prueba en la de las brasas)
+    await gancho(page, 'darBrasas', 3)
+    await gancho(page, 'ponerNivel', 10)
+    await avanzar(page, 0.5)
     const mapa = await info(page)
     const ini = await pos(page)
     const usables = await gancho<{ tipo: string; x: number; y: number }[]>(page, 'objetivos')
@@ -69,6 +74,13 @@ test.describe('La Catedral de las Raíces', () => {
       await gancho(page, 'curarTodo')
       await gancho(page, 'tocar', meta.x, meta.y)
       await avanzar(page, 90, true)
+      // entrar al campanario despierta al guardián y cierra la salida: se lo libera y se sigue
+      if ((await gancho<{ peleando?: boolean }>(page, 'jefe')).peleando) {
+        await gancho(page, 'danarJefe', 9999)
+        await avanzar(page, 6, true)
+        await gancho(page, 'tocar', meta.x, meta.y)
+        await avanzar(page, 60, true)
+      }
       const p = await pos(page)
       // en las orillas angostas de la nave el destino exacto puede no caberle: llega al centro del cuadro firme de al lado
       expect(Math.hypot(p.x - meta.x, p.y - meta.y), `no llegó a ${z.nombre}`).toBeLessThan(20)

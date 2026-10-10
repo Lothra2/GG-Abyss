@@ -149,8 +149,8 @@ test.describe('El minotauro', () => {
     expect(v.vivo).toBe(false)
     expect(v.anillo).toBe(false)
     expect(v.cofreJefe).toBe(true)
-    // el portal se abre unos segundos después, y suena la música de victoria
-    await expect.poll(async () => (await jefe(page)).portal, { timeout: 20_000 }).toBe(true)
+    // el portal se abre unos segundos después de la cámara lenta (tiempo real: en el Chromium sin GPU tarda), y suena la música de victoria
+    await expect.poll(async () => (await jefe(page)).portal, { timeout: 60_000 }).toBe(true)
     await expect.poll(async () => Object.keys(await gancho<Record<string, number>>(page, 'sonido')).some((k) => k.includes('musica_victoria')), { timeout: 20_000 }).toBe(true)
     // llueve oro
     await expect.poll(async () => (await gancho<{ monedas: unknown[] }>(page, 'botin')).monedas.length, { timeout: 20_000 }).toBeGreaterThan(0)
@@ -173,7 +173,8 @@ test.describe('El minotauro', () => {
     expect(m2.partida).toBe('mundo2')
     expect(m2.otros).toContain('mundo1')
     expect(m2.zonas).toContain('La Escalera Hundida')
-    expect(m2.jefe).toBe(false)
+    // abajo espera el Guardián de la Campana
+    expect(m2.jefe).toBe(true)
     // lo de la heroína viaja con ella: el oro y el nivel
     expect((await gancho<{ oro: number }>(page, 'estado')).oro).toBe(oroAntes)
     expect((await combate(page)).nivel).toBeGreaterThanOrEqual(10)
