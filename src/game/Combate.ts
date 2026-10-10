@@ -11,6 +11,7 @@ import { danoEnemigo, escudoDeThor, recibirDano, tirarGolpe, type Golpe } from '
 import { abanico, Recargas } from '../logic/habilidades'
 import { RelojDesenterrar, RelojesThor, rangoMordida } from '../logic/thorCombate'
 import { bonosDeEquipo } from '../logic/equipo'
+import type { TipoImpacto } from '../logic/impacto'
 import { sortearNormal } from '../logic/botin'
 import type { Catalogo } from '../logic/catalogo'
 import { BOTIN, COMBATE, ENEMIGOS, GOLPE_EN, JEFE, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, CLASES, type ClaseId } from '../config/balance'
@@ -45,6 +46,8 @@ export interface DepsCombate {
   guardar: () => void
   /** la cámara salta a la heroína tras el rescate */
   centrarCamara: () => void
+  /** el peso del golpe: pausa cortita y sacudida (Mundo decide cuánto) */
+  alImpacto?: (tipo: TipoImpacto) => void
 }
 
 interface Aura {
@@ -224,6 +227,10 @@ export class Combate {
     const murio = e.recibir(g.dano, this.d.heroina.x, this.d.heroina.y)
     this.d.numeros.mostrar(e.x, e.y - e.cuerpo.alto - 4, String(g.dano) + (g.critico ? '!' : ''), g.critico ? 'amarillo' : 'blanco', g.critico)
     this.d.sonido.efecto(g.critico ? 'critico' : 'golpe', { volumen: 0.5 })
+    // la muerte del jefe tiene su propio momento (Mundo.victoria)
+    if (e.esJefe) {
+      if (!murio) this.d.alImpacto?.(g.critico ? 'jefeCritico' : 'jefeGolpe')
+    } else this.d.alImpacto?.(murio ? 'muerte' : g.critico ? 'critico' : 'golpe')
     if (murio) this.alMorirEnemigo(e)
   }
 
@@ -286,6 +293,8 @@ export class Combate {
     if (r.recibido > 0) this.d.numeros.mostrar(h.x, h.y - 44, `-${r.recibido}`, 'rojo')
     else if (r.absorbido > 0) this.d.numeros.mostrar(h.x, h.y - 44, String(r.absorbido), 'azul')
     h.destello(0xff7070)
+    // un golpe grande (más de un octavo de la vida) se siente
+    if (r.recibido >= this.stats.vidaMax / 8) this.d.alImpacto?.('recibidoFuerte')
     this.d.sonido.efecto('jugador_dolor', { volumen: 0.5 })
     if (r.cayo) this.caer()
   }
@@ -373,6 +382,7 @@ export class Combate {
     const murio = e.recibir(dano, this.d.thor.x, this.d.thor.y)
     this.d.numeros.mostrar(e.x, e.y - e.cuerpo.alto - 4, String(dano), 'blanco')
     this.d.sonido.efecto('mordida', { volumen: 0.6 })
+    if (murio && !e.esJefe) this.d.alImpacto?.('muerte')
     if (murio) this.alMorirEnemigo(e)
   }
 

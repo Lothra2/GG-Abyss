@@ -300,6 +300,24 @@ export const JEFE = {
   velocidad: 70,
 }
 
+/**
+ * El peso de los golpes: una pausa cortita del mundo (hitstop) y una sacudida de cámara según lo que pasó.
+ * Las pausas no se encadenan: en cualquier segundo no se congela más de topePausaPorSeg (el torbellino pega muchas veces).
+ */
+export const IMPACTO = {
+  golpe: { pausa: 0, sacudidaMs: 0, fuerza: 0 },
+  critico: { pausa: 0.05, sacudidaMs: 90, fuerza: 0.0025 },
+  muerte: { pausa: 0.07, sacudidaMs: 120, fuerza: 0.003 },
+  jefeGolpe: { pausa: 0.03, sacudidaMs: 0, fuerza: 0 },
+  jefeCritico: { pausa: 0.07, sacudidaMs: 120, fuerza: 0.0035 },
+  jefeFase2: { pausa: 0.35, sacudidaMs: 500, fuerza: 0.012 },
+  jefeMuerte: { pausa: 0.5, sacudidaMs: 700, fuerza: 0.014 },
+  recibidoFuerte: { pausa: 0.06, sacudidaMs: 200, fuerza: 0.006 },
+  topePausaPorSeg: 0.16,
+  /** el destello blanco de quien recibe el golpe */
+  destelloMs: 70,
+}
+
 export const CAMARA = {
   lerp: 0.12,
   adelanto: 40,

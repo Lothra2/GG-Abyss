@@ -40,17 +40,22 @@ export class Numeros {
     for (const img of imgs) img.x -= ancho / 2
     cont.add(imgs)
     this.activos++
-    this.escena.tweens.add({
-      targets: cont,
-      y: cont.y - 24,
-      alpha: 0,
-      duration: 800,
-      ease: 'Sine.easeOut',
-      onComplete: () => {
-        this.activos--
-        cont.destroy()
-      },
-    })
+    const fin = () => {
+      this.activos--
+      cont.destroy()
+    }
+    if (grande) {
+      // el crítico salta, se queda un instante a la vista y recién ahí se va
+      this.escena.tweens.chain({
+        targets: cont,
+        tweens: [
+          { y: cont.y - 14, duration: 110, ease: 'Back.easeOut' },
+          { y: cont.y - 16, duration: 260 },
+          { y: cont.y - 34, alpha: 0, duration: 520, ease: 'Sine.easeIn' },
+        ],
+        onComplete: fin,
+      })
+    } else this.escena.tweens.add({ targets: cont, y: cont.y - 24, alpha: 0, duration: 800, ease: 'Sine.easeOut', onComplete: fin })
   }
 
   get cantidad(): number {

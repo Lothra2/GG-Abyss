@@ -34,6 +34,7 @@ import { Numeros } from '../game/Numeros'
 import { Combate } from '../game/Combate'
 import { Botin } from '../game/Botin'
 import { JefeSprite, type EventosJefe } from '../game/Jefe'
+import { Impactos, type TipoImpacto } from '../logic/impacto'
 import { Presentacion } from '../game/Presentacion'
 import { alCambiarEscala } from '../game/Pantalla'
 import { Atmosfera } from '../fx/Atmosfera'
@@ -60,7 +61,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -115,6 +116,12 @@ export class Mundo extends Phaser.Scene {
   private autoguardadoEn = AUTOGUARDADO_S
   private tJugado = 0
   private barra?: { marco: Phaser.GameObjects.NineSlice; relleno: Phaser.GameObjects.NineSlice }
+  /** el peso de los golpes: el mundo se congela un instante (hitstop) */
+  private impactos = new Impactos()
+  private pausaGolpe = 0
+  private ultimoImpacto: { tipo: TipoImpacto; pausa: number; sacude: boolean } | null = null
+  /** cámara lenta (la muerte del jefe): el mundo corre a `factor` durante `resta` segundos reales */
+  private lento = { factor: 1, resta: 0 }
 
   constructor() {
     super('Mundo')
@@ -310,6 +317,7 @@ export class Mundo extends Phaser.Scene {
       },
       guardar: () => this.guardar(),
       centrarCamara: () => this.camara.centrarEn(this.heroina.x, this.heroina.y - 12),
+      alImpacto: (t) => this.impacto(t),
     })
 
     this.crearJefe(evEnemigos)
@@ -631,6 +639,7 @@ export class Mundo extends Phaser.Scene {
 
   private cerrar(): void {
     this.listo = false
+    this.anims.globalTimeScale = 1
     this.game.events.off('cartel-cerrado', this.alCerrarCartel, this)
     this.game.events.off('pausa-cerrada', this.alCerrarPausa, this)
     this.game.events.off('inventario-cerrado', this.alCerrarPausa, this)
@@ -811,6 +820,22 @@ export class Mundo extends Phaser.Scene {
 
   /* ---------- cuadro ---------- */
 
+  /** Pausa cortita y sacudida según el golpe */
+  impacto(tipo: TipoImpacto): void {
+    const r = this.impactos.pedir(tipo)
+    this.ultimoImpacto = { tipo, pausa: r.pausa, sacude: !!r.sacudida }
+    if (r.pausa > this.pausaGolpe) {
+      this.pausaGolpe = r.pausa
+      this.anims.globalTimeScale = 0.05
+    }
+    if (r.sacudida) this.cameras.main.shake(r.sacudida.ms, r.sacudida.fuerza)
+  }
+
+  /** El mundo corre más lento un rato (en segundos reales) */
+  camaraLenta(factor: number, seg: number): void {
+    this.lento = { factor, resta: seg }
+  }
+
   override update(_time: number, deltaMs: number): void {
     if (!this.listo) return
     const dt = Math.min(0.05, deltaMs / 1000)
@@ -822,7 +847,19 @@ export class Mundo extends Phaser.Scene {
    * se mueven la heroína, Thor y la cámara (las pruebas lo usan para avanzar rápido).
    * `dtVisual` es el tiempo acumulado desde el último paso completo.
    */
-  private paso(dt: number, completo: boolean, dtVisual: number): void {
+  private paso(dtReal: number, completo: boolean, dtVisual: number): void {
+    // hitstop: el mundo se congela un instante; la cámara lenta lo frena un rato
+    this.impactos.avanzar(dtReal)
+    let dt = dtReal
+    if (this.pausaGolpe > 0) {
+      this.pausaGolpe = Math.max(0, this.pausaGolpe - dtReal)
+      dt = 0
+      if (this.pausaGolpe === 0) this.anims.globalTimeScale = this.lento.resta > 0 ? this.lento.factor : 1
+    } else if (this.lento.resta > 0) {
+      this.lento.resta = Math.max(0, this.lento.resta - dtReal)
+      dt = dtReal * this.lento.factor
+      this.anims.globalTimeScale = this.lento.resta > 0 ? this.lento.factor : 1
+    }
     this.t += dt
 
     // el viento: un reloj para todos los árboles, con una ráfaga cada 8 a 15 s que dura 2 s
@@ -859,7 +896,7 @@ export class Mundo extends Phaser.Scene {
     }
     this.thor.registrarRastro(this.heroina)
     this.thor.update(dt, this.heroina)
-    this.camara.seguir(dt, this.heroina.x, this.heroina.y - 12, this.heroina.vx, this.heroina.vy)
+    this.camara.seguir(dtReal, this.heroina.x, this.heroina.y - 12, this.heroina.vx, this.heroina.vy)
     if (!completo) return
 
     const vista = this.camara.vista
@@ -993,6 +1030,7 @@ export class Mundo extends Phaser.Scene {
       hudLayout: () => (this.scene.isActive('HUD') ? (this.scene.get('HUD') as unknown as { layout(): unknown }).layout() : null),
       noEsperar: () => this.listo,
       combate: () => this.combate.info(),
+      impactos: () => ({ ultimo: this.ultimoImpacto, pausa: this.pausaGolpe, lento: { ...this.lento }, escalaAnims: this.anims.globalTimeScale }),
       jefe: () => {
         const j = this.jefe
         return j

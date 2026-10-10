@@ -72,6 +72,21 @@ test.describe('Combate', () => {
     expect(despues.objetivo).toBeNull()
   })
 
+  test('los golpes pesan: matar congela un instante, sacude la cámara y el mundo sigue solo', async ({ page }) => {
+    await abrirMundo(page, 'sophie')
+    const { id } = await cerca(page, 'rata', 0)
+    await matar(page, id)
+    const i = await gancho<{ ultimo: { tipo: string; pausa: number; sacude: boolean } | null; pausa: number; escalaAnims: number }>(page, 'impactos')
+    expect(i.ultimo?.tipo).toBe('muerte')
+    expect(i.ultimo?.pausa).toBeGreaterThan(0)
+    expect(i.ultimo?.sacude).toBe(true)
+    // la pausa es cortita: después todo vuelve a su velocidad
+    await avanzar(page, 0.5)
+    const j = await gancho<{ pausa: number; escalaAnims: number }>(page, 'impactos')
+    expect(j.pausa).toBe(0)
+    expect(j.escalaAnims).toBe(1)
+  })
+
   test('el enemigo marcado se persigue: la heroína camina hasta su alcance y ataca sola', async ({ page }) => {
     await abrirMundo(page, 'rick')
     const c = await gancho<{ x: number; y: number; enemigo: number }>(page, 'cercaDeEnemigo', 'calabaza', 1)

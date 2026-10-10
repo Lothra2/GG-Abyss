@@ -8,7 +8,7 @@ import type { Grilla } from '../logic/grilla'
 import { moverCuerpo } from '../logic/movimiento'
 import { aturdir, matar, nuevoEnemigoIA, pensar, type ConfigIA, type EnemigoIA } from '../logic/ia'
 import { juego } from '../logic/azar'
-import { COMBATE, ENEMIGOS, GOLPE_EN, TROL_ELITE, type EnemigoBalance } from '../config/balance'
+import { COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, TROL_ELITE, type EnemigoBalance } from '../config/balance'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
 import { texto } from './Texto'
@@ -75,6 +75,7 @@ export class Enemigo implements Atacable {
   private golpeEn: { resta: number; tipo: 'normal' | 'pesado' } | null = null
   private barraS = 0
   private marcado = false
+  private destelloFin = 0
   private muertoS = 0
   private cfgIA: ConfigIA
   private durAtaque: number
@@ -167,6 +168,7 @@ export class Enemigo implements Atacable {
     if (!this.vivo) return false
     this.ia.vida = Math.max(0, this.ia.vida - dano)
     this.barraS = 4
+    this.destellar()
     if (this.ia.vida <= 0) {
       this.morir()
       return true
@@ -190,6 +192,17 @@ export class Enemigo implements Atacable {
     }
     this.ev.sonido('enemigo_dolor', { volumen: 0.5, rate: 0.9 + juego().next() * 0.2 })
     return false
+  }
+
+  /** El destello blanco del golpe (en tiempo real, vuelve a la marca si estaba marcado) */
+  private destellar(): void {
+    this.sprite.setTintFill(0xffffff)
+    this.destelloFin = this.escena.time.now + IMPACTO.destelloMs
+    this.escena.time.delayedCall(IMPACTO.destelloMs, () => {
+      if (!this.sprite.active) return
+      this.sprite.clearTint()
+      if (this.marcado && this.vivo) this.sprite.setTint(0xffa0a0)
+    })
   }
 
   private morir(): void {
@@ -331,10 +344,7 @@ export class Enemigo implements Atacable {
     const y = Math.round(this.y)
     this.sprite.setPosition(x, y).setDepth(PROF.OBJETOS + this.y)
     this.sombra.poner(this.x, this.y)
-    if (this.marcado && this.vivo) {
-      const t = 0xffa0a0
-      this.sprite.setTint(t)
-    }
+    if (this.marcado && this.vivo && this.escena.time.now >= this.destelloFin) this.sprite.setTint(0xffa0a0)
     const mostrar = this.barraS > 0 && this.vivo
     const by = y - this.cuerpo.alto - 8
     this.fondoBarra.setVisible(mostrar).setPosition(x, by).setDepth(PROF.OBJETOS + 9400)

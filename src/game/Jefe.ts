@@ -8,7 +8,7 @@ import type { Grilla } from '../logic/grilla'
 import { moverCuerpo } from '../logic/movimiento'
 import { juego } from '../logic/azar'
 import { danarJefe, despertar, nuevoJefe, pensarJefe, reposar, type EstadoJefe, type Jefe, type OrdenJefe } from '../logic/jefe'
-import { JEFE } from '../config/balance'
+import { IMPACTO, JEFE } from '../config/balance'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
 import { texto } from './Texto'
@@ -66,6 +66,7 @@ export class JefeSprite implements Atacable {
   private telegrafos: Telegrafo[] = []
   private cuadros: Record<string, { cuadros: number; fps: number }> = {}
   private estadoPrevio: EstadoJefe = 'dormido'
+  private destelloFin = 0
   /** la pelea está en marcha (despertó y no murió ni se reposó) */
   peleando = false
 
@@ -138,15 +139,28 @@ export class JefeSprite implements Atacable {
 
   marcar(v: boolean): void {
     this.marcado = v
-    if (!v) this.sprite.clearTint()
+    this.pintarTono()
+  }
+
+  /** El tono del sprite: marcado (rojizo), enojado en la fase 2 (un poco rojo) o normal. Nunca pisa el destello del golpe */
+  private pintarTono(): void {
+    if (this.escena.time.now < this.destelloFin) return
+    if (!this.vivo) this.sprite.clearTint()
+    else if (this.marcado) this.sprite.setTint(0xffa0a0)
+    else if (this.logica.fase >= 2) this.sprite.setTint(0xffc4b4)
+    else this.sprite.clearTint()
   }
 
   /** Daño recibido. Devuelve true si murió. */
   recibir(dano: number): boolean {
     if (!this.vivo) return false
     const r = danarJefe(this.logica, dano)
-    this.sprite.setTint(0xffb0a0)
-    this.escena.time.delayedCall(90, () => this.vivo && !this.marcado && this.sprite.clearTint())
+    // destello blanco del golpe; en la fase 2 vuelve a su tono enojado
+    this.sprite.setTintFill(0xffffff)
+    this.destelloFin = this.escena.time.now + IMPACTO.destelloMs
+    this.escena.time.delayedCall(IMPACTO.destelloMs, () => {
+      if (this.sprite.active) this.pintarTono()
+    })
     this.ev.sonido('enemigo_dolor', { volumen: 0.6, rate: 0.6 })
     if (r.murio) {
       this.morir()
@@ -390,7 +404,7 @@ export class JefeSprite implements Atacable {
     const y = Math.round(this.y)
     this.sprite.setPosition(x, y).setDepth(PROF.OBJETOS + this.y)
     this.sombra.poner(this.x, this.y)
-    if (this.marcado && this.vivo) this.sprite.setTint(0xffa0a0)
+    this.pintarTono()
     // la dirección de los ataques sigue a la heroína solo si no hay animación en curso
     if (this.estandarte) this.estandarte.setPosition(x, y - 100).setDepth(PROF.OBJETOS + 9300)
   }
