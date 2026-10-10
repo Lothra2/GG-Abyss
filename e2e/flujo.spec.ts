@@ -140,6 +140,8 @@ test.describe('Cosas del mundo', () => {
     expect(c.icono.length).toBeGreaterThan(0)
     expect(c.texto.length).toBeGreaterThan(0)
     expect(await gancho(page, 'cartelAbierto')).toBe(true)
+    // el velo del panel entra al input de Phaser en el cuadro siguiente: nadie toca tan rápido
+    await page.waitForTimeout(300)
     await toque(page, info, 30, 200)
     await expect.poll(async () => (await gancho<{ abierto: boolean }>(page, 'hudCartel')).abierto, { timeout: 10_000 }).toBe(false)
     expect(await gancho(page, 'cartelAbierto')).toBe(false)

@@ -3,6 +3,7 @@ import { K } from '../kit/claves'
 import type { Manifest } from '../kit/tipos'
 import { crearAnimsPersonaje } from '../kit/anims'
 import type { Grilla } from '../logic/grilla'
+import { lugarAbierto } from '../logic/lugar'
 import { indiceDireccion } from '../logic/direccion'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
@@ -43,13 +44,12 @@ export class Mercader {
     const p = m.personajes[ID_MERCADER]
     if (!p || !escena.textures.exists(K.pers(ID_MERCADER, 'idle'))) return
     crearAnimsPersonaje(escena, m, ID_MERCADER)
-    const c = grilla.cuadro
     for (const l of lugares) {
-      // a la derecha de la fogata, en un lugar libre (si no, donde quepa cerca)
-      const pos = grilla.puntoLibreCerca(l.x + 64, l.y + 6, 12, 110)
-      if (!pos) continue
-      const tx = Math.floor(pos.x / c)
-      const ty = Math.floor(pos.y / c)
+      // al lado de la fogata, en un lugar abierto: su cuadro se bloquea y no puede cortar un paso angosto
+      const t = lugarAbierto(grilla, l.x + 64, l.y + 6, l)
+      if (!t) continue
+      const { tx, ty } = t
+      const pos = grilla.centroDe(tx, ty)
       const liberar = grilla.bloquearRect(tx, ty, tx, ty)
       const x = Math.round(pos.x)
       const y = Math.round(pos.y)
