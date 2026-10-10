@@ -249,3 +249,56 @@ test('captura la tienda, el olfato de Thor, el álbum, la flecha guía y el cine
     await ctx2.close()
   }
 })
+
+/**
+ * F7 antes y después en la sección de referencia (la Llegada y el puente del trol): la misma escena con el
+ * interruptor "Mejoras F7" apagado (antes) y prendido (después). Lo que suena no sale en una foto: eso se compara
+ * jugando con el mismo interruptor en la pausa.
+ */
+test('captura F7 antes y después en la sección de referencia', async ({ browser }) => {
+  test.setTimeout(400_000)
+  const dir = join('docs', 'capturas', 'f7')
+  mkdirSync(dir, { recursive: true })
+  const vistas = [
+    { sufijo: '', ctx: { viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 } },
+    { sufijo: '_tablet', ctx: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
+  ]
+  type En = { id: number; tipo: string; vivo: boolean; anticipa: boolean }
+  for (const v of vistas) {
+    for (const [etapa, mejoras] of [['antes', false], ['despues', true]] as const) {
+      const ctx = await browser.newContext(v.ctx)
+      const page = await ctx.newPage()
+      const errores = vigilarErrores(page)
+      await abrirMundo(page, 'alana', '&tutorial=1')
+      if (!mejoras) {
+        await gancho(page, 'abrirPausa')
+        await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Pausa'), { timeout: 5_000 }).toBe(true)
+        await gancho(page, 'pausaAlternar', 'mejorasF7')
+        await gancho(page, 'pausaContinuar')
+        await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Pausa'), { timeout: 5_000 }).toBe(false)
+      }
+      // la llegada: lo primero que ve Alana
+      await gancho(page, 'avanzar', 0.3)
+      await page.waitForTimeout(2500)
+      await page.screenshot({ path: join(dir, `llegada_${etapa}${v.sufijo}.png`) })
+      // el trol del puente prepara su golpe
+      await gancho(page, 'saltarTutorial')
+      const c = await gancho<{ x: number; y: number; enemigo: number } | null>(page, 'cercaDeEnemigo', 'trol', 0)
+      expect(c, 'el trol está en el mapa').not.toBeNull()
+      await gancho(page, 'teleport', c!.x + 30, c!.y)
+      let vio = false
+      for (let i = 0; i < 80 && !vio; i++) {
+        await gancho(page, 'curarTodo')
+        await gancho(page, 'avanzar', 0.05)
+        const e = (await gancho<En[]>(page, 'enemigos')).find((q) => q.id === c!.enemigo)!
+        // el aviso se cuenta igual en los dos modos: lo que cambia es si se ve
+        vio = e.anticipa
+      }
+      expect(vio, 'el trol llegó a preparar el golpe').toBe(true)
+      await page.waitForTimeout(150)
+      await page.screenshot({ path: join(dir, `trol_avisa_${etapa}${v.sufijo}.png`) })
+      await sinErrores(errores)
+      await ctx.close()
+    }
+  }
+})

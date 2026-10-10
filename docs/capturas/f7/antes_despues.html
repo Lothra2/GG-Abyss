@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>F7 antes y después</title>
+<style>
+  body { background:#0b0e14; color:#e6e0d2; font:16px/1.45 system-ui,sans-serif; margin:0; padding:24px; max-width:1500px }
+  h1 { font-size:22px; margin:0 0 6px } p { color:#b8b4a8 } h2 { font-size:17px; color:#ffd27a; margin:32px 0 8px }
+  .par { display:grid; grid-template-columns:1fr 1fr; gap:12px } figure { margin:0 }
+  img { width:100%; image-rendering:pixelated; display:block; border:1px solid #2a3040 } figcaption { color:#9a9caa; font-size:13px; margin-top:4px }
+  table { border-collapse:collapse; margin-top:12px } td, th { border-bottom:1px solid #2a3040; padding:8px 12px; text-align:left; vertical-align:top } th { color:#ffd27a }
+  @media (max-width:800px) { .par { grid-template-columns:1fr } }
+</style></head><body>
+<h1>F7: antes y después</h1>
+<p>Sección de referencia: la Llegada y el puente del trol en el Arroyo Cristalino (exploración, combate y el cofre del trol).
+Izquierda con "Mejoras F7" apagado, derecha prendido. Para compararlo jugando: Pausa, botón "Mejoras F7". Lo que suena no sale en una foto.</p>
+
+<h2>La llegada: lo primero que ve Alana</h2>
+<div class="par">
+  <figure><img src="llegada_antes.png" alt="antes"><figcaption>Antes</figcaption></figure>
+  <figure><img src="llegada_despues.png" alt="después"><figcaption>Después: la manito toca el piso para enseñar a caminar, botón Saltar arriba y el objetivo debajo de los contadores</figcaption></figure>
+  <figure><img src="llegada_antes_tablet.png" alt="antes tablet"><figcaption>Antes, tablet</figcaption></figure>
+  <figure><img src="llegada_despues_tablet.png" alt="después tablet"><figcaption>Después, tablet</figcaption></figure>
+</div>
+
+<h2>El trol prepara su golpe</h2>
+<div class="par">
+  <figure><img src="trol_avisa_antes.png" alt="antes"><figcaption>Antes: el trol está quieto hasta que pega</figcaption></figure>
+  <figure><img src="trol_avisa_despues.png" alt="después"><figcaption>Después: late en ámbar mientras se prepara, se lee que viene el golpe y da tiempo a esquivar</figcaption></figure>
+  <figure><img src="trol_avisa_antes_tablet.png" alt="antes tablet"><figcaption>Antes, tablet</figcaption></figure>
+  <figure><img src="trol_avisa_despues_tablet.png" alt="después tablet"><figcaption>Después, tablet</figcaption></figure>
+</div>
+
+<h2>Qué aporta cada cambio</h2>
+<table>
+<tr><th>Cambio</th><th>Qué aporta</th></tr>
+<tr><td>Aviso del enemigo: tinte ámbar que late mientras prepara el golpe</td><td>La anticipación se ve. Esquivar pasa a ser una decisión y no suerte.</td></tr>
+<tr><td>Golpe que falla: marca en el punto del golpe, texto "Fallo" y un silbido</td><td>Si no pega, se ve dónde cayó el golpe y se entiende que estaba lejos. No parece un bug.</td></tr>
+<tr><td>"¡Esquivaste!" con polvo</td><td>Cuando el enemigo falla porque ella se movió, el juego se lo reconoce.</td></tr>
+<tr><td>Destello blanco al pegar y pausa de impacto medida</td><td>El golpe se siente sin congelar todo: la pausa es corta y no se acumula.</td></tr>
+<tr><td>Proyectiles que se gastan muestran su impacto</td><td>Una flecha que no llega igual termina en algo visible.</td></tr>
+<tr><td>Efectos suaves (Pausa)</td><td>Sin pausas de impacto ni sacudidas, para quien se maree. Los avisos siguen.</td></tr>
+<tr><td>Música por estados: explorar, amenaza, combate, descanso</td><td>La música dice qué pasa. Tiene histéresis: una rata suelta no cambia la canción, tres enemigos sí.</td></tr>
+<tr><td>El agua suena según la cercanía</td><td>El río y el lago se oyen antes de verlos y ayudan a orientarse.</td></tr>
+<tr><td>Demostraciones para Alana: caminar, pegar, abrir</td><td>Aprende mirando una manito, sin leer. Una por vez, hasta que lo hace. Se saltan con un toque.</td></tr>
+<tr><td>Objetivo a la vista con ícono</td><td>Siempre sabe qué toca. Tocarlo saca la flecha sin esperar.</td></tr>
+<tr><td>Tarjeta del botín</td><td>Al recoger, dice si es mejor o peor que lo puesto y deja ponérselo de un toque.</td></tr>
+<tr><td>?medir=1</td><td>Fps, frame p95, tirones y respuesta a la entrada en pantalla, para medir en la tablet de verdad.</td></tr>
+</table>
+<p>Las capturas vienen del Chromium sin GPU del contenedor. No dicen cómo corre en la tablet: eso se mide abriendo el juego con ?medir=1 en el aparato.</p>
+</body></html>
