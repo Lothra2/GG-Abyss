@@ -84,6 +84,8 @@ export interface SueloTrozo {
 }
 
 export interface MundoManifest {
+  /** F8: mundo1 el Bosque, mundo2 la Catedral. El `mundo` de siempre no lo trae (es el Bosque). */
+  id?: string
   mapa: string
   nombre: string
   ancho: number
@@ -162,7 +164,10 @@ export interface Manifest {
   personajes: Record<string, Personaje>
   fx: Record<string, AnimFx>
   botin: Botin
+  /** el Bosque (lo que lee un juego de antes de F8) */
   mundo: MundoManifest
+  /** F8: todos los mundos en orden de bajada, el primero es el Bosque */
+  mundos?: MundoManifest[]
   ui: UiManifest
   /** íconos de la app para la PWA (entrega 3a del taller) */
   app?: Record<string, IconoApp>

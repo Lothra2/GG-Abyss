@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { AlmacenMemoria, borrarPartida, cargarOCrear, claveDe, guardarPartida, leerPartida, listaPerfiles, migrar, partidaNueva } from '../guardado'
+import { AlmacenMemoria, borrarPartida, cargarOCrear, claveDe, guardarPartida, leerPartida, listaPerfiles, migrar, partidaNueva, cambiarDeMundo } from '../guardado'
 
 describe('guardado', () => {
   it('crea una partida nueva con lo básico', () => {
@@ -117,5 +117,54 @@ describe('guardado', () => {
     expect(p.ajustes.efectosSuaves).toBe(false)
     expect(p.ajustes.mejorasF7).toBe(true)
     expect(p.ajustes.musica).toBe(0.5)
+  })
+})
+
+describe('F8: varios mundos', () => {
+  it('una partida vieja queda en el Bosque, sin otros mundos', () => {
+    const vieja = { id: 'sophie', nivel: 4, zonas: ['Claro de la Llegada'], jefeVencido: true }
+    const p = migrar(vieja)!
+    expect(p.mundo).toBe('mundo1')
+    expect(p.otrosMundos).toEqual({})
+    expect(p.jefeVencido).toBe(true)
+  })
+  it('bajar a la Catedral guarda el Bosque tal cual y empieza la Catedral de cero; volver lo devuelve todo', () => {
+    const p = partidaNueva('alana')
+    p.zonas.push('Claro de la Llegada', 'Arroyo Cristalino')
+    p.cofres.push('cofre:1:2')
+    p.jefeVencido = true
+    p.ultimaFogata = 'escalera'
+    p.oro = 77
+    const zonas = p.zonas
+    cambiarDeMundo(p, 'mundo2', { x: 100, y: 200 })
+    expect(p.mundo).toBe('mundo2')
+    expect(p.zonas).toEqual([])
+    // es el mismo arreglo (quien lo tenga en la mano ve el del mundo nuevo)
+    expect(p.zonas).toBe(zonas)
+    expect(p.jefeVencido).toBe(false)
+    expect(p.posicion).toEqual({ x: 0, y: 0 })
+    expect(p.oro).toBe(77)
+    expect(p.otrosMundos.mundo1!.posicion).toEqual({ x: 100, y: 200 })
+    p.zonas.push('La Escalera Hundida')
+    cambiarDeMundo(p, 'mundo1')
+    expect(p.zonas).toEqual(['Claro de la Llegada', 'Arroyo Cristalino'])
+    expect(p.cofres).toEqual(['cofre:1:2'])
+    expect(p.jefeVencido).toBe(true)
+    expect(p.ultimaFogata).toBe('escalera')
+    expect(p.posicion).toEqual({ x: 100, y: 200 })
+    expect(p.otrosMundos.mundo2!.zonas).toEqual(['La Escalera Hundida'])
+    expect(p.otrosMundos.mundo1).toBeUndefined()
+  })
+  it('lo de otros mundos sobrevive a guardar y leer, y un JSON roto no lo rompe', () => {
+    const p = partidaNueva('rick')
+    cambiarDeMundo(p, 'mundo2')
+    p.zonas.push('El Atrio de las Luciérnagas')
+    const leida = migrar(JSON.parse(JSON.stringify(p)))!
+    expect(leida.mundo).toBe('mundo2')
+    expect(leida.zonas).toEqual(['El Atrio de las Luciérnagas'])
+    expect(leida.otrosMundos.mundo1!.posicion).toEqual({ x: 0, y: 0 })
+    const rota = migrar({ id: 'rick', mundo: 'mundo2', otrosMundos: { mundo1: 'basura', mundo3: { zonas: [1, 'x'] } } })!
+    expect(rota.otrosMundos.mundo1).toBeUndefined()
+    expect(rota.otrosMundos.mundo3!.zonas).toEqual(['x'])
   })
 })

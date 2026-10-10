@@ -3,6 +3,7 @@ import type { Manifest } from '../kit/tipos'
 import type { MapaJuego } from '../kit/mapa'
 import { K } from '../kit/claves'
 import { PROF } from '../config/juego'
+import { idMundo } from '../kit/mundos'
 
 /**
  * Agua animada y suelo pintado (PLAN.md 2.3, capas 0 y 1).
@@ -15,16 +16,17 @@ export class MundoVista {
 
   constructor(escena: Phaser.Scene, m: Manifest, private mapa: MapaJuego) {
     const c = mapa.cuadro
+    const mundo = idMundo(m.mundo)
     for (let i = 0; i < mapa.agua.length; i++) {
       const id = mapa.agua[i]!
       if (!id) continue
       const tx = i % mapa.ancho
       const ty = (i - tx) / mapa.ancho
-      const img = escena.add.image(tx * c, ty * c, K.agua, id === 1 ? 0 : id - 1).setOrigin(0, 0).setDepth(PROF.AGUA)
+      const img = escena.add.image(tx * c, ty * c, K.aguaDe(mundo), id === 1 ? 0 : id - 1).setOrigin(0, 0).setDepth(PROF.AGUA)
       this.agua.push({ img, id, x: tx * c, y: ty * c })
     }
     m.mundo.suelo.forEach((s, i) => {
-      this.suelo.push(escena.add.image(s.x, s.y, K.suelo(i)).setOrigin(0, 0).setDepth(PROF.SUELO))
+      this.suelo.push(escena.add.image(s.x, s.y, K.sueloDe(mundo, i)).setOrigin(0, 0).setDepth(PROF.SUELO))
     })
   }
 

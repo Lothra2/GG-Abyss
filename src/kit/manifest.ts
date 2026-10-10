@@ -93,19 +93,21 @@ export function rutasDelManifest(m: Manifest): string[] {
   add(m.botin.mundo)
   add(m.botin.mundo.replace('.json', '.png'))
   add(m.botin.catalogo)
-  const mu = m.mundo
-  add(mu.mapa)
-  add(mu.agua)
-  add(mu.vista)
-  add(mu.luz)
-  add(mu.nube)
-  add(mu.niebla.nubes)
-  add(mu.niebla.jirones)
-  for (const s of mu.suelo) add(s.archivo)
-  for (const r of Object.values(mu.postales)) add(r)
-  for (const o of Object.values(mu.objetos)) for (const a of Object.values(o.anims)) add(a.archivo)
-  for (const p of Object.values(mu.particulas)) add(p.archivo)
-  for (const c of Object.values(mu.criaturas)) for (const a of Object.values(c.anims)) add(a.archivo)
+  // el Bosque y, desde F8, cada mundo de `mundos`
+  for (const mu of [m.mundo, ...(m.mundos ?? [])]) {
+    add(mu.mapa)
+    add(mu.agua)
+    add(mu.vista)
+    add(mu.luz)
+    add(mu.nube)
+    add(mu.niebla.nubes)
+    add(mu.niebla.jirones)
+    for (const s of mu.suelo) add(s.archivo)
+    for (const r of Object.values(mu.postales)) add(r)
+    for (const o of Object.values(mu.objetos)) for (const a of Object.values(o.anims)) add(a.archivo)
+    for (const p of Object.values(mu.particulas)) add(p.archivo)
+    for (const c of Object.values(mu.criaturas)) for (const a of Object.values(c.anims)) add(a.archivo)
+  }
   for (const [n, v] of Object.entries(m.ui)) {
     if (n === 'fuentes') {
       for (const f of Object.values(v as Record<string, FuenteDef | string>)) if (typeof f === 'object') { add(f.png); add(f.fnt) }

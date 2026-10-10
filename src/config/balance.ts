@@ -120,6 +120,8 @@ export interface EnemigoBalance {
   /** a qué distancia se aleja si la heroína se acerca */
   huyeSi?: number
   escala?: number
+  /** F8: golpe pesado anunciado sin ser élite (el guardián de cobre): cada cuánto, radio, aviso y daño */
+  pesado?: { cadaS: number; radio: number; avisoS: number; dano: [number, number] }
 }
 
 export const ENEMIGOS: Record<string, EnemigoBalance> = {
@@ -127,6 +129,9 @@ export const ENEMIGOS: Record<string, EnemigoBalance> = {
   calabaza: { vida: 30, dano: [3, 5], anim: 'attack', ataquesPorSeg: 0.8, alcance: 28, velocidad: 50, ve: 160, xp: 12, oro: [2, 5] },
   goblin_arquero: { vida: 22, dano: [3, 5], anim: 'shoot_bow', ataquesPorSeg: 0.7, alcance: 200, velocidad: 60, ve: 220, xp: 15, oro: [3, 6], proyectil: 'proyectil_flecha', impacto: 'impacto_flecha', huyeSi: 120 },
   trol: { vida: 140, dano: [7, 10], anim: 'attack', ataquesPorSeg: 0.6, alcance: 34, velocidad: 55, ve: 200, xp: 90, oro: [20, 35] },
+  // F8, la Catedral: lento y pesado. Su golpe común casi no duele: lo que enseña es el golpe grande, que avisa mucho
+  // antes (el anillo se llena) y se esquiva saliéndose. Después del golpe queda un rato quieto: ahí se le pega.
+  guardian_cobre: { vida: 120, dano: [4, 6], anim: 'attack', ataquesPorSeg: 0.4, alcance: 34, velocidad: 38, ve: 190, xp: 80, oro: [15, 25], pesado: { cadaS: 4.5, radio: 48, avisoS: 1.5, dano: [10, 14] } },
 }
 
 export const TROL_ELITE = {
@@ -186,6 +191,7 @@ export const BOTIN = {
   calabaza: { objeto: 0.35, oro: 0.6, cantidad: 1 } satisfies BotinFuente,
   goblin_arquero: { objeto: 0.35, oro: 0.7, cantidad: 1 } satisfies BotinFuente,
   trol: { objeto: 1, oro: 1, cantidad: 2, garantiza: 'rare' } as BotinFuente,
+  guardian_cobre: { objeto: 1, oro: 1, cantidad: 1, garantiza: 'rare' } as BotinFuente,
   rompible: { objeto: 0.2, oro: 0.5, cantidad: 1, pocionProb: 0.5 },
   cofres: {
     madera: { objetos: 1, oro: [5, 10] as [number, number], raroProb: 0, raroGarantizado: 0, legendarioProb: 0 },

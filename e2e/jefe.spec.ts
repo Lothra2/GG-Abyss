@@ -1,4 +1,4 @@
-import { expect, test, type Page, type TestInfo } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 import { abrirMundo, esperarEscena, gancho, sinErrores, vigilarErrores } from './util'
 
 // F4: el Minotauro del Bosque. Fases, avisos, rescate sin curar al jefe, victoria, portal y Continuará.
@@ -137,7 +137,7 @@ test.describe('El minotauro', () => {
     expect((await gancho<{ jefeVida?: number }>(page, 'estado')).jefeVida).toBe(vida)
   })
 
-  test('victoria: cae el jefe, llueve oro, se abre el portal y aparece el cofre legendario; el portal lleva a Continuará y se puede volver', async ({ page }, info: TestInfo) => {
+  test('victoria: cae el jefe, llueve oro, se abre el portal y aparece el cofre legendario; el portal baja a la Catedral y se puede volver', async ({ page }) => {
     test.setTimeout(180_000)
     const errores = vigilarErrores(page)
     await empezar(page, 'sophie')
@@ -161,18 +161,32 @@ test.describe('El minotauro', () => {
     await gancho(page, 'teleport', cofre.parada.x, cofre.parada.y)
     await gancho(page, 'usarObjetivo', cofre.llave)
     await expect.poll(async () => (await gancho<{ drops: { id: string }[] }>(page, 'botin')).drops.map((d) => d.id), { timeout: 20_000 }).toEqual(expect.arrayContaining(['arco_de_sophie', 'pet_armor_3']))
-    // el portal lleva a Continuará
+    // F8: el portal baja a la Catedral de las Raíces (antes llevaba a Continuará)
+    const oroAntes = (await gancho<{ oro: number }>(page, 'estado')).oro
     await gancho(page, 'irAlPortal')
-    await esperarEscena(page, 'Continuara')
-    const c = await gancho<{ abierto: boolean; resumen: { nivel: number; oro: number; zonas: string; secretos: string; tiempo: string }; titulo: string }>(page, 'continuara')
-    expect(c.titulo).toContain('Continuará')
-    expect(c.resumen.nivel).toBeGreaterThanOrEqual(10)
-    expect(c.resumen.zonas).toMatch(/^\d+\/\d+$/)
-    // y se vuelve al bosque con el jefe ya vencido
-    if (info.project.name === 'tablet') await gancho(page, 'volverAlBosque')
-    else await page.keyboard.press('Enter')
+    await esperarEscena(page, 'Bajada')
+    expect((await gancho<{ titulo: string; subir: boolean }>(page, 'bajada')).titulo).toBe('La Catedral de las Raíces')
+    await esperarEscena(page, 'Mundo')
+    await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true }, null, { timeout: 120_000 })
+    const m2 = await gancho<{ id: string; partida: string; otros: string[]; zonas: string[]; jefe: boolean; portalVolver: { x: number; y: number } | null }>(page, 'mundoActual')
+    expect(m2.id).toBe('mundo2')
+    expect(m2.partida).toBe('mundo2')
+    expect(m2.otros).toContain('mundo1')
+    expect(m2.zonas).toContain('La Escalera Hundida')
+    expect(m2.jefe).toBe(false)
+    // lo de la heroína viaja con ella: el oro y el nivel
+    expect((await gancho<{ oro: number }>(page, 'estado')).oro).toBe(oroAntes)
+    expect((await combate(page)).nivel).toBeGreaterThanOrEqual(10)
+    // el portal azul de la escalera la sube de vuelta al Bosque, con el jefe vencido y el portal abierto
+    await avanzar(page, 2)
+    await gancho(page, 'ponerHeroina', m2.portalVolver!.x, m2.portalVolver!.y)
+    await avanzar(page, 0.3)
+    await esperarEscena(page, 'Bajada')
+    expect((await gancho<{ subir: boolean }>(page, 'bajada')).subir).toBe(true)
     await esperarEscena(page, 'Mundo')
     await page.waitForFunction(() => typeof (window.__ABYSS__ as unknown as Record<string, unknown>).jefe === 'function', null, { timeout: 60_000 })
+    await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true }, null, { timeout: 120_000 })
+    expect((await gancho<{ id: string }>(page, 'mundoActual')).id).toBe('mundo1')
     await expect.poll(async () => (await jefe(page)).portal, { timeout: 20_000 }).toBe(true)
     const w = await jefe(page)
     expect(w.vencido).toBe(true)

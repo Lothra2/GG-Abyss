@@ -21,4 +21,8 @@ export const K = {
   manifest: 'manifest',
   catalogo: 'catalogo',
   postal: (n: string) => `postal_${n}`,
+  /** F8: el mapa, el agua y el suelo de cada mundo (el Bosque con los nombres de siempre) */
+  mapaDe: (mundo: string) => (mundo === 'mundo1' ? 'mapa_tiled' : `mapa_tiled_${mundo}`),
+  aguaDe: (mundo: string) => (mundo === 'mundo1' ? 'agua' : `agua_${mundo}`),
+  sueloDe: (mundo: string, i: number) => (mundo === 'mundo1' ? `suelo_${i}` : `suelo_${mundo}_${i}`),
 } as const

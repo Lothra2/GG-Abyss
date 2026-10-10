@@ -237,7 +237,9 @@ export class HUD extends Phaser.Scene {
     this.bDescubriste.setText(this.bannerInfo.secreto ? '¡Secreto!' : 'Descubriste').setScale(esc)
     const base = (this.bannerInfo.secreto ? this.bNombrePlata : this.bNombre).setText(nombre)
     base.setScale(1)
-    const escNombre = escalaQueEntra(base.displayWidth, w - 24, 2)
+    // el letrero no se mete debajo de los contadores ni del chip del objetivo (queda centrado entre ellos)
+    const izquierda = this.chip ? Math.max(this.panel.x + this.panel.width, this.chip.x + this.chip.width) + 8 : 12
+    const escNombre = escalaQueEntra(base.displayWidth, w - 2 * izquierda, 2)
     this.bNombre.setText(nombre).setScale(escNombre).setVisible(!this.bannerInfo.secreto)
     this.bNombrePlata.setText(nombre).setScale(escNombre).setVisible(this.bannerInfo.secreto)
     this.bDescubriste.setPosition(0, -this.bNombre.displayHeight / 2 - 4)
@@ -277,7 +279,7 @@ export class HUD extends Phaser.Scene {
     const p = this.mundo.partida
     if (!p) return
     const r = this.mundo.resumenDescubrimiento
-    const o = objetivoActual({ nivel: p.nivel, jefeVencido: p.jefeVencido, descubiertas: r.zonas, totalZonas: r.totalZonas })
+    const o = objetivoActual({ nivel: p.nivel, jefeVencido: p.jefeVencido, descubiertas: r.zonas, totalZonas: r.totalZonas, hayJefe: !!this.mundo.jefe || p.jefeVencido })
     const cambio = !this.objetivo || this.objetivo.clave !== o.clave
     if (this.objetivo && this.objetivo.texto === o.texto) return
     this.objetivo = o

@@ -45,6 +45,8 @@ export class Atmosfera {
   private vinetaImg: Phaser.GameObjects.Image | null = null
   private tinteRect: Phaser.GameObjects.Rectangle | null = null
   private ultimasLuces = 0
+  /** F8: en un interior (la Catedral), si un punto cae sobre un muro */
+  private sobreMuro: ((x: number, y: number) => boolean) | null = null
   /** se llama al cambiar de zona (el mundo descubre la zona y cambia el sonido) */
   alCambiarZona?: (z: Zona | null) => void
 
@@ -56,6 +58,13 @@ export class Atmosfera {
     private ancho: number,
     private alto: number,
   ) {
+    if (mapa.bioma !== 'bosque') {
+      const c = mapa.cuadro
+      this.sobreMuro = (x, y) => {
+        const tx = Math.floor(x / c), ty = Math.floor(y / c)
+        return tx < 0 || ty < 0 || tx >= mapa.ancho || ty >= mapa.alto || mapa.colision[ty * mapa.ancho + tx] === 1
+      }
+    }
     this.luces = new Luces(escena, ancho, alto)
     this.bruma = new Bruma(escena, ancho, alto)
     this.nubes = new Nubes(escena, mapa.ancho * mapa.cuadro, mapa.alto * mapa.cuadro)
@@ -159,7 +168,7 @@ export class Atmosfera {
 
     const noche = nocheEfectiva(aj.noche, aj.modoPeque) + this.atm.oscuridad
     const luces = lucesObjetos
-    this.particulas.update(t, dt, vista, { emisores: this.emisores, noche, luces, rafaga, decos })
+    this.particulas.update(t, dt, vista, { emisores: this.emisores, noche, luces, rafaga, decos, ...(this.sobreMuro ? { sobreMuro: this.sobreMuro } : {}) })
 
     // el farol de la heroína siempre está encendido
     luces.unshift({ x: heroe.x, y: heroe.y, r: COLOR.FAROL_RADIO, color: COLOR.FAROL, ph: 0, heroina: true })

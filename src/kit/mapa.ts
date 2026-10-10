@@ -60,6 +60,8 @@ export interface MapaJuego {
   entidades: Entidad[]
   zonas: Zona[]
   postales: Postal[]
+  /** F8: el bioma del mapa (bosque, catedral). Un interior no tiene cielo: nada de ambiente flota sobre los muros */
+  bioma: string
 }
 
 export function leerProps(o: { properties?: { name: string; value: string | number | boolean }[] }): Props {
@@ -151,7 +153,8 @@ export function parsearMapa(json: MapaTiled): MapaJuego {
 
   const postales: Postal[] = objetosDe(json.layers, 'postales').map((o) => ({ nombre: o.name, x: o.x, y: o.y }))
 
-  return { ancho, alto, cuadro: json.tilewidth, colision, superficie, agua, aguaCuadros, aguaMs, decos, entidades, zonas, postales }
+  const bioma = String(leerProps(json as unknown as { properties?: { name: string; value: string | number | boolean }[] }).bioma ?? 'bosque')
+  return { ancho, alto, cuadro: json.tilewidth, colision, superficie, agua, aguaCuadros, aguaMs, decos, entidades, zonas, postales, bioma }
 }
 
 export type Superficie = 'pasto' | 'tierra' | 'piedra' | 'madera' | 'agua'
@@ -199,6 +202,7 @@ const TRADUCCION: Record<string, EmisorZona> = {
   mariposas: { nombre: 'mariposas', tipo: 'particula', llaves: ['mariposa_azul', 'mariposa_naranja', 'mariposa_rosa'] },
   hojas: { nombre: 'hojas', tipo: 'particula', llaves: ['hoja_verde', 'hoja_otono'] },
   luciernagas: { nombre: 'luciernagas', tipo: 'particula', llaves: ['luciernaga'] },
+  luciernagas_turquesa: { nombre: 'luciernagas_turquesa', tipo: 'particula', llaves: ['luciernaga_turquesa'] },
   esporas: { nombre: 'esporas', tipo: 'particula', llaves: ['espora'] },
   brillos: { nombre: 'brillos', tipo: 'particula', llaves: ['brillo'] },
   humo: { nombre: 'humo', tipo: 'particula', llaves: ['humo'] },

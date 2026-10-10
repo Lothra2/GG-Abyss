@@ -49,7 +49,29 @@ export interface Partida {
   tiempoJugado?: number
   /** F7: las demostraciones que ya vio (caminar, pegar, abrir) */
   tutorial: string[]
+  /**
+   * F8: el mundo donde está (mundo1 el Bosque, mundo2 la Catedral). Los campos de arriba que dependen del mapa
+   * (posición, fogata, zonas, secretos, cofres, rompibles, presentación y jefe) son siempre los de este mundo. Los de
+   * los otros mundos esperan en `otrosMundos` hasta que vuelva. Nivel, oro, equipo, bolsa y Thor son de la heroína.
+   */
+  mundo: string
+  otrosMundos: Record<string, EstadoMundo>
 }
+
+/** Lo que una partida recuerda de un mundo en el que no está */
+export interface EstadoMundo {
+  posicion: { x: number; y: number }
+  ultimaFogata: string
+  zonas: string[]
+  secretos: string[]
+  cofres: string[]
+  rompibles: string[]
+  presentacionVista: boolean
+  jefeVencido: boolean
+  jefeVida?: number
+}
+
+export const MUNDO_INICIAL = 'mundo1'
 
 export const VERSION_PARTIDA = 1
 
@@ -89,7 +111,77 @@ export function partidaNueva(id: string, ahora: number = Date.now()): Partida {
     cinturon: [...BOTIN.cinturonInicial],
     ajustes: ajustesPorDefecto(id),
     tutorial: [],
+    mundo: MUNDO_INICIAL,
+    otrosMundos: {},
   }
+}
+
+/** Lo que la partida tiene del mundo donde está ahora (copias, no los mismos arreglos) */
+export function estadoDeMundo(p: Partida): EstadoMundo {
+  const e: EstadoMundo = {
+    posicion: { ...p.posicion },
+    ultimaFogata: p.ultimaFogata,
+    zonas: [...p.zonas],
+    secretos: [...p.secretos],
+    cofres: [...p.cofres],
+    rompibles: [...p.rompibles],
+    presentacionVista: p.presentacionVista,
+    jefeVencido: p.jefeVencido,
+  }
+  if (p.jefeVida !== undefined) e.jefeVida = p.jefeVida
+  return e
+}
+
+/** Un mundo al que nunca fue: empieza en el inicio del mapa */
+export function mundoNuevo(): EstadoMundo {
+  return { posicion: { x: 0, y: 0 }, ultimaFogata: '', zonas: [], secretos: [], cofres: [], rompibles: [], presentacionVista: false, jefeVencido: false }
+}
+
+/**
+ * Cambia de mundo sin perder nada: lo del mundo actual queda guardado en `otrosMundos` (con la posición donde
+ * conviene volver, por ejemplo junto al portal) y lo del destino pasa a los campos de siempre. Los arreglos de la
+ * partida se vacían y se rellenan en el lugar, así quien los tenga en la mano sigue viendo los de ahora.
+ */
+export function cambiarDeMundo(p: Partida, destino: string, posicionAlVolver?: { x: number; y: number }): Partida {
+  if (destino === p.mundo) return p
+  const actual = estadoDeMundo(p)
+  if (posicionAlVolver) actual.posicion = { ...posicionAlVolver }
+  const otros = { ...p.otrosMundos, [p.mundo]: actual }
+  const llega = otros[destino] ?? mundoNuevo()
+  delete otros[destino]
+  const poner = (a: string[], b: string[]) => a.splice(0, a.length, ...b)
+  p.posicion = { ...llega.posicion }
+  p.ultimaFogata = llega.ultimaFogata
+  poner(p.zonas, llega.zonas)
+  poner(p.secretos, llega.secretos)
+  poner(p.cofres, llega.cofres)
+  poner(p.rompibles, llega.rompibles)
+  p.presentacionVista = llega.presentacionVista
+  p.jefeVencido = llega.jefeVencido
+  if (llega.jefeVida !== undefined) p.jefeVida = llega.jefeVida
+  else delete p.jefeVida
+  p.mundo = destino
+  p.otrosMundos = otros
+  return p
+}
+
+/** Lo que guardó de otro mundo, leído de un JSON viejo o roto sin romperse */
+function leerEstadoMundo(v: unknown): EstadoMundo | null {
+  if (!v || typeof v !== 'object' || Array.isArray(v)) return null
+  const o = v as Record<string, unknown>
+  const pos = (o.posicion && typeof o.posicion === 'object' ? o.posicion : {}) as Record<string, unknown>
+  const e: EstadoMundo = {
+    posicion: { x: esNum(pos.x) ? pos.x : 0, y: esNum(pos.y) ? pos.y : 0 },
+    ultimaFogata: typeof o.ultimaFogata === 'string' ? o.ultimaFogata : '',
+    zonas: textos(o.zonas),
+    secretos: textos(o.secretos),
+    cofres: textos(o.cofres),
+    rompibles: textos(o.rompibles),
+    presentacionVista: o.presentacionVista === true,
+    jefeVencido: o.jefeVencido === true,
+  }
+  if (esNum(o.jefeVida)) e.jefeVida = Math.max(0, o.jefeVida)
+  return e
 }
 
 /* ---------- almacenamiento ---------- */
@@ -179,6 +271,9 @@ export function migrar(json: unknown, idEsperado?: string): Partida | null {
     // una partida de antes de F7 que ya jugó no vuelve a ver las demostraciones
     tutorial: esLista(j.tutorial) ? textos(j.tutorial) : j.presentacionVista === true || textos(j.zonas).length > 1 ? ['caminar', 'pegar', 'abrir'] : [],
     jefeVencido: j.jefeVencido === true,
+    // F8: las partidas de antes de la Catedral están todas en el Bosque
+    mundo: typeof j.mundo === 'string' && j.mundo ? j.mundo : MUNDO_INICIAL,
+    otrosMundos: {},
     equipo,
     bolsa,
     cinturon: cinto,
@@ -192,6 +287,11 @@ export function migrar(json: unknown, idEsperado?: string): Partida | null {
       mejorasF7: typeof aj.mejorasF7 === 'boolean' ? aj.mejorasF7 : true,
     },
   }
+  if (j.otrosMundos && typeof j.otrosMundos === 'object' && !Array.isArray(j.otrosMundos))
+    for (const [k, v] of Object.entries(j.otrosMundos as Record<string, unknown>)) {
+      const e = leerEstadoMundo(v)
+      if (e && k !== p.mundo) p.otrosMundos[k] = e
+    }
   if (esNum(j.jefeVida)) p.jefeVida = Math.max(0, j.jefeVida)
   if (esNum(j.tiempoJugado)) p.tiempoJugado = Math.max(0, j.tiempoJugado)
   return p

@@ -20,6 +20,7 @@ const CUERPO: Record<string, { alto: number; radio: number; sombra: number; barr
   calabaza: { alto: 24, radio: 12, sombra: 22, barra: 26 },
   goblin_arquero: { alto: 30, radio: 11, sombra: 20, barra: 26 },
   trol: { alto: 46, radio: 18, sombra: 40, barra: 40 },
+  guardian_cobre: { alto: 44, radio: 17, sombra: 36, barra: 40 },
 }
 const CUERPO_DEFECTO = { alto: 28, radio: 12, sombra: 22, barra: 26 }
 
@@ -117,7 +118,9 @@ export class Enemigo implements Atacable {
             pesado: { cadaS: TROL_ELITE.golpePesadoCadaS, radio: TROL_ELITE.golpePesadoRadio, avisoS: TROL_ELITE.golpePesadoAvisoS },
             grito: { vidaPct: TROL_ELITE.gritoVidaPct, velocidadPct: TROL_ELITE.gritoVelocidadPct, duracionS: 0.9 },
           }
-        : {}),
+        : this.cfg.pesado
+          ? { pesado: { cadaS: this.cfg.pesado.cadaS, radio: this.cfg.pesado.radio, avisoS: this.cfg.pesado.avisoS } }
+          : {}),
     }
     crearAnimsPersonaje(escena, m, this.tipo)
     this.sprite = escena.add.sprite(ent.x, ent.y, K.pers(this.tipo, 'idle'), 0).setOrigin(p.pivote[0] / p.celda, p.pivote[1] / p.celda)
@@ -329,7 +332,9 @@ export class Enemigo implements Atacable {
     if (def && this.escena.anims.exists(K.anim(this.tipo, 'attack_heavy', DIRECCIONES[this.dir]!))) {
       this.poner('attack_heavy', true, def.cuadros / Math.max(0.2, seg))
     }
-    this.ev.sonido('jefe_rugido', { volumen: 0.35, rate: 1.4 })
+    // el guardián de cobre suena a metal que se levanta; el trol ruge
+    if (this.cfg.pesado && !this.elite) this.ev.sonido('bloqueo', { volumen: 0.45, rate: 0.6 })
+    else this.ev.sonido('jefe_rugido', { volumen: 0.35, rate: 1.4 })
   }
 
   private soltarGolpePesado(): void {
@@ -337,8 +342,10 @@ export class Enemigo implements Atacable {
     this.aviso = undefined
     this.ev.sonido('jefe_pisoton', { volumen: 0.6, rate: 1.1 })
     this.ev.sacudir()
-    this.ev.golpePesado(this, TROL_ELITE.golpePesadoDano, TROL_ELITE.golpePesadoRadio)
-    this.bloqueoAnimS = 0.3
+    const pe = this.elite ? { dano: TROL_ELITE.golpePesadoDano, radio: TROL_ELITE.golpePesadoRadio } : this.cfg.pesado ?? { dano: TROL_ELITE.golpePesadoDano, radio: TROL_ELITE.golpePesadoRadio }
+    this.ev.golpePesado(this, pe.dano, pe.radio)
+    // el guardián queda clavado un rato después del golpe grande: es la ventana para pegarle
+    this.bloqueoAnimS = this.cfg.pesado && !this.elite ? 1.1 : 0.3
   }
 
   private poner(anim: string, forzar = false, fps?: number): void {

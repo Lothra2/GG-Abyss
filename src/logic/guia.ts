@@ -107,9 +107,12 @@ export interface Objetivo {
  * El objetivo de ahora, corto y con ícono para el chip del HUD. Sigue el mismo orden que la flecha: portal después
  * del jefe, el jefe con nivel suficiente, explorar mientras quedan zonas y crecer si ya está todo visto.
  */
-export function objetivoActual(c: { nivel: number; jefeVencido: boolean; descubiertas: number; totalZonas: number }, cfg: typeof GUIA = GUIA): Objetivo {
+export function objetivoActual(c: { nivel: number; jefeVencido: boolean; descubiertas: number; totalZonas: number; hayJefe?: boolean }, cfg: typeof GUIA = GUIA): Objetivo {
+  const hayJefe = c.hayJefe !== false
   if (c.jefeVencido) return { clave: 'portal', icono: 'icono_jugar', texto: 'Entra al portal' }
-  if (c.nivel >= cfg.nivelParaJefe) return { clave: 'jefe', icono: 'icono_calavera', texto: 'Vence al jefe' }
+  if (hayJefe && c.nivel >= cfg.nivelParaJefe) return { clave: 'jefe', icono: 'icono_calavera', texto: 'Vence al jefe' }
   if (c.descubiertas < c.totalZonas) return { clave: 'explorar', icono: 'icono_zona', texto: `Explora ${c.descubiertas}/${c.totalZonas}` }
+  // un mundo sin jefe todavía (la primera parte de la Catedral): no se manda a buscar lo que no está
+  if (!hayJefe) return { clave: 'explorar', icono: 'icono_zona', texto: `Explora ${c.descubiertas}/${c.totalZonas}` }
   return { clave: 'crecer', icono: 'icono_calavera', texto: `Gana fuerza ${c.nivel}/${cfg.nivelParaJefe}` }
 }

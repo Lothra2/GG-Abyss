@@ -117,7 +117,7 @@ function premioDeCofre(rng: Azar, cat: Catalogo, ctx: ContextoBotin, f: Extract<
 export function tirarBotin(rng: Azar, cat: Catalogo, ctx: ContextoBotin, f: Fuente): Premio {
   if (f.tipo === 'cofre') return premioDeCofre(rng, cat, ctx, f)
   if (f.tipo === 'rompible') return premioDeCriatura(rng, cat, ctx, { objeto: BOTIN.rompible.objeto, oro: BOTIN.rompible.oro, cantidad: BOTIN.rompible.cantidad }, [1, 3], true)
-  const t = BOTIN[f.enemigo as 'rata' | 'calabaza' | 'goblin_arquero' | 'trol'] as BotinFuente | undefined
+  const t = (BOTIN as unknown as Record<string, BotinFuente | undefined>)[f.enemigo]
   const e = ENEMIGOS[f.enemigo]
   if (!t || !e) return { objetos: [], oro: 0 }
   return premioDeCriatura(rng, cat, ctx, t, e.oro, false)

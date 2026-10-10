@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import type { Manifest } from '../kit/tipos'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
+import { existeMundo, idMundo, manifestParaMundo, MUNDO_BOSQUE } from '../kit/mundos'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
 import { encolarAudio, encolarBotin, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
 import { crearAnimsPersonaje } from '../kit/anims'
@@ -18,7 +19,7 @@ import { leerCatalogo, type Catalogo } from '../logic/catalogo'
 import { tirarBotin, type Fuente, type Premio } from '../logic/botin'
 import { equipar as equiparInv, desequipar as desequiparInv, normalizar, recoger as recogerInv, type Inv } from '../logic/inventario'
 import { nivelArmaduraThor } from '../logic/equipo'
-import { almacenDelNavegador, borrarPartida, cargarOCrear, guardarPartida, type Almacen, type Partida } from '../logic/guardado'
+import { almacenDelNavegador, borrarPartida, cambiarDeMundo, cargarOCrear, guardarPartida, type Almacen, type Partida } from '../logic/guardado'
 import { MundoVista } from '../game/MundoVista'
 import { Decos, type Luz } from '../game/Decos'
 import { Heroina } from '../game/Heroina'
@@ -69,7 +70,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -101,6 +102,8 @@ export class Mundo extends Phaser.Scene {
   private tFps = 0
   private ultimoDescubrimiento: EventoDescubrimiento | null = null
   private listo = false
+  /** segundos desde que llegó a este mundo (el portal de vuelta espera un poco) */
+  private tEnMundo = 0
   private alm!: Almacen
   private entidades!: Entidades
   private presentacion: Presentacion | null = null
@@ -160,10 +163,21 @@ export class Mundo extends Phaser.Scene {
   /* ---------- carga ---------- */
 
   preload(): void {
-    const m = manifestDe(this)
-    this.m = m
     const id = (this.registry.get('heroeId') as string | undefined) ?? params.heroe ?? 'sophie'
     this.registry.set('heroeId', id)
+    // F8: la partida se lee antes de cargar para saber en qué mundo está; mientras esta escena corre, el manifest
+    // del registro es el de ese mundo (y al cerrarse vuelve el de siempre, el del Bosque, para el título y la selección)
+    const base = (this.registry.get('manifestBase') as Manifest | undefined) ?? manifestDe(this)
+    this.registry.set('manifestBase', base)
+    this.alm = (this.registry.get('almacen') as Almacen | undefined) ?? almacenDelNavegador()
+    this.registry.set('almacen', this.alm)
+    const partida = (this.registry.get('partida') as Partida | undefined) ?? cargarOCrear(this.alm, id).partida
+    if (!existeMundo(base, partida.mundo)) cambiarDeMundo(partida, MUNDO_BOSQUE)
+    this.registry.set('partida', partida)
+    const m = manifestParaMundo(base, partida.mundo)
+    this.registry.set('manifest', m)
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.registry.set('manifest', base))
+    this.m = m
 
     // barra de carga con el marco y el relleno del kit
     const marco = this.add.nineslice(0, 0, K.ui('barra_marco'), undefined, 240, 14, 6, 6, 6, 6)
@@ -196,8 +210,20 @@ export class Mundo extends Phaser.Scene {
   /* ---------- armado ---------- */
 
   /** Segunda carga: ya con el mapa en la mano se sabe qué objetos del manifest hacen falta */
+  /** El mapa del mundo de ahora, ya leído (el del Bosque lo deja Boot en el registro) */
+  private mapaDelMundo(): MapaJuego {
+    const mundo = idMundo(this.m.mundo)
+    const llave = mundo === MUNDO_BOSQUE ? 'mapa' : `mapa_${mundo}`
+    let mapa = this.registry.get(llave) as MapaJuego | undefined
+    if (!mapa) {
+      mapa = parsearMapa(this.cache.json.get(K.mapaDe(mundo)))
+      this.registry.set(llave, mapa)
+    }
+    return mapa
+  }
+
   create(): void {
-    const mapa = (this.registry.get('mapa') as MapaJuego | undefined) ?? parsearMapa(this.cache.json.get(K.mapa))
+    const mapa = this.mapaDelMundo()
     encolarObjetosMundo(this, this.m, new Set([...mapa.decos.map((d) => d.sprite), ...EXTRAS_MUNDO]))
     // enemigos del mapa y los efectos de combate
     // lo que se rompe y las armaduras de Thor que se pueden conseguir en el Mundo 1
@@ -216,15 +242,28 @@ export class Mundo extends Phaser.Scene {
     this.barra = undefined
     const m = this.m
     const id = this.registry.get('heroeId') as string
-    this.alm = (this.registry.get('almacen') as Almacen | undefined) ?? almacenDelNavegador()
-    this.registry.set('almacen', this.alm)
     this.partida = (this.registry.get('partida') as Partida | undefined) ?? cargarOCrear(this.alm, id).partida
     this.registry.set('partida', this.partida)
     this.cat = leerCatalogo(this.cache.json.get(K.catalogo))
     normalizar(this.inv())
     this.descub = { zonas: this.partida.zonas, secretos: this.partida.secretos }
     this.tJugado = this.partida.tiempoJugado ?? 0
-    this.mapa = (this.registry.get('mapa') as MapaJuego | undefined) ?? parsearMapa(this.cache.json.get(K.mapa))
+    this.tEnMundo = 0
+    // la escena es la misma al volver de Continuará o de otro mundo: el portal tiene que poder usarse otra vez, y lo
+    // del jefe del mundo anterior no sigue acá (un mundo sin jefe no hereda el del Bosque)
+    this.saliendoAContinuara = false
+    this.jefe = undefined
+    this.arena = undefined
+    this.anillo = []
+    this.portalJefe = null
+    this.piedrasEncendidas = 0
+    this.timersPiedras = []
+    this.musicaVictoriaPuesta = false
+    this.victoriaVista = false
+    this.bloqueoPorJefe = false
+    this.director = new DirectorJefe()
+    this.planoJefe = this.director.tick(0)
+    this.mapa = this.mapaDelMundo()
     this.grilla = new Grilla(this.mapa)
 
     crearAnimsPersonaje(this, m, id)
@@ -630,10 +669,13 @@ export class Mundo extends Phaser.Scene {
     this.portalJefe = { s, x: ent.x, y: ent.y, luz: def.luz?.color ?? '#6cb4ff' }
   }
 
-  /** El portal del jefe lleva a "Continuará": se guarda cerca del portal para que al volver no vuelva a entrar */
+  /** El portal del jefe baja al mundo siguiente si el kit lo trae; si no, "Continuará" */
   irAContinuara(): void {
     const p = this.portalJefe
     if (!p || this.saliendoAContinuara) return
+    const destino = String(entidadesDeTipo(this.mapa, 'portal_jefe')[0]?.props.destino ?? '')
+    const base = (this.registry.get('manifestBase') as Manifest | undefined) ?? this.m
+    if (destino && existeMundo(base, destino)) return this.irAMundo(destino, { x: Math.round(p.x), y: Math.round(p.y + 110) }, false)
     this.saliendoAContinuara = true
     this.entrada.pausada = true
     this.heroina.parar()
@@ -642,6 +684,40 @@ export class Mundo extends Phaser.Scene {
     this.sonido.efecto('portal', { volumen: 0.8 })
     this.cameras.main.fadeOut(700, 5, 6, 12)
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('Continuara'))
+  }
+
+  /**
+   * F8: cruzar a otro mundo. Primero se guarda el mundo de ahora como siempre, después la partida cambia de mundo
+   * (lo de este queda esperando, con la posición `volverEn` para no caer adentro del portal al regresar) y se guarda
+   * de nuevo. La escena Bajada muestra el nombre del mundo y vuelve a arrancar el Mundo, ya en el otro.
+   */
+  irAMundo(destino: string, volverEn: { x: number; y: number }, subir: boolean): void {
+    if (this.saliendoAContinuara) return
+    this.saliendoAContinuara = true
+    this.entrada.pausada = true
+    this.heroina.parar()
+    this.guardar()
+    cambiarDeMundo(this.partida, destino, volverEn)
+    guardarPartida(this.alm, this.partida)
+    // desde acá nada vuelve a guardar en este mundo (la escena se va)
+    this.listo = false
+    const base = (this.registry.get('manifestBase') as Manifest | undefined) ?? this.m
+    const nombre = manifestParaMundo(base, destino).mundo.nombre
+    this.sonido.efecto('portal', { volumen: 0.8 })
+    this.cameras.main.fadeOut(700, 5, 6, 12)
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('Bajada', { nombre, subir }))
+  }
+
+  /** F8: el portal de llegada de un mundo de abajo lleva de vuelta al de arriba (con un momento de gracia al llegar) */
+  private revisarPortalVolver(): void {
+    if (this.saliendoAContinuara || this.combate.caido || this.enPresentacion || this.tEnMundo < 1.5) return
+    for (const e of entidadesDeTipo(this.mapa, 'portal_volver')) {
+      if (Math.hypot(this.heroina.x - e.x, this.heroina.y - e.y) > 26) continue
+      const destino = String(e.props.destino ?? MUNDO_BOSQUE)
+      const base = (this.registry.get('manifestBase') as Manifest | undefined) ?? this.m
+      if (existeMundo(base, destino)) this.irAMundo(destino, { x: Math.round(e.x + 4 * this.mapa.cuadro), y: Math.round(e.y + this.mapa.cuadro) }, true)
+      return
+    }
   }
 
   /* ---------- botín e inventario ---------- */
@@ -1224,6 +1300,8 @@ export class Mundo extends Phaser.Scene {
     this.proyectiles.impactoAlFallar = this.mejoras
     this.actualizarAudio(dtReal)
     this.actualizarTutorial()
+    this.tEnMundo += dt
+    this.revisarPortalVolver()
     this.tJugado += dt
     // lo que la heroína iba a usar: cuando llega, lo usa
     const pend = this.pendiente
@@ -1375,6 +1453,8 @@ export class Mundo extends Phaser.Scene {
       abrirAlbum: (() => this.abrirAlbum()) as never,
       tutorial: () => ({ hechos: [...this.partida.tutorial], demo: this.demoTutorial ? { paso: this.demoTutorial.paso } : null }),
       saltarTutorial: (() => this.saltarTutorial()) as never,
+      irAMundo: ((destino: string) => this.irAMundo(destino, { x: Math.round(this.heroina.x), y: Math.round(this.heroina.y) }, false)) as never,
+      mundoActual: () => ({ id: idMundo(this.m.mundo), nombre: this.m.mundo.nombre, partida: this.partida.mundo, otros: Object.keys(this.partida.otrosMundos), zonas: this.mapa.zonas.map((z) => z.nombre), jefe: !!this.jefe, portalVolver: entidadesDeTipo(this.mapa, 'portal_volver').map((e) => ({ x: e.x, y: e.y }))[0] ?? null }),
       musicaEstado: () => ({ estado: this.estadoMusica, agua: Math.round(this.detalleAgua * 100) / 100 }),
       planoJefe: () => ({ ...this.planoJefe, entradaPausada: this.entrada.estaPausada, camara: { x: Math.round(this.camara.cx), y: Math.round(this.camara.cy) } }),
       guia: () => ({ sinProgreso: Math.round(this.relojGuia.sinProgreso * 10) / 10, visible: this.relojGuia.visible, flecha: this.flechaGuia }),

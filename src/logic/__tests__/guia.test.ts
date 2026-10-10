@@ -55,3 +55,10 @@ describe('objetivo actual', () => {
     for (const nivel of [1, GUIA.nivelParaJefe]) for (const jefeVencido of [false, true]) expect(objetivoActual({ nivel, jefeVencido, descubiertas: 0, totalZonas: 3 }).icono).toMatch(/^icono_/)
   })
 })
+
+describe('objetivo en un mundo sin jefe', () => {
+  it('no pide vencer a un jefe que no está', () => {
+    expect(objetivoActual({ nivel: 9, jefeVencido: false, descubiertas: 1, totalZonas: 3, hayJefe: false }).clave).toBe('explorar')
+    expect(objetivoActual({ nivel: 9, jefeVencido: false, descubiertas: 3, totalZonas: 3, hayJefe: false }).clave).toBe('explorar')
+  })
+})

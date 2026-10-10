@@ -3,6 +3,7 @@ import type { Manifest } from './tipos'
 import { K } from './claves'
 import { fuentesDe, iconosCartel, iconosHabilidad, uiImagenes } from './manifest'
 import { RUTA_KIT } from '../config/juego'
+import { idMundo } from './mundos'
 
 /**
  * Encola en el cargador de Phaser lo que dice el manifest. No hay listas fijas de nombres:
@@ -60,10 +61,11 @@ export function encolarFx(e: Escena, m: Manifest, nombres?: string[]): void {
 /** Mapa, agua, suelo y texturas técnicas del mundo */
 export function encolarMundoBase(e: Escena, m: Manifest): void {
   const mu = m.mundo
-  if (!e.cache.json.exists(K.mapa)) e.load.json(K.mapa, rutaKit(mu.mapa))
-  if (!yaHay(e, K.agua)) e.load.spritesheet(K.agua, rutaKit(mu.agua), { frameWidth: mu.cuadro, frameHeight: mu.cuadro })
+  const id = idMundo(mu)
+  if (!e.cache.json.exists(K.mapaDe(id))) e.load.json(K.mapaDe(id), rutaKit(mu.mapa))
+  if (!yaHay(e, K.aguaDe(id))) e.load.spritesheet(K.aguaDe(id), rutaKit(mu.agua), { frameWidth: mu.cuadro, frameHeight: mu.cuadro })
   mu.suelo.forEach((s, i) => {
-    if (!yaHay(e, K.suelo(i))) e.load.image(K.suelo(i), rutaKit(s.archivo))
+    if (!yaHay(e, K.sueloDe(id, i))) e.load.image(K.sueloDe(id, i), rutaKit(s.archivo))
   })
   encolarAtmosfera(e, m)
 }
@@ -128,7 +130,8 @@ export function encolarBotin(e: Escena, m: Manifest, op: OpcionesBotin = {}): vo
 
 /** Solo el mapa de Tiled (para el título, que no necesita los trozos de suelo) */
 export function encolarMapa(e: Escena, m: Manifest): void {
-  if (!e.cache.json.exists(K.mapa)) e.load.json(K.mapa, rutaKit(m.mundo.mapa))
+  const id = idMundo(m.mundo)
+  if (!e.cache.json.exists(K.mapaDe(id))) e.load.json(K.mapaDe(id), rutaKit(m.mundo.mapa))
 }
 
 /** Texturas técnicas del mundo: luz, nube y las dos de bruma */

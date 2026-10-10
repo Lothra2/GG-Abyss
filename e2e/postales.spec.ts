@@ -302,3 +302,58 @@ test('captura F7 antes y después en la sección de referencia', async ({ browse
     }
   }
 })
+
+/** F8: la rebanada de la Catedral de las Raíces, cada zona en escritorio y en tablet, y la calidad baja */
+test('captura la Catedral: la bajada, la escalera, el atrio, los claustros con el guardián y la calidad baja', async ({ browser }) => {
+  test.setTimeout(400_000)
+  const dir = join('docs', 'capturas', 'f8')
+  mkdirSync(dir, { recursive: true })
+  const vistas = [
+    { sufijo: '', ctx: { viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 } },
+    { sufijo: '_tablet', ctx: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
+  ]
+  for (const v of vistas) {
+    const ctx = await browser.newContext(v.ctx)
+    const page = await ctx.newPage()
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'irAMundo', 'mundo2')
+    await esperarEscena(page, 'Bajada')
+    await page.waitForTimeout(700)
+    await page.screenshot({ path: join(dir, `bajada${v.sufijo}.png`) })
+    await esperarEscena(page, 'Mundo')
+    await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true && typeof a.mundoActual === 'function' }, null, { timeout: 120_000 })
+    for (const n of ['escalera_hundida', 'atrio_luciernagas', 'claustros_quebrados']) {
+      await gancho(page, 'irAPostal', n)
+      await gancho(page, 'avanzar', 1.5)
+      await page.waitForTimeout(3500)
+      await page.screenshot({ path: join(dir, `${n}${v.sufijo}.png`) })
+    }
+    // el guardián preparando su golpe grande
+    const g = (await gancho<{ id: number; tipo: string; x: number; y: number }[]>(page, 'enemigos')).find((e) => e.tipo === 'guardian_cobre')!
+    await gancho(page, 'teleport', g.x - 50, g.y + 10)
+    for (let i = 0; i < 200; i++) {
+      await gancho(page, 'curarTodo')
+      await gancho(page, 'avanzar', 0.05)
+      const e = (await gancho<{ id: number; estado: string }[]>(page, 'enemigos')).find((q) => q.id === g.id)!
+      if (e.estado === 'aviso') break
+    }
+    await gancho(page, 'avanzar', 0.6)
+    await page.waitForTimeout(300)
+    await page.screenshot({ path: join(dir, `guardian_aviso${v.sufijo}.png`) })
+    // calidad baja: los caminos y los avisos se tienen que seguir leyendo
+    if (!v.sufijo) {
+      await abrirMundo(page, 'sophie', '&calidad=baja')
+      await gancho(page, 'irAMundo', 'mundo2')
+      await esperarEscena(page, 'Bajada')
+      await esperarEscena(page, 'Mundo')
+      await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true && typeof a.mundoActual === 'function' }, null, { timeout: 120_000 })
+      await gancho(page, 'irAPostal', 'atrio_luciernagas')
+      await gancho(page, 'avanzar', 1.5)
+      await page.waitForTimeout(3000)
+      await page.screenshot({ path: join(dir, `atrio_calidad_baja.png`) })
+    }
+    await sinErrores(errores)
+    await ctx.close()
+  }
+})

@@ -54,6 +54,8 @@ export interface ContextoParticulas {
   rafaga: boolean
   /** decorados activos con emisor propio */
   decos: ((fn: (a: Activo) => void) => void) | null
+  /** F8: en un interior las partículas de ambiente no nacen sobre los muros (ahí no hay aire, es techo) */
+  sobreMuro?: (x: number, y: number) => boolean
 }
 
 const BRILLAN = new Set<Tipo>(['luciernaga', 'fuego'])
@@ -237,12 +239,27 @@ export class Particulas {
   private aparecerZona(dt: number, v: Phaser.Geom.Rectangle, c: ContextoParticulas): void {
     const q = this.factor()
     const quiere = (n: string) => c.emisores.some((e) => e.nombre === n)
-    const rx = () => v.x + fx().next() * v.width
-    const ry = () => v.y + fx().next() * v.height
+    // en un interior se prueban unos puntos hasta caer sobre el piso (si no, el ambiente sobre el techo parece cielo)
+    const punto = (): [number, number] => {
+      let x = v.x + fx().next() * v.width
+      let y = v.y + fx().next() * v.height
+      for (let i = 0; i < 6 && c.sobreMuro?.(x, y); i++) {
+        x = v.x + fx().next() * v.width
+        y = v.y + fx().next() * v.height
+      }
+      // si no encontró piso, nace lejos de la vista y se apaga sola en el mismo cuadro
+      return c.sobreMuro?.(x, y) ? [v.x - v.width * 3, v.y] : [x, y]
+    }
+    let ultimo: [number, number] = [0, 0]
+    // sin muros que evitar (el Bosque) se sortea igual que siempre: x e y por separado
+    const rx = c.sobreMuro ? () => (ultimo = punto())[0] : () => v.x + fx().next() * v.width
+    const ry = c.sobreMuro ? () => ultimo[1] : () => v.y + fx().next() * v.height
     const r = () => fx().next()
 
-    if ((quiere('luciernagas') || c.noche > 0.6) && this.cuenta('luciernaga') < Math.round((14 + c.noche * 16) * q)) {
-      this.crear('luciernaga', 'luciernaga', rx(), ry(), { vida: 6 + r() * 6 })
+    // en la Catedral las luciérnagas son turquesa (los rastros de vida); en el Bosque, amarillas
+    const turquesa = quiere('luciernagas_turquesa')
+    if ((quiere('luciernagas') || turquesa || c.noche > 0.6) && this.cuenta('luciernaga') < Math.round((14 + c.noche * 16) * q)) {
+      this.crear('luciernaga', turquesa ? 'luciernaga_turquesa' : 'luciernaga', rx(), ry(), { vida: 6 + r() * 6 })
     }
     if (quiere('fuegos_fatuos') && this.cuenta('fuego') < Math.max(2, Math.round(4 * q)) && r() < dt * 0.6) {
       this.crear('fuego', 'fuego', rx(), ry(), { vida: 10 + r() * 8, violeta: r() < 0.4 })
@@ -262,6 +279,8 @@ export class Particulas {
       ['brasas', 'brasa', 24, 10, -10, -10, 4],
       ['brillos', 'brillo', 12, 3, -3, -4, 3],
       ['humo', 'humo', 8, 1.5, -8, -4, 3.2],
+      // gotas que caen del techo de la Catedral
+      ['gotas', 'gota', 8, 2, 70, 40, 1.4],
     ]
     for (const [zn, llave, tope, tasa, vy0, vyR, vida] of motas) {
       if (!quiere(zn) || this.cuenta('mota', llave) >= Math.max(2, Math.round(tope * q)) || r() >= dt * tasa) continue
@@ -317,6 +336,10 @@ export class Particulas {
         case 'campamento_fogata':
           emite('b', 6, () => this.crear('mota', 'brasa', d.x + (r() - 0.5) * 10, d.y - 8, { vx: (r() - 0.5) * 10, vy: -18 - r() * 18, vida: 0.7 + r() * 1.0, local: true }))
           emite('h', 1.2, () => this.crear('mota', 'humo', d.x + (r() - 0.5) * 6, d.y - 22, { vx: 3 + r() * 4, vy: -9 - r() * 4, vida: 2.8, porEdad: true, alfaMax: 0.8, local: true }))
+          break
+        case 'brasero_cobre':
+          emite('b', 4, () => this.crear('mota', 'brasa', d.x + (r() - 0.5) * 12, d.y - 26, { vx: (r() - 0.5) * 10, vy: -16 - r() * 16, vida: 0.7 + r() * 0.9, local: true }))
+          emite('h', 0.8, () => this.crear('mota', 'humo', d.x + (r() - 0.5) * 6, d.y - 40, { vx: 2 + r() * 3, vy: -8 - r() * 4, vida: 2.6, porEdad: true, alfaMax: 0.6, local: true }))
           break
         case 'antorcha':
           emite('b', 3.5, () => this.crear('mota', 'brasa', d.x + (r() - 0.5) * 4, d.y - 40, { vx: (r() - 0.5) * 8, vy: -14 - r() * 12, vida: 0.6 + r() * 0.7, local: true }))

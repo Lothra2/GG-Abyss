@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { verificarKit, leerJson, tamanoPng, LIMITE_TEXTURA } from '../../../scripts/lib/verificacion'
 import { fuentesDe, heroes, iconosCartel, iconosHabilidad, idThor, personaje, rutasDelManifest, uiImagenes, validarManifest, KitError } from '../manifest'
 import type { Manifest } from '../tipos'
+import { existeMundo, manifestParaMundo, mundosDe } from '../mundos'
+import { parsearMapa } from '../mapa'
 
 const KIT = 'public/assets/kit'
 const manifest = leerJson<Manifest>(`${KIT}/manifest.json`)
@@ -93,5 +95,36 @@ describe('kit de PixelForja', () => {
     expect(() => validarManifest({ ...manifest, version: 99 })).toThrow(/versión/)
     expect(() => validarManifest({ ...manifest, mundo: undefined })).toThrow(/mundo/)
     expect(validarManifest(manifest).juego).toBe('GG Abyss')
+  })
+})
+
+describe('F8: los mundos del kit', () => {
+  it('el Bosque sigue en `mundo` y `mundos` trae al menos el Bosque y la Catedral, en orden de bajada', () => {
+    const ids = (manifest.mundos ?? []).map((m) => m.id)
+    expect(ids.slice(0, 2)).toEqual(['mundo1', 'mundo2'])
+    expect(manifest.mundos![0]!.mapa).toBe(manifest.mundo.mapa)
+    expect(manifest.mundos![1]!.nombre).toBe('La Catedral de las Raíces')
+  })
+  it('la Catedral trae su mapa con zonas, sus objetos, el guardián y su sonido', () => {
+    const cat = manifestParaMundo(manifest, 'mundo2')
+    const mapa = parsearMapa(leerJson(`${KIT}/${cat.mundo.mapa}`))
+    expect(mapa.bioma).toBe('catedral')
+    expect(mapa.zonas.length).toBeGreaterThanOrEqual(3)
+    expect(mapa.entidades.some((e) => e.tipo === 'portal_volver')).toBe(true)
+    for (const d of mapa.decos) expect(cat.mundo.objetos[d.sprite], d.sprite).toBeDefined()
+    for (const e of mapa.entidades.filter((q) => q.tipo === 'enemigo')) expect(manifest.personajes[String(e.props.enemigo)], String(e.props.enemigo)).toBeDefined()
+    for (const n of ['portal_azul', 'aviso_jefe']) expect(cat.mundo.objetos[n], n).toBeDefined()
+    for (const a of ['musica_catedral', 'ambiente_catedral']) expect(manifest.audio[a], a).toBeDefined()
+    expect(cat.mundo.particulas.luciernaga_turquesa).toBeDefined()
+    // el portal del jefe del Bosque baja a la Catedral
+    const bosque = parsearMapa(leerJson(`${KIT}/${manifest.mundo.mapa}`))
+    expect(bosque.entidades.find((e) => e.tipo === 'portal_jefe')!.props.destino).toBe('mundo2')
+    expect(bosque.bioma).toBe('bosque')
+  })
+  it('un kit viejo sin `mundos` se ve como un solo mundo, el Bosque', () => {
+    const viejo = { ...manifest, mundos: undefined }
+    expect(mundosDe(viejo)).toHaveLength(1)
+    expect(existeMundo(viejo, 'mundo2')).toBe(false)
+    expect(manifestParaMundo(viejo, 'mundo2').mundo).toBe(viejo.mundo)
   })
 })
