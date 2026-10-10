@@ -49,4 +49,20 @@ test.describe('Inmersión (F7)', () => {
     await gancho(page, 'avanzar', 0.5)
     expect((await musica(page)).agua).toBe(0)
   })
+
+  // Los números de acá son del Chromium sin GPU del contenedor: sirven para ver que el medidor mide, no dicen
+  // cómo corre en una tablet. Para eso se abre el juego con ?medir=1 en la tablet de verdad.
+  test('?medir=1 muestra frames y respuesta a la entrada', async ({ page }, info) => {
+    await abrirMundo(page, 'sophie', '&medir=1')
+    await page.keyboard.down('d')
+    await expect.poll(async () => (await gancho<{ muestras: number }>(page, 'medidor')).muestras, { timeout: 20_000 }).toBeGreaterThan(20)
+    await page.keyboard.up('d')
+    await page.mouse.click(400, 300)
+    await expect.poll(async () => (await gancho<{ respuestaMedioMs: number | null }>(page, 'medidor')).respuestaMedioMs, { timeout: 20_000 }).not.toBeNull()
+    const m = await gancho<{ fps: number; frameP95Ms: number; respuestaPeorMs: number }>(page, 'medidor')
+    expect(m.fps).toBeGreaterThan(0)
+    expect(m.frameP95Ms).toBeGreaterThan(0)
+    await page.waitForTimeout(800)
+    await page.screenshot({ path: info.outputPath('medidor.png') })
+  })
 })

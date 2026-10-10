@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import { DIRECCIONES, vectorDe } from '../logic/direccion'
 import { objetivoActual, type Objetivo } from '../logic/guia'
+import { Medidor } from '../logic/medidor'
 import { TarjetaBotin, type DatosTarjeta } from '../game/ui/TarjetaBotin'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
@@ -64,6 +65,10 @@ export class HUD extends Phaser.Scene {
   private chipIcono!: Phaser.GameObjects.Image
   private chipTexto!: Phaser.GameObjects.BitmapText
   private objetivo: Objetivo | null = null
+  /** ?medir=1 (y el modo prueba): frames y respuesta a la entrada */
+  private medidor: Medidor | null = null
+  private txtMedidor?: Phaser.GameObjects.BitmapText
+  private acumMedidor = 0
   private combate!: HudCombate
   private bNivel!: Phaser.GameObjects.BitmapText
   private bRescate!: Phaser.GameObjects.BitmapText
@@ -147,6 +152,23 @@ export class HUD extends Phaser.Scene {
     this.game.events.on('nivel-subido', this.alNivel)
     this.game.events.on('rescate', this.alRescate)
 
+    if (params.medir || params.test) {
+      const m = new Medidor()
+      this.medidor = m
+      const alEntrar = (e: Event) => m.entrada(e.timeStamp || performance.now())
+      const alDibujar = () => m.dibujado(performance.now())
+      window.addEventListener('pointerdown', alEntrar, true)
+      window.addEventListener('keydown', alEntrar, true)
+      this.game.events.on(Phaser.Core.Events.POST_RENDER, alDibujar)
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+        window.removeEventListener('pointerdown', alEntrar, true)
+        window.removeEventListener('keydown', alEntrar, true)
+        this.game.events.off(Phaser.Core.Events.POST_RENDER, alDibujar)
+        quitarGanchos('medidor')
+      })
+      agregarGanchos({ medidor: () => m.medidas() })
+      if (params.medir) this.txtMedidor = texto(this, 0, 0, '', 'fuente_ui', 1, { origen: [1, 0], tinte: 0x7affc8 }).setDepth(900)
+    }
     if (params.test) this.fps = texto(this, 0, 0, '', 'fuente_ui', 1, { origen: [1, 0], tinte: 0x7affc8 })
 
     this.game.events.on('descubrimiento', this.alDescubrir)
@@ -231,6 +253,7 @@ export class HUD extends Phaser.Scene {
     const yBajo = mg + this.pausa.alto + this.bolsa.alto + 8
     this.acomodarChip()
     this.fps?.setPosition(w - mg, yBajo)
+    this.txtMedidor?.setScale(esc).setPosition(w - mg, yBajo + (this.fps ? this.fps.displayHeight + 4 : 0))
     this.avisoCalidadImg?.setPosition(w - mg - 12, yBajo + 18)
     if (this.cartel) this.mostrarCartel(this.cartelInfo!.icono, this.cartelInfo!.texto)
   }
@@ -499,6 +522,17 @@ export class HUD extends Phaser.Scene {
     if (this.panel.input) this.panel.input.enabled = !this.mundo.enPresentacion
     if (this.chip.input) this.chip.input.enabled = !this.mundo.enPresentacion
     if (this.mundo.partida && this.mundo.partida.oro !== this.oroMostrado) this.actualizarContadores()
+    if (this.medidor) {
+      this.medidor.frame(deltaMs)
+      this.acumMedidor += deltaMs
+      if (this.txtMedidor && this.acumMedidor > 500) {
+        this.acumMedidor = 0
+        const r = this.medidor.medidas()
+        const resp = r.respuestaMedioMs === null ? '-' : `${Math.round(r.respuestaMedioMs)}`
+        this.txtMedidor.setText(`${r.fps} FPS  P95 ${Math.round(r.frameP95Ms)}MS\nPEOR ${Math.round(r.framePeorMs)}MS  TIRONES ${r.tirones}\nRESPUESTA ${resp}MS`)
+        this.txtMedidor.setTint(r.frameP95Ms <= 20 ? 0x7affc8 : r.frameP95Ms <= 34 ? 0xffd27a : 0xff6a6a)
+      }
+    }
     if (this.fps) {
       this.acumFps += deltaMs
       if (this.acumFps > 500) {

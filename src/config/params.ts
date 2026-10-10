@@ -1,4 +1,4 @@
-/** Parámetros de la URL: ?test=1 ?seed=N ?heroe=<id> ?kit=1 ?postal=1 */
+/** Parámetros de la URL: ?test=1 ?seed=N ?heroe=<id> ?kit=1 ?postal=1 ?tutorial=1 ?medir=1 */
 export interface Params {
   test: boolean
   seed: number | null
@@ -13,6 +13,8 @@ export interface Params {
   sw: boolean
   /** ?tutorial=1: con ?heroe= las demostraciones para Alana también salen (sin esto se saltan, como la presentación) */
   tutorial: boolean
+  /** ?medir=1: el medidor de frames y respuesta a la entrada en pantalla (para probar en la tablet de verdad) */
+  medir: boolean
 }
 
 export function leerParams(search: string = typeof location !== 'undefined' ? location.search : ''): Params {
@@ -30,6 +32,7 @@ export function leerParams(search: string = typeof location !== 'undefined' ? lo
     calidad: cal === 'alta' || cal === 'baja' ? cal : null,
     sw: q.get('sw') === '1',
     tutorial: q.get('tutorial') === '1',
+    medir: q.get('medir') === '1',
   }
 }
 
