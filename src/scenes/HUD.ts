@@ -64,6 +64,11 @@ export class HUD extends Phaser.Scene {
     Bloqueo.instalar(this)
 
     this.panel = this.add.nineslice(0, 0, K.ui('panel_hundido'), undefined, 60, 60, 6, 6, 6, 6).setOrigin(0, 0).setAlpha(0.9)
+    // tocar los contadores abre el álbum de postales
+    this.panel.setInteractive({ useHandCursor: true })
+    // durante la presentación el toque es para saltarla: no se toma
+    this.panel.on('pointerdown', (p: Phaser.Input.Pointer) => !this.mundo.enPresentacion && Bloqueo.tomar(p.id))
+    this.panel.on('pointerup', () => !this.mundo.enPresentacion && this.mundo.abrirAlbum())
     this.iconoZonas = this.add.image(0, 0, k('icono_zona', 'icono_mapa')).setOrigin(0, 0.5)
     this.iconoSecretos = this.add.image(0, 0, k('icono_secreto', 'icono_bolsa')).setOrigin(0, 0.5)
     this.iconoOro = this.add.image(0, 0, K.ui('icono_oro')).setOrigin(0, 0.5)
@@ -284,6 +289,8 @@ export class HUD extends Phaser.Scene {
 
   override update(_t: number, deltaMs: number): void {
     this.combate.update(deltaMs / 1000)
+    // durante la presentación el panel no atrapa toques: el toque la salta
+    if (this.panel.input) this.panel.input.enabled = !this.mundo.enPresentacion
     if (this.mundo.partida && this.mundo.partida.oro !== this.oroMostrado) this.actualizarContadores()
     if (this.fps) {
       this.acumFps += deltaMs

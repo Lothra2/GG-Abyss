@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { descubrirSecretoCofre, descubrirZona, llaveSecretoZona, resumen } from '../descubrimiento'
-import type { MapaJuego, Zona } from '../../kit/mapa'
+import { album, descubrirSecretoCofre, descubrirZona, llaveSecretoZona, resumen } from '../descubrimiento'
+import { parsearMapa, type MapaJuego, type Zona } from '../../kit/mapa'
+import type { MapaTiled } from '../../kit/tipos'
+import { leerJson } from '../../../scripts/lib/verificacion'
 
 const z = (nombre: string, extra: Partial<Zona> = {}): Zona => ({
   nombre, x: 0, y: 0, w: 10, h: 10, area: 100, musica: 'bosque', ambiente: 'bosque', luz: null, oscuridad: 0, niebla: 0.3, particulas: [], descubrir: true, secreto: false, props: {}, ...extra,
@@ -49,5 +51,25 @@ describe('descubrimiento', () => {
     const est = { zonas: ['A'], secretos: [] as string[] }
     descubrirSecretoCofre(est, 'cofre:0:0')
     expect(resumen(est, mapaChico)).toEqual({ zonas: 1, totalZonas: 3, secretos: 1, totalSecretos: 3 })
+  })
+})
+
+describe('álbum de postales', () => {
+  const kit = 'public/assets/kit/'
+  const m = parsearMapa(leerJson<MapaTiled>(kit + leerJson<{ mundo: { mapa: string } }>(kit + 'manifest.json').mundo.mapa))
+  it('trae todas las postales del mapa, cada una con el nombre de su zona', () => {
+    const a = album(m, [])
+    expect(a.length).toBe(m.postales.length)
+    expect(a.length).toBeGreaterThanOrEqual(8)
+    for (const f of a) expect(f.titulo.length).toBeGreaterThan(0)
+  })
+  it('una postal se pega al descubrir su zona, y con todas las zonas están todas', () => {
+    const vacio = album(m, [])
+    expect(vacio.filter((f) => f.desbloqueada).length).toBeLessThan(vacio.length)
+    const bloqueada = vacio.find((f) => !f.desbloqueada)!
+    const con = album(m, [bloqueada.titulo])
+    expect(con.find((f) => f.postal === bloqueada.postal)!.desbloqueada).toBe(true)
+    const todas = album(m, m.zonas.map((z) => z.nombre))
+    expect(todas.every((f) => f.desbloqueada)).toBe(true)
   })
 })

@@ -1,5 +1,6 @@
 import type { MapaJuego, Zona } from '../kit/mapa'
 import { totalSecretos, totalZonasDescubribles } from '../kit/mapa'
+import { zonaEn } from './zonas'
 
 /** Qué zonas y secretos lleva descubiertos una jugadora (lo que se guarda en la partida) */
 export interface EstadoDescubrimiento {
@@ -49,4 +50,23 @@ export function resumen(est: EstadoDescubrimiento, mapa: MapaJuego): ResumenDesc
     secretos: est.secretos.length,
     totalSecretos: totalSecretos(mapa),
   }
+}
+
+export interface FiguritaAlbum {
+  /** la postal del kit */
+  postal: string
+  /** el nombre de la zona donde está */
+  titulo: string
+  desbloqueada: boolean
+}
+
+/**
+ * El álbum de postales: cada postal del mapa se pega cuando se descubre la zona donde está.
+ * Las postales fuera de toda zona (o en zonas sin `descubrir`) quedan pegadas desde el principio.
+ */
+export function album(mapa: Pick<MapaJuego, 'postales' | 'zonas'>, zonasDescubiertas: readonly string[]): FiguritaAlbum[] {
+  return mapa.postales.map((p) => {
+    const z = zonaEn(mapa.zonas, p.x, p.y)
+    return { postal: p.nombre, titulo: z?.nombre ?? p.nombre, desbloqueada: !z || !z.descubrir || zonasDescubiertas.includes(z.nombre) }
+  })
 }

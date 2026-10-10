@@ -63,7 +63,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -616,6 +616,19 @@ export class Mundo extends Phaser.Scene {
     this.scene.bringToTop('Inventario')
   }
 
+  get enPresentacion(): boolean {
+    return !!this.presentacion?.activa
+  }
+
+  /** El álbum de postales, desde el HUD: el mundo se pausa como con el inventario */
+  abrirAlbum(): void {
+    if (this.enPresentacion || this.scene.isActive('Album') || this.scene.isActive('Tienda') || this.scene.isActive('Inventario') || this.scene.isPaused('Mundo') || this.combate.caido) return
+    this.alAbrirPausa()
+    this.scene.pause('Mundo')
+    this.scene.launch('Album', { desde: 'Mundo' })
+    this.scene.bringToTop('Album')
+  }
+
   /** La tienda de la fogata: el mundo se pausa como con el inventario */
   abrirTienda(): void {
     if (this.scene.isActive('Tienda') || this.scene.isActive('Inventario') || this.scene.isPaused('Mundo') || this.combate.caido) return
@@ -1098,6 +1111,7 @@ export class Mundo extends Phaser.Scene {
       combate: () => this.combate.info(),
       abrirTienda: (() => this.abrirTienda()) as never,
       olfatear: (() => this.olfatear()) as never,
+      abrirAlbum: (() => this.abrirAlbum()) as never,
       /** mueve solo a la heroína (Thor se queda donde está) */
       ponerHeroina: ((x: number, y: number) => {
         const p = this.grilla.puntoLibreCerca(x, y, 8, 120) ?? { x, y }

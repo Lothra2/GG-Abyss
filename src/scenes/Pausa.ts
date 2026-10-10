@@ -39,6 +39,7 @@ export class Pausa extends Phaser.Scene {
   private peque!: Boton
   private cambiar!: Boton
   private creditos!: Boton
+  private album!: Boton
   private seguir!: Boton
   private pantalla: Boton | null = null
   private arrastrando: Deslizador | null = null
@@ -70,6 +71,7 @@ export class Pausa extends Phaser.Scene {
     this.peque = crearBoton(this, { x: 0, y: 0, icono: 'icono_peque', etiqueta: 'Modo peque: no', alToque: () => this.alternarPeque() })
     this.cambiar = crearBoton(this, { x: 0, y: 0, icono: 'icono_jugadora', etiqueta: 'Otra jugadora', alToque: () => this.cambiarJugadora() })
     this.creditos = crearBoton(this, { x: 0, y: 0, icono: 'icono_guardado', etiqueta: 'Créditos', alToque: () => this.abrirCreditos() })
+    this.album = crearBoton(this, { x: 0, y: 0, icono: 'icono_zona', etiqueta: 'Álbum', alToque: () => this.abrirAlbum() })
     // pantalla completa en Android y PC; en el iPad no existe y se explica cómo instalarla
     this.pantalla = null
     if (puedePantallaCompleta()) this.pantalla = crearBoton(this, { x: 0, y: 0, icono: 'icono_mapa', etiqueta: 'Pantalla completa', alToque: () => alternarPantallaCompleta() })
@@ -81,7 +83,7 @@ export class Pausa extends Phaser.Scene {
     this.input.on('pointerupoutside', () => this.soltar())
     this.input.keyboard?.on('keydown-ESC', () => this.continuar())
 
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => quitarGanchos('pausa', 'pausaFijar', 'pausaContinuar', 'pausaCambiarJugadora'))
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => quitarGanchos('pausa', 'pausaFijar', 'pausaContinuar', 'pausaCambiarJugadora', 'pausaAlbum'))
     this.events.on(Phaser.Scenes.Events.RESUME, () => this.acomodar())
     alCambiarEscala(this, () => this.acomodar())
     this.refrescar()
@@ -91,7 +93,7 @@ export class Pausa extends Phaser.Scene {
         abierta: true,
         deslizadores: this.deslizadores.map((d) => ({ nombre: d.nombre, x: d.x, y: Math.round(d.riel.y), w: d.w, valor: this.valorDe(d.nombre) })),
         pantalla: this.pantalla ? this.pantalla.getBounds() : null,
-        botones: { calidad: this.calidad.getBounds(), peque: this.peque.getBounds(), cambiar: this.cambiar.getBounds(), creditos: this.creditos.getBounds(), seguir: this.seguir.getBounds() },
+        botones: { calidad: this.calidad.getBounds(), peque: this.peque.getBounds(), cambiar: this.cambiar.getBounds(), creditos: this.creditos.getBounds(), album: this.album.getBounds(), seguir: this.seguir.getBounds() },
         ajustes: { ...aj() },
       }),
       pausaFijar: ((nombre: 'noche' | 'musica' | 'efectos', v: number) => {
@@ -99,6 +101,7 @@ export class Pausa extends Phaser.Scene {
         if (d) this.poner(d, v)
       }) as never,
       pausaContinuar: (() => this.continuar()) as never,
+      pausaAlbum: (() => this.abrirAlbum()) as never,
       pausaCambiarJugadora: (() => this.cambiarJugadora()) as never,
     })
   }
@@ -190,7 +193,7 @@ export class Pausa extends Phaser.Scene {
     const fila = Math.max(toqueMinimo(e, this.mundo.partida.ajustes.modoPeque), 26)
     const pw = Math.min(w - 16, Math.max(280, Math.floor(w * 0.62)))
     const lado = this.calidad.ancho + 8 + this.peque.ancho <= pw - 20
-    const fila2 = [this.cambiar, this.creditos, ...(this.pantalla ? [this.pantalla] : []), this.seguir]
+    const fila2 = [this.album, this.cambiar, this.creditos, ...(this.pantalla ? [this.pantalla] : []), this.seguir]
     const ancho3 = fila2.reduce((t, b) => t + b.ancho, 0) + 8 * (fila2.length - 1)
     const tres = ancho3 <= pw - 20
     this.titulo.setScale(esc)
@@ -271,6 +274,12 @@ export class Pausa extends Phaser.Scene {
     this.scene.pause()
     this.scene.launch('Instalar', { desde: 'Pausa' })
     this.scene.bringToTop('Instalar')
+  }
+
+  private abrirAlbum(): void {
+    this.scene.pause()
+    this.scene.launch('Album', { desde: 'Pausa' })
+    this.scene.bringToTop('Album')
   }
 
   private abrirCreditos(): void {
