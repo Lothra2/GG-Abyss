@@ -41,6 +41,7 @@ import { elegirDestino, posicionFlecha, RelojGuia, type Destino } from '../logic
 import { DirectorJefe, type Plano } from '../logic/escenaJefe'
 import { veredicto } from '../logic/veredicto'
 import { DirectorMusica, type EstadoMusica } from '../logic/musica'
+import { demostracion, pasoCumplido, PASOS_TUTORIAL, type PasoTutorial } from '../logic/tutorial'
 import { buscarCamino } from '../logic/camino'
 import { Presentacion } from '../game/Presentacion'
 import { alCambiarEscala } from '../game/Pantalla'
@@ -68,7 +69,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -137,6 +138,12 @@ export class Mundo extends Phaser.Scene {
   estadoMusica: EstadoMusica = 'explorar'
   private detalleAgua = 0
   private alertaHasta = new Map<number, number>()
+  /** F7: la demostración que se está mostrando (la mano del HUD) y lo hecho desde que apareció */
+  demoTutorial: { paso: PasoTutorial; x: number; y: number } | null = null
+  private demoBase = { paso: '' as string, movido: 0, golpes: 0, cofres: 0 }
+  private tutoMovido = 0
+  private tutoGolpes = 0
+  private tutoUltima: { x: number; y: number } | null = null
   /** la flecha guía: tiempo sin progreso, la firma del progreso y lo que hay que dibujar */
   private relojGuia = new RelojGuia(GUIA.esperaS)
   private firmaProgreso = ''
@@ -845,6 +852,54 @@ export class Mundo extends Phaser.Scene {
     this.sonido.fijarDetalle('ambiente_agua', this.detalleAgua)
   }
 
+  /** F7: las demostraciones para Alana (caminar, pegar, abrir), una por vez y hasta que la haga */
+  private actualizarTutorial(): void {
+    const h = this.heroina
+    if (this.tutoUltima) this.tutoMovido += Math.min(40, Math.hypot(h.x - this.tutoUltima.x, h.y - this.tutoUltima.y))
+    this.tutoUltima = { x: h.x, y: h.y }
+    this.demoTutorial = null
+    if (!this.mejoras || (params.heroe && !params.tutorial) || params.postal) return
+    const p = this.partida
+    let enemigo: { x: number; y: number } | null = null
+    let dE = 260
+    for (const e of this.enemigos.lista) {
+      const d = Math.hypot(e.x - h.x, e.y - h.y)
+      if (e.vivo && d < dE) {
+        dE = d
+        enemigo = { x: e.x, y: e.y }
+      }
+    }
+    let cofre: { x: number; y: number } | null = null
+    let dC = 280
+    for (const c of this.entidades.cofres) {
+      const d = Math.hypot(c.e.x - h.x, c.e.y - h.y)
+      if (!c.abierto && !c.abriendo && c.s.visible && d < dC) {
+        dC = d
+        cofre = { x: c.e.x, y: c.e.y }
+      }
+    }
+    const ocupada = this.enPresentacion || !!this.jefe?.peleando || this.combate.caido || this.scene.isPaused()
+    const demo = demostracion({ hechos: p.tutorial, heroe: { x: h.x, y: h.y }, enemigo, cofre, ocupada })
+    if (!demo) return
+    if (this.demoBase.paso !== demo.paso) this.demoBase = { paso: demo.paso, movido: this.tutoMovido, golpes: this.tutoGolpes, cofres: p.cofres.length }
+    const hecho = pasoCumplido(demo.paso, { movido: this.tutoMovido - this.demoBase.movido, golpes: this.tutoGolpes - this.demoBase.golpes, cofresAbiertos: p.cofres.length - this.demoBase.cofres })
+    if (hecho) {
+      p.tutorial.push(demo.paso)
+      this.demoBase.paso = ''
+      this.sonido.efecto('descubrir', { volumen: 0.4, rate: 1.3 })
+      this.guardar()
+      return
+    }
+    this.demoTutorial = { paso: demo.paso, x: demo.donde.x, y: demo.donde.y }
+  }
+
+  /** Saltar todas las demostraciones */
+  saltarTutorial(): void {
+    this.partida.tutorial = [...PASOS_TUTORIAL]
+    this.demoTutorial = null
+    this.guardar()
+  }
+
   private tocaThor(x: number, y: number): boolean {
     const t = this.thor
     return Math.abs(x - t.x) <= 16 && y >= t.y - 30 && y <= t.y + 6
@@ -1092,6 +1147,7 @@ export class Mundo extends Phaser.Scene {
 
   /** Pausa cortita y sacudida según el golpe */
   impacto(tipo: TipoImpacto): void {
+    if (tipo !== 'recibidoFuerte') this.tutoGolpes++
     const r0 = this.impactos.pedir(tipo)
     const r = this.suave ? { pausa: 0, sacudida: null } : r0
     this.ultimoImpacto = { tipo, pausa: r.pausa, sacude: !!r.sacudida }
@@ -1160,6 +1216,7 @@ export class Mundo extends Phaser.Scene {
     this.actualizarGuia(dt)
     this.proyectiles.impactoAlFallar = this.mejoras
     this.actualizarAudio(dtReal)
+    this.actualizarTutorial()
     this.tJugado += dt
     // lo que la heroína iba a usar: cuando llega, lo usa
     const pend = this.pendiente
@@ -1309,6 +1366,8 @@ export class Mundo extends Phaser.Scene {
       abrirTienda: (() => this.abrirTienda()) as never,
       olfatear: (() => this.olfatear()) as never,
       abrirAlbum: (() => this.abrirAlbum()) as never,
+      tutorial: () => ({ hechos: [...this.partida.tutorial], demo: this.demoTutorial ? { paso: this.demoTutorial.paso } : null }),
+      saltarTutorial: (() => this.saltarTutorial()) as never,
       musicaEstado: () => ({ estado: this.estadoMusica, agua: Math.round(this.detalleAgua * 100) / 100 }),
       planoJefe: () => ({ ...this.planoJefe, entradaPausada: this.entrada.estaPausada, camara: { x: Math.round(this.camara.cx), y: Math.round(this.camara.cy) } }),
       guia: () => ({ sinProgreso: Math.round(this.relojGuia.sinProgreso * 10) / 10, visible: this.relojGuia.visible, flecha: this.flechaGuia }),

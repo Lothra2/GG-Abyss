@@ -53,6 +53,11 @@ export class HUD extends Phaser.Scene {
     this.tweens.add({ targets: this.velo, alpha: 0, duration: d.ms, ease: 'Quad.easeOut', onComplete: () => this.velo.setVisible(false) })
   }
   private tFlecha = 0
+  /** F7: la manito que enseña a caminar, pegar y abrir, con su ícono y el botón de saltar */
+  private mano: Phaser.GameObjects.Image | null = null
+  private manoIcono: Phaser.GameObjects.Image | null = null
+  private saltar!: Boton
+  private tMano = 0
   private combate!: HudCombate
   private bNivel!: Phaser.GameObjects.BitmapText
   private bRescate!: Phaser.GameObjects.BitmapText
@@ -120,6 +125,10 @@ export class HUD extends Phaser.Scene {
     // la flecha guía en el borde: aparece si pasa un rato sin progreso
     this.flecha = this.textures.exists(K.ui('flecha_guia')) ? this.add.image(0, 0, K.ui('flecha_guia'), 0).setVisible(false).setAlpha(0).setDepth(300) : null
     this.tFlecha = 0
+    this.mano = this.textures.exists(K.ui('cursor_mano')) ? this.add.image(0, 0, K.ui('cursor_mano')).setOrigin(0.2, 0).setVisible(false).setDepth(310) : null
+    this.manoIcono = this.add.image(0, 0, K.ui('marca_destino')).setVisible(false).setDepth(309)
+    this.saltar = crearBoton(this, { x: 0, y: 0, etiqueta: 'Saltar', icono: 'icono_jugar', origen: [0.5, 0], alToque: () => this.mundo.saltarTutorial() })
+    this.saltar.setVisible(false).setDepth(310)
     this.bNivel = texto(this, 0, 0, '', 'fuente_titulo', 2, { origen: [0.5, 0.5] }).setAlpha(0).setDepth(520)
     this.bRescate = texto(this, 0, 0, '', 'fuente_titulo', 2, { origen: [0.5, 0.5] }).setAlpha(0).setDepth(530)
     this.game.events.on('nivel-subido', this.alNivel)
@@ -140,7 +149,7 @@ export class HUD extends Phaser.Scene {
       this.game.events.off('botin-recogido', this.alBotinRecogido)
       this.game.events.off('destello', this.alDestello)
       this.combate.destruir()
-      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudOrbes', 'hudNivel', 'hudCine', 'hudTarjeta', 'tarjetaPoner')
+      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudOrbes', 'hudNivel', 'hudCine', 'hudTarjeta', 'tarjetaPoner', 'hudTutorial')
     })
     alCambiarEscala(this, () => this.acomodar())
     this.actualizarContadores()
@@ -152,6 +161,7 @@ export class HUD extends Phaser.Scene {
       hudCombate: () => this.combate.layout(),
       hudOrbes: () => this.combate.niveles(),
       hudTarjeta: () => this.tarjeta.info(),
+      hudTutorial: () => ({ mano: !!this.mano?.visible, icono: this.manoIcono?.visible ? this.manoIcono.texture.key : null, saltar: this.saltar.visible ? this.saltar.getBounds() : null }),
       tarjetaPoner: (() => this.tarjeta.tocarPoner()) as never,
       hudCine: () => ({ franjas: this.franjaArriba.visible ? this.franjaArriba.height : 0, titulo: this.tituloCine.text, alfa: Math.round(this.tituloCine.alpha * 100) / 100, banner: this.banner.alpha }),
       hudNivel: () => ({ texto: this.bNivel.text, alpha: this.bNivel.alpha, rescate: this.bRescate.text, alphaRescate: this.bRescate.alpha }),
@@ -389,9 +399,49 @@ export class HUD extends Phaser.Scene {
     fl.setAlpha(Math.min(0.75 + 0.25 * Math.sin(this.tFlecha * 3), fl.alpha + dt * 2))
   }
 
+  /** La demostración: el ícono del paso donde hay que ir o tocar y la manito tocándolo una y otra vez */
+  private dibujarTutorial(dt: number): void {
+    const d = this.mundo.demoTutorial
+    const ic = this.manoIcono
+    if (!d || !ic) {
+      this.mano?.setVisible(false)
+      ic?.setVisible(false)
+      this.saltar.setVisible(false)
+      this.tMano = 0
+      return
+    }
+    this.tMano += dt
+    const e = escalaDe(this.game)
+    const esc = e.zoom >= 3 ? 1 : 2
+    const v = this.mundo.cameras.main.worldView
+    const kx = this.scale.width / v.width
+    const ky = this.scale.height / v.height
+    const x = Math.round((d.x - v.x) * kx)
+    const y = Math.round((d.y - v.y) * ky)
+    const llave = K.ui(d.paso === 'caminar' ? 'marca_destino' : d.paso === 'pegar' ? 'icono_calavera' : 'icono_secreto')
+    if (ic.texture.key !== llave && this.textures.exists(llave)) ic.setTexture(llave, 0)
+    const latido = 1 + 0.12 * Math.sin(this.tMano * 6)
+    // la manito toca el cuerpo (o el piso al caminar) y el ícono va encima, sin tapar el nombre del enemigo
+    const toqueY = d.paso === 'caminar' ? y : Math.round(y - 16 * ky)
+    // la calavera va al costado del enemigo: encima taparía su nombre o su estandarte
+    const iconoX = d.paso === 'pegar' ? Math.round(x - 26 * kx - 12 * esc) : x
+    const iconoY = d.paso === 'caminar' ? y : d.paso === 'pegar' ? Math.round(y - 30 * ky) : Math.round(y - 40 * ky)
+    ic.setVisible(true).setScale(esc * latido).setPosition(iconoX, iconoY)
+    if (d.paso === 'caminar' && ic.texture.frameTotal > 2) ic.setFrame(Math.floor(this.tMano * 6) % (ic.texture.frameTotal - 1))
+    if (this.mano) {
+      // la manito baja, toca y vuelve a subir
+      const ciclo = (this.tMano % 1.1) / 1.1
+      const baja = ciclo < 0.35 ? ciclo / 0.35 : ciclo < 0.55 ? 1 : 1 - (ciclo - 0.55) / 0.45
+      this.mano.setVisible(true).setScale(esc).setPosition(x, Math.round(toqueY + (12 - 10 * baja) * esc))
+      this.mano.setAlpha(ciclo > 0.35 && ciclo < 0.55 ? 1 : 0.85)
+    }
+    this.saltar.setVisible(true).setPosition(Math.round(this.scale.width / 2), MARGENES.MARGEN)
+  }
+
   override update(_t: number, deltaMs: number): void {
     this.combate.update(deltaMs / 1000)
     this.dibujarFlecha(deltaMs / 1000)
+    this.dibujarTutorial(deltaMs / 1000)
     this.tarjeta.update(deltaMs / 1000)
     this.dibujarCine()
     // durante la presentación el panel no atrapa toques: el toque la salta

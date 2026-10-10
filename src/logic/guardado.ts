@@ -47,6 +47,8 @@ export interface Partida {
   jefeVida?: number
   /** segundos jugados, para el resumen de Continuará */
   tiempoJugado?: number
+  /** F7: las demostraciones que ya vio (caminar, pegar, abrir) */
+  tutorial: string[]
 }
 
 export const VERSION_PARTIDA = 1
@@ -86,6 +88,7 @@ export function partidaNueva(id: string, ahora: number = Date.now()): Partida {
     bolsa: Array.from({ length: 28 }, () => null),
     cinturon: [...BOTIN.cinturonInicial],
     ajustes: ajustesPorDefecto(id),
+    tutorial: [],
   }
 }
 
@@ -173,6 +176,8 @@ export function migrar(json: unknown, idEsperado?: string): Partida | null {
     cofres: textos(j.cofres),
     rompibles: textos(j.rompibles),
     presentacionVista: j.presentacionVista === true,
+    // una partida de antes de F7 que ya jugó no vuelve a ver las demostraciones
+    tutorial: esLista(j.tutorial) ? textos(j.tutorial) : j.presentacionVista === true || textos(j.zonas).length > 1 ? ['caminar', 'pegar', 'abrir'] : [],
     jefeVencido: j.jefeVencido === true,
     equipo,
     bolsa,
