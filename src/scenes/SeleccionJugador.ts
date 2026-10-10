@@ -10,6 +10,8 @@ import { FondoAbismo } from '../game/FondoAbismo'
 import { alCambiarEscala, escalaDe, toqueMinimo } from '../game/Pantalla'
 import { texto } from '../game/Texto'
 import { Bloqueo } from '../game/ui/Bloqueo'
+import { CapasSprite } from '../game/Capas'
+import { aspectoDefecto } from '../logic/aspecto'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 
 interface VistaTarjeta {
@@ -117,6 +119,8 @@ export class SeleccionJugador extends Phaser.Scene {
     const sprite = this.add.sprite(w / 2, pies, K.pers(t.id, 'idle'), 0).setOrigin(p.pivote[0] / p.celda, p.pivote[1] / p.celda).setScale(s)
     sprite.play(K.anim(t.id, 'idle', DIRECCIONES[dir]!))
     cont.add(sprite)
+    // armada con lo de su clase (las capas de equipo de PixelForja)
+    new CapasSprite(this, m, t.id, sprite, cont).poner(aspectoDefecto(p.capas))
 
     // el arma de su clase y, si ya juega, su nivel y su oro
     const yInfo = pies + 10 + 16

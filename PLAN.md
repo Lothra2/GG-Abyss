@@ -818,6 +818,32 @@ Debajo del bosque, una catedral atravesada por raíces. La familia baja para rec
 3. Forja y brasas.
 4. Campanario y jefe.
 
+### F8b. Lo que Rick pidió después de jugar
+
+1. **La heroína dejaba de caminar con el toque** después de vencer al jefe. La causa: al reiniciar el HUD (cambiar de mundo, volver del título), tocar un botón de habilidad dejaba el dedo anotado para siempre. Arreglado de raíz, con prueba de mouse y de dedo.
+2. **Soltar de la mochila:** arrastrar afuera deja el objeto en el piso (se vuelve a recoger pasando) y arrastrar a otro hueco los acomoda.
+3. **Maná que se nota:** en pelea vuelve 1 por segundo, en calma 4. Las habilidades cuestan más que lo que vuelve mientras recargan.
+4. **Mercader en cada fogata:** Don Cachivache (PNJ de PixelForja) compra y vende. Lo vendido se recompra al mismo precio mientras dure el mundo.
+5. **Equipo visible y ataque según el arma:** PixelForja exporta capas de equipo por heroína (13 armas, 6 manos libres, 20 pechos y los cascos) que el juego apila cuadro a cuadro. El ataque básico sale de la familia del arma: tajo, pesado, estocada, flechas o magia. Lo que no se ve a 48 px (anillos, amuleto, guantes, cinturón) sigue dando stats sin dibujo.
+
+### F9. Mundos más amplios (diseño, todavía sin hacer)
+
+Lo que pide Rick: mundos menos fáciles de explorar. Hoy la Catedral se cruza corriendo en unos 13 s (80 x 64 cuadros, 6 enemigos, 1 fogata) y el Bosque en unos 20 s (120 x 90, 29 enemigos, 3 fogatas).
+
+**Postura.** Más grande sin más contenido es peor para Alana: se pierde y se aburre caminando. Lo que hace bueno un mundo tipo Diablo es la densidad de decisiones, no los metros. La meta es el doble de área con el triple de cosas para hacer, y que perderse sea imposible.
+
+1. **Minimapa** en una esquina, que se va revelando al caminar (niebla de guerra), con íconos de fogata, mercader, jefe y portal. Tocarlo lo agranda. Es lo primero, sin él no se agranda nada.
+2. **Caminos que se abren:** cada mundo con un camino principal y al menos tres ramas opcionales que vuelven al principal (nada de callejones largos sin premio).
+3. **Atajos que se desbloquean** desde el otro lado (una palanca, un tronco que Thor empuja), para no repetir el camino largo.
+4. **Un minijefe por mundo** en una rama opcional, con su cofre dorado y una postal.
+5. **Secretos de Thor:** olfatear marca paredes falsas y tesoros enterrados, al menos dos por zona grande.
+6. **Eventos chicos:** un altar que pide vencer una oleada, un cofre con enemigos dormidos alrededor, un PNJ perdido que hay que llevar a la fogata.
+7. **Fogatas cada 60 a 90 s de camino**, cada una con su mercader.
+
+**Orden propuesto.** Primero el minimapa en los dos mundos. Después la Catedral al doble (es la más flaca), con dos ramas, un minijefe y un atajo. Medir con las niñas cuánto tardan y si se pierden. Recién entonces el Bosque.
+
+**Cuidado.** Agrandar el mapa sube el tiempo de `npm run kit` y la memoria en la tablet: el suelo va en trozos y los enemigos se despiertan por cercanía, eso ya escala. Hay que medir con `?medir=1` en la tablet real antes de dar por hecho el rendimiento.
+
 ## 6. Riesgos y mitigación
 
 | Riesgo | Mitigación |

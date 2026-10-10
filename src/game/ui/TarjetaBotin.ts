@@ -16,6 +16,8 @@ export interface DatosTarjeta {
   /** el casillero de la bolsa donde cayó */
   indice: number
   veredicto: Veredicto
+  /** si es un arma que ataca distinto de lo que tiene ahora: cómo atacaría ("Ataque: flechas") */
+  ataqueNuevo?: string
 }
 
 /**
@@ -72,9 +74,12 @@ export class TarjetaBotin {
       this.juicio.setText('Igual al tuyo').setTint(0xffe6b0)
     }
     // las 3 diferencias que más pesan
-    const dif = [...v.dif].sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, 3)
+    // un arma que cambia cómo ataca lo dice primero (en dorado)
+    const extra = d.ataqueNuevo ? 1 : 0
+    const dif = [...v.dif].sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, 3 - extra)
     this.lineas.forEach((l, i) => {
-      const df = dif[i]
+      if (extra && i === 0) return l.setText(d.ataqueNuevo!).setTint(0xffd27a).setVisible(true)
+      const df = dif[i - extra]
       if (!df) return l.setText('').setVisible(false)
       const signo = df.delta > 0 ? '+' : ''
       const pct = df.etiqueta.endsWith('%')

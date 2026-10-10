@@ -11,10 +11,12 @@ import { danoEnemigo, escudoDeThor, recibirDano, tirarGolpe, type Golpe } from '
 import { abanico, Recargas } from '../logic/habilidades'
 import { RelojDesenterrar, RelojesThor, rangoMordida } from '../logic/thorCombate'
 import { bonosDeEquipo } from '../logic/equipo'
+import { ataqueBasico, conAtaque, type AtaqueBasico } from '../logic/armas'
+import { itemDe } from '../logic/catalogo'
 import type { TipoImpacto } from '../logic/impacto'
 import { sortearNormal } from '../logic/botin'
 import type { Catalogo } from '../logic/catalogo'
-import { BOTIN, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, JEFE, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, CLASES, type ClaseId } from '../config/balance'
+import { BOTIN, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, JEFE, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, type ClaseId } from '../config/balance'
 import { Colchon } from '../logic/colchon'
 import { PROF } from '../config/juego'
 import type { Heroina } from './Heroina'
@@ -72,6 +74,8 @@ const POCION_MANA = (id: string) => id.includes('mana')
 export class Combate {
   readonly clase: ClaseId
   stats: StatsHeroe
+  /** el ataque básico de ahora (sale del arma puesta) */
+  ataque!: AtaqueBasico
   readonly recargas: Recargas
   objetivo: Atacable | null = null
   escudo = 0
@@ -134,7 +138,9 @@ export class Combate {
   /** Los stats con el nivel y lo que lleva puesto */
   private calcularStats(): StatsHeroe {
     const p = this.d.partida()
-    return statsDe(this.clase, p.nivel, bonosDeEquipo(this.d.cat, p.equipo, this.clase))
+    // el ataque básico sale del arma puesta (sin arma, el de su clase)
+    this.ataque = ataqueBasico(this.clase, itemDe(this.d.cat, p.equipo.arma))
+    return conAtaque(statsDe(this.clase, p.nivel, bonosDeEquipo(this.d.cat, p.equipo, this.clase)), this.ataque)
   }
 
   /** Se equipó o se sacó algo: se recalculan los stats y la vida y el maná no pasan del nuevo máximo */
@@ -189,20 +195,21 @@ export class Combate {
 
   private ataqueBasico(e: Atacable): void {
     const h = this.d.heroina
-    const base = CLASES[this.clase]
+    const base = this.ataque
     h.mirarA(e.x, e.y)
     this.atqCd = 1 / this.stats.ataquesPorSeg
-    const sonido = this.clase === 'amazona' ? 'arco' : this.clase === 'paladin' ? 'espadazo' : 'magia'
-    h.accion(base.animAtaque, {
+    const sonido = base.sonido
+    const mult = base.danoPct / 100
+    h.accion(base.anim, {
       fraccion: GOLPE_EN.heroe,
       interrumpible: true,
       enGolpe: () => {
         this.d.sonido.efecto(sonido, { volumen: 0.5, rate: 0.9 + juego().next() * 0.2 })
         if (!e.vivo) return
         if (base.proyectil) {
-          this.disparar(base.proyectil, base.impacto ?? undefined, this.anguloHacia(e), 1)
+          this.disparar(base.proyectil, base.impacto ?? undefined, this.anguloHacia(e), mult)
         } else if (Math.hypot(e.x - h.x, e.y - h.y) <= this.stats.alcance + 22) {
-          this.golpear(e, 1)
+          this.golpear(e, mult)
           if (base.impacto) this.d.proyectiles.fxEn(base.impacto, e.x, e.y - 14)
         } else {
           // el blanco se fue: el golpe cae en el aire delante de ella
@@ -764,6 +771,7 @@ export class Combate {
       invulnerable: this.invulnerableS > 0,
       modoPeque: this.modoPeque,
       avisoMult: this.modoPeque ? MODO_PEQUE.avisos : 1,
+      ataque: this.ataque ? { familia: this.ataque.familia, anim: this.ataque.anim, proyectil: this.ataque.proyectil, danoPct: this.ataque.danoPct } : null,
       danoMin: this.stats.danoMin,
       danoMax: this.stats.danoMax,
       cinturon: [...p.cinturon],

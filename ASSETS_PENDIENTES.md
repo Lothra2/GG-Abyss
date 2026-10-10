@@ -40,19 +40,16 @@ Ya entregado por el taller (ver abajo): el puente de piedra, las losas del vado,
 | Audio | — | — | — | `musica_jefe_campana`, `musica_forja`, `ambiente_agua_negra`, `fuelle`, `campana`, `brasa_recoger`, `raices` | la campana suena con `bloqueo` grave, la brasa con `legendario`, las raíces con `romper`; en la arena suena `musica_jefe` |
 | Mundo 3 | — | — | — | lo que hay más abajo del campanario | el portal rojo lleva a Continuará |
 
----|---|---|---|---|
-| `puente_piedra` | 128 x 48 | 1 | capa suelo, se camina | la nave inundada |
-| `forja` | 160 x 128 | apagada 1, 1 a 3 brasas 1 cada una, encendida 8 a 10 fps | apoyo [80, 120], sólido 120 x 20 | el centro del mundo |
-| `brasa` | 32 x 32 | 8 a 10 fps | haz ámbar | las tres brasas que se recogen |
-| `campana` | 96 x 128 | quieta 1, sonar 6 a 12 fps | capa alta | la arena del jefe |
-| `puerta_atajo` | 64 x 64 | cerrada 1, abrir 6 a 10 fps | sólida cerrada | el atajo de los claustros |
-| Vigía de las raíces | celda 48, pivote [24, 46] | idle, walk, cast 6 a 12, hit, die, 8 direcciones | radio 8 | a distancia, proyectil violeta `proyectil_raiz_*` 4 cuadros |
-| Raicita | celda 32, pivote [16, 30] | idle 4, run 6 a 12, attack 4 a 12, hit, die | radio 6 | pequeña, se distrae con Thor |
-| Guardián de la Campana | celda 96, pivote [48, 93] | idle, walk, attack_heavy 7 a 12, golpe_campana 8 a 10, llamar_raices 8 a 10, hit, die, liberado | radio 30 | jefe |
-| `aviso_onda` y `aviso_raiz` | 192 x 192 y 48 x 48, 8 cuadros | — | capa suelo | patrones del jefe |
-| Audio | — | — | — | `musica_jefe_campana`, `musica_forja`, `ambiente_agua_negra`, `fuelle`, `campana`, `brasa_recoger`, `raices` |
+### 31. Equipo visible: lo que todavía no se dibuja
 
-- **Mientras tanto:** la nave y el atajo están cerrados con `raices_cortina`, y la Catedral no tiene jefe todavía (el chip del objetivo no lo pide).
+Las capas de equipo ya salen de PixelForja (arma por tipo, mano libre, pecho por línea y nivel, casco). Falta:
+
+| Recurso | Tamaño | Cuadros y tiempos | Uso | Mientras tanto |
+|---|---|---|---|---|
+| Colores de rareza en el arma de la mano | las capas `arma` de cada heroína, celda 48 | las 21 animaciones | un arma legendaria, de set o única se ve con sus colores (`mainLoot`) | se ve el arma de su tipo con los colores de siempre |
+| Hombreras, guantes y botas | capas nuevas `hombros`, `manos`, `pies`, celda 48 | las 21 animaciones | que se noten en la heroína | dan stats y no se dibujan (a 48 px casi no se leen) |
+| Mano libre `escudo_heater` y `cabeza_reducida` | capas `mano` | las 21 animaciones | hoy usan el dibujo de `shield` y `orb` | se ven como escudo y orbe comunes |
+| Voz o sonido del mercader | `audio/mercader_hola.wav`, 0.6 s | — | cuando saluda a la heroína | saluda solo con el gesto |
 
 ---
 

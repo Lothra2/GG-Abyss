@@ -1,3 +1,5 @@
+import { FAMILIA_DE_ARMA } from '../config/balance'
+import { NOMBRE_FAMILIA } from './armas'
 /** El catálogo de objetos del kit (`botin/catalogo.json`), leído tal cual. Sin Phaser. */
 
 export type Rareza = 'normal' | 'magic' | 'rare' | 'set' | 'unique' | 'legendary'
@@ -25,6 +27,8 @@ export interface ItemCat {
   animated: boolean
   set?: string
   twoHanded?: boolean
+  /** la capa de equipo que se ve puesta (sale de PixelForja) */
+  visual?: { capa: 'pecho' | 'casco' | 'arma' | 'mano'; clave: string }
 }
 
 export interface BonoSet {
@@ -102,6 +106,11 @@ export function colorDeRareza(cat: Catalogo, r: string): string {
 /** El texto que se muestra: el del kit y, si no trae, el daño o la defensa */
 export function lineasDeStats(i: ItemCat): string[] {
   const out: string[] = []
+  // un arma dice cómo se ataca con ella (el ataque básico sale del arma)
+  if (i.base.cat === 'weapon') {
+    const f = FAMILIA_DE_ARMA[i.base.icon ?? '']
+    if (f) out.push(NOMBRE_FAMILIA[f])
+  }
   if (i.stats.damage) out.push(`Daño ${i.stats.damage[0]}-${i.stats.damage[1]}`)
   if (i.stats.defense) out.push(`Defensa ${i.stats.defense}`)
   out.push(...(i.text?.es ?? []))

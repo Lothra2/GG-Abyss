@@ -2,6 +2,8 @@
 export const K = {
   ui: (n: string) => `ui_${n}`,
   pers: (id: string, anim: string) => `p_${id}_${anim}`,
+  /** una capa de equipo de una heroína */
+  capa: (id: string, tipo: string, clave: string) => `capa_${id}_${tipo}_${clave}`,
   retrato: (id: string) => `retrato_${id}`,
   fx: (n: string) => `fx_${n}`,
   obj: (n: string, anim: string) => `o_${n}_${anim}`,

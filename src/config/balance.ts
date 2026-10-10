@@ -23,6 +23,32 @@ export interface ClaseBalance {
   armaPersonal: string
 }
 
+/**
+ * El ataque básico sale del arma que lleva puesta (sin arma, el de su clase). Cinco familias: tajo (espadas, hachas,
+ * mazas), pesado (mandobles, martillos: más lento y pega más), estocada (lanzas: llega más lejos), flecha (arcos) y
+ * hechizo (varitas, báculos, cetros). Las habilidades siguen siendo de la clase.
+ */
+export type FamiliaAtaque = 'tajo' | 'pesado' | 'estocada' | 'flecha' | 'hechizo'
+
+export const ATAQUES: Record<FamiliaAtaque, { anim: string; alcance: number; ritmo: number; danoPct: number; proyectil: string | null; impacto: string | null; sonido: string }> = {
+  tajo: { anim: 'attack', alcance: 44, ritmo: 1, danoPct: 100, proyectil: null, impacto: 'tajo', sonido: 'espadazo' },
+  pesado: { anim: 'attack_heavy', alcance: 50, ritmo: 0.75, danoPct: 140, proyectil: null, impacto: 'tajo', sonido: 'espadazo' },
+  estocada: { anim: 'attack_thrust', alcance: 62, ritmo: 0.95, danoPct: 100, proyectil: null, impacto: 'tajo', sonido: 'espadazo' },
+  flecha: { anim: 'shoot_bow', alcance: 220, ritmo: 1, danoPct: 100, proyectil: 'proyectil_flecha', impacto: 'impacto_flecha', sonido: 'arco' },
+  // el hechizo toma el elemento de su clase si es de magia (druida naturaleza, hechicera fuego); si no, arcano
+  hechizo: { anim: 'cast', alcance: 200, ritmo: 0.95, danoPct: 100, proyectil: 'proyectil_arcano', impacto: 'impacto_arcano', sonido: 'magia' },
+}
+
+/** La familia de cada arma del catálogo, por su ícono base */
+export const FAMILIA_DE_ARMA: Record<string, FamiliaAtaque> = {
+  sword: 'tajo', scimitar: 'tajo', katana: 'tajo', rapier: 'estocada', dagger: 'tajo', kris: 'tajo', axe: 'tajo', hatchet: 'tajo', mace: 'tajo',
+  morning_star: 'tajo', flail: 'tajo', club: 'tajo', claw: 'tajo', warhammer: 'pesado', greatsword: 'pesado', greataxe: 'pesado', maul: 'pesado', scythe: 'pesado',
+  spear: 'estocada', halberd: 'estocada', javelin: 'estocada', bow: 'flecha', longbow: 'flecha', crossbow: 'flecha', wand: 'hechizo', staff: 'hechizo', scepter: 'hechizo',
+}
+
+/** La familia de cada clase sin arma puesta */
+export const FAMILIA_DE_CLASE: Record<ClaseId, FamiliaAtaque> = { amazona: 'flecha', druida: 'hechizo', paladin: 'tajo', hechicera: 'hechizo' }
+
 export const CLASES: Record<ClaseId, ClaseBalance> = {
   amazona: { vida: 60, mana: 30, dano: [4, 7], alcance: 220, ataquesPorSeg: 1.0, animAtaque: 'shoot_bow', proyectil: 'proyectil_flecha', impacto: 'impacto_flecha', armaPersonal: 'arco_de_sophie' },
   druida: { vida: 55, mana: 50, dano: [3, 6], alcance: 200, ataquesPorSeg: 1.0, animAtaque: 'cast', proyectil: 'proyectil_naturaleza', impacto: 'impacto_naturaleza', armaPersonal: 'varita_de_alana' },

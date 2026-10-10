@@ -3,9 +3,10 @@ import { K } from '../kit/claves'
 import { validarManifest, KitError, MENSAJE_KIT_FALTANTE, heroes } from '../kit/manifest'
 import {
   encolarAtmosfera, encolarAudio, encolarBotin, encolarCreditos, encolarFuentes, encolarFx, encolarMapa, encolarObjetosMundo, encolarParticulas,
-  encolarPersonaje, encolarPostales, encolarUi, rutaKit,
+  encolarCapas, encolarPersonaje, encolarPostales, encolarUi, rutaKit,
 } from '../kit/cargador'
 import { crearAnimFx, crearAnimsPersonaje } from '../kit/anims'
+import { aspectoDefecto } from '../logic/aspecto'
 import { parsearMapa } from '../kit/mapa'
 import { manifestDe } from '../kit/contexto'
 import type { Manifest } from '../kit/tipos'
@@ -86,6 +87,8 @@ export class Boot extends Phaser.Scene {
     // paso 2: el grupo `inicio`
     encolarUi(this, m)
     for (const id of heroes(m)) encolarPersonaje(this, m, id, ['idle', 'walk', 'run'])
+    // el arma y la mano libre de su clase (capas de equipo), para verlas armadas en la selección
+    for (const id of heroes(m)) encolarCapas(this, m, id, aspectoDefecto(m.personajes[id]?.capas))
     encolarPersonaje(this, m, 'thor', ['idle', 'walk', 'run', 'sit', 'wag'])
     // el título y la selección: el mapa (para las luces), la postal de la arena, la bruma, brasas y el aura de la elección
     encolarMapa(this, m)

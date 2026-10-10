@@ -6,7 +6,9 @@ import { existeMundo, idMundo, manifestParaMundo, MUNDO_BOSQUE } from '../kit/mu
 import { Mecanismos, OBJETOS_MECANISMOS } from '../game/Mecanismos'
 import { ID_MERCADER, Mercader } from '../game/Mercader'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
-import { encolarAudio, encolarBotin, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
+import { encolarAudio, encolarBotin, encolarCapas, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
+import { aspectoDe, claveAspecto } from '../logic/aspecto'
+import { familiaDeArma, NOMBRE_FAMILIA } from '../logic/armas'
 import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
@@ -18,7 +20,7 @@ import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
 import { fx, juego } from '../logic/azar'
 import { statsDe } from '../logic/stats'
-import { leerCatalogo, type Catalogo } from '../logic/catalogo'
+import { itemDe, leerCatalogo, type Catalogo } from '../logic/catalogo'
 import { tirarBotin, type Fuente, type Premio } from '../logic/botin'
 import { equipar as equiparInv, desequipar as desequiparInv, moverEnBolsa, normalizar, recoger as recogerInv, sacar as sacarInv, type Inv, type OrigenInv } from '../logic/inventario'
 import { nivelArmaduraThor } from '../logic/equipo'
@@ -73,7 +75,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual', 'mecanismos', 'darBrasas', 'mercader',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual', 'mecanismos', 'darBrasas', 'mercader', 'aspecto',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -120,6 +122,8 @@ export class Mundo extends Phaser.Scene {
   /** F8: las brasas de la forja y lo que abren (solo en la Catedral) */
   mecanismos: Mecanismos | null = null
   mercader!: Mercader
+  /** lo que se ve puesto ahora (para no rehacer las capas si no cambió) */
+  private aspectoPuesto = ''
   /** la tienda mientras dura este mundo: lo que ya se compró del surtido y lo vendido (se puede recomprar) */
   tiendaSesion: { comprados: string[]; recompra: { id: string; precio: number }[] } = { comprados: [], recompra: [] }
   private destinoBrasa: { firma: string; p: { x: number; y: number } | null } = { firma: '', p: null }
@@ -262,6 +266,9 @@ export class Mundo extends Phaser.Scene {
     for (const t of new Set(mapa.entidades.filter((e) => e.tipo === 'enemigo' || e.tipo === 'jefe').map((e) => String(e.props.enemigo ?? '')))) encolarPersonaje(this, this.m, t)
     // el mercader de las fogatas (si el kit lo trae)
     if (this.m.personajes[ID_MERCADER]) encolarPersonaje(this, this.m, ID_MERCADER)
+    // lo que la heroína lleva puesto (capas de equipo de PixelForja): se ve desde el primer cuadro
+    const idHeroe = this.registry.get('heroeId') as string
+    if (this.partida && this.cache.json.exists(K.catalogo)) encolarCapas(this, this.m, idHeroe, aspectoDe(this.partida.equipo, leerCatalogo(this.cache.json.get(K.catalogo)), this.m.personajes[idHeroe]?.capas))
     encolarFx(this, this.m, fxDeCombate(this.m.direcciones))
     if (this.load.list.size === 0) return this.armar()
     this.load.once(Phaser.Loader.Events.COMPLETE, () => this.armar())
@@ -277,6 +284,7 @@ export class Mundo extends Phaser.Scene {
     this.partida = (this.registry.get('partida') as Partida | undefined) ?? cargarOCrear(this.alm, id).partida
     this.registry.set('partida', this.partida)
     this.cat = leerCatalogo(this.cache.json.get(K.catalogo))
+    this.aspectoPuesto = ''
     normalizar(this.inv())
     this.descub = { zonas: this.partida.zonas, secretos: this.partida.secretos }
     this.tJugado = this.partida.tiempoJugado ?? 0
@@ -412,11 +420,13 @@ export class Mundo extends Phaser.Scene {
       recoger: (id) => {
         // el veredicto se calcula antes de guardarlo (contra lo que tenía puesto), y el hueco donde cae en la bolsa
         const v = veredicto(this.cat, this.partida.equipo, id, this.combate.clase)
+        const fam = familiaDeArma(itemDe(this.cat, id))
+        const ataqueNuevo = fam && fam !== this.combate.ataque.familia ? NOMBRE_FAMILIA[fam] : undefined
         const hueco = this.partida.bolsa.indexOf(null)
         const r = recogerInv(this.inv(), this.cat, id)
         if (r.ok) {
           this.alCambioInventario()
-          if (v && r.donde === 'bolsa') this.game.events.emit('botin-recogido', { id, indice: hueco, veredicto: v })
+          if (v && r.donde === 'bolsa') this.game.events.emit('botin-recogido', { id, indice: hueco, veredicto: v, ataqueNuevo })
         }
         return r
       },
@@ -891,10 +901,31 @@ export class Mundo extends Phaser.Scene {
   /** Se equipó, se sacó o se recogió algo: stats, armadura de Thor y velocidad se ponen al día */
   alCambioInventario(guardar = true): void {
     this.combate.refrescarStats()
+    this.actualizarAspecto()
     this.thor.ponerArmadura(nivelArmaduraThor(this.cat, this.partida.equipo))
     this.heroina.velMult = 1 + this.combate.stats.velocidadPct / 100
     this.botin?.refrescarMarcas()
     if (guardar) this.guardar()
+  }
+
+  /**
+   * Lo que se ve puesto en la heroína. Si una capa todavía no está cargada, se pide al kit y se pone al llegar
+   * (mientras tanto se ve lo que ya había).
+   */
+  private actualizarAspecto(): void {
+    const h = this.heroina
+    if (!h) return
+    const lista = aspectoDe(this.partida.equipo, this.cat, this.m.personajes[h.id]?.capas)
+    const clave = claveAspecto(lista)
+    if (clave === this.aspectoPuesto) return
+    const faltan = h.capas.poner(lista)
+    this.aspectoPuesto = faltan.length ? '' : clave
+    if (!faltan.length) return
+    if (encolarCapas(this, this.m, h.id, faltan) === 0) return
+    this.load.once(Phaser.Loader.Events.COMPLETE, () => {
+      if (h.sprite.active) this.actualizarAspecto()
+    })
+    this.load.start()
   }
 
   /** El inventario con su tecla (I) o su botón: el mundo se pausa y se abre la escena Inventario */
@@ -1761,6 +1792,7 @@ export class Mundo extends Phaser.Scene {
       proyectilesActivos: () => this.proyectiles.cantidad,
       objetivos: () => [...this.entidades.objetivos(), ...this.mercader.objetivos()],
       mercader: () => this.mercader.info(),
+      aspecto: () => ({ capas: this.heroina.capas.info(), clave: this.aspectoPuesto, base: this.heroina.sprite.texture.key, cuadro: Number(this.heroina.sprite.frame.name) }),
       usarObjetivo: ((llave: string) => {
         const o = [...this.entidades.objetivos(), ...this.mercader.objetivos()].find((q) => q.llave === llave)
         if (o) this.irAUsar(o)

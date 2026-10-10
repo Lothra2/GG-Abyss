@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import type { Manifest } from './tipos'
+import type { Manifest, TipoCapa } from './tipos'
 import { K } from './claves'
 import { fuentesDe, iconosCartel, iconosHabilidad, uiImagenes } from './manifest'
 import { RUTA_KIT } from '../config/juego'
@@ -48,6 +48,20 @@ export function encolarPersonaje(e: Escena, m: Manifest, id: string, anims?: str
     e.load.spritesheet(key, rutaKit(a.archivo), { frameWidth: p.celda, frameHeight: p.celda })
   }
   if (p.retrato && !yaHay(e, K.retrato(id))) e.load.image(K.retrato(id), rutaKit(p.retrato))
+}
+
+/** Las capas de equipo que una heroína tiene puestas (arma, mano libre, pecho, casco) */
+export function encolarCapas(e: Escena, m: Manifest, id: string, lista: readonly { tipo: TipoCapa; clave: string }[]): number {
+  const p = m.personajes[id]
+  let n = 0
+  for (const c of lista) {
+    const h = p?.capas?.[c.tipo]?.[c.clave]
+    const key = K.capa(id, c.tipo, c.clave)
+    if (!h || yaHay(e, key)) continue
+    e.load.spritesheet(key, rutaKit(h.archivo), { frameWidth: p!.celda, frameHeight: p!.celda })
+    n++
+  }
+  return n
 }
 
 export function encolarFx(e: Escena, m: Manifest, nombres?: string[]): void {

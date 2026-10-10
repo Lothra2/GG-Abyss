@@ -8,6 +8,7 @@ import { DIRECCIONES, indiceDireccion } from '../logic/direccion'
 import { COMBATE } from '../config/balance'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
+import { CapasSprite } from './Capas'
 
 export type EstadoHeroina = 'idle' | 'walk' | 'run'
 
@@ -36,6 +37,8 @@ export interface EventosHeroina {
 export class Heroina {
   readonly sprite: Phaser.GameObjects.Sprite
   readonly sombra: Sombra
+  /** el equipo que se ve puesto (capas de PixelForja encima de la hoja base) */
+  readonly capas: CapasSprite
   readonly personaje: Personaje
   x: number
   y: number
@@ -76,6 +79,7 @@ export class Heroina {
     const p = this.personaje
     this.sprite = escena.add.sprite(x, y, K.pers(id, 'idle'), 0).setOrigin(p.pivote[0] / p.celda, p.pivote[1] / p.celda)
     this.sombra = new Sombra(escena, 22)
+    this.capas = new CapasSprite(escena, m, id, this.sprite)
     this.sprite.on(Phaser.Animations.Events.ANIMATION_UPDATE, (_a: unknown, frame: Phaser.Animations.AnimationFrame) => {
       if (this.estado === 'idle') return
       // los pies tocan en los cuadros 1 y 5 de 8
@@ -324,6 +328,7 @@ export class Heroina {
   }
 
   destroy(): void {
+    this.capas.destruir()
     this.sprite.destroy()
     this.sombra.destroy()
   }

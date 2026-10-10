@@ -25,6 +25,27 @@ export interface Personaje {
   pivote: [number, number]
   desde_estudio?: boolean
   anims: Record<string, AnimHoja>
+  /** capas de equipo (heroínas): la hoja base va sin arma ni mano libre */
+  capas?: CapasPersonaje
+}
+
+export type TipoCapa = 'pecho' | 'casco' | 'arma' | 'mano'
+
+/** Una capa: una hoja con un bloque por animación (8 filas, una por dirección, y una columna por cuadro) */
+export interface CapaHoja {
+  archivo: string
+  columnas: number
+  bloques: Record<string, { x: number; y: number; cuadros: number }>
+}
+
+export interface CapasPersonaje {
+  orden: TipoCapa[]
+  /** lo que lleva sin nada puesto (el arma y la mano libre de su clase) */
+  defecto: { arma: string | null; mano: string | null }
+  arma: Record<string, CapaHoja>
+  mano: Record<string, CapaHoja>
+  pecho: Record<string, CapaHoja>
+  casco: Record<string, CapaHoja>
 }
 
 export interface AtlasRutas {
