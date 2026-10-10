@@ -797,6 +797,13 @@ Debajo del bosque, una catedral atravesada por raíces. La familia baja para rec
 - Entidades nuevas: `brasa`, `pedestal`, `puerta_atajo` (se abre desde un lado), `agua_peligro` (caer lleva a la orilla).
 - La IA de la raicita y el jefe nuevo, con su máquina de estados pura y con tests, como la del minotauro.
 
+**Estado de la rebanada (hecha).**
+
+- Taller: el pintor acepta paleta y un modo interior (`rooms`: todo es muro y las salas se tallan, el muro de arriba de cada sala muestra su cara) y losas de obra (`slabs`). El Bosque sale idéntico, verificado regenerando el kit sin diferencias.
+- Mapa de 80 x 64 con la geometría de las seis salas. Pobladas: escalera hundida (descanso alto con el portal azul, escalones, haz de luz), atrio (brasero de cobre que es fogata y tienda, pedestal con las tres brasas vacías, agua quieta, cofre, columnas con musgo turquesa que brilla) y la entrada de los claustros (arco roto, el guardián de cobre y un cofre reforzado). La nave y el atajo a la forja quedan cerrados con raíces.
+- Hechos del taller: `columna_raiz` 48 x 112 y `columna_rota` 48 x 72 (apoyo [24, alto-4], sólido 20 x 6, luz turquesa), `arco_roto` 128 x 128 (dos patas sólidas), `brasero_cobre` 32 x 48 (6 cuadros a 8 fps, luz ámbar 200) y `brasero_apagado`, `pedestal_brasas_0` a `_3` 48 x 40, `raices_muro` 96 x 64 (4 cuadros, capa suelo), `raices_cortina` 64 x 96 (sólida), `escombros` 64 x 48, `haz_luz` 96 x 160 (4 cuadros, capa suelo), `luciernaga_turquesa`, el Guardián de cobre (celda 64, pivote [32, 62], idle, walk, attack, attack_heavy, warcry, hit, die en 8 direcciones), `musica_catedral` y `ambiente_catedral`.
+- Juego: `manifest.mundos`, guardado por mundo con migración, el portal del jefe baja (escena Bajada) y el portal azul sube, el golpe pesado del guardián sin ser élite, partículas que no flotan sobre los muros de un interior.
+
 **Orden.** Este es el orden de entrega, no el definitivo, y cada tramo se valida antes de seguir.
 
 1. Rebanada: escalera, atrio y un encuentro con un guardián de cobre. Se valida escala, profundidad, controles y atmósfera.

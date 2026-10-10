@@ -40,6 +40,8 @@ test.describe('Álbum de postales', () => {
     const a0 = await abrir(page)
     const falta = a0.figuritas.find((f) => !f.desbloqueada)!
     await gancho(page, 'cerrarAlbum')
+    // Phaser cierra la escena en el cuadro siguiente: se espera, si no se vuelve a leer el álbum viejo
+    await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Album'), { timeout: 10_000 }).toBe(false)
     // ir a esa postal descubre su zona
     await gancho(page, 'irAPostal', falta.postal)
     await gancho(page, 'avanzar', 1)

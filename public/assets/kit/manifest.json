@@ -1334,6 +1334,106 @@
     }
    }
   },
+  "raicita": {
+   "tipo": "enemigo",
+   "nombre": "raicita",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/raicita_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/raicita_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "run": {
+     "archivo": "enemigos/raicita_run.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "attack": {
+     "archivo": "enemigos/raicita_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "dodge": {
+     "archivo": "enemigos/raicita_dodge.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "enemigos/raicita_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/raicita_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    }
+   }
+  },
+  "vigia_raices": {
+   "tipo": "enemigo",
+   "nombre": "vigia_raices",
+   "celda": 48,
+   "pivote": [
+    24,
+    46
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/vigia_raices_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/vigia_raices_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "attack": {
+     "archivo": "enemigos/vigia_raices_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "enemigos/vigia_raices_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/vigia_raices_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    },
+    "cast": {
+     "archivo": "enemigos/vigia_raices_cast.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    }
+   }
+  },
   "minotauro": {
    "tipo": "jefe",
    "nombre": "minotauro",
@@ -7224,7 +7324,9 @@
    "postales": {
     "escalera_hundida": "mundo/postales/escalera_hundida.png",
     "atrio_luciernagas": "mundo/postales/atrio_luciernagas.png",
-    "claustros_quebrados": "mundo/postales/claustros_quebrados.png"
+    "claustros_quebrados": "mundo/postales/claustros_quebrados.png",
+    "capilla_escondida": "mundo/postales/capilla_escondida.png",
+    "nave_inundada": "mundo/postales/nave_inundada.png"
    },
    "objetos": {
     "columna_raiz": {
@@ -7552,6 +7654,60 @@
        "archivo": "mundo/objetos/haz_luz_idle.png",
        "cuadros": 4,
        "fps": 3,
+       "loop": true
+      }
+     }
+    },
+    "puente_piedra": {
+     "w": 48,
+     "h": 160,
+     "apoyo": [
+      24,
+      80
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/puente_piedra_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "losa_hundida_0": {
+     "w": 32,
+     "h": 24,
+     "apoyo": [
+      16,
+      14
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/losa_hundida_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "losa_hundida_1": {
+     "w": 32,
+     "h": 24,
+     "apoyo": [
+      16,
+      14
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/losa_hundida_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
        "loop": true
       }
      }

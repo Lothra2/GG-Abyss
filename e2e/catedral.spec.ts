@@ -4,8 +4,8 @@ import { abrirMundo, esperarEscena, gancho, puntoPropioDeZona, sinErrores, vigil
 // F8, la rebanada del Mundo 2: la Catedral de las Raíces. La escalera hundida, el atrio de las luciérnagas y la entrada
 // de los claustros con el primer guardián de cobre.
 
-interface Mundo { id: string; nombre: string; partida: string; otros: string[]; zonas: string[]; jefe: boolean; portalVolver: { x: number; y: number } | null }
-interface En { id: number; tipo: string; x: number; y: number; vida: number; vivo: boolean; estado: string }
+interface Mundo { id: string; nombre: string; partida: string; otros: string[]; zonas: string[]; jefe: boolean; portalVolver: { x: number; y: number } | null; peligroAgua: { x: number; y: number }[]; caidasAgua: number }
+interface En { id: number; tipo: string; x: number; y: number; vida: number; vivo: boolean; estado: string; distraida?: boolean }
 
 const mundo = (p: Page) => gancho<Mundo>(p, 'mundoActual')
 const info = (p: Page) => gancho<MapaInfo>(p, 'mapa')
@@ -52,15 +52,26 @@ test.describe('La Catedral de las Raíces', () => {
     const ini = await pos(page)
     const usables = await gancho<{ tipo: string; x: number; y: number }[]>(page, 'objetivos')
     for (const z of mapa.zonas) {
-      let objetivo = puntoPropioDeZona(mapa, z.nombre)
-      // tocar al lado del brasero lo usa (abre la tienda) en vez de caminar: el punto se corre
-      if (usables.some((o) => Math.hypot(o.x - objetivo.x, o.y - objetivo.y) < 120)) objetivo = { x: objetivo.x - 200, y: objetivo.y + 40 }
+      // tocar al lado de algo que se usa (brasero, cofre) lo usa en vez de caminar: se busca un punto libre de eso
+      const base = puntoPropioDeZona(mapa, z.nombre)
+      const zr = mapa.zonas.find((q) => q.nombre === z.nombre)!
+      const candidatos = [[0, 0], [0, 64], [64, 0], [-64, 0], [0, -64], [-200, 40], [96, 96], [-96, 96], [0, -160], [0, 160]].map(([dx, dy]) => ({ x: base.x + dx!, y: base.y + dy! }))
+      let objetivo = base
+      for (const c of candidatos) {
+        if (c.x < zr.x + 16 || c.y < zr.y + 16 || c.x > zr.x + zr.w - 16 || c.y > zr.y + zr.h - 16) continue
+        // ni al lado de algo que se usa ni en el agua (en la nave el centro es el río)
+        if (usables.some((o) => Math.hypot(o.x - c.x, o.y - c.y) < 80)) continue
+        if ((await gancho<string | null>(page, 'superficieEn', c.x, c.y)) === 'agua') continue
+        objetivo = c
+        break
+      }
       const meta = (await gancho<{ x: number; y: number } | null>(page, 'puntoCerca', objetivo.x, objetivo.y)) ?? objetivo
       await gancho(page, 'curarTodo')
       await gancho(page, 'tocar', meta.x, meta.y)
       await avanzar(page, 90, true)
       const p = await pos(page)
-      expect(Math.hypot(p.x - meta.x, p.y - meta.y), `no llegó a ${z.nombre}`).toBeLessThan(12)
+      // en las orillas angostas de la nave el destino exacto puede no caberle: llega al centro del cuadro firme de al lado
+      expect(Math.hypot(p.x - meta.x, p.y - meta.y), `no llegó a ${z.nombre}`).toBeLessThan(20)
       expect(await gancho<string | null>(page, 'zona')).toBe(z.nombre)
     }
     // bajó: el atrio está más abajo que la llegada
@@ -110,5 +121,71 @@ test.describe('La Catedral de las Raíces', () => {
     // avisa más que el trol (1.2 s): hay tiempo para mirarlo
     expect(tAviso).toBeGreaterThan(1.2)
     expect((await gancho<{ vida: number }>(page, 'combate')).vida).toBeGreaterThan(vida0 - 9)
+  })
+
+  test('el vado de la nave: salirse de las losas es caer al agua y vuelve a la losa sin perder vida; tocar la otra orilla no la manda por el agua', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await bajarALaCatedral(page, 'alana')
+    await gancho(page, 'matarEnemigos')
+    const m = await mundo(page)
+    expect(m.peligroAgua.length).toBeGreaterThanOrEqual(6)
+    // las losas están en la columna del medio entre el agua de los dos lados
+    const xs = [...new Set(m.peligroAgua.map((p) => p.x))].sort((a, b) => a - b)
+    const losaX = (xs[0]! + xs[xs.length - 1]!) / 2
+    const ys = m.peligroAgua.map((p) => p.y)
+    const arriba = Math.min(...ys) - 32
+    const abajo = Math.max(...ys) + 32
+    // tocar la orilla de enfrente: cruza por las losas sin caerse
+    await gancho(page, 'ponerHeroina', losaX, arriba)
+    await avanzar(page, 0.2)
+    await gancho(page, 'tocar', losaX, abajo + 20)
+    await avanzar(page, 8, true)
+    expect((await mundo(page)).caidasAgua).toBe(0)
+    expect((await pos(page)).y).toBeGreaterThan(abajo - 8)
+    // a mano, con el teclado, salirse de la losa hacia el agua
+    await gancho(page, 'ponerHeroina', losaX, (arriba + abajo) / 2)
+    await avanzar(page, 0.2)
+    const vida0 = (await gancho<{ vida: number }>(page, 'combate')).vida
+    await gancho(page, 'tecla', 1, 0)
+    await avanzar(page, 0.6)
+    await gancho(page, 'tecla', 0, 0)
+    await avanzar(page, 1.2)
+    expect((await mundo(page)).caidasAgua).toBe(1)
+    const p = await pos(page)
+    expect(Math.abs(p.x - losaX)).toBeLessThan(20)
+    expect((await gancho<{ vida: number }>(page, 'combate')).vida).toBe(vida0)
+    await sinErrores(errores)
+  })
+
+  test('la raicita persigue a Thor si anda cerca y a la heroína no le pega', async ({ page }) => {
+    await bajarALaCatedral(page, 'sophie')
+    const r = (await gancho<En[]>(page, 'enemigos')).find((e) => e.tipo === 'raicita')!
+    expect(r).toBeTruthy()
+    // la heroína a un costado y Thor justo al lado de la raicita
+    await gancho(page, 'teleport', r.x - 120, r.y)
+    await gancho(page, 'curarTodo')
+    const vida0 = (await gancho<{ vida: number }>(page, 'combate')).vida
+    let distraida = false
+    for (let i = 0; i < 40 && !distraida; i++) {
+      await page.evaluate(([x, y]) => (window as unknown as { __JUEGO__: { scene: { getScene: (k: string) => { thor: { teleport: (a: number, b: number) => void } } } } }).__JUEGO__.scene.getScene('Mundo').thor.teleport(x!, y!), [r.x + 20, r.y + 4] as const)
+      await avanzar(page, 0.1)
+      distraida = !!(await gancho<En[]>(page, 'enemigos')).find((e) => e.id === r.id)!.distraida
+    }
+    expect(distraida, 'la raicita se distrajo con Thor').toBe(true)
+    expect((await gancho<{ vida: number }>(page, 'combate')).vida).toBe(vida0)
+  })
+
+  test('el vigía de las raíces tira su bola violeta desde lejos', async ({ page }) => {
+    await bajarALaCatedral(page, 'rick')
+    const v = (await gancho<En[]>(page, 'enemigos')).find((e) => e.tipo === 'vigia_raices')!
+    expect(v).toBeTruthy()
+    await gancho(page, 'teleport', v.x - 170, v.y)
+    let tiro = false
+    for (let i = 0; i < 80 && !tiro; i++) {
+      await gancho(page, 'curarTodo')
+      await avanzar(page, 0.1)
+      tiro = (await gancho<number>(page, 'proyectilesActivos')) > 0
+    }
+    expect(tiro).toBe(true)
   })
 })

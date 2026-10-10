@@ -16,6 +16,8 @@ export class Grilla {
   private base: Uint8Array
   /** bloqueos temporales (la salida de la arena del jefe en F4): cuántas veces se bloqueó cada cuadro */
   private extra = new Map<number, number>()
+  /** F8: cuadros que se pueden pisar pero el camino automático no usa (el agua negra al lado del vado) */
+  private evitarSet = new Set<number>()
 
   constructor(mapa: Pick<MapaJuego, 'ancho' | 'alto' | 'cuadro' | 'colision'>) {
     this.ancho = mapa.ancho
@@ -44,6 +46,16 @@ export class Grilla {
     if (!this.dentro(tx, ty)) return true
     const i = this.idx(tx, ty)
     return this.base[i] !== 0 || (this.extra.get(i) ?? 0) > 0
+  }
+
+  /** Marca cuadros que el camino automático evita (se pueden pisar caminando a mano: ahí está el peligro) */
+  evitar(indices: Iterable<number>): void {
+    for (const i of indices) this.evitarSet.add(i)
+  }
+
+  /** Para el buscador de caminos: bloqueado o a evitar */
+  bloqueadoCamino(tx: number, ty: number): boolean {
+    return this.bloqueado(tx, ty) || this.evitarSet.has(this.idx(tx, ty))
   }
 
   caminable(tx: number, ty: number): boolean {
@@ -80,7 +92,7 @@ export class Grilla {
   }
 
   /** ¿Un círculo de radio r en (x, y) cabe sin tocar ningún cuadro bloqueado? */
-  circuloLibre(x: number, y: number, r: number): boolean {
+  circuloLibre(x: number, y: number, r: number, camino = false): boolean {
     const c = this.cuadro
     const tx0 = Math.floor((x - r) / c)
     const tx1 = Math.floor((x + r) / c)
@@ -89,7 +101,7 @@ export class Grilla {
     const r2 = r * r
     for (let ty = ty0; ty <= ty1; ty++) {
       for (let tx = tx0; tx <= tx1; tx++) {
-        if (!this.bloqueado(tx, ty)) continue
+        if (!(camino ? this.bloqueadoCamino(tx, ty) : this.bloqueado(tx, ty))) continue
         const nx = Math.max(tx * c, Math.min(x, tx * c + c))
         const ny = Math.max(ty * c, Math.min(y, ty * c + c))
         const dx = x - nx
@@ -101,21 +113,22 @@ export class Grilla {
   }
 
   /** ¿Se puede ir en línea recta de un punto al otro con un círculo de radio r? */
-  lineaLibre(x0: number, y0: number, x1: number, y1: number, r: number): boolean {
+  lineaLibre(x0: number, y0: number, x1: number, y1: number, r: number, camino = false): boolean {
     const dx = x1 - x0
     const dy = y1 - y0
     const largo = Math.hypot(dx, dy)
     const pasos = Math.max(1, Math.ceil(largo / 4))
     for (let i = 0; i <= pasos; i++) {
       const t = i / pasos
-      if (!this.circuloLibre(x0 + dx * t, y0 + dy * t, r)) return false
+      if (!this.circuloLibre(x0 + dx * t, y0 + dy * t, r, camino)) return false
     }
     return true
   }
 
   /** Cuadro caminable más cercano a (tx, ty) dentro de `radio` cuadros, buscando por anillos. null si no hay. */
-  cercanoCaminable(tx: number, ty: number, radio: number): { tx: number; ty: number } | null {
-    if (this.caminable(tx, ty)) return { tx, ty }
+  cercanoCaminable(tx: number, ty: number, radio: number, camino = false): { tx: number; ty: number } | null {
+    const libre = (x: number, y: number) => (camino ? !this.bloqueadoCamino(x, y) : this.caminable(x, y))
+    if (libre(tx, ty)) return { tx, ty }
     for (let d = 1; d <= radio; d++) {
       let mejor: { tx: number; ty: number } | null = null
       let mejorD = Infinity
@@ -124,7 +137,7 @@ export class Grilla {
           if (Math.max(Math.abs(dx), Math.abs(dy)) !== d) continue
           const x = tx + dx
           const y = ty + dy
-          if (!this.caminable(x, y)) continue
+          if (!libre(x, y)) continue
           const dd = dx * dx + dy * dy
           if (dd < mejorD) {
             mejorD = dd

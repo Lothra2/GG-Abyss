@@ -20,12 +20,16 @@ const CUERPO: Record<string, { alto: number; radio: number; sombra: number; barr
   calabaza: { alto: 24, radio: 12, sombra: 22, barra: 26 },
   goblin_arquero: { alto: 30, radio: 11, sombra: 20, barra: 26 },
   trol: { alto: 46, radio: 18, sombra: 40, barra: 40 },
+  raicita: { alto: 22, radio: 9, sombra: 16, barra: 20 },
+  vigia_raices: { alto: 30, radio: 10, sombra: 18, barra: 26 },
   guardian_cobre: { alto: 44, radio: 17, sombra: 36, barra: 40 },
 }
 const CUERPO_DEFECTO = { alto: 28, radio: 12, sombra: 22, barra: 26 }
 
 export interface ContextoEnemigos {
   heroe: { x: number; y: number; vivo: boolean }
+  /** F8: dónde anda Thor (la raicita lo persigue a él si está cerca) */
+  thor?: { x: number; y: number }
   modoPeque: boolean
   dt: number
 }
@@ -201,6 +205,9 @@ export class Enemigo implements Atacable {
     return false
   }
 
+  /** F8: la raicita está persiguiendo a Thor (a la heroína no le pega) */
+  distraida = false
+
   /** Preparando un golpe (para las pruebas: se ve el tinte que late) */
   get anticipando(): boolean {
     return this.anticipaS > 0
@@ -267,7 +274,13 @@ export class Enemigo implements Atacable {
     }
 
     const antes = { x: this.x, y: this.y }
-    const orden = pensar(this.ia, this.cfgIA, { dt, heroeX: ctx.heroe.x, heroeY: ctx.heroe.y, heroeVivo: ctx.heroe.vivo, modoPeque: ctx.modoPeque }, juego())
+    // la raicita se distrae con Thor: si él está cerca (y más cerca que la heroína), lo persigue a él
+    const t = ctx.thor
+    const dT = t ? Math.hypot(t.x - this.x, t.y - this.y) : Infinity
+    const dH = Math.hypot(ctx.heroe.x - this.x, ctx.heroe.y - this.y)
+    this.distraida = !!this.cfg.distraeThor && !!t && dT < this.cfg.distraeThor.radio && dT < dH + 30
+    const blanco = this.distraida && t ? t : ctx.heroe
+    const orden = pensar(this.ia, this.cfgIA, { dt, heroeX: blanco.x, heroeY: blanco.y, heroeVivo: ctx.heroe.vivo, modoPeque: ctx.modoPeque }, juego())
 
     if (orden.mirarA) this.dir = indiceDireccion(orden.mirarA.x - this.x, orden.mirarA.y - this.y)
     let mueve = false

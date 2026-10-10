@@ -8,7 +8,8 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 - F6 hecha: golpes con peso, tienda de la fogata, Thor olfatea, álbum de postales, flecha guía y el jefe más pro (PLAN.md F6). Postales en `docs/capturas/f6/`. Verificación: typecheck, 262 tests unitarios, build y e2e completo 124 pasaron y 2 se saltan a propósito.
 - Tarjeta del botín hecha: al recoger algo que se puede poner dice si es mejor o peor que lo puesto, las 3 diferencias que más pesan y el botón "Ponérmelo". Lo que es mejor se marca en el piso con una flechita verde.
 - F7 hecha (PLAN.md F7): anticipación del enemigo, fallos y esquivas visibles, destello y pausa de impacto con tope, efectos suaves, colchón de entrada de 150 ms, música por estados con histéresis, agua según la cercanía, demostraciones para Alana con Saltar, objetivo a la vista, medidor `?medir=1` e interruptor "Mejoras F7" en la pausa. Antes y después en `docs/capturas/f7/antes_despues.html`. Verificación: typecheck, 285 tests unitarios, build y e2e completo 131 pasaron y 2 se saltan a propósito, más combate (19) con el colchón en el build final.
-- En curso: F8 Mundo 2 (diseño en PLAN.md), primero la rebanada: escalera, atrio y un encuentro.
+- F8 rebanada hecha (PLAN.md F8, "Estado de la rebanada"): la Catedral de las Raíces se baja por el portal del jefe, se recorre la escalera hundida, el atrio de las luciérnagas y la entrada de los claustros con el guardián de cobre, y se vuelve al Bosque por el portal azul sin perder nada. Capturas en `docs/capturas/f8/`.
+- En curso: F8 completo (claustros con atajo y secreto, nave inundada, forja con las tres brasas, campanario y el Guardián de la Campana).
 - Verificación final tras F5: typecheck limpio, 236 tests unitarios, build (sw.js con 628 archivos) y e2e completo 112 pasaron y 2 se saltan a propósito (teclado y resize en tablet). Postales de F5 en `docs/capturas/f5/` y `docs/capturas/comparar.html`.
 - F1b hecha en código: Titulo (logo, Toca para empezar, botón Créditos), SeleccionJugador (tarjetas del manifest, aura y Thor), guardado con migración, Presentacion (paneo la primera vez), Entidades (cofres, carteles, fogatas, Abuelo), HUD (contadores, oro, pausa, panel de cartel), Pausa (Noche, Música, Efectos, calidad, modo peque, otra jugadora, créditos, seguir), Creditos (CREDITOS.txt con scroll)
 - F1a hecha: grilla, A*, movimiento, zonas, descubrimiento; MundoVista, Decos (pool por celdas, viento, hechizados, copas, pasto), Heroina, ThorSprite (sigue el rastro), Criaturas, Camara, Entrada (toque, mantener, teclado), Sonido; fx: Luces (RenderTexture con pozos), Bruma, Nubes, Particulas, AtmosferaFX (postFX soft light y viñeta), Atmosfera; escenas Mundo y HUD; postales en docs/capturas/f1a y comparar.html
@@ -126,6 +127,13 @@ npm run typecheck && npm test && npm run build && npm run e2e
 - Medir en la tablet: abrir el juego con `?medir=1`. Arriba a la derecha salen fps, frame p95, el peor frame, tirones y la respuesta al toque. Las cifras de las pruebas son del Chromium sin GPU del contenedor y no dicen cómo corre en el iPad.
 - Lo que falta de F7 y necesita al taller o a la familia: un sonido de madera para el puente (no hay en el kit) y la voz en español para Alana (grabaciones de la familia, el repo hoy es público).
 - Lo que vale la pena mirar con las niñas: si la manito se entiende sin explicarla, si "Explora 2/13" le dice algo a Alana o mejor solo el ícono, y si el colchón de 150 ms se siente o hace falta más.
+
+### F8 (la Catedral, rebanada)
+- `docs/capturas/f8/bajada.png`: el paso entre mundos. `escalera_hundida.png`, `atrio_luciernagas.png`, `claustros_quebrados.png` y `guardian_aviso.png`, cada una también en tablet. `atrio_calidad_baja.png`: en calidad baja se sigue leyendo el camino, el refugio y las columnas.
+- Probar: vencer al minotauro y entrar al portal. Arriba de la escalera está el portal azul para volver. El brasero del atrio es fogata y tienda.
+- El guardián de cobre enseña una cosa: cuando el anillo rojo se llena hay que salirse, y después del golpe queda clavado un segundo para pegarle.
+- Lo que vale la pena mirar con las niñas: si la catedral les da miedo o curiosidad (oscuridad por zona en el mapa del taller), si el guardián se entiende sin explicarlo, y si el portal azul de la escalera las saca sin querer.
+- Lo que falta de F8: claustros completos con el atajo y el secreto de Thor, la nave inundada con su peligro seguro, la forja y las tres brasas, la raicita y el vigía, el campanario y el Guardián de la Campana.
 
 ### Cascada
 - `docs/capturas/f5/cascada_y_vado.png` y `cascada_y_vado_tablet.png`: la cortina tapa justo la pared del acantilado y abajo hay espuma y estela.

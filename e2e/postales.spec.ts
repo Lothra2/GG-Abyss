@@ -132,7 +132,7 @@ test('captura el botín en el piso y el inventario', async ({ browser }) => {
 })
 
 /** F4: la pelea con un aviso en el piso, la victoria con el portal abierto y la pantalla de Continuará */
-test('captura la pelea, la victoria y Continuará', async ({ browser }) => {
+test('captura la pelea, la victoria y la bajada a la Catedral', async ({ browser }) => {
   test.setTimeout(400_000)
   mkdirSync(carpeta, { recursive: true })
   const vistas = [
@@ -160,10 +160,11 @@ test('captura la pelea, la victoria y Continuará', async ({ browser }) => {
     await gancho(page, 'danarJefe', 9999)
     await page.waitForTimeout(9000)
     await page.screenshot({ path: join(carpeta, `victoria${v.sufijo}.png`) })
+    // F8: el portal ya no lleva a Continuará, baja a la Catedral
     await gancho(page, 'irAlPortal')
-    await esperarEscena(page, 'Continuara')
-    await page.waitForTimeout(2500)
-    await page.screenshot({ path: join(carpeta, `continuara${v.sufijo}.png`) })
+    await esperarEscena(page, 'Bajada')
+    await page.waitForTimeout(700)
+    await page.screenshot({ path: join(carpeta, `bajada${v.sufijo}.png`) })
     await sinErrores(errores)
     await ctx.close()
   }

@@ -22,6 +22,29 @@ Cuando el taller entregue algo: `git submodule update --remote tools/pixel_forja
 - **Pedido:** `ui/icono_compartir.png` (24 x 24, el cuadrado con la flecha hacia arriba de Safari), `ui/icono_agregar_inicio.png` (24 x 24, un cuadrado con un +) y `ui/icono_pantalla_completa.png` (24 x 24, cuatro esquinas apuntando hacia afuera). Una sola imagen cada uno, sin animación.
 - **Mientras tanto:** el botón usa `icono_mapa` (pantalla completa) o `icono_guardado` (instalar) y el panel de instalar muestra el ícono de la app (`manifest.app.icono_192`).
 
+### 29. Madera del puente (F7)
+
+- **Qué pasa:** F7 pide detalles de ambiente según la cercanía (agua, madera, viento, piedra). Agua y viento ya están (`ambiente_agua` por cercanía y `ambiente_viento` por zona). No hay un sonido de madera para los puentes.
+- **Pedido:** `audio/ambiente_madera.wav`, 12 s en bucle sin corte, crujidos sueltos de tablas y una cuerda que se tensa, bajito (pico 0.5 como los otros ambientes).
+- **Mientras tanto:** los puentes suenan solo al pisarlos (`paso_madera_*`).
+
+### 30. F8, lo que falta de la Catedral (se hace en el taller en las próximas entregas)
+
+| Recurso | Tamaño | Cuadros y tiempos | Apoyo / sólido | Uso |
+|---|---|---|---|---|
+| `puente_piedra` | 128 x 48 | 1 | capa suelo, se camina | la nave inundada |
+| `forja` | 160 x 128 | apagada 1, 1 a 3 brasas 1 cada una, encendida 8 a 10 fps | apoyo [80, 120], sólido 120 x 20 | el centro del mundo |
+| `brasa` | 32 x 32 | 8 a 10 fps | haz ámbar | las tres brasas que se recogen |
+| `campana` | 96 x 128 | quieta 1, sonar 6 a 12 fps | capa alta | la arena del jefe |
+| `puerta_atajo` | 64 x 64 | cerrada 1, abrir 6 a 10 fps | sólida cerrada | el atajo de los claustros |
+| Vigía de las raíces | celda 48, pivote [24, 46] | idle, walk, cast 6 a 12, hit, die, 8 direcciones | radio 8 | a distancia, proyectil violeta `proyectil_raiz_*` 4 cuadros |
+| Raicita | celda 32, pivote [16, 30] | idle 4, run 6 a 12, attack 4 a 12, hit, die | radio 6 | pequeña, se distrae con Thor |
+| Guardián de la Campana | celda 96, pivote [48, 93] | idle, walk, attack_heavy 7 a 12, golpe_campana 8 a 10, llamar_raices 8 a 10, hit, die, liberado | radio 30 | jefe |
+| `aviso_onda` y `aviso_raiz` | 192 x 192 y 48 x 48, 8 cuadros | — | capa suelo | patrones del jefe |
+| Audio | — | — | — | `musica_jefe_campana`, `musica_forja`, `ambiente_agua_negra`, `fuelle`, `campana`, `brasa_recoger`, `raices` |
+
+- **Mientras tanto:** la nave y el atajo están cerrados con `raices_cortina`, y la Catedral no tiene jefe todavía (el chip del objetivo no lo pide).
+
 ---
 
 ## Entregado por el taller
@@ -52,6 +75,7 @@ El taller entregó 5 tandas (entregas 1, 2, 3a, 3b y 3c, submódulo en `8ba7f2a`
 | Minotauro grande (celda 96), `aviso_carga`, `onda_pisoton` | F4 |
 | `ui.continuara` | F4 |
 | Íconos de la app (`manifest.app`) y `ui.girar_tablet` | F5 |
+| F8 rebanada: la Catedral (mapa, losas, muros tallados), columnas, arco roto, braseros, pedestal de brasas, raíces, escombros, haz de luz, luciérnaga turquesa, Guardián de cobre, `musica_catedral`, `ambiente_catedral` | F8 |
 
 ---
 

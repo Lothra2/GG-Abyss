@@ -122,3 +122,32 @@ describe('Bosque GG', () => {
     expect(ms).toBeLessThan(150)
   })
 })
+
+describe('F8: cuadros a evitar (el agua del vado)', () => {
+  // un pasillo de 1 cuadro (columna 3) con agua que se pisa a los lados (columnas 2 y 4)
+  const ancho = 7, alto = 7, cuadro = 32
+  const colision = new Uint8Array(ancho * alto)
+  const g = new Grilla({ ancho, alto, cuadro, colision })
+  const agua: number[] = []
+  for (let y = 1; y <= 5; y++) for (const x of [2, 4]) agua.push(y * ancho + x)
+  g.evitar(agua)
+  it('se pueden pisar (no son pared) pero el camino no pasa por ahí, ni al suavizar', () => {
+    expect(g.bloqueado(2, 3)).toBe(false)
+    const c = buscarCamino(g, 3 * cuadro + 16, 0 * cuadro + 16, 4 * cuadro + 16, 6 * cuadro + 16)!
+    expect(c).not.toBeNull()
+    let ant = { x: 3 * cuadro + 16, y: 16 }
+    for (const p of c) {
+      for (let t = 0; t <= 1; t += 0.05) {
+        const x = ant.x + (p.x - ant.x) * t, y = ant.y + (p.y - ant.y) * t
+        const i = Math.floor(y / cuadro) * ancho + Math.floor(x / cuadro)
+        expect(agua.includes(i), `pasa por el agua en ${Math.round(x)},${Math.round(y)}`).toBe(false)
+      }
+      ant = p
+    }
+  })
+  it('tocar el agua manda al cuadro firme más cercano', () => {
+    const c = buscarCamino(g, 3 * cuadro + 16, 16, 2 * cuadro + 16, 3 * cuadro + 16)!
+    const fin = c[c.length - 1]!
+    expect(agua.includes(Math.floor(fin.y / cuadro) * ancho + Math.floor(fin.x / cuadro))).toBe(false)
+  })
+})

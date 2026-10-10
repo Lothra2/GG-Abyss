@@ -104,6 +104,11 @@ export class Mundo extends Phaser.Scene {
   private listo = false
   /** segundos desde que llegó a este mundo (el portal de vuelta espera un poco) */
   private tEnMundo = 0
+  /** F8: el agua negra que se pisa al lado del vado: caer ahí la devuelve a la orilla (sin perder nada) */
+  private peligroAgua = new Set<number>()
+  private ultimaSegura = { x: 0, y: 0 }
+  private enAgua = 0
+  caidasAgua = 0
   private alm!: Almacen
   private entidades!: Entidades
   private presentacion: Presentacion | null = null
@@ -249,6 +254,8 @@ export class Mundo extends Phaser.Scene {
     this.descub = { zonas: this.partida.zonas, secretos: this.partida.secretos }
     this.tJugado = this.partida.tiempoJugado ?? 0
     this.tEnMundo = 0
+    this.enAgua = 0
+    this.caidasAgua = 0
     // la escena es la misma al volver de Continuará o de otro mundo: el portal tiene que poder usarse otra vez, y lo
     // del jefe del mundo anterior no sigue acá (un mundo sin jefe no hereda el del Bosque)
     this.saliendoAContinuara = false
@@ -264,7 +271,10 @@ export class Mundo extends Phaser.Scene {
     this.director = new DirectorJefe()
     this.planoJefe = this.director.tick(0)
     this.mapa = this.mapaDelMundo()
+    this.peligroAgua = new Set(entidadesDeTipo(this.mapa, 'peligro_agua').map((e) => Math.floor(e.y / this.mapa.cuadro) * this.mapa.ancho + Math.floor(e.x / this.mapa.cuadro)))
     this.grilla = new Grilla(this.mapa)
+    // el agua del vado se pisa pero tocar la otra orilla nunca la manda por ahí: caer es solo por despiste
+    this.grilla.evitar(this.peligroAgua)
 
     crearAnimsPersonaje(this, m, id)
     crearAnimsPersonaje(this, m, 'thor')
@@ -319,6 +329,11 @@ export class Mundo extends Phaser.Scene {
     const evEnemigos: EventosEnemigos = {
       golpeCuerpo: (e, rango, radio) => {
         if (this.combate.caido) return
+        // la raicita distraída le tira zarpazos a Thor: a la heroína no le llega y a Thor no le hace nada
+        if (e.distraida) {
+          if (Math.hypot(this.thor.x - e.x, this.thor.y - e.y) < radio + 20) this.sonido.efecto('ladrido', { volumen: 0.25, rate: 1.2 })
+          return
+        }
         const d = Math.hypot(this.heroina.x - e.x, this.heroina.y - e.y)
         if (d <= radio) this.combate.golpeDeEnemigo(rango)
         // se salvó por poco: que se note que lo esquivó
@@ -706,6 +721,39 @@ export class Mundo extends Phaser.Scene {
     this.sonido.efecto('portal', { volumen: 0.8 })
     this.cameras.main.fadeOut(700, 5, 6, 12)
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('Bajada', { nombre, subir }))
+  }
+
+  /**
+   * F8: el peligro seguro de la nave. Fuera de las losas del vado el agua negra se pisa, pero es agua: salpica, Thor
+   * ladra y en un momento ella vuelve a la última losa firme. No hay daño ni se pierde nada (PLAN.md F8, la nave).
+   */
+  private revisarAgua(dt: number): void {
+    if (this.peligroAgua.size === 0) return
+    const h = this.heroina
+    const c = this.mapa.cuadro
+    if (this.enAgua > 0) {
+      this.enAgua -= dt
+      if (this.enAgua <= 0) {
+        h.teleport(this.ultimaSegura.x, this.ultimaSegura.y)
+        this.thor.teleport(this.ultimaSegura.x - 18, this.ultimaSegura.y + 6)
+        this.atmosfera.particulas.estallido(h.x, h.y, 'gota', 6)
+        this.entrada.pausada = false
+      }
+      return
+    }
+    const i = Math.floor(h.y / c) * this.mapa.ancho + Math.floor(h.x / c)
+    if (!this.peligroAgua.has(i)) {
+      if (!this.combate.caido) this.ultimaSegura = { x: h.x, y: h.y }
+      return
+    }
+    this.caidasAgua++
+    this.enAgua = 0.7
+    h.parar()
+    this.entrada.pausada = true
+    this.sonido.efecto('paso_agua_1', { volumen: 1, rate: 0.7 })
+    this.sonido.efecto('ladrido', { volumen: 0.5 })
+    this.atmosfera.particulas.estallido(h.x, h.y, 'gota', 10)
+    this.textoFlotante(h.x, h.y - 48, '¡Al agua no!', 0x8ad8ff)
   }
 
   /** F8: el portal de llegada de un mundo de abajo lleva de vuelta al de arriba (con un momento de gracia al llegar) */
@@ -1289,7 +1337,7 @@ export class Mundo extends Phaser.Scene {
     this.presentacion?.update(dt)
     this.heroina.update(dt)
     if (!this.presentacion?.activa) {
-      this.enemigos.update(dt, { heroe: { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido }, modoPeque: this.combate.modoPeque, dt })
+      this.enemigos.update(dt, { heroe: { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido }, thor: { x: this.thor.x, y: this.thor.y }, modoPeque: this.combate.modoPeque, dt })
       this.proyectiles.update(dt)
       this.combate.update(dt)
       this.actualizarJefe(dt)
@@ -1302,6 +1350,7 @@ export class Mundo extends Phaser.Scene {
     this.actualizarTutorial()
     this.tEnMundo += dt
     this.revisarPortalVolver()
+    this.revisarAgua(dt)
     this.tJugado += dt
     // lo que la heroína iba a usar: cuando llega, lo usa
     const pend = this.pendiente
@@ -1454,7 +1503,7 @@ export class Mundo extends Phaser.Scene {
       tutorial: () => ({ hechos: [...this.partida.tutorial], demo: this.demoTutorial ? { paso: this.demoTutorial.paso } : null }),
       saltarTutorial: (() => this.saltarTutorial()) as never,
       irAMundo: ((destino: string) => this.irAMundo(destino, { x: Math.round(this.heroina.x), y: Math.round(this.heroina.y) }, false)) as never,
-      mundoActual: () => ({ id: idMundo(this.m.mundo), nombre: this.m.mundo.nombre, partida: this.partida.mundo, otros: Object.keys(this.partida.otrosMundos), zonas: this.mapa.zonas.map((z) => z.nombre), jefe: !!this.jefe, portalVolver: entidadesDeTipo(this.mapa, 'portal_volver').map((e) => ({ x: e.x, y: e.y }))[0] ?? null }),
+      mundoActual: () => ({ id: idMundo(this.m.mundo), nombre: this.m.mundo.nombre, partida: this.partida.mundo, otros: Object.keys(this.partida.otrosMundos), zonas: this.mapa.zonas.map((z) => z.nombre), jefe: !!this.jefe, portalVolver: entidadesDeTipo(this.mapa, 'portal_volver').map((e) => ({ x: e.x, y: e.y }))[0] ?? null, peligroAgua: entidadesDeTipo(this.mapa, 'peligro_agua').map((e) => ({ x: e.x, y: e.y })), caidasAgua: this.caidasAgua }),
       musicaEstado: () => ({ estado: this.estadoMusica, agua: Math.round(this.detalleAgua * 100) / 100 }),
       planoJefe: () => ({ ...this.planoJefe, entradaPausada: this.entrada.estaPausada, camara: { x: Math.round(this.camara.cx), y: Math.round(this.camara.cy) } }),
       guia: () => ({ sinProgreso: Math.round(this.relojGuia.sinProgreso * 10) / 10, visible: this.relojGuia.visible, flecha: this.flechaGuia }),
@@ -1508,7 +1557,7 @@ export class Mundo extends Phaser.Scene {
       premioDe: ((f: Fuente) => tirarBotin(juego(), this.cat, { nivelHeroe: this.partida.nivel, clase: this.combate.clase, idHeroe: this.heroina.id }, f)) as never,
       romper: ((llave: string) => this.entidades.romper(llave)) as never,
       danar: ((n: number) => this.combate.danar(n)) as never,
-      enemigos: () => this.enemigos.lista.map((e) => ({ id: e.id, tipo: e.tipo, x: Math.round(e.x), y: Math.round(e.y), vida: e.vida, vidaMax: e.vidaMax, vivo: e.vivo, estado: e.estado, elite: e.elite, nombre: e.nombre, casa: { x: e.ia.casaX, y: e.ia.casaY }, anticipa: e.anticipando })),
+      enemigos: () => this.enemigos.lista.map((e) => ({ id: e.id, tipo: e.tipo, x: Math.round(e.x), y: Math.round(e.y), vida: e.vida, vidaMax: e.vidaMax, vivo: e.vivo, estado: e.estado, elite: e.elite, nombre: e.nombre, casa: { x: e.ia.casaX, y: e.ia.casaY }, anticipa: e.anticipando, distraida: e.distraida })),
       tocarEnemigo: ((id: number) => {
         const e = this.enemigos.lista.find((q) => q.id === id)
         if (!e) return false

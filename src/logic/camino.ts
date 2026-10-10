@@ -80,7 +80,8 @@ export function buscarCamino(g: Grilla, x0: number, y0: number, x1: number, y1: 
   const ini0 = g.cuadroDe(x0, y0)
   const ini = g.cercanoCaminable(ini0.tx, ini0.ty, 3)
   const fin0 = g.cuadroDe(x1, y1)
-  const fin = g.cercanoCaminable(fin0.tx, fin0.ty, radioBusq)
+  // un destino en el agua del vado se cambia por el cuadro firme más cercano
+  const fin = g.cercanoCaminable(fin0.tx, fin0.ty, radioBusq, true)
   if (!ini || !fin) return null
 
   const n = g.ancho * g.alto
@@ -113,9 +114,9 @@ export function buscarCamino(g: Grilla, x0: number, y0: number, x1: number, y1: 
     for (const [dx, dy, costo] of VECINOS) {
       const nx = cx + dx
       const ny = cy + dy
-      if (g.bloqueado(nx, ny)) continue
+      if (g.bloqueadoCamino(nx, ny)) continue
       // sin cortar esquinas: en diagonal los dos cuadros de al lado tienen que estar libres
-      if (dx !== 0 && dy !== 0 && (g.bloqueado(cx + dx, cy) || g.bloqueado(cx, cy + dy))) continue
+      if (dx !== 0 && dy !== 0 && (g.bloqueadoCamino(cx + dx, cy) || g.bloqueadoCamino(cx, cy + dy))) continue
       const ni = g.idx(nx, ny)
       if (cerrado[ni]) continue
       const t = gScore[cur]! + costo
@@ -139,7 +140,7 @@ export function buscarCamino(g: Grilla, x0: number, y0: number, x1: number, y1: 
 
   // el primer punto es donde está parado, el último el destino exacto si es libre
   const pts: Punto[] = [{ x: x0, y: y0 }, ...centros.slice(1)]
-  const exacto = fin.tx === fin0.tx && fin.ty === fin0.ty && (radio === 0 || g.circuloLibre(x1, y1, radio))
+  const exacto = fin.tx === fin0.tx && fin.ty === fin0.ty && (radio === 0 || g.circuloLibre(x1, y1, radio, true))
   if (exacto) {
     if (pts.length > 1) pts[pts.length - 1] = { x: x1, y: y1 }
     else pts.push({ x: x1, y: y1 })
@@ -156,7 +157,7 @@ export function suavizar(g: Grilla, pts: Punto[], radio: number): Punto[] {
   let i = 0
   while (i < pts.length - 1) {
     let j = pts.length - 1
-    while (j > i + 1 && !g.lineaLibre(pts[i]!.x, pts[i]!.y, pts[j]!.x, pts[j]!.y, radio)) j--
+    while (j > i + 1 && !g.lineaLibre(pts[i]!.x, pts[i]!.y, pts[j]!.x, pts[j]!.y, radio, true)) j--
     out.push(pts[j]!)
     i = j
   }

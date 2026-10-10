@@ -120,6 +120,8 @@ export interface EnemigoBalance {
   /** a qué distancia se aleja si la heroína se acerca */
   huyeSi?: number
   escala?: number
+  /** F8: si Thor anda cerca, persigue a Thor en vez de a la heroína (y a Thor no le hace nada): la raicita */
+  distraeThor?: { radio: number }
   /** F8: golpe pesado anunciado sin ser élite (el guardián de cobre): cada cuánto, radio, aviso y daño */
   pesado?: { cadaS: number; radio: number; avisoS: number; dano: [number, number] }
 }
@@ -131,6 +133,10 @@ export const ENEMIGOS: Record<string, EnemigoBalance> = {
   trol: { vida: 140, dano: [7, 10], anim: 'attack', ataquesPorSeg: 0.6, alcance: 34, velocidad: 55, ve: 200, xp: 90, oro: [20, 35] },
   // F8, la Catedral: lento y pesado. Su golpe común casi no duele: lo que enseña es el golpe grande, que avisa mucho
   // antes (el anillo se llena) y se esquiva saliéndose. Después del golpe queda un rato quieto: ahí se le pega.
+  // chiquita y rápida: salta de un lado a otro. Lo que enseña: Thor la distrae (lo persigue a él) y ahí se le pega
+  raicita: { vida: 14, dano: [2, 3], anim: 'attack', ataquesPorSeg: 1, alcance: 24, velocidad: 95, ve: 180, xp: 8, oro: [1, 4], distraeThor: { radio: 170 } },
+  // se queda en su lugar y tira una bola violeta lenta que se ve venir: se esquiva de costado o se lo busca de cerca
+  vigia_raices: { vida: 26, dano: [3, 5], anim: 'cast', ataquesPorSeg: 0.45, alcance: 230, velocidad: 25, ve: 260, xp: 20, oro: [4, 8], proyectil: 'proyectil_arcano', impacto: 'impacto_arcano' },
   guardian_cobre: { vida: 120, dano: [4, 6], anim: 'attack', ataquesPorSeg: 0.4, alcance: 34, velocidad: 38, ve: 190, xp: 80, oro: [15, 25], pesado: { cadaS: 4.5, radio: 48, avisoS: 1.5, dano: [10, 14] } },
 }
 
@@ -192,6 +198,8 @@ export const BOTIN = {
   goblin_arquero: { objeto: 0.35, oro: 0.7, cantidad: 1 } satisfies BotinFuente,
   trol: { objeto: 1, oro: 1, cantidad: 2, garantiza: 'rare' } as BotinFuente,
   guardian_cobre: { objeto: 1, oro: 1, cantidad: 1, garantiza: 'rare' } as BotinFuente,
+  raicita: { objeto: 0.2, oro: 0.6, cantidad: 1 } as BotinFuente,
+  vigia_raices: { objeto: 0.4, oro: 0.8, cantidad: 1 } as BotinFuente,
   rompible: { objeto: 0.2, oro: 0.5, cantidad: 1, pocionProb: 0.5 },
   cofres: {
     madera: { objetos: 1, oro: [5, 10] as [number, number], raroProb: 0, raroGarantizado: 0, legendarioProb: 0 },
