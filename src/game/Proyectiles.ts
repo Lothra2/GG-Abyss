@@ -57,6 +57,9 @@ export class Proyectiles {
     _grilla?: Grilla,
   ) {}
 
+  /** F7: los tiros que no pegan dejan su impacto donde terminan */
+  impactoAlFallar = true
+
   get cantidad(): number {
     return this.activos.length
   }
@@ -96,6 +99,8 @@ export class Proyectiles {
         }
       }
       // los disparos pasan por encima de árboles y arbustos: a las niñas les importa más acertar que el camino del tiro
+      // un tiro que no pegó cae en el piso con su impacto: se ve dónde terminó
+      if (!golpeo && this.impactoAlFallar && (p.recorrido >= p.d.alcance || p.vidaS > PROYECTIL.vidaMaxS)) this.impacto(p.d.impacto, p.x, p.y)
       if (golpeo || p.recorrido >= p.d.alcance || p.vidaS > PROYECTIL.vidaMaxS) {
         p.s.destroy()
         this.activos.splice(i, 1)

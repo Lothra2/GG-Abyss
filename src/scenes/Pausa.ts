@@ -40,6 +40,8 @@ export class Pausa extends Phaser.Scene {
   private cambiar!: Boton
   private creditos!: Boton
   private album!: Boton
+  private suaves!: Boton
+  private mejoras!: Boton
   private seguir!: Boton
   private pantalla: Boton | null = null
   private arrastrando: Deslizador | null = null
@@ -69,6 +71,8 @@ export class Pausa extends Phaser.Scene {
 
     this.calidad = crearBoton(this, { x: 0, y: 0, icono: 'icono_calidad', etiqueta: 'Calidad alta', alToque: () => this.alternarCalidad() })
     this.peque = crearBoton(this, { x: 0, y: 0, icono: 'icono_peque', etiqueta: 'Modo peque: no', alToque: () => this.alternarPeque() })
+    this.suaves = crearBoton(this, { x: 0, y: 0, icono: 'icono_luna', etiqueta: 'Efectos suaves: no', alToque: () => this.alternar('efectosSuaves') })
+    this.mejoras = crearBoton(this, { x: 0, y: 0, icono: 'icono_calidad', etiqueta: 'Mejoras F7: sí', alToque: () => this.alternar('mejorasF7') })
     this.cambiar = crearBoton(this, { x: 0, y: 0, icono: 'icono_jugadora', etiqueta: 'Otra jugadora', alToque: () => this.cambiarJugadora() })
     this.creditos = crearBoton(this, { x: 0, y: 0, icono: 'icono_guardado', etiqueta: 'Créditos', alToque: () => this.abrirCreditos() })
     this.album = crearBoton(this, { x: 0, y: 0, icono: 'icono_zona', etiqueta: 'Álbum', alToque: () => this.abrirAlbum() })
@@ -83,7 +87,7 @@ export class Pausa extends Phaser.Scene {
     this.input.on('pointerupoutside', () => this.soltar())
     this.input.keyboard?.on('keydown-ESC', () => this.continuar())
 
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => quitarGanchos('pausa', 'pausaFijar', 'pausaContinuar', 'pausaCambiarJugadora', 'pausaAlbum'))
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => quitarGanchos('pausa', 'pausaFijar', 'pausaContinuar', 'pausaCambiarJugadora', 'pausaAlbum', 'pausaAlternar'))
     this.events.on(Phaser.Scenes.Events.RESUME, () => this.acomodar())
     alCambiarEscala(this, () => this.acomodar())
     this.refrescar()
@@ -93,7 +97,7 @@ export class Pausa extends Phaser.Scene {
         abierta: true,
         deslizadores: this.deslizadores.map((d) => ({ nombre: d.nombre, x: d.x, y: Math.round(d.riel.y), w: d.w, valor: this.valorDe(d.nombre) })),
         pantalla: this.pantalla ? this.pantalla.getBounds() : null,
-        botones: { calidad: this.calidad.getBounds(), peque: this.peque.getBounds(), cambiar: this.cambiar.getBounds(), creditos: this.creditos.getBounds(), album: this.album.getBounds(), seguir: this.seguir.getBounds() },
+        botones: { calidad: this.calidad.getBounds(), peque: this.peque.getBounds(), suaves: this.suaves.getBounds(), mejoras: this.mejoras.getBounds(), cambiar: this.cambiar.getBounds(), creditos: this.creditos.getBounds(), album: this.album.getBounds(), seguir: this.seguir.getBounds() },
         ajustes: { ...aj() },
       }),
       pausaFijar: ((nombre: 'noche' | 'musica' | 'efectos', v: number) => {
@@ -102,6 +106,7 @@ export class Pausa extends Phaser.Scene {
       }) as never,
       pausaContinuar: (() => this.continuar()) as never,
       pausaAlbum: (() => this.abrirAlbum()) as never,
+      pausaAlternar: ((k: 'efectosSuaves' | 'mejorasF7') => this.alternar(k)) as never,
       pausaCambiarJugadora: (() => this.cambiarJugadora()) as never,
     })
   }
@@ -179,6 +184,8 @@ export class Pausa extends Phaser.Scene {
     }
     this.calidad.setEtiqueta(`Calidad ${a.calidad === 'alta' ? 'alta' : 'baja'}`)
     this.peque.setEtiqueta(a.modoPeque ? 'Modo peque: sí' : 'Modo peque: no')
+    this.suaves.setEtiqueta(a.efectosSuaves ? 'Efectos suaves: sí' : 'Efectos suaves: no')
+    this.mejoras.setEtiqueta(a.mejorasF7 ? 'Mejoras F7: sí' : 'Mejoras F7: no')
   }
 
   private acomodar(): void {
@@ -192,12 +199,29 @@ export class Pausa extends Phaser.Scene {
     this.velo.setSize(w, h)
     const fila = Math.max(toqueMinimo(e, this.mundo.partida.ajustes.modoPeque), 26)
     const pw = Math.min(w - 16, Math.max(280, Math.floor(w * 0.62)))
-    const lado = this.calidad.ancho + 8 + this.peque.ancho <= pw - 20
+    const fila1 = [this.calidad, this.peque, this.suaves, this.mejoras]
     const fila2 = [this.album, this.cambiar, this.creditos, ...(this.pantalla ? [this.pantalla] : []), this.seguir]
-    const ancho3 = fila2.reduce((t, b) => t + b.ancho, 0) + 8 * (fila2.length - 1)
-    const tres = ancho3 <= pw - 20
+    // cada fila de botones se reparte en tantas líneas como haga falta para entrar en el panel
+    const repartir = (lista: Boton[]): Boton[][] => {
+      const lineas: Boton[][] = [[]]
+      let ancho = 0
+      for (const btn of lista) {
+        const l = lineas[lineas.length - 1]!
+        if (l.length > 0 && ancho + 8 + btn.ancho > pw - 20) {
+          lineas.push([btn])
+          ancho = btn.ancho
+        } else {
+          l.push(btn)
+          ancho += (l.length > 1 ? 8 : 0) + btn.ancho
+        }
+      }
+      return lineas
+    }
+    const l1 = repartir(fila1)
+    const l2 = repartir(fila2)
     this.titulo.setScale(esc)
-    const alto = 10 + this.titulo.displayHeight + 8 + fila * 3 + 6 + (lado ? fila + 6 : fila * 2 + 10) + (tres ? fila : fila * 2 + 4) + 12
+    const altoLinea = (l: Boton[]) => Math.max(fila, ...l.map((b) => b.alto)) + 6
+    const alto = 10 + this.titulo.displayHeight + 8 + fila * 3 + 6 + [...l1, ...l2].reduce((t, l) => t + altoLinea(l), 0) + 12
     const ph = Math.min(h - 8, alto)
     const px = Math.round((w - pw) / 2)
     const py = Math.round((h - ph) / 2)
@@ -220,34 +244,22 @@ export class Pausa extends Phaser.Scene {
     }
     y += 6
     const centrar = (b: Boton, cx: number, cy: number) => b.setPosition(Math.round(cx), Math.round(cy))
-    if (lado) {
-      centrar(this.calidad, px + 10 + this.calidad.ancho / 2, y + fila / 2)
-      centrar(this.peque, px + pw - 10 - this.peque.ancho / 2, y + fila / 2)
-      y += fila + 6
-    } else {
-      centrar(this.calidad, px + pw / 2, y + fila / 2)
-      centrar(this.peque, px + pw / 2, y + fila * 1.5 + 4)
-      y += fila * 2 + 10
-    }
-    if (tres) {
-      let cx = px + (pw - ancho3) / 2
-      for (const b of fila2) {
-        centrar(b, cx + b.ancho / 2, y + fila / 2)
+    for (const linea of [...l1, ...l2]) {
+      const tot = linea.reduce((t, b) => t + b.ancho, 0) + 8 * (linea.length - 1)
+      let cx = px + (pw - tot) / 2
+      const al = altoLinea(linea)
+      for (const b of linea) {
+        centrar(b, cx + b.ancho / 2, y + al / 2)
         cx += b.ancho + 8
       }
-    } else {
-      // dos filas: la mitad de los botones arriba y la otra mitad abajo
-      const mitad = Math.ceil(fila2.length / 2)
-      const reparto = [fila2.slice(0, mitad), fila2.slice(mitad)]
-      reparto.forEach((fl, i) => {
-        const tot = fl.reduce((t, b) => t + b.ancho, 0) + 8 * (fl.length - 1)
-        let cx = px + (pw - tot) / 2
-        for (const b of fl) {
-          centrar(b, cx + b.ancho / 2, y + fila * (i + 0.5) + i * 4)
-          cx += b.ancho + 8
-        }
-      })
+      y += al
     }
+    this.refrescar()
+  }
+
+  private alternar(k: 'efectosSuaves' | 'mejorasF7'): void {
+    const a = this.mundo.partida.ajustes
+    a[k] = !a[k]
     this.refrescar()
   }
 

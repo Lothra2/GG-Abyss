@@ -40,6 +40,8 @@ export interface EventosEnemigos {
   sonido(nombre: string, op?: { volumen?: number; rate?: number }): void
   sacudir(): void
   curo(e: Enemigo): void
+  /** las mejoras de F7 prendidas (la anticipación del golpe se marca) */
+  mejoras?(): boolean
 }
 
 /** Todo lo que la heroína puede marcar y golpear: los enemigos del mapa y el jefe */
@@ -76,6 +78,8 @@ export class Enemigo implements Atacable {
   private barraS = 0
   private marcado = false
   private destelloFin = 0
+  /** segundos que faltan para que caiga el golpe que está preparando (se ve un tinte cálido que late) */
+  private anticipaS = 0
   private muertoS = 0
   private cfgIA: ConfigIA
   private durAtaque: number
@@ -194,6 +198,11 @@ export class Enemigo implements Atacable {
     return false
   }
 
+  /** Preparando un golpe (para las pruebas: se ve el tinte que late) */
+  get anticipando(): boolean {
+    return this.anticipaS > 0
+  }
+
   /** El destello blanco del golpe (en tiempo real, vuelve a la marca si estaba marcado) */
   private destellar(): void {
     this.sprite.setTintFill(0xffffff)
@@ -241,6 +250,7 @@ export class Enemigo implements Atacable {
     }
     this.bloqueoAnimS = Math.max(0, this.bloqueoAnimS - dt)
     this.barraS = Math.max(0, this.barraS - dt)
+    this.anticipaS = Math.max(0, this.anticipaS - dt)
 
     // el golpe pendiente de un ataque ya empezado
     if (this.golpeEn) {
@@ -248,6 +258,7 @@ export class Enemigo implements Atacable {
       if (this.golpeEn.resta <= 0) {
         const g = this.golpeEn
         this.golpeEn = null
+        this.anticipaS = 0
         if (g.tipo === 'normal') this.ejecutarGolpe()
       }
     }
@@ -287,6 +298,7 @@ export class Enemigo implements Atacable {
   private comenzarAtaque(): void {
     const dur = this.durAtaque
     this.golpeEn = { resta: dur * GOLPE_EN.enemigo, tipo: 'normal' }
+    this.anticipaS = dur * GOLPE_EN.enemigo
     this.poner(this.cfg.anim, true)
     this.bloqueoAnimS = dur
     this.ev.sonido(this.cfg.proyectil ? 'arco' : 'golpe', { volumen: 0.35, rate: 0.8 + juego().next() * 0.3 })
@@ -344,7 +356,12 @@ export class Enemigo implements Atacable {
     const y = Math.round(this.y)
     this.sprite.setPosition(x, y).setDepth(PROF.OBJETOS + this.y)
     this.sombra.poner(this.x, this.y)
-    if (this.marcado && this.vivo && this.escena.time.now >= this.destelloFin) this.sprite.setTint(0xffa0a0)
+    if (this.vivo && this.escena.time.now >= this.destelloFin) {
+      // preparando el golpe: un tinte cálido que late hasta que cae (se lee el momento de alejarse)
+      if (this.anticipaS > 0 && this.ev.mejoras?.() !== false) this.sprite.setTint(Math.floor(this.anticipaS * 12) % 2 === 0 ? 0xffd890 : 0xffb070)
+      else if (this.marcado) this.sprite.setTint(0xffa0a0)
+      else if (this.anticipaS <= 0 && this.sprite.isTinted && !this.marcado) this.sprite.clearTint()
+    }
     const mostrar = this.barraS > 0 && this.vivo
     const by = y - this.cuerpo.alto - 8
     this.fondoBarra.setVisible(mostrar).setPosition(x, by).setDepth(PROF.OBJETOS + 9400)

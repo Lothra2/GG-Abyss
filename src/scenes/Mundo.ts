@@ -33,6 +33,7 @@ import { Proyectiles } from '../game/Proyectiles'
 import { Numeros } from '../game/Numeros'
 import { Combate } from '../game/Combate'
 import { Botin } from '../game/Botin'
+import { texto } from '../game/Texto'
 import { JefeSprite, type EventosJefe } from '../game/Jefe'
 import { Impactos, type TipoImpacto } from '../logic/impacto'
 import { Guia, ordenarPistas, type Pista } from '../logic/olfato'
@@ -265,8 +266,15 @@ export class Mundo extends Phaser.Scene {
     const evEnemigos: EventosEnemigos = {
       golpeCuerpo: (e, rango, radio) => {
         if (this.combate.caido) return
-        if (Math.hypot(this.heroina.x - e.x, this.heroina.y - e.y) <= radio) this.combate.golpeDeEnemigo(rango)
+        const d = Math.hypot(this.heroina.x - e.x, this.heroina.y - e.y)
+        if (d <= radio) this.combate.golpeDeEnemigo(rango)
+        // se salvó por poco: que se note que lo esquivó
+        else if (d <= radio + 40 && this.mejoras) {
+          this.textoFlotante(this.heroina.x, this.heroina.y - 48, '¡Esquivaste!', 0x8af0e0)
+          this.atmosfera.particulas.estallido((e.x + this.heroina.x) / 2, (e.y + this.heroina.y) / 2, 'polvo', 3)
+        }
       },
+      mejoras: () => this.mejoras,
       disparar: (e) => {
         const h = this.heroina
         const oy = e.y - e.cuerpo.alto * 0.6
@@ -291,7 +299,7 @@ export class Mundo extends Phaser.Scene {
       alMorir: (e) => this.combate.alMorirEnemigo(e),
       efecto: (n, x, y) => this.proyectiles.fxEn(n, x, y),
       sonido: (n, op) => this.sonido.efecto(n, op),
-      sacudir: () => this.cameras.main.shake(160, 0.004),
+      sacudir: () => this.sacudir(160, 0.004),
       curo: (e) => this.numeros.mostrar(e.x, e.y - e.cuerpo.alto - 4, '+', 'verde'),
     }
     this.botin = new Botin({
@@ -341,6 +349,7 @@ export class Mundo extends Phaser.Scene {
       guardar: () => this.guardar(),
       centrarCamara: () => this.camara.centrarEn(this.heroina.x, this.heroina.y - 12),
       alImpacto: (t) => this.impacto(t),
+      alFallar: (x, y) => this.alFallar(x, y),
     })
 
     this.crearJefe(evEnemigos)
@@ -430,12 +439,12 @@ export class Mundo extends Phaser.Scene {
       },
       efecto: (n, x, y, esc) => this.proyectiles.fxEn(n, x, y, esc ?? 1),
       sonido: (n, op) => this.sonido.efecto(n, op),
-      sacudir: (fuerte) => this.cameras.main.shake(fuerte ? 280 : 150, fuerte ? 0.009 : 0.004),
+      sacudir: (fuerte) => this.sacudir(fuerte ? 280 : 150, fuerte ? 0.009 : 0.004),
       alFase2: () => {
         // se enoja: el mundo se congela un instante, destello rojo, onda y su nombre se vuelve enojo
         this.director.fase2()
         this.impacto('jefeFase2')
-        this.game.events.emit('destello', { color: 0xc8281e, alfa: 0.32, ms: 380 })
+        this.game.events.emit('destello', { color: 0xc8281e, alfa: this.suave ? 0.1 : 0.32, ms: 380 })
         if (this.jefe) {
           this.proyectiles.fxEn('onda_pisoton', this.jefe.x, this.jefe.y, 3)
           this.proyectiles.fxEn('grito_de_guerra', this.jefe.x, this.jefe.y - JEFE.cuerpoAlto, 2)
@@ -564,7 +573,7 @@ export class Mundo extends Phaser.Scene {
       this.director.morir()
       this.impacto('jefeMuerte')
       this.camaraLenta(ESCENA_JEFE.lenta.factor, ESCENA_JEFE.lenta.seg)
-      this.game.events.emit('destello', { color: 0xfff4d2, alfa: 0.55, ms: 600 })
+      this.game.events.emit('destello', { color: 0xfff4d2, alfa: this.suave ? 0.15 : 0.55, ms: 600 })
       this.jefe?.desvanecer((x, y) => this.atmosfera.particulas.estallido(x, y, 'polvo', 4))
       this.sonido.fijarMusica('musica_victoria')
       this.musicaVictoriaPuesta = true
@@ -999,19 +1008,49 @@ export class Mundo extends Phaser.Scene {
     }
   }
 
+  /** "Efectos suaves" en la pausa: sin sacudidas, congelados ni destellos fuertes */
+  get suave(): boolean {
+    return !!this.partida?.ajustes.efectosSuaves
+  }
+
+  /** Las mejoras de F7 prendidas (se pueden apagar en la pausa para comparar) */
+  get mejoras(): boolean {
+    return this.partida?.ajustes.mejorasF7 !== false
+  }
+
+  sacudir(ms: number, fuerza: number): void {
+    if (!this.suave) this.cameras.main.shake(ms, fuerza)
+  }
+
+  /** Un texto que sube y se apaga (fallos, esquivas) */
+  textoFlotante(x: number, y: number, s: string, tinte: number): void {
+    const t = texto(this, Math.round(x), Math.round(y), s, 'fuente_ui', 1, { origen: [0.5, 1], tinte }).setDepth(PROF.OBJETOS + 9500)
+    this.tweens.add({ targets: t, y: t.y - 18, alpha: 0, duration: 750, ease: 'Sine.easeOut', onComplete: () => t.destroy() })
+  }
+
+  /** La heroína pegó al aire (el blanco se fue del alcance): polvo, un "fallo" y un silbido */
+  private alFallar(x: number, y: number): void {
+    if (!this.mejoras) return
+    this.atmosfera.particulas.estallido(x, y - 6, 'polvo', 3)
+    this.textoFlotante(x, y - 30, 'Fallo', 0xb8b8c8)
+    this.sonido.efecto('esquiva', { volumen: 0.3, rate: 1.4 })
+  }
+
   /** Pausa cortita y sacudida según el golpe */
   impacto(tipo: TipoImpacto): void {
-    const r = this.impactos.pedir(tipo)
+    const r0 = this.impactos.pedir(tipo)
+    const r = this.suave ? { pausa: 0, sacudida: null } : r0
     this.ultimoImpacto = { tipo, pausa: r.pausa, sacude: !!r.sacudida }
     if (r.pausa > this.pausaGolpe) {
       this.pausaGolpe = r.pausa
       this.anims.globalTimeScale = 0.05
     }
-    if (r.sacudida) this.cameras.main.shake(r.sacudida.ms, r.sacudida.fuerza)
+    if (r.sacudida) this.sacudir(r.sacudida.ms, r.sacudida.fuerza)
   }
 
   /** El mundo corre más lento un rato (en segundos reales) */
   camaraLenta(factor: number, seg: number): void {
+    if (this.suave) return
     this.lento = { factor, resta: seg }
   }
 
@@ -1065,6 +1104,7 @@ export class Mundo extends Phaser.Scene {
     this.botin.update(dt)
     this.olfatoRecarga = Math.max(0, this.olfatoRecarga - dt)
     this.actualizarGuia(dt)
+    this.proyectiles.impactoAlFallar = this.mejoras
     this.tJugado += dt
     // lo que la heroína iba a usar: cuando llega, lo usa
     const pend = this.pendiente
@@ -1266,7 +1306,7 @@ export class Mundo extends Phaser.Scene {
       premioDe: ((f: Fuente) => tirarBotin(juego(), this.cat, { nivelHeroe: this.partida.nivel, clase: this.combate.clase, idHeroe: this.heroina.id }, f)) as never,
       romper: ((llave: string) => this.entidades.romper(llave)) as never,
       danar: ((n: number) => this.combate.danar(n)) as never,
-      enemigos: () => this.enemigos.lista.map((e) => ({ id: e.id, tipo: e.tipo, x: Math.round(e.x), y: Math.round(e.y), vida: e.vida, vidaMax: e.vidaMax, vivo: e.vivo, estado: e.estado, elite: e.elite, nombre: e.nombre, casa: { x: e.ia.casaX, y: e.ia.casaY } })),
+      enemigos: () => this.enemigos.lista.map((e) => ({ id: e.id, tipo: e.tipo, x: Math.round(e.x), y: Math.round(e.y), vida: e.vida, vidaMax: e.vidaMax, vivo: e.vivo, estado: e.estado, elite: e.elite, nombre: e.nombre, casa: { x: e.ia.casaX, y: e.ia.casaY }, anticipa: e.anticipando })),
       tocarEnemigo: ((id: number) => {
         const e = this.enemigos.lista.find((q) => q.id === id)
         if (!e) return false

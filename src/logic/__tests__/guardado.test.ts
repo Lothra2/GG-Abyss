@@ -111,4 +111,11 @@ describe('guardado', () => {
     expect(listaPerfiles(alm)).toEqual([])
     expect(alm.claves().some((k) => k.startsWith('ggabyss:v1:roto:rick:borrada'))).toBe(true)
   })
+  it('una partida de antes de F7 abre con efectos normales y las mejoras prendidas', () => {
+    const vieja = { ...partidaNueva('sophie'), ajustes: { noche: 0.2, calidad: 'alta', musica: 0.5, efectos: 0.5, modoPeque: false } }
+    const p = migrar(JSON.parse(JSON.stringify(vieja)), 'sophie')!
+    expect(p.ajustes.efectosSuaves).toBe(false)
+    expect(p.ajustes.mejorasF7).toBe(true)
+    expect(p.ajustes.musica).toBe(0.5)
+  })
 })

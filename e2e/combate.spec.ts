@@ -87,6 +87,30 @@ test.describe('Combate', () => {
     expect(j.escalaAnims).toBe(1)
   })
 
+  test('F7: el enemigo avisa con un tinte antes de pegar, y con efectos suaves no hay congelados ni sacudidas', async ({ page }) => {
+    await abrirMundo(page, 'sophie')
+    const { id } = await cerca(page, 'calabaza', 0)
+    // se deja que la calabaza ataque: en algún momento está preparando el golpe
+    let vio = false
+    for (let i = 0; i < 80 && !vio; i++) {
+      await gancho(page, 'curarTodo')
+      await avanzar(page, 0.1)
+      vio = (await enemigos(page)).some((e) => (e as En & { anticipa: boolean }).id === id && (e as En & { anticipa: boolean }).anticipa)
+    }
+    expect(vio).toBe(true)
+    // efectos suaves: matar no congela ni sacude
+    await gancho(page, 'abrirPausa')
+    await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Pausa'), { timeout: 5_000 }).toBe(true)
+    await gancho(page, 'pausaAlternar', 'efectosSuaves')
+    await gancho(page, 'pausaContinuar')
+    await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Pausa'), { timeout: 5_000 }).toBe(false)
+    const r = await cerca(page, 'rata', 0)
+    await matar(page, r.id)
+    const imp = await gancho<{ ultimo: { pausa: number; sacude: boolean } }>(page, 'impactos')
+    expect(imp.ultimo.pausa).toBe(0)
+    expect(imp.ultimo.sacude).toBe(false)
+  })
+
   test('el enemigo marcado se persigue: la heroína camina hasta su alcance y ataca sola', async ({ page }) => {
     await abrirMundo(page, 'rick')
     const c = await gancho<{ x: number; y: number; enemigo: number }>(page, 'cercaDeEnemigo', 'calabaza', 1)

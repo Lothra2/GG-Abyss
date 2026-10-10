@@ -14,6 +14,10 @@ export interface Ajustes {
   musica: number
   efectos: number
   modoPeque: boolean
+  /** F7: sin sacudidas, destellos ni congelados (para quien se marea o se asusta) */
+  efectosSuaves: boolean
+  /** F7: las mejoras de inmersión prendidas (para comparar antes y después jugando) */
+  mejorasF7: boolean
 }
 
 export interface Partida {
@@ -54,6 +58,8 @@ export function ajustesPorDefecto(id: string): Ajustes {
     musica: 0.8,
     efectos: 0.9,
     modoPeque: MODO_PEQUE.porDefecto.includes(id),
+    efectosSuaves: false,
+    mejorasF7: true,
   }
 }
 
@@ -177,6 +183,8 @@ export function migrar(json: unknown, idEsperado?: string): Partida | null {
       musica: limitar(esNum(aj.musica) ? aj.musica : base.ajustes.musica, 0, 1),
       efectos: limitar(esNum(aj.efectos) ? aj.efectos : base.ajustes.efectos, 0, 1),
       modoPeque,
+      efectosSuaves: typeof aj.efectosSuaves === 'boolean' ? aj.efectosSuaves : false,
+      mejorasF7: typeof aj.mejorasF7 === 'boolean' ? aj.mejorasF7 : true,
     },
   }
   if (esNum(j.jefeVida)) p.jefeVida = Math.max(0, j.jefeVida)

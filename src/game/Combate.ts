@@ -48,6 +48,8 @@ export interface DepsCombate {
   centrarCamara: () => void
   /** el peso del golpe: pausa cortita y sacudida (Mundo decide cuánto) */
   alImpacto?: (tipo: TipoImpacto) => void
+  /** el golpe cuerpo a cuerpo no llegó (el blanco se alejó): se muestra el fallo */
+  alFallar?: (x: number, y: number) => void
 }
 
 interface Aura {
@@ -197,6 +199,10 @@ export class Combate {
         } else if (Math.hypot(e.x - h.x, e.y - h.y) <= this.stats.alcance + 22) {
           this.golpear(e, 1)
           if (base.impacto) this.d.proyectiles.fxEn(base.impacto, e.x, e.y - 14)
+        } else {
+          // el blanco se fue: el golpe cae en el aire delante de ella
+          const ang = Math.atan2(e.y - h.y, e.x - h.x)
+          this.d.alFallar?.(h.x + Math.cos(ang) * this.stats.alcance, h.y + Math.sin(ang) * this.stats.alcance)
         }
       },
     })
