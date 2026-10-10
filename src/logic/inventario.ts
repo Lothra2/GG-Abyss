@@ -116,3 +116,27 @@ export function normalizar(inv: Inv): Inv {
   inv.cinturon.length = BOTIN.cinturonCasillas
   return inv
 }
+
+/** De dónde sale un objeto del inventario: un hueco de la bolsa o algo puesto */
+export type OrigenInv = { tipo: 'bolsa'; i: number } | { tipo: 'equipo'; ranura: Ranura }
+
+/** Saca un objeto para soltarlo en el piso: deja el hueco vacío y devuelve qué era (o null si no había nada) */
+export function sacar(inv: Inv, o: OrigenInv): string | null {
+  if (o.tipo === 'bolsa') {
+    const id = inv.bolsa[o.i] ?? null
+    if (id) inv.bolsa[o.i] = null
+    return id
+  }
+  const id = inv.equipo[o.ranura] ?? null
+  if (id) delete inv.equipo[o.ranura]
+  return id
+}
+
+/** Arrastrar dentro de la bolsa: el objeto va al otro hueco y lo que había ahí vuelve al primero */
+export function moverEnBolsa(inv: Inv, de: number, a: number): boolean {
+  if (de === a || de < 0 || a < 0 || de >= inv.bolsa.length || a >= inv.bolsa.length || !inv.bolsa[de]) return false
+  const x = inv.bolsa[a] ?? null
+  inv.bolsa[a] = inv.bolsa[de]!
+  inv.bolsa[de] = x
+  return true
+}

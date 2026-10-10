@@ -122,12 +122,20 @@ export interface RegenEntrada {
   vidaRegenExtra?: number
   /** si está canalizando, el maná no se regenera */
   canalizando?: boolean
+  /** segundos desde la última habilidad: con eso y sin daño, el maná vuelve rápido (calma) */
+  sinHabilidadS?: number
 }
 
-/** Regeneración: maná siempre, vida solo si pasaron 4 s sin recibir daño */
+/** Si está en calma: un rato sin recibir daño ni usar habilidades */
+export function enCalma(sinDanoS: number, sinHabilidadS = Infinity): boolean {
+  return sinDanoS >= PROGRESION.calmaTrasS && sinHabilidadS >= PROGRESION.calmaTrasS
+}
+
+/** Regeneración: maná siempre (lento en pelea, rápido en calma), vida solo si pasaron 4 s sin recibir daño */
 export function regenerar(e: RegenEntrada): { vida: number; mana: number } {
   let { vida, mana } = e
-  if (!e.canalizando) mana = Math.min(e.manaMax, mana + PROGRESION.manaRegenPorSeg * e.dt)
+  const ritmo = enCalma(e.sinDanoS, e.sinHabilidadS) ? PROGRESION.manaRegenCalmaPorSeg : PROGRESION.manaRegenPorSeg
+  if (!e.canalizando) mana = Math.min(e.manaMax, mana + ritmo * e.dt)
   if (vida > 0 && e.sinDanoS >= PROGRESION.vidaRegenTrasDanoS) vida = Math.min(e.vidaMax, vida + (PROGRESION.vidaRegenPorSeg + (e.vidaRegenExtra ?? 0)) * e.dt)
   return { vida, mana }
 }

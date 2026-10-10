@@ -8,7 +8,7 @@ describe('Recargas', () => {
   })
   it('usar gasta maná y arranca la recarga', () => {
     const r = new Recargas('amazona')
-    expect(r.usar(0, 30)).toBe(24)
+    expect(r.usar(0, 30)).toBe(30 - HABILIDADES.amazona[0].mana)
     expect(r.puede(0, 30)).toBe('recargando')
     expect(r.restante(0)).toBe(4)
     r.tick(3.9)

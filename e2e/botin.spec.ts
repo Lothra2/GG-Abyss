@@ -209,6 +209,70 @@ test.describe('Botín', () => {
     await sinErrores(errores)
   })
 
+  test('arrastrar a otro hueco los acomoda, y arrastrar afuera lo deja en el piso para volver a recogerlo', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'rick')
+    for (const id of ['sword_1', 'm_espada_cruel']) await gancho(page, 'darObjeto', id)
+    await page.keyboard.press('i')
+    await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Inventario'), { timeout: 15_000 }).toBe(true)
+    const arrastrar = async (de: { x: number; y: number }, a: { x: number; y: number }) => {
+      const p0 = await aPagina(page, de.x, de.y)
+      const p1 = await aPagina(page, a.x, a.y)
+      await page.mouse.move(p0.x, p0.y)
+      await page.mouse.down()
+      for (let k = 1; k <= 6; k++) await page.mouse.move(p0.x + ((p1.x - p0.x) * k) / 6, p0.y + ((p1.y - p0.y) * k) / 6)
+      await page.mouse.up()
+    }
+    const centro = (c: Casilla) => ({ x: c.x + c.w / 2, y: c.y + c.h / 2 })
+    // a otro hueco de la bolsa
+    let ui = await gancho<{ casillas: Casilla[]; panel: { x: number; y: number; w: number; h: number } }>(page, 'inventarioUI')
+    const espada = ui.casillas.find((c) => c.tipo === 'bolsa' && c.id === 'sword_1')!
+    const vacio = ui.casillas.find((c) => c.tipo === 'bolsa' && !c.id && c.i > espada.i + 2)!
+    await arrastrar(centro(espada), centro(vacio))
+    await expect.poll(async () => (await inv(page)).bolsa[vacio.i], { timeout: 10_000 }).toBe('sword_1')
+    expect((await inv(page)).bolsa[espada.i]).toBeNull()
+    // no se equipó por arrastrar ni se cerró la mochila
+    expect((await inv(page)).equipo.arma).toBeUndefined()
+    expect((await gancho<string[]>(page, 'escenasActivas')).includes('Inventario')).toBe(true)
+    // afuera de la mochila: cae al piso
+    ui = await gancho(page, 'inventarioUI')
+    const cruel = ui.casillas.find((c) => c.tipo === 'bolsa' && c.id === 'm_espada_cruel')!
+    await arrastrar(centro(cruel), { x: Math.max(4, ui.panel.x / 2), y: ui.panel.y + ui.panel.h / 2 })
+    await expect.poll(async () => (await inv(page)).bolsa.includes('m_espada_cruel'), { timeout: 10_000 }).toBe(false)
+    // soltar afuera no cierra la mochila
+    expect((await gancho<string[]>(page, 'escenasActivas')).includes('Inventario')).toBe(true)
+    await gancho(page, 'cerrarInventario')
+    await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Inventario'), { timeout: 10_000 }).toBe(false)
+    const d = (await botin(page)).drops.find((q) => q.id === 'm_espada_cruel')!
+    expect(d).toBeTruthy()
+    const h = await gancho<{ x: number; y: number }>(page, 'pos')
+    // cae cerca, pero no encima (si no, se recogería sola enseguida)
+    expect(Math.hypot(d.x - h.x, d.y - h.y)).toBeGreaterThan(26)
+    expect(Math.hypot(d.x - h.x, d.y - h.y)).toBeLessThan(120)
+    await avanzar(page, 2)
+    expect((await inv(page)).bolsa.includes('m_espada_cruel')).toBe(false)
+    // pasando por encima vuelve a la bolsa
+    await gancho(page, 'teleport', d.x, d.y)
+    await avanzar(page, 1)
+    await expect.poll(async () => (await inv(page)).bolsa.includes('m_espada_cruel'), { timeout: 10_000 }).toBe(true)
+    await sinErrores(errores)
+  })
+
+  test('soltar algo puesto lo saca del equipo y el daño vuelve a la base', async ({ page }) => {
+    await abrirMundo(page, 'rick')
+    const base = await combate(page)
+    await gancho(page, 'darObjeto', 'sword_1')
+    await gancho(page, 'equipar', (await inv(page)).bolsa.indexOf('sword_1'))
+    expect((await combate(page)).danoMax).not.toBe(base.danoMax)
+    await page.keyboard.press('i')
+    await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Inventario'), { timeout: 15_000 }).toBe(true)
+    const ui = await gancho<{ casillas: Casilla[]; panel: { x: number; y: number; w: number; h: number } }>(page, 'inventarioUI')
+    expect(await gancho(page, 'arrastrarCasilla', 'equipo', 'arma', Math.max(2, ui.panel.x / 2), ui.panel.y + 10)).toBe(true)
+    await expect.poll(async () => (await inv(page)).equipo.arma, { timeout: 10_000 }).toBeUndefined()
+    expect((await combate(page)).danoMax).toBe(base.danoMax)
+    expect((await botin(page)).drops.some((q) => q.id === 'sword_1')).toBe(true)
+  })
+
   test('la interfaz del inventario cabe en la vista y no tapa lo que no debe', async ({ page }) => {
     await abrirMundo(page, 'alana')
     await gancho(page, 'abrirInventario')

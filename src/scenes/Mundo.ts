@@ -19,7 +19,7 @@ import { fx, juego } from '../logic/azar'
 import { statsDe } from '../logic/stats'
 import { leerCatalogo, type Catalogo } from '../logic/catalogo'
 import { tirarBotin, type Fuente, type Premio } from '../logic/botin'
-import { equipar as equiparInv, desequipar as desequiparInv, normalizar, recoger as recogerInv, type Inv } from '../logic/inventario'
+import { equipar as equiparInv, desequipar as desequiparInv, moverEnBolsa, normalizar, recoger as recogerInv, sacar as sacarInv, type Inv, type OrigenInv } from '../logic/inventario'
 import { nivelArmaduraThor } from '../logic/equipo'
 import { almacenDelNavegador, borrarPartida, cambiarDeMundo, cargarOCrear, guardarPartida, type Almacen, type Partida } from '../logic/guardado'
 import { MundoVista } from '../game/MundoVista'
@@ -131,6 +131,10 @@ export class Mundo extends Phaser.Scene {
   private anillo: (() => void)[] = []
   private portalJefe: { s: Phaser.GameObjects.Sprite; x: number; y: number; luz: string } | null = null
   private saliendoAContinuara = false
+  /** Cruzando un portal: la partida ya puede estar en el otro mundo, el HUD no la lee */
+  get saliendo(): boolean {
+    return this.saliendoAContinuara
+  }
   private piedrasEncendidas = 0
   private timersPiedras: Phaser.Time.TimerEvent[] = []
   private musicaVictoriaPuesta = false
@@ -917,6 +921,26 @@ export class Mundo extends Phaser.Scene {
     const res = desequiparInv(this.inv(), r)
     if (res.ok) this.alCambioInventario()
     return res
+  }
+
+  /** Soltar desde la mochila: el objeto cae al piso un paso delante de la heroína (y se puede volver a recoger) */
+  soltarDeInventario(o: OrigenInv): boolean {
+    const id = sacarInv(this.inv(), o)
+    if (!id) return false
+    this.alCambioInventario()
+    const h = this.heroina
+    const largo = Math.hypot(h.vx, h.vy) || 1
+    const [ux, uy] = h.vx || h.vy ? [h.vx / largo, h.vy / largo] : [0, 1]
+    const p = this.grilla.puntoLibreCerca(h.x + ux * 46, h.y + uy * 34, 8, 90) ?? { x: h.x + 46, y: h.y }
+    this.botin.soltar(id, p.x, p.y)
+    return true
+  }
+
+  /** Arrastrar en la mochila: cambia dos huecos de la bolsa */
+  moverEnLaBolsa(de: number, a: number): boolean {
+    const ok = moverEnBolsa(this.inv(), de, a)
+    if (ok) this.guardar()
+    return ok
   }
 
   /** PC: Q y E son las dos habilidades (W ya camina), 1 a 4 son las pociones del cinturón */

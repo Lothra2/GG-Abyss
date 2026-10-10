@@ -13,6 +13,8 @@ import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import type { Mundo } from './Mundo'
 
 const MANTENER_MS = 420
+/** lo que hay que mover el dedo para que el toque pase a ser un arrastre */
+const ARRASTRE_PX = 10
 const FILAS_NUMERO = { blanco: 0, amarillo: 1, rojo: 2, verde: 3, azul: 4 } as const
 const CARACTERES = '0123456789+-!'
 
@@ -41,7 +43,9 @@ export class Inventario extends Phaser.Scene {
   private casillas: Casilla[] = []
   private tooltip: Phaser.GameObjects.Container | null = null
   private tooltipInfo: { nombre: string; lineas: string[]; dif: { etiqueta: string; delta: number }[] } | null = null
-  private pulsado: { c: Casilla; timer: Phaser.Time.TimerEvent; largo: boolean } | null = null
+  private pulsado: { c: Casilla; timer: Phaser.Time.TimerEvent; largo: boolean; x0: number; y0: number } | null = null
+  /** un objeto que se arrastra: afuera de la mochila cae al piso, sobre otra casilla se acomoda */
+  private arrastre: { c: Casilla; icono: Phaser.GameObjects.Image; aviso: Phaser.GameObjects.BitmapText } | null = null
   private escala = 1
   private origen = { x: 0, y: 0 }
   private cerrar!: ReturnType<typeof crearBoton>
@@ -56,23 +60,25 @@ export class Inventario extends Phaser.Scene {
     const m = manifestDe(this)
     this.layout = (m.ui.inventario as { layout: LayoutInventario }).layout
     this.pulsado = null
+    this.arrastre = null
     this.tooltip = null
     Bloqueo.instalar(this)
     this.velo = this.add.rectangle(0, 0, 10, 10, 0x070a12, 0.72).setOrigin(0, 0).setInteractive()
     this.velo.on('pointerdown', (p: Phaser.Input.Pointer) => Bloqueo.tomar(p.id))
     this.velo.on('pointerup', (p: Phaser.Input.Pointer) => {
-      // un toque fuera del panel cierra
-      if (!this.dentroDelPanel(p.x, p.y)) this.salir()
+      // un toque fuera del panel cierra (soltar algo arrastrado afuera no)
+      if (!this.arrastre && !this.dentroDelPanel(p.x, p.y)) this.salir()
     })
     this.panel = this.add.container(0, 0)
     this.panel.add(this.add.image(0, 0, K.ui('inventario')).setOrigin(0, 0))
     this.cerrar = crearBoton(this, { x: 0, y: 0, icono: 'icono_cerrar', alToque: () => this.salir(), origen: [1, 0] })
     this.input.keyboard?.on('keydown-ESC', () => this.salir())
     this.input.keyboard?.on('keydown-I', () => this.salir())
-    this.input.on('pointerup', () => this.soltar())
-    this.input.on('pointerupoutside', () => this.soltar())
+    this.input.on('pointermove', (p: Phaser.Input.Pointer) => this.mover(p))
+    this.input.on('pointerup', (p: Phaser.Input.Pointer) => this.soltar(p))
+    this.input.on('pointerupoutside', (p: Phaser.Input.Pointer) => this.soltar(p))
 
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => quitarGanchos('inventarioUI', 'cerrarInventario', 'tooltipDe', 'tocarCasilla'))
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => quitarGanchos('inventarioUI', 'cerrarInventario', 'tooltipDe', 'tocarCasilla', 'arrastrarCasilla'))
     alCambiarEscala(this, () => this.acomodar())
     agregarGanchos({
       inventarioUI: () => ({
@@ -88,6 +94,14 @@ export class Inventario extends Phaser.Scene {
         const c = this.casillas.find((q) => q.origen.tipo === tipo && ('i' in q.origen ? q.origen.i === clave : (q.origen as { ranura: string }).ranura === clave))
         if (c) this.mostrarTooltip(c)
         return !!c && !!this.tooltip
+      }) as never,
+      arrastrarCasilla: ((tipo: 'bolsa' | 'equipo', clave: string | number, px: number, py: number) => {
+        const c = this.casillas.find((q) => q.origen.tipo === tipo && ('i' in q.origen ? q.origen.i === clave : (q.origen as { ranura: string }).ranura === clave))
+        if (!c || !c.id) return false
+        const it = itemDe(this.mundo.cat, c.id)!
+        this.arrastre = { c, icono: this.add.image(px, py, atlasDeIcono(it), frameDeIcono(it)), aviso: texto(this, 0, 0, '', 'fuente_ui', 1) }
+        this.terminarArrastre(px, py)
+        return true
       }) as never,
       tocarCasilla: ((tipo: 'bolsa' | 'equipo', clave: string | number) => {
         const c = this.casillas.find((q) => q.origen.tipo === tipo && ('i' in q.origen ? q.origen.i === clave : (q.origen as { ranura: string }).ranura === clave))
@@ -192,14 +206,66 @@ export class Inventario extends Phaser.Scene {
       this.pulsado.largo = true
       this.mostrarTooltip(c)
     })
-    this.pulsado = { c, timer, largo: false }
+    this.pulsado = { c, timer, largo: false, x0: p.x, y0: p.y }
   }
 
-  private soltar(): void {
+  /** El dedo se mueve con un objeto apretado: empieza (o sigue) el arrastre */
+  private mover(p: Phaser.Input.Pointer): void {
+    const pu = this.pulsado
+    if (!pu || !p.isDown) return
+    if (!this.arrastre) {
+      if (Math.hypot(p.x - pu.x0, p.y - pu.y0) < ARRASTRE_PX) return
+      if (pu.c.origen.tipo === 'cinturon') return
+      const it = itemDe(this.mundo.cat, pu.c.id)
+      if (!it || !this.textures.exists(atlasDeIcono(it))) return
+      pu.timer.remove()
+      this.cerrarTooltip()
+      const icono = this.add.image(p.x, p.y, atlasDeIcono(it), frameDeIcono(it)).setScale(this.escala).setDepth(1100).setAlpha(0.9)
+      const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+      const aviso = texto(this, Math.round(this.scale.width / 2), Math.max(10, Math.round(this.origen.y - 12 * esc)), 'Suéltalo afuera para dejarlo en el piso', 'fuente_ui', esc, { origen: [0.5, 0.5], tinte: 0xd8d2c4, profundidad: 1100 })
+      this.arrastre = { c: pu.c, icono, aviso }
+      this.sound.play(K.aud('click'), { volume: 0.4 })
+    }
+    this.arrastre.icono.setPosition(Math.round(p.x), Math.round(p.y))
+    this.arrastre.aviso.setTint(this.dentroDelPanel(p.x, p.y) ? 0xd8d2c4 : 0xffd27a)
+  }
+
+  /** Termina un arrastre: afuera de la mochila cae al piso, sobre una casilla se acomoda o se pone */
+  private terminarArrastre(px: number, py: number): void {
+    const a = this.arrastre!
+    this.arrastre = null
+    a.icono.destroy()
+    a.aviso.destroy()
+    const o = a.c.origen
+    if (o.tipo === 'cinturon') return
+    const m = this.mundo
+    if (!this.dentroDelPanel(px, py)) {
+      if (m.soltarDeInventario(o)) {
+        this.sound.play(K.aud('recoger'), { volume: 0.6, rate: 0.7 })
+        this.avisar('Quedó en el piso', 0xffd27a)
+      }
+      this.redibujar()
+      return
+    }
+    const destino = this.casillas.find((c) => px >= c.x && py >= c.y && px < c.x + c.w && py < c.y + c.h)
+    if (!destino || destino === a.c) return
+    let ok = false
+    if (o.tipo === 'bolsa' && destino.origen.tipo === 'bolsa') ok = m.moverEnLaBolsa(o.i, destino.origen.i)
+    else if (o.tipo === 'bolsa' && destino.origen.tipo === 'equipo') ok = m.equiparDeBolsa(o.i).ok
+    else if (o.tipo === 'equipo' && destino.origen.tipo === 'bolsa') ok = m.desequiparRanura(o.ranura).ok
+    if (ok) this.sound.play(K.aud('recoger'), { volume: 0.6 })
+    this.redibujar()
+  }
+
+  private soltar(ptr?: Phaser.Input.Pointer): void {
     const p = this.pulsado
     if (!p) return
     p.timer.remove()
     this.pulsado = null
+    if (this.arrastre) {
+      this.terminarArrastre(ptr?.x ?? p.x0, ptr?.y ?? p.y0)
+      return
+    }
     if (p.largo) {
       this.cerrarTooltip()
       return
@@ -220,11 +286,11 @@ export class Inventario extends Phaser.Scene {
     this.redibujar()
   }
 
-  private avisar(t: string): void {
+  private avisar(t: string, tinte = 0xff8a8a): void {
     this.mensaje?.destroy()
     const e = escalaDe(this.game)
     const esc = e.zoom >= 3 ? 1 : 2
-    this.mensaje = texto(this, Math.round(this.scale.width / 2), Math.round(this.origen.y + 24 * this.escala), t, 'fuente_ui', esc, { origen: [0.5, 0.5], tinte: 0xff8a8a, profundidad: 900 })
+    this.mensaje = texto(this, Math.round(this.scale.width / 2), Math.round(this.origen.y + 24 * this.escala), t, 'fuente_ui', esc, { origen: [0.5, 0.5], tinte, profundidad: 900 })
     this.tweens.add({ targets: this.mensaje, alpha: 0, delay: 900, duration: 500, onComplete: () => this.mensaje?.destroy() })
   }
 
@@ -278,6 +344,11 @@ export class Inventario extends Phaser.Scene {
         y += lab.displayHeight + 3
       }
     }
+    // cómo se suelta: así se descubre sin explicarlo
+    y += 2
+    const pista = texto(this, 8, y, 'Arrástralo afuera para soltarlo', 'fuente_ui', esc, { origen: [0, 0], ancho: ancho - 16, alinear: 'izq', tinte: 0x8a8698 })
+    cont.add(pista)
+    y += pista.displayHeight + 2
     const alto = y + 6
     cont.addAt(this.add.nineslice(0, 0, K.ui('tooltip'), undefined, ancho, alto, 6, 6, 6, 6).setOrigin(0, 0), 0)
     // junto a la casilla: a la derecha si cabe y si no a la izquierda, sin salirse de la vista

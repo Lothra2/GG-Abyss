@@ -3,7 +3,7 @@ import { Azar } from '../azar'
 import { leerJson } from '../../../scripts/lib/verificacion'
 import { esEquipable, itemDe, leerCatalogo, ranuraDe } from '../catalogo'
 import { aporteDe, bonosDeEquipo, bonosDeSets, comparar, nivelArmaduraThor, piezasDeSet } from '../equipo'
-import { bolsaLlena, desequipar, equipar, normalizar, recoger, sacarDelCinturon, beber, type Inv } from '../inventario'
+import { bolsaLlena, desequipar, equipar, moverEnBolsa, normalizar, recoger, sacar, sacarDelCinturon, beber, type Inv } from '../inventario'
 import { legendarioDe, tablaLegendarios, tablaMagicos, tablaNormal, tablaRaros, tamanoOro, tirarBotin } from '../botin'
 import { statsDe } from '../stats'
 import { BOTIN } from '../../config/balance'
@@ -278,5 +278,29 @@ describe('guardar y cargar el inventario', () => {
     expect(r?.bolsa[2]).toBe('m_anillo_vida')
     expect(r?.cinturon[3]).toBe('potion_mana_minor')
     expect(r?.rompibles).toEqual(['rompible:144:2448'])
+  })
+})
+
+describe('soltar y acomodar', () => {
+  it('sacar deja el hueco vacío y devuelve el objeto, de la bolsa o de lo puesto', () => {
+    const inv = invVacio()
+    recoger(inv, cat, 'sword_1')
+    expect(sacar(inv, { tipo: 'bolsa', i: 0 })).toBe('sword_1')
+    expect(inv.bolsa[0]).toBeNull()
+    expect(sacar(inv, { tipo: 'bolsa', i: 0 })).toBeNull()
+    inv.equipo.arma = 'sword_1'
+    expect(sacar(inv, { tipo: 'equipo', ranura: 'arma' })).toBe('sword_1')
+    expect(inv.equipo.arma).toBeUndefined()
+    expect(sacar(inv, { tipo: 'equipo', ranura: 'arma' })).toBeNull()
+  })
+  it('mover en la bolsa intercambia, y de un hueco vacío no hace nada', () => {
+    const inv = invVacio()
+    inv.bolsa[0] = 'sword_1'
+    inv.bolsa[3] = 'potion_health_minor'
+    expect(moverEnBolsa(inv, 0, 3)).toBe(true)
+    expect([inv.bolsa[0], inv.bolsa[3]]).toEqual(['potion_health_minor', 'sword_1'])
+    expect(moverEnBolsa(inv, 1, 2)).toBe(false)
+    expect(moverEnBolsa(inv, 0, 0)).toBe(false)
+    expect(moverEnBolsa(inv, 0, inv.bolsa.length)).toBe(false)
   })
 })

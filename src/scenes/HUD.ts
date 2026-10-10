@@ -280,7 +280,8 @@ export class HUD extends Phaser.Scene {
   /** Cuando cambia el objetivo el chip late una vez para que se note */
   private actualizarObjetivo(): void {
     const p = this.mundo.partida
-    if (!p) return
+    // cruzando un portal la partida ya cambió de mundo: el chip se queda como estaba
+    if (!p || this.mundo.saliendo) return
     const r = this.mundo.resumenDescubrimiento
     const mc = this.mundo.mecanismos
     const o = objetivoActual({ nivel: p.nivel, jefeVencido: p.jefeVencido, descubiertas: r.zonas, totalZonas: r.totalZonas, hayJefe: !!this.mundo.jefe || p.jefeVencido, ...(mc?.hay ? { brasas: { tiene: p.brasas.length, total: mc.total } } : {}) })

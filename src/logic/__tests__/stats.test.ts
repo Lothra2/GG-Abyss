@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ganarXp, fraccionXp, regenerar, statsDe, claseDe } from '../stats'
-import { CLASES, PROGRESION, xpParaSubir } from '../../config/balance'
+import { CLASES, HABILIDADES, PROGRESION, xpParaSubir } from '../../config/balance'
 
 describe('statsDe', () => {
   it('a nivel 1 es la tabla de la clase', () => {
@@ -60,8 +60,26 @@ describe('XP y niveles', () => {
 
 describe('regeneración', () => {
   const base = { vida: 10, mana: 5, vidaMax: 60, manaMax: 30, dt: 1 }
-  it('el maná vuelve 3 por segundo', () => {
-    expect(regenerar({ ...base, sinDanoS: 0 }).mana).toBeCloseTo(8)
+  it('en pelea el maná vuelve lento y en calma rápido', () => {
+    expect(regenerar({ ...base, sinDanoS: 0 }).mana).toBeCloseTo(5 + PROGRESION.manaRegenPorSeg)
+    // sin daño pero con una habilidad recién usada sigue siendo pelea
+    expect(regenerar({ ...base, sinDanoS: 9, sinHabilidadS: 1 }).mana).toBeCloseTo(5 + PROGRESION.manaRegenPorSeg)
+    expect(regenerar({ ...base, sinDanoS: 9, sinHabilidadS: 9 }).mana).toBeCloseTo(5 + PROGRESION.manaRegenCalmaPorSeg)
+    expect(PROGRESION.manaRegenCalmaPorSeg).toBeGreaterThan(PROGRESION.manaRegenPorSeg)
+  })
+  it('el maná se nota: usar una habilidad cada vez que recarga vacía la barra, y en calma se llena rápido', () => {
+    for (const clase of Object.keys(HABILIDADES) as (keyof typeof HABILIDADES)[]) {
+      const s = statsDe(clase, 1)
+      for (const h of HABILIDADES[clase]) {
+        if (h.mana <= 0) continue
+        // lo que gasta es más de lo que vuelve en pelea mientras recarga
+        expect(h.mana, `${h.id}`).toBeGreaterThan(PROGRESION.manaRegenPorSeg * h.recarga)
+        // con la barra llena alcanza para usarla al menos dos veces seguidas
+        expect(s.manaMax, `${h.id}`).toBeGreaterThanOrEqual(h.mana * 2)
+      }
+      // en calma, la barra entera del nivel máximo vuelve en menos de medio minuto
+      expect(statsDe(clase, PROGRESION.nivelMax).manaMax / PROGRESION.manaRegenCalmaPorSeg, clase).toBeLessThanOrEqual(30)
+    }
   })
   it('la vida espera 4 s sin daño y luego sube 5 por segundo', () => {
     expect(regenerar({ ...base, sinDanoS: 3.9 }).vida).toBe(10)

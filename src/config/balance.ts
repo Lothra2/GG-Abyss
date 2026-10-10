@@ -37,7 +37,11 @@ export const PROGRESION = {
   vidaPorNivel: 10,
   manaPorNivel: 5,
   danoPorNivelPct: 8,
-  manaRegenPorSeg: 3,
+  /** en pelea el maná vuelve lento: las habilidades se eligen y las pociones azules sirven */
+  manaRegenPorSeg: 1,
+  /** en calma (sin recibir golpes ni usar habilidades un rato) vuelve rápido, para no esperar explorando */
+  manaRegenCalmaPorSeg: 4,
+  calmaTrasS: 4,
   vidaRegenPorSeg: 5,
   vidaRegenTrasDanoS: 4,
   nivelMax: 10,
@@ -66,20 +70,20 @@ export interface HabilidadBalance {
 
 export const HABILIDADES: Record<ClaseId, [HabilidadBalance, HabilidadBalance]> = {
   amazona: [
-    { id: 'lluvia_flechas', nombre: 'Lluvia de flechas', anim: 'shoot_bow', mana: 6, recarga: 4, params: { flechas: 3, abanicoGrados: 20, danoPct: 80 } },
+    { id: 'lluvia_flechas', nombre: 'Lluvia de flechas', anim: 'shoot_bow', mana: 10, recarga: 4, params: { flechas: 3, abanicoGrados: 20, danoPct: 80 } },
     { id: 'esquiva', nombre: 'Esquiva', anim: 'dodge', mana: 0, recarga: 3, params: { distancia: 90, duracion: 0.35 } },
   ],
   druida: [
-    { id: 'llamar_thor', nombre: 'Llamar a Thor', anim: 'summon', mana: 10, recarga: 10, fx: 'escudo_de_thor', params: { escudoS: 4, escudoBase: 30, escudoPorNivel: 5, mordidaPct: 300 } },
-    { id: 'curar', nombre: 'Curar', anim: 'cast', mana: 12, recarga: 8, fx: 'curar', params: { curaPct: 35 } },
+    { id: 'llamar_thor', nombre: 'Llamar a Thor', anim: 'summon', mana: 15, recarga: 10, fx: 'escudo_de_thor', params: { escudoS: 4, escudoBase: 30, escudoPorNivel: 5, mordidaPct: 300 } },
+    { id: 'curar', nombre: 'Curar', anim: 'cast', mana: 15, recarga: 8, fx: 'curar', params: { curaPct: 35 } },
   ],
   paladin: [
-    { id: 'torbellino', nombre: 'Torbellino', anim: 'whirlwind', mana: 8, recarga: 5, params: { duracion: 1.2, radio: 60, cadaS: 0.3, danoPct: 70 } },
+    { id: 'torbellino', nombre: 'Torbellino', anim: 'whirlwind', mana: 10, recarga: 5, params: { duracion: 1.2, radio: 60, cadaS: 0.3, danoPct: 70 } },
     { id: 'bloqueo', nombre: 'Bloqueo', anim: 'block_shield', mana: 0, recarga: 4, params: { duracion: 1.5, reduccionPct: 80 } },
   ],
   hechicera: [
-    { id: 'nova_fuego', nombre: 'Nova de fuego', anim: 'nova', mana: 12, recarga: 5, fx: 'nova_fuego', params: { radio: 110, danoPct: 150 } },
-    { id: 'rayo_canalizado', nombre: 'Rayo canalizado', anim: 'channel', mana: 0, recarga: 0, fx: 'proyectil_arcano', params: { manaPorSeg: 3, cadaS: 0.2, danoPct: 50 } },
+    { id: 'nova_fuego', nombre: 'Nova de fuego', anim: 'nova', mana: 18, recarga: 5, fx: 'nova_fuego', params: { radio: 110, danoPct: 150 } },
+    { id: 'rayo_canalizado', nombre: 'Rayo canalizado', anim: 'channel', mana: 0, recarga: 0, fx: 'proyectil_arcano', params: { manaPorSeg: 6, cadaS: 0.2, danoPct: 50 } },
   ],
 }
 

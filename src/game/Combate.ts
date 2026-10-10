@@ -79,6 +79,8 @@ export class Combate {
   invulnerableS = 0
   bloqueoS = 0
   sinDanoS = 99
+  /** segundos desde la última habilidad que gastó maná (para la calma del maná) */
+  sinHabilidadS = 99
   caido = false
   rescates = 0
   enRescate = false
@@ -465,6 +467,7 @@ export class Combate {
     const resto = this.recargas.usar(i, this.partida.mana)
     if (resto === null) return
     this.partida.mana = resto
+    if (hab.mana > 0) this.sinHabilidadS = 0
     this.d.escena.game.events.emit('habilidad-usada', { id: hab.id })
     this.ejecutar(hab.id)
   }
@@ -642,6 +645,7 @@ export class Combate {
     this.invulnerableS = Math.max(0, this.invulnerableS - dt)
     this.bloqueoS = Math.max(0, this.bloqueoS - dt)
     this.sinDanoS += dt
+    this.sinHabilidadS = this.canalizando ? 0 : this.sinHabilidadS + dt
     if (this.escudoS > 0) {
       this.escudoS -= dt
       if (this.escudoS <= 0) {
@@ -652,7 +656,7 @@ export class Combate {
     }
 
     // regeneración y pociones
-    const r = regenerar({ vida: p.vida, mana: p.mana, vidaMax: this.stats.vidaMax, manaMax: this.stats.manaMax, sinDanoS: this.sinDanoS, dt, canalizando: this.canalizando, vidaRegenExtra: this.stats.vidaRegen })
+    const r = regenerar({ vida: p.vida, mana: p.mana, vidaMax: this.stats.vidaMax, manaMax: this.stats.manaMax, sinDanoS: this.sinDanoS, sinHabilidadS: this.sinHabilidadS, dt, canalizando: this.canalizando, vidaRegenExtra: this.stats.vidaRegen })
     p.vida = r.vida
     p.mana = r.mana
     if (this.curacion) {
