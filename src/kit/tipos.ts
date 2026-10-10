@@ -10,6 +10,9 @@ export interface AnimHoja {
   cuadros: number
   fps: number
   loop: boolean
+  /** Optional Pixel Forja Premium v1 metadata. Old kits have neither field. */
+  eventos?: { tipo: 'foot_contact' | 'impact' | 'release'; fase: number; pie?: 'near' | 'far' }[]
+  locomocion?: { unidades_ciclo: number }
 }
 
 export interface AnimFx extends AnimHoja {
@@ -23,6 +26,7 @@ export interface Personaje {
   retrato?: string
   celda: number
   pivote: [number, number]
+  perfil_movimiento?: 'premium-v1'
   desde_estudio?: boolean
   anims: Record<string, AnimHoja>
 }

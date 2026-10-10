@@ -8,6 +8,7 @@ import { DIRECCIONES, indiceDireccion } from '../logic/direccion'
 import { COMBATE } from '../config/balance'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
+import { Cadencia } from '../logic/cadencia'
 
 export type EstadoHeroina = 'idle' | 'walk' | 'run'
 
@@ -51,6 +52,8 @@ export class Heroina {
   private corriendo = false
   private teclado: { x: number; y: number } | null = null
   private animActual = ''
+  private cadencia = new Cadencia()
+  private estadoCadencia: EstadoHeroina = 'idle'
   /** tiempo sin avanzar con orden de camino, para recalcular o rendirse */
   private trabadaS = 0
   /** movimiento temporal que otra cosa le impone (esquiva, embestida): px/s */
@@ -78,6 +81,7 @@ export class Heroina {
     this.sombra = new Sombra(escena, 22)
     this.sprite.on(Phaser.Animations.Events.ANIMATION_UPDATE, (_a: unknown, frame: Phaser.Animations.AnimationFrame) => {
       if (this.estado === 'idle') return
+      if (this.personaje.anims[this.estado]?.locomocion) return
       // los pies tocan en los cuadros 1 y 5 de 8
       if (frame.index % 4 === 1) this.ev.paso?.(this.x, this.y, this.estado === 'run')
     })
@@ -117,8 +121,11 @@ export class Heroina {
     const dur = op.dur ?? def.cuadros / def.fps
     this.parar()
     this.estado = 'idle'
-    this.accionActual = { resta: dur, golpeEn: dur * (op.fraccion ?? 0.5), enGolpe: op.enGolpe, alTerminar: op.alTerminar, interrumpible: op.interrumpible ?? false, anim }
+    const impact = def.eventos?.find((e) => e.tipo === 'impact' || e.tipo === 'release')?.fase
+    this.accionActual = { resta: dur, golpeEn: dur * (1 - (impact ?? op.fraccion ?? 0.5)), enGolpe: op.enGolpe, alTerminar: op.alTerminar, interrumpible: op.interrumpible ?? false, anim }
     this.sprite.play(key)
+    this.sprite.anims.timeScale = Number.isFinite(dur) && dur > 0 ? (def.cuadros / def.fps) / dur : 1
+    this.cadencia.reset()
     this.animActual = key
     return true
   }
@@ -128,12 +135,14 @@ export class Heroina {
     const a = this.accionActual
     if (!a) return
     this.accionActual = null
+    this.sprite.anims.timeScale = 1
     this.aplicarAnim(true)
     a.alTerminar?.()
   }
 
   private cancelarAccion(): void {
     this.accionActual = null
+    this.sprite.anims.timeScale = 1
   }
 
   /** Un destello de color (daño recibido) */
@@ -209,6 +218,8 @@ export class Heroina {
 
   teleport(x: number, y: number): void {
     this.accionActual = null
+    this.sprite.anims.timeScale = 1
+    this.cadencia.reset()
     this.forzado = null
     this.x = x
     this.y = y
@@ -245,6 +256,7 @@ export class Heroina {
       }
       if (ac.resta <= 0 && this.accionActual === ac) {
         this.accionActual = null
+        this.sprite.anims.timeScale = 1
         this.aplicarAnim(true)
         ac.alTerminar?.()
       }
@@ -254,6 +266,7 @@ export class Heroina {
     let vx = 0
     let vy = 0
     let movio = false
+    const oldX = this.x, oldY = this.y
     const c = { x: this.x, y: this.y, radio: RADIO_HEROINA }
 
     if (this.forzado) {
@@ -302,7 +315,18 @@ export class Heroina {
       this.quietaS += dt
     }
 
+    if (this.estado !== this.estadoCadencia) {
+      this.cadencia.reset()
+      this.estadoCadencia = this.estado
+    }
     this.aplicarAnim(false)
+    const movement = this.cadencia.avanzar(Math.hypot(this.x - oldX, this.y - oldY), this.personaje.anims[this.estado])
+    if (movement) {
+      this.sprite.anims.pause()
+      const def = this.personaje.anims[this.estado]!
+      this.sprite.setFrame(this.dir * def.cuadros + movement.frame)
+      for (let i = 0; i < movement.contacts; i++) this.ev.paso?.(this.x, this.y, this.estado === 'run')
+    }
     this.colocar()
   }
 
