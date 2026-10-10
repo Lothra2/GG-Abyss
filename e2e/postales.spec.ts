@@ -168,3 +168,80 @@ test('captura la pelea, la victoria y Continuará', async ({ browser }) => {
     await ctx.close()
   }
 })
+
+/** F6: lo nuevo. La tienda, las huellas de Thor, el álbum, la flecha guía y el cine del jefe */
+test('captura la tienda, el olfato de Thor, el álbum, la flecha guía y el cine del jefe', async ({ browser }) => {
+  test.setTimeout(400_000)
+  mkdirSync(carpeta, { recursive: true })
+  const vistas = [
+    { sufijo: '', ctx: { viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 } },
+    { sufijo: '_tablet', ctx: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
+  ]
+  for (const v of vistas) {
+    const ctx = await browser.newContext(v.ctx)
+    const page = await ctx.newPage()
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'matarEnemigos')
+    await page.waitForTimeout(3500)
+    // Thor olfatea: huellas doradas hacia un cofre
+    await gancho(page, 'olfatear')
+    await gancho(page, 'avanzar', 1.6)
+    await page.waitForTimeout(300)
+    await page.screenshot({ path: join(carpeta, `olfato${v.sufijo}.png`) })
+    // la tienda de la fogata con oro para comprar algo
+    await gancho(page, 'darOro', 60)
+    const f = (await gancho<{ tipo: string; llave: string; parada: { x: number; y: number } }[]>(page, 'objetivos')).find((o) => o.tipo === 'fogata')!
+    await gancho(page, 'teleport', f.parada.x, f.parada.y + 10)
+    await gancho(page, 'usarObjetivo', f.llave)
+    await gancho(page, 'avanzar', 1)
+    await page.waitForTimeout(1200)
+    await page.screenshot({ path: join(carpeta, `tienda${v.sufijo}.png`) })
+    await gancho(page, 'cerrarTienda')
+    // el álbum con algunas postales pegadas
+    for (const n of ['cascada_y_vado', 'puente_del_trol', 'abuelo_roble', 'lago_espejo']) {
+      await gancho(page, 'irAPostal', n)
+      await gancho(page, 'avanzar', 0.5)
+    }
+    await gancho(page, 'abrirAlbum')
+    await page.waitForTimeout(1000)
+    await page.screenshot({ path: join(carpeta, `album${v.sufijo}.png`) })
+    await gancho(page, 'albumTocar', 'cascada_y_vado')
+    await page.waitForTimeout(600)
+    await page.screenshot({ path: join(carpeta, `album_postal${v.sufijo}.png`) })
+    await gancho(page, 'cerrarAlbum')
+    // la flecha guía desde una punta del mapa
+    await gancho(page, 'irAPostal', 'claro_escondido')
+    await gancho(page, 'avanzar', 1)
+    await page.waitForTimeout(4000)
+    await gancho(page, 'forzarGuia')
+    await gancho(page, 'avanzar', 0.2)
+    await page.waitForTimeout(1500)
+    await page.screenshot({ path: join(carpeta, `flecha_guia${v.sufijo}.png`) })
+    await sinErrores(errores)
+    await ctx.close()
+
+    // el cine del jefe: la entrada, el enojo y la victoria
+    const ctx2 = await browser.newContext(v.ctx)
+    const p2 = await ctx2.newPage()
+    const err2 = vigilarErrores(p2)
+    await abrirMundo(p2, 'rick')
+    await gancho(p2, 'ponerNivel', 10)
+    await gancho(p2, 'entrarArena')
+    await gancho(p2, 'avanzar', 1)
+    await p2.waitForTimeout(400)
+    await p2.screenshot({ path: join(carpeta, `jefe_entrada${v.sufijo}.png`) })
+    await gancho(p2, 'avanzar', 2.5)
+    await gancho(p2, 'danarJefe', 650 * 0.42)
+    await gancho(p2, 'avanzar', 0.6)
+    await p2.waitForTimeout(500)
+    await p2.screenshot({ path: join(carpeta, `jefe_enojo${v.sufijo}.png`) })
+    await gancho(p2, 'avanzar', 2)
+    await gancho(p2, 'danarJefe', 9999)
+    await gancho(p2, 'avanzar', 2.4)
+    await p2.waitForTimeout(1200)
+    await p2.screenshot({ path: join(carpeta, `jefe_victoria${v.sufijo}.png`) })
+    await sinErrores(err2)
+    await ctx2.close()
+  }
+})

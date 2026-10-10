@@ -20,7 +20,7 @@ mkdirSync(raiz, { recursive: true })
 
 /** Pantallas que no son postales del mapa: se muestran aparte */
 const PANTALLAS_FIJAS = ['titulo', 'seleccion', 'pausa']
-const esPantalla = (n: string) => PANTALLAS_FIJAS.includes(n) || /^(combate_|botin_|inventario|victoria|jefe_|continuara)/.test(n)
+const esPantalla = (n: string) => PANTALLAS_FIJAS.includes(n) || /^(combate_|botin_|inventario|victoria|jefe_|continuara|tienda|olfato|album|flecha_guia|orbes)/.test(n)
 const nombres = Object.keys(manifest.mundo.postales)
 // postales que el mapa trae y el manifest todavía no (las del taller que llegan después)
 const extra = existsSync(carpetaFase)

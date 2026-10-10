@@ -693,6 +693,19 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 
 ---
 
+### F6. Pulido de jugabilidad (pedido de Rick después de F5)
+
+Cinco mejoras de alto impacto y el jefe más pro, todas con lógica pura en `src/logic` y su e2e:
+
+1. Golpes con peso (`logic/impacto.ts`, `IMPACTO`): pausa de impacto en críticos y muertes con tope por segundo, destello blanco al recibir un golpe, sacudida al matar, el crítico salta y se queda un instante.
+2. Tienda de la fogata (`logic/tienda.ts`, `TIENDA`, escena `Tienda`): tocar una fogata guarda y abre la tienda. Pociones y armaduras de Thor por oro; la armadura se le pone enseguida.
+3. Thor olfatea (`logic/olfato.ts`, `OLFATO`): tocarlo (o T) y lleva a la heroína al cofre sin abrir más cercano, con huellas doradas, esperándola por tramos.
+4. Álbum de postales (`album()` en `logic/descubrimiento.ts`, escena `Album`): desde los contadores del HUD o la pausa. Las postales de zonas descubiertas a color, las que faltan en sombra.
+5. Flecha guía (`logic/guia.ts`, `GUIA`): tras un rato sin progreso, una flecha en el borde apunta a la zona sin descubrir más cercana, a la arena con nivel suficiente o al portal.
+6. Jefe más pro (`logic/escenaJefe.ts`, `ESCENA_JEFE`): entrada de cine, barra con rastro y marca de fase, avisos que parpadean antes de caer, enojo en la fase 2 y muerte en cámara lenta con título de victoria.
+
+Arte nuevo en PixelForja (rama `claude/ecstatic-ramanujan-oq0r0o` del taller): orbes esféricos, cascada a la medida, huella de Thor y flecha guía.
+
 ## 6. Riesgos y mitigación
 
 | Riesgo | Mitigación |

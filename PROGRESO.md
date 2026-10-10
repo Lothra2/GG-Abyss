@@ -4,7 +4,8 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 
 ## Estado
 
-- Fase actual: todas las fases del plan hechas (F0 a F5). Lo que falta es solo de Rick: publicar en Netlify y probar en las tablets de verdad (ver "Pasos solo de Rick").
+- Fase actual: F0 a F5 del plan y F6 (pulido de jugabilidad pedido por Rick) hechas. Lo que falta es solo de Rick: pasar el arte nuevo a la rama del taller, publicar y probar en las tablets (ver "Pasos solo de Rick").
+- F6 hecha: golpes con peso, tienda de la fogata, Thor olfatea, álbum de postales, flecha guía y el jefe más pro (PLAN.md F6). Postales en `docs/capturas/f6/`.
 - Verificación final tras F5: typecheck limpio, 236 tests unitarios, build (sw.js con 628 archivos) y e2e completo 112 pasaron y 2 se saltan a propósito (teclado y resize en tablet). Postales de F5 en `docs/capturas/f5/` y `docs/capturas/comparar.html`.
 - F1b hecha en código: Titulo (logo, Toca para empezar, botón Créditos), SeleccionJugador (tarjetas del manifest, aura y Thor), guardado con migración, Presentacion (paneo la primera vez), Entidades (cofres, carteles, fogatas, Abuelo), HUD (contadores, oro, pausa, panel de cartel), Pausa (Noche, Música, Efectos, calidad, modo peque, otra jugadora, créditos, seguir), Creditos (CREDITOS.txt con scroll)
 - F1a hecha: grilla, A*, movimiento, zonas, descubrimiento; MundoVista, Decos (pool por celdas, viento, hechizados, copas, pasto), Heroina, ThorSprite (sigue el rastro), Criaturas, Camara, Entrada (toque, mantener, teclado), Sonido; fx: Luces (RenderTexture con pozos), Bruma, Nubes, Particulas, AtmosferaFX (postFX soft light y viñeta), Atmosfera; escenas Mundo y HUD; postales en docs/capturas/f1a y comparar.html
@@ -106,6 +107,15 @@ npm run typecheck && npm test && npm run build && npm run e2e
 - Para ganar rápido en una prueba: abrir `?test=1&heroe=rick` y en la consola `__ABYSS__.ponerNivel(10)`, `__ABYSS__.entrarArena()`, `__ABYSS__.danarJefe(9999)`.
 - Los avisos grandes se ven en el piso: círculo que se llena (pisotón y salto), elipse delante (golpe fuerte) y línea roja (la carga). En modo peque duran 1.8 s.
 
+### F6 (jugabilidad y jefe)
+- `docs/capturas/f6/olfato.png`: Thor corre adelante dejando huellas doradas. Probar: tocar a Thor (o la T) y seguirlo.
+- `docs/capturas/f6/tienda.png`: la tienda de la fogata. Probar: tocar una fogata, comprar una poción y el arnés de Thor (40 de oro). Thor se lo pone al instante.
+- `docs/capturas/f6/album.png` y `album_postal.png`: el álbum. Probar: tocar los contadores de arriba a la izquierda o Pausa, Álbum.
+- `docs/capturas/f6/flecha_guia.png`: la flecha en el borde. Aparece si pasan 40 s sin progreso (25 s en modo peque).
+- `docs/capturas/f6/jefe_entrada.png`, `jefe_enojo.png`, `jefe_victoria.png`: el cine del jefe. Probar: entrar a la arena con nivel 6 o más.
+- Para sentir los golpes: matar ratas y calabazas; el crítico salta en amarillo y el mundo se congela un instante.
+- Lo que vale la pena mirar con las niñas: si la tienda les parece cara o barata (precios en `TIENDA`), si la flecha aparece muy pronto o muy tarde (`GUIA.esperaS`), y si la entrada del jefe (2.5 s sin poder moverse) se les hace larga.
+
 ### Cascada
 - `docs/capturas/f5/cascada_y_vado.png` y `cascada_y_vado_tablet.png`: la cortina tapa justo la pared del acantilado y abajo hay espuma y estela.
 - En el juego: `?test=1&heroe=sophie` y en la consola `__ABYSS__.teleport(1760, 960)`.
@@ -143,8 +153,8 @@ El juego ya trae el kit dentro del repo, así que Netlify no necesita clonar `pi
 ### 4. Lighthouse
 En Chrome del escritorio, con el sitio abierto: F12, Lighthouse, Progressive Web App (si tu Chrome ya no trae la categoría, el panel Application, Manifest y Service workers muestran los mismos chequeos). No lo pude correr aquí: lo que sí está probado por pruebas automáticas es el manifest, el service worker y el modo sin red.
 
-### 5. Pasar los orbes y la cascada nuevos a la rama del taller
-El submódulo sigue la rama `claude/perfeccionar-ejecucion-smh3ad` de `pixel_forja`, y los arreglos de los orbes y de la cascada quedaron en `claude/ecstatic-ramanujan-oq0r0o` (dos commits encima de 8ba7f2a). Antes del próximo `git submodule update --remote tools/pixel_forja`, mezclarlo en la rama del taller (PR o merge en GitHub). Si no, el `npm run kit` siguiente trae de vuelta los orbes y la cascada viejos.
+### 5. Pasar el arte nuevo a la rama del taller
+El submódulo sigue la rama `claude/perfeccionar-ejecucion-smh3ad` de `pixel_forja`, y el arte nuevo (orbes esféricos, cascada a la medida, huella de Thor y flecha guía) quedó en `claude/ecstatic-ramanujan-oq0r0o` (cuatro commits encima de 8ba7f2a). Antes del próximo `git submodule update --remote tools/pixel_forja`, mezclarlo en la rama del taller (PR o merge en GitHub). Si no, el `npm run kit` siguiente trae de vuelta los orbes y la cascada viejos y el juego pierde la huella y la flecha (se ven sin ellas, no se rompe).
 
 ### 6. Demo con las niñas
 Ver las secciones "Para que Rick revise" de cada fase.
