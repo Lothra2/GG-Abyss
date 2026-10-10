@@ -198,18 +198,22 @@ test('captura la tienda, el olfato de Thor, el álbum, la flecha guía y el cine
     await page.waitForTimeout(1200)
     await page.screenshot({ path: join(carpeta, `tienda${v.sufijo}.png`) })
     await gancho(page, 'cerrarTienda')
+    // Phaser cierra la escena en el cuadro siguiente
+    await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Tienda'), { timeout: 5_000 }).toBe(false)
     // el álbum con algunas postales pegadas
     for (const n of ['cascada_y_vado', 'puente_del_trol', 'abuelo_roble', 'lago_espejo']) {
       await gancho(page, 'irAPostal', n)
       await gancho(page, 'avanzar', 0.5)
     }
     await gancho(page, 'abrirAlbum')
+    await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Album'), { timeout: 10_000 }).toBe(true)
     await page.waitForTimeout(1000)
     await page.screenshot({ path: join(carpeta, `album${v.sufijo}.png`) })
     await gancho(page, 'albumTocar', 'cascada_y_vado')
     await page.waitForTimeout(600)
     await page.screenshot({ path: join(carpeta, `album_postal${v.sufijo}.png`) })
     await gancho(page, 'cerrarAlbum')
+    await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Album'), { timeout: 5_000 }).toBe(false)
     // la flecha guía desde una punta del mapa
     await gancho(page, 'irAPostal', 'claro_escondido')
     await gancho(page, 'avanzar', 1)

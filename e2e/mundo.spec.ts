@@ -100,8 +100,13 @@ test.describe('Bosque GG vivo', () => {
       await gancho(page, 'curarTodo')
       await gancho(page, 'tocar', meta.x, meta.y)
       await avanzar(page, 150, true)
-      // entrar a la arena despierta al jefe y cierra la salida: se lo vence para seguir
-      if ((await gancho<{ peleando?: boolean }>(page, 'jefe')).peleando) await gancho(page, 'danarJefe', 9999)
+      // entrar a la arena despierta al jefe, la entrada de cine la para y se cierra la salida: se lo vence y se sigue
+      if ((await gancho<{ peleando?: boolean }>(page, 'jefe')).peleando) {
+        await gancho(page, 'danarJefe', 9999)
+        await avanzar(page, 6, true)
+        await gancho(page, 'tocar', meta.x, meta.y)
+        await avanzar(page, 60, true)
+      }
       const p = await pos(page)
       expect(Math.hypot(p.x - meta.x, p.y - meta.y), `no llegó a ${z.nombre}`).toBeLessThan(12)
       const zona = await gancho<string | null>(page, 'zona')

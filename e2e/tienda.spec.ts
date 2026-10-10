@@ -43,6 +43,8 @@ test.describe('Tienda de la fogata', () => {
     const caro = await gancho<{ ok: boolean; motivo?: string }>(page, 'tiendaComprar', 'pet_armor_1')
     expect(caro).toEqual({ ok: false, motivo: 'caro' })
     await gancho(page, 'cerrarTienda')
+    // Phaser cierra la escena en el cuadro siguiente
+    await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Tienda'), { timeout: 5_000 }).toBe(false)
     await gancho(page, 'darOro', 200)
     const antes = await inventario(page)
     await abrirEnFogata(page)

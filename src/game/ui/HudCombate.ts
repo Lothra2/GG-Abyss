@@ -256,7 +256,7 @@ export class HudCombate {
       }
       const hab = c.habilidades[b.i]
       const sinMana = p.mana + 1e-6 < hab.mana
-      b.icono.setAlpha(sinMana && fr === 0 ? 0.55 : 1)
+      b.icono.setAlpha((sinMana && fr === 0 ? 0.55 : 1) * this.atenuado)
       b.arco.setDepth(b.icono.depth + 1)
       b.tecla.setDepth(b.icono.depth + 2)
     }
