@@ -364,6 +364,7 @@ export class Mundo extends Phaser.Scene {
       centrarCamara: () => this.camara.centrarEn(this.heroina.x, this.heroina.y - 12),
       alImpacto: (t) => this.impacto(t),
       alFallar: (x, y) => this.alFallar(x, y),
+      mejoras: () => this.mejoras,
     })
 
     this.crearJefe(evEnemigos)

@@ -316,6 +316,8 @@ export const IMPACTO = {
   topePausaPorSeg: 0.16,
   /** el destello blanco de quien recibe el golpe */
   destelloMs: 70,
+  /** colchón de entrada: una habilidad tocada mientras termina el golpe se guarda este rato y sale al terminar */
+  colchonS: 0.15,
 }
 
 /**

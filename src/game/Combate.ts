@@ -14,7 +14,8 @@ import { bonosDeEquipo } from '../logic/equipo'
 import type { TipoImpacto } from '../logic/impacto'
 import { sortearNormal } from '../logic/botin'
 import type { Catalogo } from '../logic/catalogo'
-import { BOTIN, COMBATE, ENEMIGOS, GOLPE_EN, JEFE, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, CLASES, type ClaseId } from '../config/balance'
+import { BOTIN, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, JEFE, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, CLASES, type ClaseId } from '../config/balance'
+import { Colchon } from '../logic/colchon'
 import { PROF } from '../config/juego'
 import type { Heroina } from './Heroina'
 import type { ThorSprite } from './ThorSprite'
@@ -50,6 +51,8 @@ export interface DepsCombate {
   alImpacto?: (tipo: TipoImpacto) => void
   /** el golpe cuerpo a cuerpo no llegó (el blanco se alejó): se muestra el fallo */
   alFallar?: (x: number, y: number) => void
+  /** F7 prendido (el colchón de entrada es de F7) */
+  mejoras?: () => boolean
 }
 
 interface Aura {
@@ -436,6 +439,9 @@ export class Combate {
     return { x: h.x + (v.x / n) * 100, y: h.y + (v.y / n) * 100, angulo: Math.atan2(v.y, v.x), enemigo: null }
   }
 
+  /** F7: la habilidad tocada justo antes de que termine el golpe se guarda y sale al terminar */
+  private colchon = new Colchon<0 | 1>(IMPACTO.colchonS)
+
   private puedeActuar(): boolean {
     const h = this.d.heroina
     return !this.caido && (!h.ocupada || h.accionInterrumpible)
@@ -443,7 +449,10 @@ export class Combate {
 
   /** Pulsó un botón de habilidad (0 o 1). El Rayo canalizado se mantiene: se suelta con `soltarHabilidad`. */
   presionarHabilidad(i: 0 | 1): void {
-    if (!this.puedeActuar()) return
+    if (!this.puedeActuar()) {
+      if (!this.caido && this.d.mejoras?.() !== false) this.colchon.guardar(i)
+      return
+    }
     const hab = this.habilidades[i]
     if (hab.id === 'rayo_canalizado') return this.canalizar(true)
     const motivo = this.recargas.puede(i, this.partida.mana)
@@ -612,6 +621,8 @@ export class Combate {
   update(dt: number): void {
     const p = this.partida
     const h = this.d.heroina
+    const guardada = this.colchon.tick(dt, this.puedeActuar())
+    if (guardada !== null) this.presionarHabilidad(guardada)
 
     for (let i = this.auras.length - 1; i >= 0; i--) {
       const a = this.auras[i]!
@@ -736,6 +747,8 @@ export class Combate {
       manaMax: this.stats.manaMax,
       escudo: Math.round(this.escudo),
       caido: this.caido,
+      ocupada: this.d.heroina.ocupada,
+      colchon: this.colchon.pendiente,
       rescates: this.rescates,
       enRescate: this.enRescate,
       muertes: this.muertes,

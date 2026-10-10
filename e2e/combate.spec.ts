@@ -147,6 +147,40 @@ test.describe('Combate', () => {
     expect(Math.hypot(p.x - e2.x, p.y - e2.y)).toBeGreaterThan(d0 + 10)
   })
 
+  test('F7: una habilidad tocada mientras termina el golpe se guarda y sale apenas puede, sin F7 se pierde', async ({ page }) => {
+    for (const mejoras of [true, false]) {
+      await abrirMundo(page, 'sophie')
+      await gancho(page, 'matarEnemigos')
+      if (!mejoras) {
+        await gancho(page, 'abrirPausa')
+        await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Pausa'), { timeout: 5_000 }).toBe(true)
+        await gancho(page, 'pausaAlternar', 'mejorasF7')
+        await gancho(page, 'pausaContinuar')
+        await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Pausa'), { timeout: 5_000 }).toBe(false)
+      }
+      // la lluvia de flechas ocupa a la amazona un rato: la voltereta se toca durante el disparo
+      await gancho(page, 'habilidad', 0)
+      await avanzar(page, 0.05)
+      expect((await gancho<{ ocupada: boolean }>(page, 'combate')).ocupada).toBe(true)
+      await gancho(page, 'habilidad', 1)
+      const guardada = (await gancho<{ colchon: number | null }>(page, 'combate')).colchon
+      if (!mejoras) {
+        expect(guardada, 'sin F7 el toque durante el disparo se pierde').toBeNull()
+        continue
+      }
+      expect(guardada).toBe(1)
+      // se sigue tocando hasta el final del disparo: la voltereta sale en el primer cuadro libre
+      let vio = false
+      for (let i = 0; i < 60 && !vio; i++) {
+        const c = await gancho<{ ocupada: boolean; invulnerable: boolean }>(page, 'combate')
+        vio = c.invulnerable
+        if (c.ocupada && !vio) await gancho(page, 'habilidad', 1)
+        await avanzar(page, 0.05)
+      }
+      expect(vio, 'la voltereta salió apenas terminó el disparo').toBe(true)
+    }
+  })
+
   test('el trol avisa su golpe pesado 1.2 s antes y se esquiva caminando', async ({ page }) => {
     await abrirMundo(page, 'sophie')
     const t = (await enemigos(page)).find((e) => e.elite)!
