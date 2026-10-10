@@ -35,6 +35,20 @@ export class HUD extends Phaser.Scene {
   private pausa!: Boton
   private bolsa!: Boton
   private flecha: Phaser.GameObjects.Image | null = null
+  /** el cine del jefe: franjas negras y el título grande */
+  private franjaArriba!: Phaser.GameObjects.Rectangle
+  private franjaAbajo!: Phaser.GameObjects.Rectangle
+  private tituloCine!: Phaser.GameObjects.BitmapText
+  private subCine!: Phaser.GameObjects.BitmapText
+  private cineTitulo: string | null = null
+  private alJefeEmpieza = () => this.ocultarBanner()
+  /** un velo de color que se apaga (el enojo del jefe en rojo, su caída en blanco) */
+  private velo!: Phaser.GameObjects.Rectangle
+  private alDestello = (d: { color: number; alfa: number; ms: number }) => {
+    this.velo.setFillStyle(d.color, 1).setAlpha(d.alfa).setVisible(true)
+    this.tweens.killTweensOf(this.velo)
+    this.tweens.add({ targets: this.velo, alpha: 0, duration: d.ms, ease: 'Quad.easeOut', onComplete: () => this.velo.setVisible(false) })
+  }
   private tFlecha = 0
   private combate!: HudCombate
   private bNivel!: Phaser.GameObjects.BitmapText
@@ -90,6 +104,13 @@ export class HUD extends Phaser.Scene {
     this.input.keyboard?.on('keydown-ESC', () => this.abrirPausa())
 
     this.combate = new HudCombate(this, this.mundo, K.atlas('iconos', '32'))
+    this.franjaArriba = this.add.rectangle(0, 0, 10, 0, 0x000000, 1).setOrigin(0, 0).setDepth(240)
+    this.franjaAbajo = this.add.rectangle(0, 0, 10, 0, 0x000000, 1).setOrigin(0, 1).setDepth(240)
+    this.tituloCine = texto(this, 0, 0, '', 'fuente_titulo', 2, { origen: [0.5, 0.5] }).setDepth(260).setAlpha(0)
+    this.subCine = texto(this, 0, 0, '', 'fuente_ui', 1, { origen: [0.5, 0.5], tinte: 0xffe6b0 }).setDepth(260).setAlpha(0)
+    this.game.events.on('jefe-empieza', this.alJefeEmpieza)
+    this.velo = this.add.rectangle(0, 0, 10, 10, 0xffffff, 1).setOrigin(0, 0).setDepth(230).setVisible(false)
+    this.game.events.on('destello', this.alDestello)
     // la flecha guía en el borde: aparece si pasa un rato sin progreso
     this.flecha = this.textures.exists(K.ui('flecha_guia')) ? this.add.image(0, 0, K.ui('flecha_guia'), 0).setVisible(false).setAlpha(0).setDepth(300) : null
     this.tFlecha = 0
@@ -109,8 +130,10 @@ export class HUD extends Phaser.Scene {
       this.game.events.off('calidad-baja-automatica', this.alCalidad)
       this.game.events.off('nivel-subido', this.alNivel)
       this.game.events.off('rescate', this.alRescate)
+      this.game.events.off('jefe-empieza', this.alJefeEmpieza)
+      this.game.events.off('destello', this.alDestello)
       this.combate.destruir()
-      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudOrbes', 'hudNivel')
+      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudOrbes', 'hudNivel', 'hudCine')
     })
     alCambiarEscala(this, () => this.acomodar())
     this.actualizarContadores()
@@ -121,6 +144,7 @@ export class HUD extends Phaser.Scene {
       abrirPausa: (() => this.abrirPausa()) as never,
       hudCombate: () => this.combate.layout(),
       hudOrbes: () => this.combate.niveles(),
+      hudCine: () => ({ franjas: this.franjaArriba.visible ? this.franjaArriba.height : 0, titulo: this.tituloCine.text, alfa: Math.round(this.tituloCine.alpha * 100) / 100, banner: this.banner.alpha }),
       hudNivel: () => ({ texto: this.bNivel.text, alpha: this.bNivel.alpha, rescate: this.bRescate.text, alphaRescate: this.bRescate.alpha }),
     })
   }
@@ -197,7 +221,49 @@ export class HUD extends Phaser.Scene {
     this.acomodar()
   }
 
+  /** Al empezar la pelea el banner de la zona se va: la entrada del jefe es la que manda */
+  private ocultarBanner(): void {
+    this.tween?.stop()
+    this.tweens.add({ targets: this.banner, alpha: 0, duration: 200 })
+    this.bannerInfo.visible = false
+  }
+
+  /**
+   * El cine del jefe: franjas negras arriba y abajo y el título grande (su nombre al entrar, el enojo en la fase 2
+   * y la victoria al final), con lo que diga el director de la pelea.
+   */
+  private dibujarCine(): void {
+    const pl = this.mundo.planoJefe
+    const w = this.scale.width
+    const h = this.scale.height
+    this.velo.setSize(w, h)
+    // durante el cine el HUD se aparta: se ve el jefe y su título, nada más
+    const a = 1 - pl.franjas
+    for (const o of [this.iconoZonas, this.iconoSecretos, this.iconoOro, this.txtZonas, this.txtSecretos, this.txtOro, this.pausa, this.bolsa]) o.setAlpha(a)
+    this.panel.setAlpha(0.9 * a)
+    this.combate.atenuar(a)
+    const alto = Math.round(h * 0.085 * pl.franjas)
+    this.franjaArriba.setPosition(0, 0).setSize(w, alto).setVisible(alto > 0)
+    this.franjaAbajo.setPosition(0, h).setSize(w, alto).setVisible(alto > 0)
+    if (pl.titulo !== this.cineTitulo) {
+      this.cineTitulo = pl.titulo
+      const nombre = this.mundo.jefe?.nombre ?? 'Minotauro del Bosque'
+      const t = pl.titulo === 'nombre' ? [nombre, 'Guardián de Las Alturas', 0xffffff] : pl.titulo === 'enojo' ? ['¡Se enojó!', 'Mira bien sus avisos rojos', 0xff9a7a] : pl.titulo === 'victoria' ? ['¡Victoria!', `Venciste al ${nombre}`, 0xffffff] : ['', '', 0xffffff]
+      this.tituloCine.setText(String(t[0])).setTint(Number(t[2]))
+      this.subCine.setText(String(t[1]))
+    }
+    const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+    this.tituloCine.setScale(esc + 1)
+    if (this.tituloCine.displayWidth > w - 24) this.tituloCine.setScale(esc)
+    this.subCine.setScale(esc)
+    const y = Math.round(h * 0.34)
+    this.tituloCine.setPosition(Math.round(w / 2), y).setAlpha(pl.tituloAlfa)
+    this.subCine.setPosition(Math.round(w / 2), Math.round(y + this.tituloCine.displayHeight / 2 + 6 + this.subCine.displayHeight / 2)).setAlpha(pl.tituloAlfa)
+  }
+
   private mostrarBanner(ev: EventoDescubrimiento): void {
+    // durante el cine del jefe no se pisa el título
+    if (this.mundo.planoJefe.momento) return
     this.bannerInfo = { visible: true, titulo: ev.secreto ? '¡Secreto!' : 'Descubriste', nombre: ev.nombre, secreto: ev.secreto }
     this.acomodar()
     this.actualizarContadores()
@@ -316,6 +382,7 @@ export class HUD extends Phaser.Scene {
   override update(_t: number, deltaMs: number): void {
     this.combate.update(deltaMs / 1000)
     this.dibujarFlecha(deltaMs / 1000)
+    this.dibujarCine()
     // durante la presentación el panel no atrapa toques: el toque la salta
     if (this.panel.input) this.panel.input.enabled = !this.mundo.enPresentacion
     if (this.mundo.partida && this.mundo.partida.oro !== this.oroMostrado) this.actualizarContadores()

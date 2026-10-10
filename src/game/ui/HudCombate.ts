@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import { K } from '../../kit/claves'
-import { MODO_PEQUE } from '../../config/balance'
+import { JEFE, MODO_PEQUE } from '../../config/balance'
 import { HUD as MARGENES } from '../../config/juego'
 import { escalaDe, toqueMinimo } from '../Pantalla'
 import { texto } from '../Texto'
@@ -47,6 +47,16 @@ export class HudCombate {
   private rellenoJefe: Phaser.GameObjects.NineSlice
   private nombreJefe: Phaser.GameObjects.BitmapText
   private anchoJefe = 240
+  /** el rastro claro que queda atrás del daño y se achica después */
+  private rastroJefe: Phaser.GameObjects.NineSlice
+  private muescaJefe: Phaser.GameObjects.Rectangle
+  private vidaVista = 1
+  private rastro = 1
+  private rastroEspera = 0
+  private llenado = 0
+  private temblor = 0
+  private jefeVisto = false
+  private atenuado = 1
   private xpAncho = ANCHO_CINTURON
   /** las piezas, por si las pruebas quieren saber dónde cayeron */
   readonly piezas: Record<string, Phaser.GameObjects.GameObject> = {}
@@ -85,7 +95,10 @@ export class HudCombate {
 
     // la barra del jefe: arriba al centro, solo mientras dura la pelea
     this.marcoJefe = escena.add.nineslice(0, 0, k('barra_marco'), undefined, 240, 14, 6, 6, 6, 6).setOrigin(0.5, 0).setVisible(false)
-    this.rellenoJefe = escena.add.nineslice(0, 0, k('barra_jefe'), undefined, 10, 6, 1, 1, 2, 2).setOrigin(0, 0).setVisible(false)
+    this.rastroJefe = escena.add.nineslice(0, 0, k('barra_jefe'), undefined, 10, 10, 1, 1, 2, 2).setOrigin(0, 0).setTint(0xffe6b0).setVisible(false)
+    this.rellenoJefe = escena.add.nineslice(0, 0, k('barra_jefe'), undefined, 10, 10, 1, 1, 2, 2).setOrigin(0, 0).setVisible(false)
+    // la marca donde se enoja (fase 2): una línea fina dorada
+    this.muescaJefe = escena.add.rectangle(0, 0, 1, 10, 0xffd27a, 0.9).setOrigin(0.5, 0).setVisible(false)
     this.nombreJefe = texto(escena, 0, 0, 'Minotauro del Bosque', 'fuente_ui', 1, { origen: [0.5, 1], tinte: 0xffd27a }).setVisible(false)
 
     const ids = this.mundo.combate.habilidades
@@ -143,10 +156,15 @@ export class HudCombate {
     this.rellenoXp.setPosition(cx + 3, yXp - 6)
     this.txtNivel.setScale(e.zoom >= 3 ? 1 : 2).setPosition(cx - 6, yXp - 6)
 
-    this.anchoJefe = Math.min(260, Math.max(120, w - 2 * 150))
-    this.marcoJefe.setPosition(Math.round(w / 2), mg + 14).setSize(this.anchoJefe, 14)
-    this.rellenoJefe.setPosition(Math.round(w / 2 - this.anchoJefe / 2 + 3), mg + 14 + 4)
-    this.nombreJefe.setPosition(Math.round(w / 2), mg + 12)
+    this.anchoJefe = Math.min(320, Math.max(120, w - 2 * 150))
+    const esc = e.zoom >= 3 ? 1 : 2
+    this.nombreJefe.setScale(esc)
+    const yBarra = mg + 6 + this.nombreJefe.displayHeight
+    this.marcoJefe.setPosition(Math.round(w / 2), yBarra).setSize(this.anchoJefe, 18)
+    this.rellenoJefe.setPosition(Math.round(w / 2 - this.anchoJefe / 2 + 4), yBarra + 4)
+    this.rastroJefe.setPosition(this.rellenoJefe.x, this.rellenoJefe.y)
+    this.muescaJefe.setPosition(Math.round(this.rellenoJefe.x + (this.anchoJefe - 8) * (JEFE.fase2Pct / 100)), yBarra + 4)
+    this.nombreJefe.setPosition(Math.round(w / 2), yBarra - 2)
 
     // botones de habilidad: a la izquierda del orbe de maná, con la separación y el área táctil que pide el modo
     const mult = peque ? MODO_PEQUE.botones : 1
@@ -180,7 +198,7 @@ export class HudCombate {
       orbeMana: this.orbeMana.getBounds(),
       cinturon: this.cinturon.getBounds(),
       xp: this.marcoXp.getBounds(),
-      jefe: { visible: this.marcoJefe.visible, marco: this.marcoJefe.getBounds(), relleno: this.rellenoJefe.getBounds() },
+      jefe: { visible: this.marcoJefe.visible, marco: this.marcoJefe.getBounds(), relleno: this.rellenoJefe.getBounds(), rastro: this.rastroJefe.visible ? this.rastroJefe.getBounds() : null, llenado: Math.round(this.llenado * 100) / 100 },
       botones: this.botones.map((b) => ({ id: b.id, x: b.x, y: b.y, lado: b.lado })),
     }
   }
@@ -203,10 +221,7 @@ export class HudCombate {
     // barra del jefe
     const j = this.mundo.jefe
     const verJefe = !!j && j.peleando && j.vivo
-    this.marcoJefe.setVisible(verJefe)
-    this.rellenoJefe.setVisible(verJefe)
-    this.nombreJefe.setVisible(verJefe)
-    if (verJefe && j) this.rellenoJefe.setSize(Math.max(1, Math.round((this.anchoJefe - 6) * (j.vida / j.vidaMax))), 6)
+    this.pintarBarraJefe(dt, verJefe)
 
     // XP y nivel
     const ancho = Math.max(1, Math.round((this.xpAncho - 6) * c.fraccionXp))
@@ -268,6 +283,71 @@ export class HudCombate {
     const de = (img: Phaser.GameObjects.Image, ola: Phaser.GameObjects.Sprite) =>
       ola.visible ? Number(ola.anims.currentAnim?.key.split('_').pop()) : Number(img.frame.name)
     return { vida: de(this.orbeVida, this.olaVida), mana: de(this.orbeMana, this.olaMana) }
+  }
+
+  /** El HUD de combate se aparta durante el cine del jefe (1 = normal, 0 = invisible) */
+  atenuar(a: number): void {
+    if (a === this.atenuado) return
+    this.atenuado = a
+    const objs: { setAlpha(v: number): unknown }[] = [this.orbeVida, this.orbeMana, this.olaVida, this.olaMana, this.numVida, this.numMana, this.cinturon, this.marcoXp, this.rellenoXp, this.txtNivel]
+    for (const s of this.slots) if (s.icono) objs.push(s.icono)
+    for (const b of this.botones) objs.push(b.icono, b.arco, b.tecla, b.fondo)
+    for (const o of objs) o.setAlpha(a)
+  }
+
+  /**
+   * La barra del jefe: se llena al empezar, el daño deja un rastro claro que se achica después, tiembla con los
+   * golpes grandes, tiene una marca donde se enoja y en la fase 2 se pone más roja.
+   */
+  private pintarBarraJefe(dt: number, verPelea: boolean): void {
+    const j = this.mundo.jefe
+    // durante la entrada la barra espera: aparece y se llena cuando él ya rugió
+    const ver = verPelea && this.mundo.planoJefe.momento !== 'intro'
+    for (const o of [this.marcoJefe, this.rastroJefe, this.rellenoJefe, this.nombreJefe]) o.setVisible(ver)
+    if (!ver || !j) {
+      this.jefeVisto = false
+      this.muescaJefe.setVisible(false)
+      return
+    }
+    const f = Phaser.Math.Clamp(j.vida / j.vidaMax, 0, 1)
+    if (!this.jefeVisto) {
+      // recién empieza: la barra se llena desde cero
+      this.jefeVisto = true
+      this.llenado = 0
+      this.vidaVista = f
+      this.rastro = f
+    }
+    this.llenado = Math.min(1, this.llenado + dt / 0.9)
+    if (f < this.vidaVista - 0.001) {
+      if (this.vidaVista - f > 0.02) this.temblor = 0.18
+      this.rastroEspera = 0.45
+      this.rellenoJefe.setTintFill(0xffffff)
+      this.escena.time.delayedCall(60, () => this.rellenoJefe.active && this.pintarTonoJefe())
+    }
+    this.vidaVista = f
+    this.rastroEspera = Math.max(0, this.rastroEspera - dt)
+    if (this.rastroEspera <= 0) this.rastro = Math.max(f, this.rastro - dt * 0.6)
+    if (this.rastro < f) this.rastro = f
+    const ancho = this.anchoJefe - 8
+    const lleno = Phaser.Math.Easing.Cubic.Out(this.llenado)
+    this.rellenoJefe.setSize(Math.max(1, Math.round(ancho * f * lleno)), 10)
+    this.rastroJefe.setSize(Math.max(1, Math.round(ancho * this.rastro * lleno)), 10).setVisible(this.rastro > f + 0.002)
+    this.muescaJefe.setVisible(j.fase < 2)
+    this.temblor = Math.max(0, this.temblor - dt)
+    const dx = this.temblor > 0 ? Math.round(Math.sin(this.temblor * 90) * 2) : 0
+    const w = this.escena.scale.width
+    this.marcoJefe.x = Math.round(w / 2) + dx
+    this.rellenoJefe.x = Math.round(w / 2 - this.anchoJefe / 2 + 4) + dx
+    this.rastroJefe.x = this.rellenoJefe.x
+    if (this.temblor <= 0) this.pintarTonoJefe()
+  }
+
+  private pintarTonoJefe(): void {
+    const j = this.mundo.jefe
+    const enojado = !!j && j.fase >= 2
+    this.rellenoJefe.clearTint()
+    if (enojado) this.rellenoJefe.setTint(0xff9a5a)
+    this.nombreJefe.setTint(enojado ? 0xff8a6a : 0xffd27a)
   }
 
   destruir(): void {

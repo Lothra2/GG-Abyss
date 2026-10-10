@@ -279,6 +279,15 @@ export class Particulas {
     }
   }
 
+  /** Un puñado de partículas que saltan desde un punto (el polvo del jefe al deshacerse) */
+  estallido(x: number, y: number, llave: string, n: number): void {
+    const r = () => fx().next()
+    for (let i = 0; i < n; i++) {
+      const a = r() * Math.PI * 2
+      this.crear('mota', llave, x + Math.cos(a) * 10 * r(), y + Math.sin(a) * 6 * r(), { vx: Math.cos(a) * (10 + r() * 20), vy: -12 - r() * 26, vida: 0.9 + r() * 0.8, local: true, alfaMax: 0.95, sinEntrada: true })
+    }
+  }
+
   /** Una huella de Thor en el piso (debajo de los personajes), que se apaga sola */
   huella(x: number, y: number, vida: number): void {
     // las huellas importan más que el ambiente: si no hay lugar, se va la partícula de ambiente más vieja

@@ -6,7 +6,7 @@ import { crearAnimsPersonaje } from '../kit/anims'
 import { DIRECCIONES, indiceDireccion } from '../logic/direccion'
 import type { Grilla } from '../logic/grilla'
 import { moverCuerpo } from '../logic/movimiento'
-import { juego } from '../logic/azar'
+import { fx, juego } from '../logic/azar'
 import { danarJefe, despertar, nuevoJefe, pensarJefe, reposar, type EstadoJefe, type Jefe, type OrdenJefe } from '../logic/jefe'
 import { IMPACTO, JEFE } from '../config/balance'
 import { PROF } from '../config/juego'
@@ -182,7 +182,7 @@ export class JefeSprite implements Atacable {
   empezar(): boolean {
     if (!despertar(this.logica)) return false
     this.peleando = true
-    this.estandarte?.setVisible(true)
+    // su nombre va en la barra de arriba: el estandarte sobre la cabeza ya no hace falta
     this.ev.sonido('jefe_rugido', { volumen: 1 })
     this.ev.sacudir(true)
     this.poner('warcry', true)
@@ -218,6 +218,21 @@ export class JefeSprite implements Atacable {
     this.ev.sonido('jefe_rugido', { volumen: 1, rate: 0.5 })
     this.ev.sacudir(true)
     this.ev.alMorir()
+  }
+
+  /**
+   * Después de caer: cuando termina de morir, se deshace de a poco en polvo (alPolvo suelta partículas donde está)
+   * y la sombra se va con él. En tiempo real, para que la cámara lenta lo haga más solemne.
+   */
+  desvanecer(alPolvo: (x: number, y: number) => void): void {
+    const def = this.cuadros.die
+    const espera = def ? (def.cuadros / def.fps) * 1000 : 600
+    this.escena.time.delayedCall(espera + 250, () => {
+      if (!this.sprite.active) return
+      const polvo = this.escena.time.addEvent({ delay: 90, repeat: 14, callback: () => alPolvo(this.x + (fx().next() - 0.5) * 40, this.y - fx().next() * JEFE.cuerpoAlto * 0.7) })
+      this.escena.tweens.add({ targets: [this.sprite], alpha: 0, duration: 1400, ease: 'Sine.easeIn', onComplete: () => polvo.remove(false) })
+      this.escena.tweens.add({ targets: this.sombra.img, alpha: 0, duration: 1400 })
+    })
   }
 
   update(c: ContextoJefe): void {
@@ -362,8 +377,16 @@ export class JefeSprite implements Atacable {
         const fk = lx(k)
         t.g.fillStyle(0xff3b2f, 0.45)
         t.g.fillPoints([new Phaser.Geom.Point(f0.a[0]!, f0.a[1]!), new Phaser.Geom.Point(fk.a[0]!, fk.a[1]!), new Phaser.Geom.Point(fk.b[0]!, fk.b[1]!), new Phaser.Geom.Point(f0.b[0]!, f0.b[1]!)], true)
+        // el borde de la carga bien marcado, y en el último instante parpadea
+        const fin = t.resta < 0.3 && Math.floor(t.resta * 20) % 2 === 0
+        t.g.lineStyle(1, fin ? 0xffffff : 0xff6a4a, 0.95)
+        t.g.strokePoints([new Phaser.Geom.Point(f0.a[0]!, f0.a[1]!), new Phaser.Geom.Point(f1.a[0]!, f1.a[1]!), new Phaser.Geom.Point(f1.b[0]!, f1.b[1]!), new Phaser.Geom.Point(f0.b[0]!, f0.b[1]!)], true, true)
       }
-      if (t.s) t.s.setPosition(Math.round(t.s.x), Math.round(t.s.y))
+      if (t.s) {
+        t.s.setPosition(Math.round(t.s.x), Math.round(t.s.y))
+        // el aviso del piso parpadea justo antes de caer: es el momento de salir
+        t.s.setAlpha(t.resta < 0.3 ? (Math.floor(t.resta * 20) % 2 === 0 ? 1 : 0.55) : 0.92)
+      }
     }
     for (let i = this.telegrafos.length - 1; i >= 0; i--) {
       const t = this.telegrafos[i]!

@@ -8,7 +8,7 @@ import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
 import { PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S } from '../config/juego'
-import { AUTOGUARDADO_S, BOTIN, GUIA, JEFE, OLFATO } from '../config/balance'
+import { AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, OLFATO } from '../config/balance'
 import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
@@ -37,6 +37,7 @@ import { JefeSprite, type EventosJefe } from '../game/Jefe'
 import { Impactos, type TipoImpacto } from '../logic/impacto'
 import { Guia, ordenarPistas, type Pista } from '../logic/olfato'
 import { elegirDestino, posicionFlecha, RelojGuia, type Destino } from '../logic/guia'
+import { DirectorJefe, type Plano } from '../logic/escenaJefe'
 import { buscarCamino } from '../logic/camino'
 import { Presentacion } from '../game/Presentacion'
 import { alCambiarEscala } from '../game/Pantalla'
@@ -64,7 +65,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -123,6 +124,10 @@ export class Mundo extends Phaser.Scene {
   private impactos = new Impactos()
   private pausaGolpe = 0
   private olfatoRecarga = 0
+  /** el cine de la pelea con el jefe: entrada, fase 2 y muerte */
+  private director = new DirectorJefe()
+  planoJefe: Plano = new DirectorJefe().tick(0)
+  private bloqueoPorJefe = false
   /** la flecha guía: tiempo sin progreso, la firma del progreso y lo que hay que dibujar */
   private relojGuia = new RelojGuia(GUIA.esperaS)
   private firmaProgreso = ''
@@ -418,7 +423,17 @@ export class Mundo extends Phaser.Scene {
       efecto: (n, x, y, esc) => this.proyectiles.fxEn(n, x, y, esc ?? 1),
       sonido: (n, op) => this.sonido.efecto(n, op),
       sacudir: (fuerte) => this.cameras.main.shake(fuerte ? 280 : 150, fuerte ? 0.009 : 0.004),
-      alFase2: () => this.game.events.emit('jefe-fase2'),
+      alFase2: () => {
+        // se enoja: el mundo se congela un instante, destello rojo, onda y su nombre se vuelve enojo
+        this.director.fase2()
+        this.impacto('jefeFase2')
+        this.game.events.emit('destello', { color: 0xc8281e, alfa: 0.32, ms: 380 })
+        if (this.jefe) {
+          this.proyectiles.fxEn('onda_pisoton', this.jefe.x, this.jefe.y, 3)
+          this.proyectiles.fxEn('grito_de_guerra', this.jefe.x, this.jefe.y - JEFE.cuerpoAlto, 2)
+        }
+        this.game.events.emit('jefe-fase2')
+      },
       alMorir: () => this.victoria(),
     }
     this.jefe = new JefeSprite(this, this.m, this.grilla, ent, this.arena, this.partida.jefeVida ?? JEFE.vida, ev)
@@ -453,6 +468,7 @@ export class Mundo extends Phaser.Scene {
 
   private empezarJefe(): void {
     if (!this.jefe || !this.arena || !this.jefe.empezar()) return
+    this.director.empezar()
     this.sonido.fijarMusica('musica_jefe')
     this.cerrarAnillo()
     this.encenderPiedras()
@@ -511,6 +527,7 @@ export class Mundo extends Phaser.Scene {
   /** Thor rescató a la heroína: el jefe se duerme sin curarse, la arena se abre y vuelve la música del bosque */
   private alCaerEnArena(): void {
     if (!this.jefe || !this.jefe.peleando) return
+    this.director.cortar()
     this.jefe.reposar()
     this.enemigos.quitarInvocadas()
     this.soltarAnillo()
@@ -535,6 +552,12 @@ export class Mundo extends Phaser.Scene {
       this.abrirPortalJefe(false)
     }
     if (!yaVencido) {
+      // el golpe final: congelado, destello, cámara lenta y el jefe se deshace en polvo
+      this.director.morir()
+      this.impacto('jefeMuerte')
+      this.camaraLenta(ESCENA_JEFE.lenta.factor, ESCENA_JEFE.lenta.seg)
+      this.game.events.emit('destello', { color: 0xfff4d2, alfa: 0.55, ms: 600 })
+      this.jefe?.desvanecer((x, y) => this.atmosfera.particulas.estallido(x, y, 'polvo', 4))
       this.sonido.fijarMusica('musica_victoria')
       this.musicaVictoriaPuesta = true
       this.sonido.efecto('legendario', { volumen: 0.8 })
@@ -935,6 +958,38 @@ export class Mundo extends Phaser.Scene {
 
   /* ---------- cuadro ---------- */
 
+  /**
+   * La cámara y la entrada según el director del jefe: en la entrada y la muerte mira al jefe, durante la pelea
+   * encuadra a los dos, y en la entrada la heroína espera.
+   */
+  private dirigirPelea(dtReal: number): void {
+    const pl = (this.planoJefe = this.director.tick(dtReal))
+    const h = this.heroina
+    let x = h.x
+    let y = h.y - 12
+    let vx = h.vx
+    let vy = h.vy
+    const j = this.jefe
+    if (j && pl.foco === 'jefe') {
+      x = j.x
+      y = j.y - JEFE.cuerpoAlto / 2
+      vx = 0
+      vy = 0
+    } else if (j && pl.foco === 'mezcla' && j.vivo && Math.hypot(j.x - h.x, j.y - h.y) < ESCENA_JEFE.mezclaHasta) {
+      x += (j.x - h.x) * ESCENA_JEFE.mezcla
+      y += (j.y - JEFE.cuerpoAlto / 2 - (h.y - 12)) * ESCENA_JEFE.mezcla
+    }
+    this.camara.seguir(dtReal, x, y, vx, vy)
+    if (pl.bloquear && !this.bloqueoPorJefe) {
+      this.bloqueoPorJefe = true
+      this.heroina.parar()
+      this.entrada.pausada = true
+    } else if (!pl.bloquear && this.bloqueoPorJefe) {
+      this.bloqueoPorJefe = false
+      if (!this.cartelAbierto && !this.presentacion?.activa && !this.combate.caido) this.entrada.pausada = false
+    }
+  }
+
   /** Pausa cortita y sacudida según el golpe */
   impacto(tipo: TipoImpacto): void {
     const r = this.impactos.pedir(tipo)
@@ -1013,7 +1068,7 @@ export class Mundo extends Phaser.Scene {
     }
     this.thor.registrarRastro(this.heroina)
     this.thor.update(dt, this.heroina)
-    this.camara.seguir(dtReal, this.heroina.x, this.heroina.y - 12, this.heroina.vx, this.heroina.vy)
+    this.dirigirPelea(dtReal)
     if (!completo) return
 
     const vista = this.camara.vista
@@ -1150,6 +1205,7 @@ export class Mundo extends Phaser.Scene {
       abrirTienda: (() => this.abrirTienda()) as never,
       olfatear: (() => this.olfatear()) as never,
       abrirAlbum: (() => this.abrirAlbum()) as never,
+      planoJefe: () => ({ ...this.planoJefe, entradaPausada: this.entrada.estaPausada, camara: { x: Math.round(this.camara.cx), y: Math.round(this.camara.cy) } }),
       guia: () => ({ sinProgreso: Math.round(this.relojGuia.sinProgreso * 10) / 10, visible: this.relojGuia.visible, flecha: this.flechaGuia }),
       /** como si hubiera pasado el rato sin progreso */
       forzarGuia: (() => {

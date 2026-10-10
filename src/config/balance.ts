@@ -374,6 +374,25 @@ export const GUIA = {
   cerca: 140,
 }
 
+/**
+ * Los momentos de cine de la pelea con el jefe (en segundos reales desde que empieza cada uno):
+ * la entrada (franjas, la cámara va al jefe, su nombre grande), la fase 2 (se enoja) y la muerte (cámara lenta, victoria).
+ */
+export const ESCENA_JEFE = {
+  intro: { duracion: 2.5, foco: [0.15, 1.9] as [number, number], titulo: [0.45, 2.3] as [number, number], franjas: 2.5 },
+  fase2: { duracion: 1.4, foco: [0, 0.9] as [number, number], titulo: [0.1, 1.4] as [number, number] },
+  muerte: { duracion: 4.6, foco: [0, 2.6] as [number, number], titulo: [1.4, 4.6] as [number, number], franjas: 3.6 },
+  /** las franjas entran y salen en esto */
+  franjasS: 0.35,
+  /** el título aparece y se va en esto */
+  fundidoS: 0.3,
+  /** durante la pelea la cámara se corre hacia el jefe esta fracción, si está a menos de `mezclaHasta` px */
+  mezcla: 0.32,
+  mezclaHasta: 340,
+  /** la cámara lenta de la muerte */
+  lenta: { factor: 0.35, seg: 1.8 },
+}
+
 export const CAMARA = {
   lerp: 0.12,
   adelanto: 40,
