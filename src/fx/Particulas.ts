@@ -40,6 +40,8 @@ interface Particula {
   /** nace de un emisor local y no cuenta para el tope de la zona */
   local: boolean
   alfaMax: number
+  /** aparece de golpe (las huellas) en vez de entrar de a poco */
+  sinEntrada?: boolean
 }
 
 export interface ContextoParticulas {
@@ -89,6 +91,11 @@ export class Particulas {
     let n = 0
     for (const p of this.lista) if (p.tipo === tipo && (!llave || p.llave === llave) && !p.local) n++
     return n
+  }
+
+  /** Todas las de una llave, también las de emisores locales (para las pruebas) */
+  cuantasDe(llave: string): number {
+    return this.lista.reduce((n, p) => n + (p.llave === llave ? 1 : 0), 0)
   }
 
   private crear(tipo: Tipo, llave: string, x: number, y: number, extra: Partial<Particula> = {}): Particula | null {
@@ -204,7 +211,7 @@ export class Particulas {
       }
 
       // transparencia: entra y sale de a poco
-      const fade = Math.min(1, p.edad / 0.8, (p.vida - p.edad) / 0.8)
+      const fade = Math.min(1, p.sinEntrada ? 1 : p.edad / 0.8, (p.vida - p.edad) / 0.8)
       let alfa = fade * p.alfaMax
       if (p.tipo === 'luciernaga') alfa *= 0.6 + 0.4 * Math.sin(t * 3 + p.ph)
       else if (p.tipo === 'mota') alfa *= 0.9
@@ -270,6 +277,17 @@ export class Particulas {
       const izq = r() < 0.5
       this.crear('murcielago', 'murcielago', izq ? v.x - 20 : v.right + 20, ry() - 40, { vx: izq ? 70 : -70, vy: -6, vida: 12 })
     }
+  }
+
+  /** Una huella de Thor en el piso (debajo de los personajes), que se apaga sola */
+  huella(x: number, y: number, vida: number): void {
+    // las huellas importan más que el ambiente: si no hay lugar, se va la partícula de ambiente más vieja
+    if (this.lista.length >= this.tope) {
+      const i = this.lista.findIndex((q) => !q.local)
+      if (i >= 0) this.soltar(this.lista.splice(i, 1)[0]!)
+    }
+    const p = this.crear('mota', 'huella', Math.round(x), Math.round(y), { vx: 0, vy: 0, vida, local: true, alfaMax: 0.95, sinEntrada: true })
+    p?.s.setDepth(PROF.SOMBRAS + 1).setAlpha(0.95).setPosition(Math.round(x), Math.round(y))
   }
 
   /** Emisores pegados a objetos que se ven: fogata, antorcha, cascada, hongos, cristales, anillo */

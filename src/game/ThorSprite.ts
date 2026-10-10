@@ -10,6 +10,7 @@ import { Sombra } from './Sombras'
 import { idThor } from '../kit/manifest'
 import { crearAnimsPersonaje } from '../kit/anims'
 import type { Heroina } from './Heroina'
+import type { Guia } from '../logic/olfato'
 
 type EstadoThor = 'idle' | 'walk' | 'run' | 'sit' | 'wag' | 'bite' | 'howl' | 'bark' | 'hurt'
 
@@ -42,6 +43,8 @@ export class ThorSprite {
   private accion: { anim: string; resta: number; golpeEn: number; enGolpe?: () => void; alTerminar?: () => void } | null = null
   /** corre hasta un enemigo para morderlo */
   private mision: { x: number; y: number; alMorder: () => void } | null = null
+  /** olfateando: guía a la heroína hasta un cofre */
+  private guia: { g: Guia; alHuella: (x: number, y: number) => void; alTerminar: (llego: boolean) => void; trabadoS: number } | null = null
 
   constructor(
     private escena: Phaser.Scene,
@@ -79,9 +82,36 @@ export class ThorSprite {
     return this.accion !== null || this.mision !== null
   }
 
-  /** Corre hasta (x, y) y muerde. Si no llega en 3 s se rinde. */
+  /** Olfatea: sigue a la Guia (ladra, corre adelante dejando huellas, espera, cava al llegar) */
+  olfatear(g: Guia, alHuella: (x: number, y: number) => void, alTerminar: (llego: boolean) => void): void {
+    this.dejarDeOlfatear()
+    this.guia = { g, alHuella, alTerminar, trabadoS: 0 }
+  }
+
+  /** Lo que está haciendo quieto (para las pruebas) */
+  get accionActual(): { anim: string; resta: number } | null {
+    return this.accion ? { anim: this.accion.anim, resta: Math.round(this.accion.resta * 100) / 100 } : null
+  }
+
+  get olfateando(): boolean {
+    return this.guia !== null
+  }
+
+  get estadoOlfato(): string | null {
+    return this.guia?.g.estado ?? null
+  }
+
+  dejarDeOlfatear(): void {
+    const g = this.guia
+    if (!g) return
+    this.guia = null
+    g.alTerminar(false)
+  }
+
+  /** Corre hasta (x, y) y muerde. Si no llega en 3 s se rinde. Morder corta el olfato. */
   irAMorder(x: number, y: number, alMorder: () => void): void {
     if (this.ocupado) return
+    this.dejarDeOlfatear()
     this.mision = { x, y, alMorder }
     this.misionS = 3
   }
@@ -185,6 +215,39 @@ export class ThorSprite {
       this.colocar()
       return
     }
+    // olfateando: la Guia dice adónde ir y qué hacer
+    if (this.guia) {
+      const gu = this.guia
+      const r = gu.g.tick(dt, { x: this.x, y: this.y }, { x: h.x, y: h.y })
+      if (r.huella) gu.alHuella(this.x, this.y)
+      if (r.accion === 'ladrar') this.hacer('bark', 0.7, 0.3)
+      if (r.accion === 'cavar') this.hacer('dig', 1.2, 0.5, undefined, () => this.hacer('bark', 0.5, 0.3))
+      if (gu.g.estado === 'listo') {
+        this.guia = null
+        gu.alTerminar(r.accion === 'cavar' || gu.g.destino !== null && Math.hypot(this.x - gu.g.destino.x, this.y - gu.g.destino.y) < 60)
+      } else if (r.meta && !this.accion) {
+        const dx = r.meta.x - this.x
+        const dy = r.meta.y - this.y
+        const d = Math.hypot(dx, dy) || 1
+        const paso = Math.min(d, THOR.correr * dt)
+        const mv = moverCuerpo(this.grilla, { x: this.x, y: this.y, radio: RADIO_THOR }, (dx / d) * paso, (dy / d) * paso)
+        gu.trabadoS = mv.movido > 0.05 ? 0 : gu.trabadoS + dt
+        this.x = mv.x
+        this.y = mv.y
+        this.dir = indiceDireccion(dx, dy)
+        this.estado = 'run'
+        this.poner('run')
+        // trabado: se rinde y vuelve con ella
+        if (gu.trabadoS > 1.5) this.dejarDeOlfatear()
+      } else if (!this.accion) {
+        // esperándola: la mira moviendo la cola
+        this.dir = indiceDireccion(h.x - this.x, h.y - this.y)
+        this.estado = 'wag'
+        this.poner('wag')
+      }
+      this.colocar()
+      return
+    }
     const dh = Math.hypot(h.x - this.x, h.y - this.y)
     let meta: Punto
     if (h.moviendo) meta = dh > DISTANCIA_RASTRO + 10 ? this.puntoDelRastro(h, DISTANCIA_RASTRO) : { x: this.x, y: this.y }
@@ -248,6 +311,7 @@ export class ThorSprite {
   teleport(x: number, y: number): void {
     this.accion = null
     this.mision = null
+    this.dejarDeOlfatear()
     this.x = x
     this.y = y
     this.rastro = []

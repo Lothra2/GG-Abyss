@@ -8,7 +8,7 @@ import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
 import { PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S } from '../config/juego'
-import { AUTOGUARDADO_S, BOTIN, JEFE } from '../config/balance'
+import { AUTOGUARDADO_S, BOTIN, JEFE, OLFATO } from '../config/balance'
 import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
@@ -35,6 +35,8 @@ import { Combate } from '../game/Combate'
 import { Botin } from '../game/Botin'
 import { JefeSprite, type EventosJefe } from '../game/Jefe'
 import { Impactos, type TipoImpacto } from '../logic/impacto'
+import { Guia, ordenarPistas, type Pista } from '../logic/olfato'
+import { buscarCamino } from '../logic/camino'
 import { Presentacion } from '../game/Presentacion'
 import { alCambiarEscala } from '../game/Pantalla'
 import { Atmosfera } from '../fx/Atmosfera'
@@ -61,7 +63,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -119,6 +121,8 @@ export class Mundo extends Phaser.Scene {
   /** el peso de los golpes: el mundo se congela un instante (hitstop) */
   private impactos = new Impactos()
   private pausaGolpe = 0
+  private olfatoRecarga = 0
+  private olfatoInfo: { llave: string; llego: boolean; huellas: number } | null = null
   private ultimoImpacto: { tipo: TipoImpacto; pausa: number; sacude: boolean } | null = null
   /** cámara lenta (la muerte del jefe): el mundo corre a `factor` durante `resta` segundos reales */
   private lento = { factor: 1, resta: 0 }
@@ -644,6 +648,7 @@ export class Mundo extends Phaser.Scene {
     hab(0)
     hab(1)
     kb.on('keydown-I', () => !this.entrada.estaPausada && this.abrirInventario())
+    kb.on('keydown-T', () => !this.entrada.estaPausada && this.olfatear())
     ;(['ONE', 'TWO', 'THREE', 'FOUR'] as const).forEach((k, i) => kb.on(`keydown-${k}`, () => !this.entrada.estaPausada && this.combate.pocion(i)))
   }
 
@@ -676,6 +681,11 @@ export class Mundo extends Phaser.Scene {
       this.pendiente = null
       return true
     }
+    // tocar a Thor: olfatea
+    if (this.tocaThor(x, y)) {
+      this.olfatear()
+      return true
+    }
     const suelo = this.botin.golpe(x, y)
     if (suelo) {
       this.pendiente = null
@@ -688,6 +698,51 @@ export class Mundo extends Phaser.Scene {
     if (!o) return false
     this.irAUsar(o)
     return true
+  }
+
+  private tocaThor(x: number, y: number): boolean {
+    const t = this.thor
+    return Math.abs(x - t.x) <= 16 && y >= t.y - 30 && y <= t.y + 6
+  }
+
+  /**
+   * Thor olfatea: ladra y lleva a la heroína al cofre sin abrir más cercano dejando huellas doradas.
+   * Si no queda ninguno a su alcance, aúlla bajito. Devuelve la llave del cofre o null.
+   */
+  olfatear(): string | null {
+    if (this.thor.olfateando || this.combate.caido || this.olfatoRecarga > 0) return null
+    this.olfatoRecarga = OLFATO.recargaS
+    const pistas: Pista[] = this.entidades.cofres
+      .filter((c) => !c.abierto && !c.abriendo && c.s.visible)
+      .map((c) => ({ llave: c.llave, x: c.e.x, y: c.e.y + 22, secreto: c.secreto }))
+    for (const p of ordenarPistas(pistas, { x: this.heroina.x, y: this.heroina.y }).slice(0, 4)) {
+      const camino = buscarCamino(this.grilla, this.thor.x, this.thor.y, p.x, p.y, { radio: 6, radioBusqueda: 3 })
+      if (!camino || camino.length === 0) continue
+      this.olfatoInfo = { llave: p.llave, llego: false, huellas: 0 }
+      this.sonido.efecto('ladrido', { volumen: 0.8 })
+      this.thor.olfatear(
+        new Guia(camino),
+        (x, y) => {
+          // una pata a cada lado, como pasos
+          const n = this.olfatoInfo?.huellas ?? 0
+          this.atmosfera.particulas.huella(x + (n % 2 ? 3 : -3), y + 2 + (n % 2 ? 2 : 0), OLFATO.huellaVidaS)
+          if (this.olfatoInfo) this.olfatoInfo.huellas++
+        },
+        (llego) => {
+          if (this.olfatoInfo) this.olfatoInfo.llego = llego
+          if (!llego) return
+          this.sonido.efecto('secreto', { volumen: 0.6 })
+          this.fxSobre('curar', p.x, p.y - 22)
+          this.thor.menearCola(2)
+        },
+      )
+      return p.llave
+    }
+    // nada que olfatear cerca
+    this.olfatoInfo = { llave: '', llego: false, huellas: 0 }
+    this.thor.hacer('howl', 1)
+    this.sonido.efecto('aullido', { volumen: 0.4, rate: 1.3 })
+    return null
   }
 
   /** La heroína camina hasta el objeto y lo usa. Si ya está al lado, lo usa de una. */
@@ -894,6 +949,7 @@ export class Mundo extends Phaser.Scene {
       this.actualizarJefe(dt)
     }
     this.botin.update(dt)
+    this.olfatoRecarga = Math.max(0, this.olfatoRecarga - dt)
     this.tJugado += dt
     // lo que la heroína iba a usar: cuando llega, lo usa
     const pend = this.pendiente
@@ -1041,6 +1097,13 @@ export class Mundo extends Phaser.Scene {
       noEsperar: () => this.listo,
       combate: () => this.combate.info(),
       abrirTienda: (() => this.abrirTienda()) as never,
+      olfatear: (() => this.olfatear()) as never,
+      /** mueve solo a la heroína (Thor se queda donde está) */
+      ponerHeroina: ((x: number, y: number) => {
+        const p = this.grilla.puntoLibreCerca(x, y, 8, 120) ?? { x, y }
+        this.heroina.teleport(p.x, p.y)
+      }) as never,
+      olfato: () => ({ activo: this.thor.olfateando, estado: this.thor.estadoOlfato, accion: this.thor.accionActual, t: Math.round(this.t * 100) / 100, info: this.olfatoInfo, thor: { x: Math.round(this.thor.x), y: Math.round(this.thor.y) }, huellasVisibles: this.atmosfera.particulas.cuantasDe('huella') }),
       darOro: ((n: number) => {
         this.partida.oro += n
       }) as never,

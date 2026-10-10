@@ -333,6 +333,30 @@ export const TIENDA = {
   ],
 }
 
+/**
+ * Thor olfatea (tocarlo, o la tecla T): ladra, y lleva a la heroína hasta el cofre sin abrir más cercano dejando huellas.
+ * Va un tramo adelante y la espera; si ella no viene en esperaMaxS, vuelve a seguirla.
+ */
+export const OLFATO = {
+  /** después del ladrido (que dura lo suyo) arranca enseguida */
+  ladrarS: 0.15,
+  /** cuánto se adelanta antes de esperarla */
+  adelanto: 200,
+  /** a esta distancia ella "lo alcanzó" y él sigue */
+  cerca: 90,
+  esperaMaxS: 20,
+  /** después de cavar y ladrar */
+  llegoS: 0.4,
+  /** una huella cada tantos px recorridos */
+  huellaCada: 16,
+  huellaVidaS: 4,
+  recargaS: 3,
+  /** no busca cofres más lejos que esto (en línea recta) */
+  maxDistancia: 2600,
+  /** al llegar, a esta distancia del cofre se para */
+  llegada: 34,
+}
+
 export const CAMARA = {
   lerp: 0.12,
   adelanto: 40,

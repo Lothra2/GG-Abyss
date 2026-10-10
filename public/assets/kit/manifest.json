@@ -4417,6 +4417,13 @@
     "h": 6,
     "cuadros": 2,
     "fps": 8
+   },
+   "huella": {
+    "archivo": "mundo/particulas/huella.png",
+    "w": 8,
+    "h": 8,
+    "cuadros": 1,
+    "fps": 1
    }
   },
   "criaturas": {
