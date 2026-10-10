@@ -357,6 +357,23 @@ export const OLFATO = {
   llegada: 34,
 }
 
+/**
+ * La flecha guía: aparece en el borde de la pantalla si pasa un rato sin progreso (zona nueva, cofre, enemigo, nivel).
+ * Apunta a la zona sin descubrir más cercana; con nivel suficiente, a la arena del jefe; después de ganarle, al portal.
+ * Las zonas secretas nunca se señalan.
+ */
+export const GUIA = {
+  esperaS: 40,
+  /** en modo peque aparece antes */
+  esperaPequeS: 25,
+  nivelParaJefe: 6,
+  /** distancia al borde de la pantalla (lógica) */
+  margen: 30,
+  margenAbajo: 92,
+  /** si el destino está a menos de esto de la heroína no hace falta flecha */
+  cerca: 140,
+}
+
 export const CAMARA = {
   lerp: 0.12,
   adelanto: 40,

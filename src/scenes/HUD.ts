@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { DIRECCIONES, vectorDe } from '../logic/direccion'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
 import { uiImagenes } from '../kit/manifest'
@@ -33,6 +34,8 @@ export class HUD extends Phaser.Scene {
   private fps?: Phaser.GameObjects.BitmapText
   private pausa!: Boton
   private bolsa!: Boton
+  private flecha: Phaser.GameObjects.Image | null = null
+  private tFlecha = 0
   private combate!: HudCombate
   private bNivel!: Phaser.GameObjects.BitmapText
   private bRescate!: Phaser.GameObjects.BitmapText
@@ -87,6 +90,9 @@ export class HUD extends Phaser.Scene {
     this.input.keyboard?.on('keydown-ESC', () => this.abrirPausa())
 
     this.combate = new HudCombate(this, this.mundo, K.atlas('iconos', '32'))
+    // la flecha guía en el borde: aparece si pasa un rato sin progreso
+    this.flecha = this.textures.exists(K.ui('flecha_guia')) ? this.add.image(0, 0, K.ui('flecha_guia'), 0).setVisible(false).setAlpha(0).setDepth(300) : null
+    this.tFlecha = 0
     this.bNivel = texto(this, 0, 0, '', 'fuente_titulo', 2, { origen: [0.5, 0.5] }).setAlpha(0).setDepth(520)
     this.bRescate = texto(this, 0, 0, '', 'fuente_titulo', 2, { origen: [0.5, 0.5] }).setAlpha(0).setDepth(530)
     this.game.events.on('nivel-subido', this.alNivel)
@@ -283,12 +289,33 @@ export class HUD extends Phaser.Scene {
       fps: this.fps ? r(this.fps) : null,
       pausa: r(this.pausa),
       bolsa: r(this.bolsa),
+      flecha: this.flecha && this.flecha.visible ? { x: Math.round(this.flecha.x), y: Math.round(this.flecha.y), cuadro: Number(this.flecha.frame.name), alpha: this.flecha.alpha } : null,
       banner: { x: Math.round(this.banner.x), y: Math.round(this.banner.y) },
     }
   }
 
+  /** La flecha guía: entra de a poco, late suave y se mece hacia donde apunta */
+  private dibujarFlecha(dt: number): void {
+    const fl = this.flecha
+    if (!fl) return
+    const f = this.mundo.flechaGuia
+    this.tFlecha += dt
+    if (!f) {
+      fl.setAlpha(Math.max(0, fl.alpha - dt * 3))
+      if (fl.alpha <= 0) fl.setVisible(false)
+      return
+    }
+    const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+    const v = vectorDe(DIRECCIONES[f.dir]!)
+    const meneo = Math.round(Math.sin(this.tFlecha * 5) * 2 * esc)
+    fl.setVisible(true).setFrame(f.dir).setScale(esc)
+    fl.setPosition(Math.round(f.x + v.x * meneo), Math.round(f.y + v.y * meneo))
+    fl.setAlpha(Math.min(0.75 + 0.25 * Math.sin(this.tFlecha * 3), fl.alpha + dt * 2))
+  }
+
   override update(_t: number, deltaMs: number): void {
     this.combate.update(deltaMs / 1000)
+    this.dibujarFlecha(deltaMs / 1000)
     // durante la presentación el panel no atrapa toques: el toque la salta
     if (this.panel.input) this.panel.input.enabled = !this.mundo.enPresentacion
     if (this.mundo.partida && this.mundo.partida.oro !== this.oroMostrado) this.actualizarContadores()

@@ -8,7 +8,7 @@ import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
 import { PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S } from '../config/juego'
-import { AUTOGUARDADO_S, BOTIN, JEFE, OLFATO } from '../config/balance'
+import { AUTOGUARDADO_S, BOTIN, GUIA, JEFE, OLFATO } from '../config/balance'
 import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
@@ -36,6 +36,7 @@ import { Botin } from '../game/Botin'
 import { JefeSprite, type EventosJefe } from '../game/Jefe'
 import { Impactos, type TipoImpacto } from '../logic/impacto'
 import { Guia, ordenarPistas, type Pista } from '../logic/olfato'
+import { elegirDestino, posicionFlecha, RelojGuia, type Destino } from '../logic/guia'
 import { buscarCamino } from '../logic/camino'
 import { Presentacion } from '../game/Presentacion'
 import { alCambiarEscala } from '../game/Pantalla'
@@ -63,7 +64,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -122,6 +123,10 @@ export class Mundo extends Phaser.Scene {
   private impactos = new Impactos()
   private pausaGolpe = 0
   private olfatoRecarga = 0
+  /** la flecha guía: tiempo sin progreso, la firma del progreso y lo que hay que dibujar */
+  private relojGuia = new RelojGuia(GUIA.esperaS)
+  private firmaProgreso = ''
+  flechaGuia: { x: number; y: number; dir: number; destino: Destino } | null = null
   private olfatoInfo: { llave: string; llego: boolean; huellas: number } | null = null
   private ultimoImpacto: { tipo: TipoImpacto; pausa: number; sacude: boolean } | null = null
   /** cámara lenta (la muerte del jefe): el mundo corre a `factor` durante `resta` segundos reales */
@@ -713,6 +718,38 @@ export class Mundo extends Phaser.Scene {
     return true
   }
 
+  /**
+   * La flecha guía: cuenta el tiempo sin progreso (zona, cofre, enemigo, nivel o secreto nuevo) y, pasado el rato,
+   * calcula dónde va la flecha en el borde de la pantalla. Nunca durante la presentación ni la pelea con el jefe.
+   */
+  private actualizarGuia(dt: number): void {
+    const p = this.partida
+    const firma = `${p.zonas.length}|${p.cofres.length}|${this.combate.muertes}|${p.nivel}|${p.secretos.length}|${this.partida.jefeVencido ? 1 : 0}`
+    if (firma !== this.firmaProgreso) {
+      this.firmaProgreso = firma
+      this.relojGuia.progreso()
+    }
+    this.relojGuia.fijarEspera(this.combate.modoPeque ? GUIA.esperaPequeS : GUIA.esperaS)
+    const ocupada = this.enPresentacion || !!this.jefe?.peleando || this.combate.caido || this.thor.olfateando
+    if (ocupada) this.relojGuia.progreso()
+    else this.relojGuia.tick(dt)
+    this.flechaGuia = null
+    if (!this.relojGuia.visible) return
+    const destino = elegirDestino({
+      heroe: { x: this.heroina.x, y: this.heroina.y },
+      nivel: p.nivel,
+      zonas: this.mapa.zonas,
+      descubiertas: p.zonas,
+      arena: this.arena ? { x: this.arena.x, y: this.arena.y } : null,
+      jefeVencido: p.jefeVencido,
+      portal: this.portalJefe ? { x: this.portalJefe.x, y: this.portalJefe.y } : null,
+    })
+    if (!destino) return
+    const v = this.cameras.main.worldView
+    const pos = posicionFlecha({ x: v.x, y: v.y, w: v.width, h: v.height }, { x: this.heroina.x, y: this.heroina.y }, destino)
+    if (pos) this.flechaGuia = { ...pos, destino }
+  }
+
   private tocaThor(x: number, y: number): boolean {
     const t = this.thor
     return Math.abs(x - t.x) <= 16 && y >= t.y - 30 && y <= t.y + 6
@@ -963,6 +1000,7 @@ export class Mundo extends Phaser.Scene {
     }
     this.botin.update(dt)
     this.olfatoRecarga = Math.max(0, this.olfatoRecarga - dt)
+    this.actualizarGuia(dt)
     this.tJugado += dt
     // lo que la heroína iba a usar: cuando llega, lo usa
     const pend = this.pendiente
@@ -1112,6 +1150,11 @@ export class Mundo extends Phaser.Scene {
       abrirTienda: (() => this.abrirTienda()) as never,
       olfatear: (() => this.olfatear()) as never,
       abrirAlbum: (() => this.abrirAlbum()) as never,
+      guia: () => ({ sinProgreso: Math.round(this.relojGuia.sinProgreso * 10) / 10, visible: this.relojGuia.visible, flecha: this.flechaGuia }),
+      /** como si hubiera pasado el rato sin progreso */
+      forzarGuia: (() => {
+        this.relojGuia.tick(999)
+      }) as never,
       /** mueve solo a la heroína (Thor se queda donde está) */
       ponerHeroina: ((x: number, y: number) => {
         const p = this.grilla.puntoLibreCerca(x, y, 8, 120) ?? { x, y }
