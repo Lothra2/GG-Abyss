@@ -804,6 +804,13 @@ Debajo del bosque, una catedral atravesada por raíces. La familia baja para rec
 - Hechos del taller: `columna_raiz` 48 x 112 y `columna_rota` 48 x 72 (apoyo [24, alto-4], sólido 20 x 6, luz turquesa), `arco_roto` 128 x 128 (dos patas sólidas), `brasero_cobre` 32 x 48 (6 cuadros a 8 fps, luz ámbar 200) y `brasero_apagado`, `pedestal_brasas_0` a `_3` 48 x 40, `raices_muro` 96 x 64 (4 cuadros, capa suelo), `raices_cortina` 64 x 96 (sólida), `escombros` 64 x 48, `haz_luz` 96 x 160 (4 cuadros, capa suelo), `luciernaga_turquesa`, el Guardián de cobre (celda 64, pivote [32, 62], idle, walk, attack, attack_heavy, warcry, hit, die en 8 direcciones), `musica_catedral` y `ambiente_catedral`.
 - Juego: `manifest.mundos`, guardado por mundo con migración, el portal del jefe baja (escena Bajada) y el portal azul sube, el golpe pesado del guardián sin ser élite, partículas que no flotan sobre los muros de un interior.
 
+**Estado del mundo completo (hecho).**
+
+- Tramo 2: la nave inundada con el río de agua casi negra, el puente seguro y el vado de losas. Fuera de las losas el agua se pisa y es caer: Thor ladra y ella vuelve a la última losa firme sin perder nada. El camino automático nunca pasa por ahí (cuadros a evitar en la grilla). La raicita persigue a Thor si está cerca y a la heroína no le pega. El vigía tira la bola violeta desde su lugar. La capilla escondida con su cofre secreto.
+- Tramo 3: las tres brasas (nave, claustro y forja). Cada una prende braseros, cambia el pedestal y la forja, y abre una compuerta de raíces: con 1 la forja, con 2 el atajo, con 3 el campanario. Thor y la flecha guían a la brasa que falta.
+- Tramo 4: el Guardián de la Campana, con el mismo motor del minotauro y el perfil campana. Golpe frontal, onda de campana (anillo con el centro seguro) y llamada de raíces (tres manchas, las raíces tapan el paso un rato). Cada patrón nuevo se enseña solo la primera vez. Al ganar se libera: la campana pasa a turquesa y la oscuridad baja.
+- Lo que quedó distinto del plan: no hay mecanismo de fuelle ni puerta de atajo propia (se usan las compuertas de raíces), el aviso de la onda es un anillo técnico mientras el taller hace `aviso_onda`, y el portal del campanario lleva a Continuará hasta que exista el mundo 3.
+
 **Orden.** Este es el orden de entrega, no el definitivo, y cada tramo se valida antes de seguir.
 
 1. Rebanada: escalera, atrio y un encuentro con un guardián de cobre. Se valida escala, profundidad, controles y atmósfera.

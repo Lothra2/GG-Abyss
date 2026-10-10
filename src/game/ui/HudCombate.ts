@@ -309,6 +309,11 @@ export class HudCombate {
       this.muescaJefe.setVisible(false)
       return
     }
+    // el nombre del jefe de este mundo (el minotauro o el guardián de la campana)
+    if (this.nombreJefe.text !== j.nombre) {
+      this.nombreJefe.setText(j.nombre)
+      this.acomodar()
+    }
     const f = Phaser.Math.Clamp(j.vida / j.vidaMax, 0, 1)
     if (!this.jefeVisto) {
       // recién empieza: la barra se llena desde cero

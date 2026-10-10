@@ -366,3 +366,61 @@ test('captura la Catedral: la bajada, la escalera, el atrio, los claustros con e
     await ctx.close()
   }
 })
+
+/** F8: el Guardián de la Campana: la entrada, la onda (el anillo con el centro seguro), las raíces y la liberación */
+test('captura al Guardián de la Campana y la Catedral liberada', async ({ browser }) => {
+  test.setTimeout(400_000)
+  const dir = join('docs', 'capturas', 'f8')
+  mkdirSync(dir, { recursive: true })
+  const vistas = [
+    { sufijo: '', ctx: { viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 } },
+    { sufijo: '_tablet', ctx: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
+  ]
+  type J = { fase: number; vida: number; vidaMax: number; avisos: { ataque: string; resta: number; total: number }[] }
+  for (const v of vistas) {
+    const ctx = await browser.newContext(v.ctx)
+    const page = await ctx.newPage()
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'irAMundo', 'mundo2')
+    await esperarEscena(page, 'Bajada')
+    await esperarEscena(page, 'Mundo')
+    await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true && typeof a.mundoActual === 'function' }, null, { timeout: 120_000 })
+    await gancho(page, 'darBrasas', 3)
+    await gancho(page, 'ponerNivel', 10)
+    await gancho(page, 'avanzar', 0.5)
+    await gancho(page, 'irAPostal', 'campanario_invertido')
+    await gancho(page, 'avanzar', 1)
+    await page.waitForTimeout(3000)
+    await page.screenshot({ path: join(dir, `campanario${v.sufijo}.png`) })
+    await gancho(page, 'entrarArena')
+    await gancho(page, 'avanzar', 1)
+    await page.waitForTimeout(500)
+    await page.screenshot({ path: join(dir, `campana_entrada${v.sufijo}.png`) })
+    await gancho(page, 'avanzar', 3)
+    // se espera un aviso a la mitad para cada patrón
+    const capturar = async (ataque: string, archivo: string) => {
+      for (let t = 0; t < 30; t += 0.1) {
+        await gancho(page, 'curarTodo')
+        await gancho(page, 'avanzar', 0.1)
+        const a = (await gancho<J>(page, 'jefe')).avisos.find((q) => q.ataque === ataque)
+        if (a && a.resta < a.total * 0.55) break
+      }
+      await page.waitForTimeout(300)
+      await page.screenshot({ path: join(dir, `${archivo}${v.sufijo}.png`) })
+    }
+    await capturar('golpe_fuerte', 'campana_golpe')
+    const j = await gancho<J>(page, 'jefe')
+    await gancho(page, 'danarJefe', j.vida - j.vidaMax * 0.5)
+    await capturar('onda', 'campana_onda')
+    const j2 = await gancho<J>(page, 'jefe')
+    await gancho(page, 'danarJefe', j2.vida - j2.vidaMax * 0.3)
+    await capturar('raices', 'campana_raices')
+    await gancho(page, 'danarJefe', 9999)
+    for (let i = 0; i < 8; i++) await gancho(page, 'avanzar', 1)
+    await page.waitForTimeout(8000)
+    await page.screenshot({ path: join(dir, `campana_libre${v.sufijo}.png`) })
+    await sinErrores(errores)
+    await ctx.close()
+  }
+})

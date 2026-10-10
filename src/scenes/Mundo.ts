@@ -112,6 +112,8 @@ export class Mundo extends Phaser.Scene {
   mecanismos: Mecanismos | null = null
   private destinoBrasa: { firma: string; p: { x: number; y: number } | null } = { firma: '', p: null }
   private ultimaSegura = { x: 0, y: 0 }
+  /** F8: las raíces de la llamada que siguen en pie (se van solas, o todas juntas cuando termina la pelea) */
+  private raicesActivas: { quitar: () => void }[] = []
   /** F8: a dónde va la oscuridad de la Catedral cuando el guardián se libera */
   private aclaradoMeta = 1
   private enAgua = 0
@@ -264,6 +266,7 @@ export class Mundo extends Phaser.Scene {
     this.enAgua = 0
     this.caidasAgua = 0
     this.aclaradoMeta = 1
+    this.raicesActivas = []
     this.destinoBrasa = { firma: '', p: null }
     // la escena es la misma al volver de Continuará o de otro mundo: el portal tiene que poder usarse otra vez, y lo
     // del jefe del mundo anterior no sigue acá (un mundo sin jefe no hereda el del Bosque)
@@ -580,10 +583,18 @@ export class Mundo extends Phaser.Scene {
       const s = def && this.textures.exists(key) ? this.add.sprite(Math.round(p.x), Math.round(p.y + 16), key, 0).setOrigin(def.apoyo[0] / def.w, def.apoyo[1] / def.h).setDepth(PROF.OBJETOS + p.y).setScale(1, 0.1) : null
       if (s) this.tweens.add({ targets: s, scaleY: 1, duration: 220, ease: 'Back.easeOut' })
       this.atmosfera.particulas.estallido(p.x, p.y, 'polvo', 6)
-      this.time.delayedCall(seg * 1000, () => {
-        liberar?.()
-        if (s) this.tweens.add({ targets: s, scaleY: 0.1, alpha: 0, duration: 300, onComplete: () => s.destroy() })
-      })
+      let hecho = false
+      const r = {
+        quitar: () => {
+          if (hecho) return
+          hecho = true
+          liberar?.()
+          if (s) this.tweens.add({ targets: s, scaleY: 0.1, alpha: 0, duration: 300, onComplete: () => s.destroy() })
+          this.raicesActivas = this.raicesActivas.filter((q) => q !== r)
+        },
+      }
+      this.raicesActivas.push(r)
+      this.time.delayedCall(seg * 1000, () => r.quitar())
     }
   }
 
@@ -672,6 +683,7 @@ export class Mundo extends Phaser.Scene {
     this.director.cortar()
     this.jefe.reposar()
     this.enemigos.quitarInvocadas()
+    for (const r of [...this.raicesActivas]) r.quitar()
     this.soltarAnillo()
     this.apagarPiedras()
     this.sonido.fijarMusica(null)
@@ -688,6 +700,7 @@ export class Mundo extends Phaser.Scene {
     this.partida.jefeVida = undefined
     this.soltarAnillo()
     this.enemigos.quitarInvocadas()
+    for (const r of [...this.raicesActivas]) r.quitar()
     this.entidades.mostrarCofresTrasJefe()
     // F8: el Guardián de la Campana no muere: se libera de la corrupción y la catedral se ilumina
     if (this.jefe?.tipo === 'guardian_campana') this.liberarCatedral(!yaVencido)
