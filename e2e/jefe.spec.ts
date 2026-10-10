@@ -48,7 +48,8 @@ test.describe('El minotauro', () => {
     expect(j.peleando).toBe(true)
     expect(j.anillo).toBe(true)
     // las piedras se encienden una tras otra (en tiempo real)
-    await expect.poll(async () => (await jefe(page)).piedras, { timeout: 15_000 }).toBeGreaterThanOrEqual(6)
+    // en tiempo real: al final de la suite larga el Chromium sin GPU va lento, se le da el margen de las otras esperas reales
+    await expect.poll(async () => (await jefe(page)).piedras, { timeout: 40_000 }).toBeGreaterThanOrEqual(6)
     // la barra del jefe aparece arriba
     await expect.poll(async () => (await gancho<{ jefe: { visible: boolean } }>(page, 'hudCombate')).jefe.visible, { timeout: 10_000 }).toBe(true)
     // suena la música del jefe
