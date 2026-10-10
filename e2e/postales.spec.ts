@@ -190,12 +190,16 @@ test('captura la tienda, el olfato de Thor, el álbum, la flecha guía y el cine
     await gancho(page, 'avanzar', 1.6)
     await page.waitForTimeout(300)
     await page.screenshot({ path: join(carpeta, `olfato${v.sufijo}.png`) })
-    // la tienda de la fogata con oro para comprar algo
+    // el mercader de la fogata y su tienda, con oro para comprar algo
     await gancho(page, 'darOro', 60)
-    const f = (await gancho<{ tipo: string; llave: string; parada: { x: number; y: number } }[]>(page, 'objetivos')).find((o) => o.tipo === 'fogata')!
-    await gancho(page, 'teleport', f.parada.x, f.parada.y + 10)
+    const f = (await gancho<{ tipo: string; llave: string; parada: { x: number; y: number } }[]>(page, 'objetivos')).find((o) => o.tipo === 'mercader')!
+    await gancho(page, 'teleport', f.parada.x - 50, f.parada.y + 16)
+    await gancho(page, 'avanzar', 0.6)
+    await page.waitForTimeout(600)
+    await page.screenshot({ path: join(carpeta, `mercader${v.sufijo}.png`) })
     await gancho(page, 'usarObjetivo', f.llave)
-    await gancho(page, 'avanzar', 1)
+    await gancho(page, 'avanzar', 1.5)
+    await expect.poll(async () => (await gancho<string[]>(page, 'escenasActivas')).includes('Tienda'), { timeout: 10_000 }).toBe(true)
     await page.waitForTimeout(1200)
     await page.screenshot({ path: join(carpeta, `tienda${v.sufijo}.png`) })
     await gancho(page, 'cerrarTienda')

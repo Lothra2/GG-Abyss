@@ -242,9 +242,8 @@ test.describe('Combate', () => {
     await gancho(page, 'teleport', fogata.parada.x, fogata.parada.y + 10)
     await gancho(page, 'usarObjetivo', fogata.llave)
     await avanzar(page, 2)
-    // tocar la fogata abre su tienda: se cierra para seguir
-    await expect.poll(async () => (await gancho<{ abierta: boolean } | null>(page, 'tiendaUI'))?.abierta ?? false, { timeout: 10_000 }).toBe(true)
-    await gancho(page, 'cerrarTienda')
+    // con el mercader al lado, la fogata solo guarda (la tienda es él)
+    expect((await gancho<string[]>(page, 'escenasActivas')).includes('Tienda')).toBe(false)
     await gancho(page, 'darXp', 50)
     const e0 = await gancho<{ oro: number; nivel: number; xp: number; cofres: string[]; zonas: string[]; ultimaFogata: string }>(page, 'estado')
     expect(e0.ultimaFogata).not.toBe('')
