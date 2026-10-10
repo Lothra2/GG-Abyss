@@ -138,7 +138,11 @@
    },
    "icon": "sword_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "scimitar_1",
@@ -168,7 +172,11 @@
    },
    "icon": "scimitar_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "katana_1",
@@ -198,7 +206,11 @@
    },
    "icon": "katana_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "rapier_1",
@@ -228,7 +240,11 @@
    },
    "icon": "rapier_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "dagger_1",
@@ -258,7 +274,11 @@
    },
    "icon": "dagger_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "dagger"
+   }
   },
   {
    "id": "kris_1",
@@ -288,7 +308,11 @@
    },
    "icon": "kris_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "dagger"
+   }
   },
   {
    "id": "axe_1",
@@ -318,7 +342,11 @@
    },
    "icon": "axe_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "hatchet_1",
@@ -348,7 +376,11 @@
    },
    "icon": "hatchet_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "mace_1",
@@ -378,7 +410,11 @@
    },
    "icon": "mace_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "morning_star_1",
@@ -408,7 +444,11 @@
    },
    "icon": "morning_star_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "flail_1",
@@ -438,7 +478,11 @@
    },
    "icon": "flail_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "warhammer_1",
@@ -468,7 +512,11 @@
    },
    "icon": "warhammer_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "hammer"
+   }
   },
   {
    "id": "scepter_1",
@@ -498,7 +546,11 @@
    },
    "icon": "scepter_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "club_1",
@@ -528,7 +580,11 @@
    },
    "icon": "club_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "club"
+   }
   },
   {
    "id": "wand_1",
@@ -558,7 +614,11 @@
    },
    "icon": "wand_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "wand"
+   }
   },
   {
    "id": "claw_1",
@@ -588,7 +648,11 @@
    },
    "icon": "claw_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "claws"
+   }
   },
   {
    "id": "javelin_1",
@@ -618,7 +682,11 @@
    },
    "icon": "javelin_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "spear"
+   }
   },
   {
    "id": "greatsword_1",
@@ -648,7 +716,11 @@
    },
    "icon": "greatsword_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "greatsword"
+   }
   },
   {
    "id": "greataxe_1",
@@ -678,7 +750,11 @@
    },
    "icon": "greataxe_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "maul_1",
@@ -708,7 +784,11 @@
    },
    "icon": "maul_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "hammer"
+   }
   },
   {
    "id": "staff_1",
@@ -738,7 +818,11 @@
    },
    "icon": "staff_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "staff"
+   }
   },
   {
    "id": "spear_1",
@@ -768,7 +852,11 @@
    },
    "icon": "spear_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "spear"
+   }
   },
   {
    "id": "halberd_1",
@@ -798,7 +886,11 @@
    },
    "icon": "halberd_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "spear"
+   }
   },
   {
    "id": "scythe_1",
@@ -828,7 +920,11 @@
    },
    "icon": "scythe_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "scythe"
+   }
   },
   {
    "id": "bow_1",
@@ -858,7 +954,11 @@
    },
    "icon": "bow_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "longbow_1",
@@ -888,7 +988,11 @@
    },
    "icon": "longbow_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "crossbow_1",
@@ -918,7 +1022,11 @@
    },
    "icon": "crossbow_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "sword_2",
@@ -948,7 +1056,11 @@
    },
    "icon": "sword_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "scimitar_2",
@@ -978,7 +1090,11 @@
    },
    "icon": "scimitar_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "katana_2",
@@ -1008,7 +1124,11 @@
    },
    "icon": "katana_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "rapier_2",
@@ -1038,7 +1158,11 @@
    },
    "icon": "rapier_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "dagger_2",
@@ -1068,7 +1192,11 @@
    },
    "icon": "dagger_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "dagger"
+   }
   },
   {
    "id": "kris_2",
@@ -1098,7 +1226,11 @@
    },
    "icon": "kris_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "dagger"
+   }
   },
   {
    "id": "axe_2",
@@ -1128,7 +1260,11 @@
    },
    "icon": "axe_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "hatchet_2",
@@ -1158,7 +1294,11 @@
    },
    "icon": "hatchet_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "mace_2",
@@ -1188,7 +1328,11 @@
    },
    "icon": "mace_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "morning_star_2",
@@ -1218,7 +1362,11 @@
    },
    "icon": "morning_star_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "flail_2",
@@ -1248,7 +1396,11 @@
    },
    "icon": "flail_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "warhammer_2",
@@ -1278,7 +1430,11 @@
    },
    "icon": "warhammer_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "hammer"
+   }
   },
   {
    "id": "scepter_2",
@@ -1308,7 +1464,11 @@
    },
    "icon": "scepter_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "club_2",
@@ -1338,7 +1498,11 @@
    },
    "icon": "club_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "club"
+   }
   },
   {
    "id": "wand_2",
@@ -1368,7 +1532,11 @@
    },
    "icon": "wand_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "wand"
+   }
   },
   {
    "id": "claw_2",
@@ -1398,7 +1566,11 @@
    },
    "icon": "claw_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "claws"
+   }
   },
   {
    "id": "javelin_2",
@@ -1428,7 +1600,11 @@
    },
    "icon": "javelin_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "spear"
+   }
   },
   {
    "id": "greatsword_2",
@@ -1458,7 +1634,11 @@
    },
    "icon": "greatsword_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "greatsword"
+   }
   },
   {
    "id": "greataxe_2",
@@ -1488,7 +1668,11 @@
    },
    "icon": "greataxe_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "maul_2",
@@ -1518,7 +1702,11 @@
    },
    "icon": "maul_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "hammer"
+   }
   },
   {
    "id": "staff_2",
@@ -1548,7 +1736,11 @@
    },
    "icon": "staff_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "staff"
+   }
   },
   {
    "id": "spear_2",
@@ -1578,7 +1770,11 @@
    },
    "icon": "spear_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "spear"
+   }
   },
   {
    "id": "halberd_2",
@@ -1608,7 +1804,11 @@
    },
    "icon": "halberd_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "spear"
+   }
   },
   {
    "id": "scythe_2",
@@ -1638,7 +1838,11 @@
    },
    "icon": "scythe_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "scythe"
+   }
   },
   {
    "id": "bow_2",
@@ -1668,7 +1872,11 @@
    },
    "icon": "bow_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "longbow_2",
@@ -1698,7 +1906,11 @@
    },
    "icon": "longbow_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "crossbow_2",
@@ -1728,7 +1940,11 @@
    },
    "icon": "crossbow_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "sword_3",
@@ -1758,7 +1974,11 @@
    },
    "icon": "sword_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "scimitar_3",
@@ -1788,7 +2008,11 @@
    },
    "icon": "scimitar_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "katana_3",
@@ -1818,7 +2042,11 @@
    },
    "icon": "katana_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "rapier_3",
@@ -1848,7 +2076,11 @@
    },
    "icon": "rapier_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "dagger_3",
@@ -1878,7 +2110,11 @@
    },
    "icon": "dagger_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "dagger"
+   }
   },
   {
    "id": "kris_3",
@@ -1908,7 +2144,11 @@
    },
    "icon": "kris_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "dagger"
+   }
   },
   {
    "id": "axe_3",
@@ -1938,7 +2178,11 @@
    },
    "icon": "axe_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "hatchet_3",
@@ -1968,7 +2212,11 @@
    },
    "icon": "hatchet_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "mace_3",
@@ -1998,7 +2246,11 @@
    },
    "icon": "mace_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "morning_star_3",
@@ -2028,7 +2280,11 @@
    },
    "icon": "morning_star_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "flail_3",
@@ -2058,7 +2314,11 @@
    },
    "icon": "flail_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "warhammer_3",
@@ -2088,7 +2348,11 @@
    },
    "icon": "warhammer_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "hammer"
+   }
   },
   {
    "id": "scepter_3",
@@ -2118,7 +2382,11 @@
    },
    "icon": "scepter_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "club_3",
@@ -2148,7 +2416,11 @@
    },
    "icon": "club_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "club"
+   }
   },
   {
    "id": "wand_3",
@@ -2178,7 +2450,11 @@
    },
    "icon": "wand_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "wand"
+   }
   },
   {
    "id": "claw_3",
@@ -2208,7 +2484,11 @@
    },
    "icon": "claw_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "claws"
+   }
   },
   {
    "id": "javelin_3",
@@ -2238,7 +2518,11 @@
    },
    "icon": "javelin_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "spear"
+   }
   },
   {
    "id": "greatsword_3",
@@ -2268,7 +2552,11 @@
    },
    "icon": "greatsword_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "greatsword"
+   }
   },
   {
    "id": "greataxe_3",
@@ -2298,7 +2586,11 @@
    },
    "icon": "greataxe_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "maul_3",
@@ -2328,7 +2620,11 @@
    },
    "icon": "maul_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "hammer"
+   }
   },
   {
    "id": "staff_3",
@@ -2358,7 +2654,11 @@
    },
    "icon": "staff_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "staff"
+   }
   },
   {
    "id": "spear_3",
@@ -2388,7 +2688,11 @@
    },
    "icon": "spear_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "spear"
+   }
   },
   {
    "id": "halberd_3",
@@ -2418,7 +2722,11 @@
    },
    "icon": "halberd_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "spear"
+   }
   },
   {
    "id": "scythe_3",
@@ -2448,7 +2756,11 @@
    },
    "icon": "scythe_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "scythe"
+   }
   },
   {
    "id": "bow_3",
@@ -2478,7 +2790,11 @@
    },
    "icon": "bow_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "longbow_3",
@@ -2508,7 +2824,11 @@
    },
    "icon": "longbow_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "crossbow_3",
@@ -2538,7 +2858,11 @@
    },
    "icon": "crossbow_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "shield_heater_1",
@@ -2564,7 +2888,11 @@
    },
    "icon": "shield_heater_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield"
+   }
   },
   {
    "id": "shield_round_1",
@@ -2590,7 +2918,11 @@
    },
    "icon": "shield_round_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_round"
+   }
   },
   {
    "id": "shield_kite_1",
@@ -2616,7 +2948,11 @@
    },
    "icon": "shield_kite_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_kite"
+   }
   },
   {
    "id": "shield_tower_1",
@@ -2642,7 +2978,11 @@
    },
    "icon": "shield_tower_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_tower"
+   }
   },
   {
    "id": "buckler_1",
@@ -2668,7 +3008,11 @@
    },
    "icon": "buckler_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_round"
+   }
   },
   {
    "id": "orb_1",
@@ -2702,7 +3046,11 @@
    },
    "icon": "orb_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "orb"
+   }
   },
   {
    "id": "tome_1",
@@ -2736,7 +3084,11 @@
    },
    "icon": "tome_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "tome"
+   }
   },
   {
    "id": "shrunken_head_1",
@@ -2761,7 +3113,11 @@
    },
    "icon": "shrunken_head_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "orb"
+   }
   },
   {
    "id": "quiver_1",
@@ -2812,7 +3168,11 @@
    },
    "icon": "shield_heater_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield"
+   }
   },
   {
    "id": "shield_round_2",
@@ -2838,7 +3198,11 @@
    },
    "icon": "shield_round_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_round"
+   }
   },
   {
    "id": "shield_kite_2",
@@ -2864,7 +3228,11 @@
    },
    "icon": "shield_kite_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_kite"
+   }
   },
   {
    "id": "shield_tower_2",
@@ -2890,7 +3258,11 @@
    },
    "icon": "shield_tower_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_tower"
+   }
   },
   {
    "id": "buckler_2",
@@ -2916,7 +3288,11 @@
    },
    "icon": "buckler_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_round"
+   }
   },
   {
    "id": "orb_2",
@@ -2950,7 +3326,11 @@
    },
    "icon": "orb_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "orb"
+   }
   },
   {
    "id": "tome_2",
@@ -2984,7 +3364,11 @@
    },
    "icon": "tome_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "tome"
+   }
   },
   {
    "id": "shrunken_head_2",
@@ -3009,7 +3393,11 @@
    },
    "icon": "shrunken_head_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "orb"
+   }
   },
   {
    "id": "quiver_2",
@@ -3060,7 +3448,11 @@
    },
    "icon": "shield_heater_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield"
+   }
   },
   {
    "id": "shield_round_3",
@@ -3086,7 +3478,11 @@
    },
    "icon": "shield_round_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_round"
+   }
   },
   {
    "id": "shield_kite_3",
@@ -3112,7 +3508,11 @@
    },
    "icon": "shield_kite_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_kite"
+   }
   },
   {
    "id": "shield_tower_3",
@@ -3138,7 +3538,11 @@
    },
    "icon": "shield_tower_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_tower"
+   }
   },
   {
    "id": "buckler_3",
@@ -3164,7 +3568,11 @@
    },
    "icon": "buckler_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_round"
+   }
   },
   {
    "id": "orb_3",
@@ -3198,7 +3606,11 @@
    },
    "icon": "orb_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "orb"
+   }
   },
   {
    "id": "tome_3",
@@ -3232,7 +3644,11 @@
    },
    "icon": "tome_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "tome"
+   }
   },
   {
    "id": "shrunken_head_3",
@@ -3257,7 +3673,11 @@
    },
    "icon": "shrunken_head_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "orb"
+   }
   },
   {
    "id": "quiver_3",
@@ -3334,7 +3754,11 @@
    },
    "icon": "armor_cuero_helm_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "cuero_2"
+   }
   },
   {
    "id": "armor_cuero_helm_3",
@@ -3360,7 +3784,11 @@
    },
    "icon": "armor_cuero_helm_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "cuero_3"
+   }
   },
   {
    "id": "armor_cuero_helm_4",
@@ -3395,7 +3823,11 @@
    },
    "icon": "armor_cuero_helm_4",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "cuero_4"
+   }
   },
   {
    "id": "armor_cuero_helm_5",
@@ -3430,7 +3862,11 @@
    },
    "icon": "armor_cuero_helm_5",
    "animated": true,
-   "atlas": "armadura_n5"
+   "atlas": "armadura_n5",
+   "visual": {
+    "capa": "casco",
+    "clave": "cuero_5"
+   }
   },
   {
    "id": "armor_cuero_chest_1",
@@ -3456,7 +3892,11 @@
    },
    "icon": "armor_cuero_chest_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "cuero_1"
+   }
   },
   {
    "id": "armor_cuero_chest_2",
@@ -3482,7 +3922,11 @@
    },
    "icon": "armor_cuero_chest_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "cuero_2"
+   }
   },
   {
    "id": "armor_cuero_chest_3",
@@ -3508,7 +3952,11 @@
    },
    "icon": "armor_cuero_chest_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "cuero_3"
+   }
   },
   {
    "id": "armor_cuero_chest_4",
@@ -3543,7 +3991,11 @@
    },
    "icon": "armor_cuero_chest_4",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "cuero_4"
+   }
   },
   {
    "id": "armor_cuero_chest_5",
@@ -3578,7 +4030,11 @@
    },
    "icon": "armor_cuero_chest_5",
    "animated": true,
-   "atlas": "armadura_n5"
+   "atlas": "armadura_n5",
+   "visual": {
+    "capa": "pecho",
+    "clave": "cuero_5"
+   }
   },
   {
    "id": "armor_cuero_shoulders_1",
@@ -4344,7 +4800,11 @@
    },
    "icon": "armor_malla_helm_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "malla_1"
+   }
   },
   {
    "id": "armor_malla_helm_2",
@@ -4370,7 +4830,11 @@
    },
    "icon": "armor_malla_helm_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "malla_2"
+   }
   },
   {
    "id": "armor_malla_helm_3",
@@ -4396,7 +4860,11 @@
    },
    "icon": "armor_malla_helm_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "malla_3"
+   }
   },
   {
    "id": "armor_malla_helm_4",
@@ -4431,7 +4899,11 @@
    },
    "icon": "armor_malla_helm_4",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "malla_4"
+   }
   },
   {
    "id": "armor_malla_helm_5",
@@ -4466,7 +4938,11 @@
    },
    "icon": "armor_malla_helm_5",
    "animated": true,
-   "atlas": "armadura_n5"
+   "atlas": "armadura_n5",
+   "visual": {
+    "capa": "casco",
+    "clave": "malla_5"
+   }
   },
   {
    "id": "armor_malla_chest_1",
@@ -4492,7 +4968,11 @@
    },
    "icon": "armor_malla_chest_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "malla_1"
+   }
   },
   {
    "id": "armor_malla_chest_2",
@@ -4518,7 +4998,11 @@
    },
    "icon": "armor_malla_chest_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "malla_2"
+   }
   },
   {
    "id": "armor_malla_chest_3",
@@ -4544,7 +5028,11 @@
    },
    "icon": "armor_malla_chest_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "malla_3"
+   }
   },
   {
    "id": "armor_malla_chest_4",
@@ -4579,7 +5067,11 @@
    },
    "icon": "armor_malla_chest_4",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "malla_4"
+   }
   },
   {
    "id": "armor_malla_chest_5",
@@ -4614,7 +5106,11 @@
    },
    "icon": "armor_malla_chest_5",
    "animated": true,
-   "atlas": "armadura_n5"
+   "atlas": "armadura_n5",
+   "visual": {
+    "capa": "pecho",
+    "clave": "malla_5"
+   }
   },
   {
    "id": "armor_malla_shoulders_1",
@@ -5380,7 +5876,11 @@
    },
    "icon": "armor_placas_helm_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "placas_1"
+   }
   },
   {
    "id": "armor_placas_helm_2",
@@ -5406,7 +5906,11 @@
    },
    "icon": "armor_placas_helm_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "placas_2"
+   }
   },
   {
    "id": "armor_placas_helm_3",
@@ -5432,7 +5936,11 @@
    },
    "icon": "armor_placas_helm_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "placas_3"
+   }
   },
   {
    "id": "armor_placas_helm_4",
@@ -5467,7 +5975,11 @@
    },
    "icon": "armor_placas_helm_4",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "placas_4"
+   }
   },
   {
    "id": "armor_placas_helm_5",
@@ -5502,7 +6014,11 @@
    },
    "icon": "armor_placas_helm_5",
    "animated": true,
-   "atlas": "armadura_n5"
+   "atlas": "armadura_n5",
+   "visual": {
+    "capa": "casco",
+    "clave": "placas_5"
+   }
   },
   {
    "id": "armor_placas_chest_1",
@@ -5528,7 +6044,11 @@
    },
    "icon": "armor_placas_chest_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "placas_1"
+   }
   },
   {
    "id": "armor_placas_chest_2",
@@ -5554,7 +6074,11 @@
    },
    "icon": "armor_placas_chest_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "placas_2"
+   }
   },
   {
    "id": "armor_placas_chest_3",
@@ -5580,7 +6104,11 @@
    },
    "icon": "armor_placas_chest_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "placas_3"
+   }
   },
   {
    "id": "armor_placas_chest_4",
@@ -5615,7 +6143,11 @@
    },
    "icon": "armor_placas_chest_4",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "placas_4"
+   }
   },
   {
    "id": "armor_placas_chest_5",
@@ -5650,7 +6182,11 @@
    },
    "icon": "armor_placas_chest_5",
    "animated": true,
-   "atlas": "armadura_n5"
+   "atlas": "armadura_n5",
+   "visual": {
+    "capa": "pecho",
+    "clave": "placas_5"
+   }
   },
   {
    "id": "armor_placas_shoulders_1",
@@ -6442,7 +6978,11 @@
    },
    "icon": "armor_tunica_helm_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "tunica_2"
+   }
   },
   {
    "id": "armor_tunica_helm_3",
@@ -6468,7 +7008,11 @@
    },
    "icon": "armor_tunica_helm_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "tunica_3"
+   }
   },
   {
    "id": "armor_tunica_helm_4",
@@ -6503,7 +7047,11 @@
    },
    "icon": "armor_tunica_helm_4",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "tunica_4"
+   }
   },
   {
    "id": "armor_tunica_helm_5",
@@ -6538,7 +7086,11 @@
    },
    "icon": "armor_tunica_helm_5",
    "animated": true,
-   "atlas": "armadura_n5"
+   "atlas": "armadura_n5",
+   "visual": {
+    "capa": "casco",
+    "clave": "tunica_5"
+   }
   },
   {
    "id": "armor_tunica_chest_1",
@@ -6564,7 +7116,11 @@
    },
    "icon": "armor_tunica_chest_1",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "tunica_1"
+   }
   },
   {
    "id": "armor_tunica_chest_2",
@@ -6590,7 +7146,11 @@
    },
    "icon": "armor_tunica_chest_2",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "tunica_2"
+   }
   },
   {
    "id": "armor_tunica_chest_3",
@@ -6616,7 +7176,11 @@
    },
    "icon": "armor_tunica_chest_3",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "tunica_3"
+   }
   },
   {
    "id": "armor_tunica_chest_4",
@@ -6651,7 +7215,11 @@
    },
    "icon": "armor_tunica_chest_4",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "tunica_4"
+   }
   },
   {
    "id": "armor_tunica_chest_5",
@@ -6686,7 +7254,11 @@
    },
    "icon": "armor_tunica_chest_5",
    "animated": true,
-   "atlas": "armadura_n5"
+   "atlas": "armadura_n5",
+   "visual": {
+    "capa": "pecho",
+    "clave": "tunica_5"
+   }
   },
   {
    "id": "armor_tunica_shoulders_1",
@@ -10453,7 +11025,11 @@
    },
    "icon": "m_arco_certero",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "m_varita_arcana",
@@ -10492,7 +11068,11 @@
    },
    "icon": "m_varita_arcana",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "wand"
+   }
   },
   {
    "id": "m_espada_cruel",
@@ -10531,7 +11111,11 @@
    },
    "icon": "m_espada_cruel",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "m_baculo_prisa",
@@ -10576,7 +11160,11 @@
    },
    "icon": "m_baculo_prisa",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "staff"
+   }
   },
   {
    "id": "m_rodela_robusta",
@@ -10611,7 +11199,11 @@
    },
    "icon": "m_rodela_robusta",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_round"
+   }
   },
   {
    "id": "m_jubon_robusto",
@@ -10646,7 +11238,11 @@
    },
    "icon": "m_jubon_robusto",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "cuero_1"
+   }
   },
   {
    "id": "m_botas_viento",
@@ -10792,7 +11388,11 @@
    },
    "icon": "m_cinta_certera",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "cuero_2"
+   }
   },
   {
    "id": "m_tunica_arcana",
@@ -10827,7 +11427,11 @@
    },
    "icon": "m_tunica_arcana",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "tunica_1"
+   }
   },
   {
    "id": "m_capucha_buho",
@@ -10868,7 +11472,11 @@
    },
    "icon": "m_capucha_buho",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "tunica_2"
+   }
   },
   {
    "id": "m_casco_robusto",
@@ -10909,7 +11517,11 @@
    },
    "icon": "m_casco_robusto",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "casco",
+    "clave": "malla_1"
+   }
   },
   {
    "id": "m_cinturon_robusto",
@@ -11020,7 +11632,11 @@
    },
    "icon": "m_coraza_vida",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "placas_1"
+   }
   },
   {
    "id": "m_hombreras_firmes",
@@ -11269,7 +11885,11 @@
    },
    "icon": "m_orbe_arcano",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "orb"
+   }
   },
   {
    "id": "m_daga_certera",
@@ -11314,7 +11934,11 @@
    },
    "icon": "m_daga_certera",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "dagger"
+   }
   },
   {
    "id": "r_aguijon_de_cuervo",
@@ -11365,7 +11989,11 @@
    },
    "icon": "r_aguijon_de_cuervo",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "r_canto_del_bosque",
@@ -11416,7 +12044,11 @@
    },
    "icon": "r_canto_del_bosque",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "wand"
+   }
   },
   {
    "id": "r_corona_de_escarcha",
@@ -11467,7 +12099,11 @@
    },
    "icon": "r_corona_de_escarcha",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "staff"
+   }
   },
   {
    "id": "r_juramento_de_hierro",
@@ -11518,7 +12154,11 @@
    },
    "icon": "r_juramento_de_hierro",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "r_muralla_del_alba",
@@ -11565,7 +12205,11 @@
    },
    "icon": "r_muralla_del_alba",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield"
+   }
   },
   {
    "id": "r_piel_del_lobo_gris",
@@ -11612,7 +12256,11 @@
    },
    "icon": "r_piel_del_lobo_gris",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "cuero_2"
+   }
   },
   {
    "id": "r_manto_de_luna_nueva",
@@ -11659,7 +12307,11 @@
    },
    "icon": "r_manto_de_luna_nueva",
    "animated": false,
-   "atlas": "iconos"
+   "atlas": "iconos",
+   "visual": {
+    "capa": "pecho",
+    "clave": "tunica_2"
+   }
   },
   {
    "id": "r_marca_de_la_manada",
@@ -11757,7 +12409,11 @@
    },
    "icon": "pluma_de_cuervo",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "ramita_del_abuelo",
@@ -11811,7 +12467,11 @@
    },
    "icon": "ramita_del_abuelo",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "wand"
+   }
   },
   {
    "id": "filo_del_alba",
@@ -11871,7 +12531,11 @@
    },
    "icon": "filo_del_alba",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "colmillo_de_ceniza",
@@ -11925,7 +12589,11 @@
    },
    "icon": "colmillo_de_ceniza",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "susurro_gelido",
@@ -11979,7 +12647,11 @@
    },
    "icon": "susurro_gelido",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "juramento_del_titan",
@@ -12039,7 +12711,11 @@
    },
    "icon": "juramento_del_titan",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "greatsword"
+   }
   },
   {
    "id": "hoja_del_vacio",
@@ -12099,7 +12775,11 @@
    },
    "icon": "hoja_del_vacio",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "greatsword"
+   }
   },
   {
    "id": "beso_de_la_vibora",
@@ -12153,7 +12833,11 @@
    },
    "icon": "beso_de_la_vibora",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "dagger"
+   }
   },
   {
    "id": "ultima_sombra",
@@ -12207,7 +12891,11 @@
    },
    "icon": "ultima_sombra",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "dagger"
+   }
   },
   {
    "id": "partetormentas",
@@ -12261,7 +12949,11 @@
    },
    "icon": "partetormentas",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "furia_del_norte",
@@ -12321,7 +13013,11 @@
    },
    "icon": "furia_del_norte",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "verdugo_carmesi",
@@ -12375,7 +13071,11 @@
    },
    "icon": "verdugo_carmesi",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "axe"
+   }
   },
   {
    "id": "martillo_del_trueno",
@@ -12429,7 +13129,11 @@
    },
    "icon": "martillo_del_trueno",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "hammer"
+   }
   },
   {
    "id": "lucero_sagrado",
@@ -12483,7 +13187,11 @@
    },
    "icon": "lucero_sagrado",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "cetro_de_brasas",
@@ -12537,7 +13245,11 @@
    },
    "icon": "cetro_de_brasas",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "mangual_de_almas",
@@ -12591,7 +13303,11 @@
    },
    "icon": "mangual_de_almas",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "mace"
+   }
   },
   {
    "id": "aguja_del_archimago",
@@ -12651,7 +13367,11 @@
    },
    "icon": "aguja_del_archimago",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "staff"
+   }
   },
   {
    "id": "rama_del_bosque_eterno",
@@ -12711,7 +13431,11 @@
    },
    "icon": "rama_del_bosque_eterno",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "staff"
+   }
   },
   {
    "id": "varita_de_hueso_lunar",
@@ -12765,7 +13489,11 @@
    },
    "icon": "varita_de_hueso_lunar",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "wand"
+   }
   },
   {
    "id": "vara_de_tormenta",
@@ -12819,7 +13547,11 @@
    },
    "icon": "vara_de_tormenta",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "wand"
+   }
   },
   {
    "id": "aliento_del_fenix",
@@ -12873,7 +13605,11 @@
    },
    "icon": "aliento_del_fenix",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "rompecielos",
@@ -12927,7 +13663,11 @@
    },
    "icon": "rompecielos",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "alabarda_del_centinela",
@@ -12981,7 +13721,11 @@
    },
    "icon": "alabarda_del_centinela",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "spear"
+   }
   },
   {
    "id": "segador_palido",
@@ -13041,7 +13785,11 @@
    },
    "icon": "segador_palido",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "scythe"
+   }
   },
   {
    "id": "lanza_solar",
@@ -13095,7 +13843,11 @@
    },
    "icon": "lanza_solar",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "spear"
+   }
   },
   {
    "id": "garras_de_pantera",
@@ -13155,7 +13907,11 @@
    },
    "icon": "garras_de_pantera",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "claws"
+   }
   },
   {
    "id": "bastion_del_alba",
@@ -13206,7 +13962,11 @@
    },
    "icon": "bastion_del_alba",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_kite"
+   }
   },
   {
    "id": "muro_de_hierro_negro",
@@ -13257,7 +14017,11 @@
    },
    "icon": "muro_de_hierro_negro",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_tower"
+   }
   },
   {
    "id": "egida_de_escamas",
@@ -13308,7 +14072,11 @@
    },
    "icon": "egida_de_escamas",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield_round"
+   }
   },
   {
    "id": "orbe_de_la_eternidad",
@@ -13358,7 +14126,11 @@
    },
    "icon": "orbe_de_la_eternidad",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "mano",
+    "clave": "orb"
+   }
   },
   {
    "id": "cabeza_susurrante",
@@ -13408,7 +14180,11 @@
    },
    "icon": "cabeza_susurrante",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "mano",
+    "clave": "orb"
+   }
   },
   {
    "id": "tomo_de_mil_nombres",
@@ -13458,7 +14234,11 @@
    },
    "icon": "tomo_de_mil_nombres",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "mano",
+    "clave": "tome"
+   }
   },
   {
    "id": "corona_del_rey_caido",
@@ -13510,7 +14290,11 @@
    },
    "icon": "corona_del_rey_caido",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "casco",
+    "clave": "placas_5"
+   }
   },
   {
    "id": "coraza_del_dragon_rojo",
@@ -13562,7 +14346,11 @@
    },
    "icon": "coraza_del_dragon_rojo",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "pecho",
+    "clave": "placas_5"
+   }
   },
   {
    "id": "guanteletes_del_titan",
@@ -13975,7 +14763,11 @@
    },
    "icon": "juramento_de_rick",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "sword"
+   }
   },
   {
    "id": "escudo_de_la_casa_gg",
@@ -14027,7 +14819,11 @@
    },
    "icon": "escudo_de_la_casa_gg",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "mano",
+    "clave": "shield"
+   }
   },
   {
    "id": "baculo_de_steph",
@@ -14082,7 +14878,11 @@
    },
    "icon": "baculo_de_steph",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "staff"
+   }
   },
   {
    "id": "arco_de_sophie",
@@ -14137,7 +14937,11 @@
    },
    "icon": "arco_de_sophie",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "bow"
+   }
   },
   {
    "id": "varita_de_alana",
@@ -14192,7 +14996,11 @@
    },
    "icon": "varita_de_alana",
    "animated": true,
-   "atlas": "especiales"
+   "atlas": "especiales",
+   "visual": {
+    "capa": "arma",
+    "clave": "wand"
+   }
   },
   {
    "id": "collar_de_thor",

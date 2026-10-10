@@ -80,8 +80,9 @@ test.describe('Equipo visible', () => {
     await abrirMundo(page, 'rick')
     // sin nada: espada y escudo de paladín
     await verse(page, 'arma:sword|mano:shield_kite')
+    // el arco es de dos manos: el escudo se guarda
     await ponerse(page, 'bow_1')
-    await verse(page, 'arma:bow|mano:shield_kite')
+    await verse(page, 'arma:bow')
     expect((await combate(page)).ataque).toMatchObject({ familia: 'flecha', proyectil: 'proyectil_flecha' })
     await ponerse(page, 'greatsword_1')
     await verse(page, 'arma:greatsword')

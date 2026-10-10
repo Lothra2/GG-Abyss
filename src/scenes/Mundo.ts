@@ -268,7 +268,8 @@ export class Mundo extends Phaser.Scene {
     if (this.m.personajes[ID_MERCADER]) encolarPersonaje(this, this.m, ID_MERCADER)
     // lo que la heroína lleva puesto (capas de equipo de PixelForja): se ve desde el primer cuadro
     const idHeroe = this.registry.get('heroeId') as string
-    if (this.partida && this.cache.json.exists(K.catalogo)) encolarCapas(this, this.m, idHeroe, aspectoDe(this.partida.equipo, leerCatalogo(this.cache.json.get(K.catalogo)), this.m.personajes[idHeroe]?.capas))
+    const partidaCarga = this.registry.get('partida') as Partida | undefined
+    if (partidaCarga && this.cache.json.exists(K.catalogo)) encolarCapas(this, this.m, idHeroe, aspectoDe(partidaCarga.equipo, leerCatalogo(this.cache.json.get(K.catalogo)), this.m.personajes[idHeroe]?.capas))
     encolarFx(this, this.m, fxDeCombate(this.m.direcciones))
     if (this.load.list.size === 0) return this.armar()
     this.load.once(Phaser.Loader.Events.COMPLETE, () => this.armar())
