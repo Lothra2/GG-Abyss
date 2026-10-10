@@ -706,6 +706,104 @@ Cinco mejoras de alto impacto y el jefe más pro, todas con lógica pura en `src
 
 Arte nuevo en PixelForja (rama `claude/ecstatic-ramanujan-oq0r0o` del taller): orbes esféricos, cascada a la medida, huella de Thor y flecha guía.
 
+### F7. Inmersión y sensación de calidad
+
+Primero una sección de referencia: del Claro de la Llegada a la Pradera de las Mariposas, con su cofre tutorial, ratas y la primera calabaza. Cuando esa sección se sienta bien, lo mismo se lleva al resto del Bosque.
+
+1. Respuesta del juego.
+   - El daño cae en el cuadro de impacto de cada animación (`GOLPE_EN`) y no antes.
+   - Un golpe que falla se ve: un barrido de aire y el número "Fallo" si el blanco se movió fuera del alcance. Un proyectil que no pega deja su impacto en el piso.
+   - Anticipación y recuperación legibles en los enemigos: un tinte y una pose antes de pegar, y una ventana corta después en la que no pegan.
+   - Colchón de entrada de 150 ms: un toque durante el golpe en curso queda guardado y se hace al terminar.
+   - Los efectos tienen tope (`IMPACTO.topePausaPorSeg`, tope de partículas por calidad) y un modo "Efectos suaves" en la pausa que apaga sacudidas, destellos y congelados.
+2. Atmósfera.
+   - Capas declaradas en `PROF`: suelo, objetos de piso, sombras, objetos y personajes por y, copas, primer plano, luces y bruma.
+   - Las copas y las raíces que tapan a la heroína se vuelven transparentes (ya pasa con las copas: se extiende al primer plano).
+   - Sonido por zona: un fondo y detalles sueltos (agua cerca del río, madera en el puente, viento en Las Alturas) que suenan según la distancia a su fuente.
+   - Música por estados: explorar, amenaza (hay enemigos cerca que la vieron), combate (pelea larga o élite) y descanso (fogata). Con histéresis, para que una rata sola no cambie la música, y fundidos de 1.5 s.
+3. Exploración. Cada zona con un punto reconocible y su luz, cofres con brillo según su nivel, y recoger con sonido, número y la tarjeta del botín.
+4. Alana.
+   - Tres demostraciones cortas con una mano que muestra qué tocar: caminar, pegar y abrir. Con íconos y un sonido.
+   - El objetivo actual siempre visible con un ícono en el HUD.
+   - Todo se puede saltar.
+   - La voz en español queda para cuando la familia grabe las frases (ver PROGRESO.md, pasos de Rick).
+5. Validación.
+   - Medidor en el juego con `?medir=1`: fps, tiempo de cuadro y demora entre el toque y la reacción, para que Rick lo mire en el iPad.
+   - Interruptor "Mejoras F7" en la pausa para comparar antes y después jugando.
+
+### F8. Mundo 2: La Catedral de las Raíces
+
+Debajo del bosque, una catedral atravesada por raíces. La familia baja para recuperar tres brasas y prender la forja que iluminaba el lugar.
+
+**Estructura.** La ruta principal es compacta y los desvíos se agregan cuando la base funcione.
+
+1. La escalera hundida: transición desde el portal del jefe del Bosque, la luz de afuera se apaga, piedra húmeda y raíces. Una puerta para volver al Bosque.
+2. El atrio de las luciérnagas: el primer refugio, con fogata, agua quieta y la forja apagada vista de lejos. Ahí se presenta la misión sin diálogos: tres brasas vacías en el pedestal.
+3. Los claustros quebrados: ruta clara, un atajo que se abre desde el otro lado y un secreto que Thor señala.
+4. La nave inundada: puentes y plataformas sobre agua casi negra. Primero el peligro solo (caer al agua lleva a la orilla con un rescate corto de Thor, sin perder nada) y después con enemigos.
+5. La forja apagada: el centro. Cada brasa prende una parte: luces ámbar, el sonido del fuelle, un mecanismo que abre camino.
+6. El campanario invertido: la arena del jefe alrededor de una campana colgada de las raíces. Al ganar queda a la vista una bajada más profunda (Continuará).
+
+**Enemigos.** Tres comportamientos, cada uno con una decisión distinta.
+
+- **Guardián de cobre (pesado).** Golpe anunciado: hay que reconocerlo y esquivarlo. Reutiliza la IA del trol élite.
+- **Vigía de las raíces (a distancia).** Su proyectil violeta se lee claro y se queda en su lugar. Reutiliza la IA del goblin arquero.
+- **Raicita (pequeña).** Cambia de lugar, se distrae con Thor y lo persigue en vez de a la heroína. Es una IA nueva, chica.
+
+**Jefe: el Guardián de la Campana.** Piedra y raíces, 96 px.
+
+- Golpe frontal con preparación clara (como el golpe fuerte del minotauro).
+- Onda de campana: anillo de daño con un hueco seguro marcado.
+- Llamada de raíces: raíces que salen del piso en partes de la arena por unos segundos.
+- Los patrones se enseñan de a uno y como mucho hay dos amenazas a la vez.
+- Al ganar se libera de la corrupción: sus raíces violetas pasan a turquesa y la catedral se ilumina.
+
+**Paleta.**
+
+- Base: piedra azul grisácea, tierra oscura, raíces, cobre viejo y agua casi negra.
+- Ámbar solo para refugios y mecanismos activos.
+- Turquesa para rastros de vida (Thor y las brasas), violeta para la amenaza.
+- La oscuridad sube con la profundidad (`oscuridad` por zona) y los personajes llevan su luz propia.
+
+**Lo que hace falta del taller (PixelForja).**
+
+| Recurso | Tamaño | Cuadros y tiempos | Apoyo / sólido | Uso |
+|---|---|---|---|---|
+| Pintor de catedral (`catedralDesign`) | mapa de 90 x 70 cuadros de 32 | — | colisión por cuadro | piso de losas azules, muros como mesetas oscuras, agua negra, escaleras, tierra, raíces en el piso |
+| `columna_raiz` | 48 x 112 | 1 | apoyo [24, 108], sólido 20 x 12 | columnas que tapan: copa transparente como los árboles |
+| `arco_roto` | 128 x 128 | 1 | apoyo [64, 124], 2 sólidos de pata | arquitectura, marca de zonas |
+| `raices_muro` | 96 x 64 | 4, 4 fps | capa suelo | raíces que respiran sobre el muro |
+| `puente_piedra` | 128 x 48 | 1 | capa suelo | la nave inundada |
+| `brasero_cobre` | 32 x 48 | 2 anims: apagado 1, encendido 6 a 10 fps | apoyo [16, 46], luz ámbar | refugios y la forja |
+| `forja` | 160 x 128 | 3 estados (1, 2 y 3 brasas) + encendida 8 a 10 fps | apoyo [80, 120], sólido | el centro |
+| `pedestal_brasas` | 48 x 40 | 4 estados (0 a 3 brasas) | sólido | la misión en el atrio |
+| `brasa` (objeto que se recoge) | 32 x 32 | 8, 10 fps | — | las tres brasas, con haz ámbar |
+| `campana` | 96 x 128 | quieta 1, sonar 6 a 12 fps | capa alta (techo) | la arena del jefe |
+| `puerta_atajo` | 64 x 64 | cerrada 1, abrir 6 a 10 fps | sólido mientras está cerrada | el atajo de los claustros |
+| `luciernaga_turquesa` | partícula de 8 x 8 | 4 | — | el atrio |
+| `gota_techo` y `polvo_piedra` | partículas de 4 x 6 | 2 | — | ambiente de la catedral |
+| Guardián de cobre | celda 64, pivote [32, 62] | idle 8 a 6, walk 8 a 10, attack 6 a 14, attack_heavy 7 a 12, hit 5 a 12, die 8 a 8, en 8 direcciones | cuerpo radio 14 | pesado |
+| Vigía de las raíces | celda 48, pivote [24, 46] | idle, walk, cast 6 a 12, hit, die | radio 8 | a distancia, proyectil violeta (fx `proyectil_raiz_*` en 8 direcciones, 4 cuadros) |
+| Raicita | celda 32, pivote [16, 30] | idle 4, run 6 a 12, attack 4 a 12, hit, die | radio 6 | pequeña |
+| Guardián de la Campana | celda 96, pivote [48, 93] | idle, walk, attack_heavy 7 a 12, golpe_campana 8 a 10, llamar_raices 8 a 10, hit, die 10 a 8, liberado 8 a 8 | cuerpo radio 30 | jefe |
+| Avisos | `aviso_onda` 192 x 192 con 8 cuadros (anillo con hueco), `aviso_raiz` 48 x 48 con 8 cuadros | — | capa suelo | patrones del jefe |
+| Audio | — | — | — | `musica_catedral` (explorar), `musica_catedral_amenaza`, `musica_jefe_campana`, `musica_forja` (descanso), `ambiente_catedral` (goteo y eco), `ambiente_agua_negra`, `fuelle`, `campana`, `brasa_recoger`, `raices` |
+
+**Lo que hace falta del juego.**
+
+- Varios mundos: `manifest.mundos[]` con el Bosque como mundo 1 (el `mundo` de hoy queda como alias, así un kit viejo sigue andando).
+- La partida guarda el mundo actual y la posición en cada uno, con migración que pone a todas en el Bosque.
+- El portal del jefe del Bosque baja a la escalera hundida en vez de "Continuará", y la escalera tiene la puerta para volver.
+- Entidades nuevas: `brasa`, `pedestal`, `puerta_atajo` (se abre desde un lado), `agua_peligro` (caer lleva a la orilla).
+- La IA de la raicita y el jefe nuevo, con su máquina de estados pura y con tests, como la del minotauro.
+
+**Orden.** Este es el orden de entrega, no el definitivo, y cada tramo se valida antes de seguir.
+
+1. Rebanada: escalera, atrio y un encuentro con un guardián de cobre. Se valida escala, profundidad, controles y atmósfera.
+2. Claustros y nave.
+3. Forja y brasas.
+4. Campanario y jefe.
+
 ## 6. Riesgos y mitigación
 
 | Riesgo | Mitigación |

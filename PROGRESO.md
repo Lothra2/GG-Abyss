@@ -5,7 +5,8 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 ## Estado
 
 - Fase actual: F0 a F5 del plan y F6 (pulido de jugabilidad pedido por Rick) hechas. Lo que falta es solo de Rick: pasar el arte nuevo a la rama del taller, publicar y probar en las tablets (ver "Pasos solo de Rick").
-- F6 hecha: golpes con peso, tienda de la fogata, Thor olfatea, álbum de postales, flecha guía y el jefe más pro (PLAN.md F6). Postales en `docs/capturas/f6/`.
+- F6 hecha: golpes con peso, tienda de la fogata, Thor olfatea, álbum de postales, flecha guía y el jefe más pro (PLAN.md F6). Postales en `docs/capturas/f6/`. Verificación: typecheck, 262 tests unitarios, build y e2e completo 124 pasaron y 2 se saltan a propósito.
+- En curso: tarjeta del botín (comparar al recoger), F7 inmersión y F8 Mundo 2 (diseño en PLAN.md).
 - Verificación final tras F5: typecheck limpio, 236 tests unitarios, build (sw.js con 628 archivos) y e2e completo 112 pasaron y 2 se saltan a propósito (teclado y resize en tablet). Postales de F5 en `docs/capturas/f5/` y `docs/capturas/comparar.html`.
 - F1b hecha en código: Titulo (logo, Toca para empezar, botón Créditos), SeleccionJugador (tarjetas del manifest, aura y Thor), guardado con migración, Presentacion (paneo la primera vez), Entidades (cofres, carteles, fogatas, Abuelo), HUD (contadores, oro, pausa, panel de cartel), Pausa (Noche, Música, Efectos, calidad, modo peque, otra jugadora, créditos, seguir), Creditos (CREDITOS.txt con scroll)
 - F1a hecha: grilla, A*, movimiento, zonas, descubrimiento; MundoVista, Decos (pool por celdas, viento, hechizados, copas, pasto), Heroina, ThorSprite (sigue el rastro), Criaturas, Camara, Entrada (toque, mantener, teclado), Sonido; fx: Luces (RenderTexture con pozos), Bruma, Nubes, Particulas, AtmosferaFX (postFX soft light y viñeta), Atmosfera; escenas Mundo y HUD; postales en docs/capturas/f1a y comparar.html
