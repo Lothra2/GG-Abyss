@@ -25,6 +25,7 @@
     24,
     46
    ],
+   "perfil_movimiento": "premium-v1",
    "anims": {
     "idle": {
      "archivo": "personajes/rick_idle.png",
@@ -36,19 +37,55 @@
      "archivo": "personajes/rick_walk.png",
      "cuadros": 8,
      "fps": 10,
-     "loop": true
+     "loop": true,
+     "eventos": [
+      {
+       "tipo": "foot_contact",
+       "fase": 0,
+       "pie": "near"
+      },
+      {
+       "tipo": "foot_contact",
+       "fase": 0.5,
+       "pie": "far"
+      }
+     ],
+     "locomocion": {
+      "unidades_ciclo": 96
+     }
     },
     "run": {
      "archivo": "personajes/rick_run.png",
      "cuadros": 8,
      "fps": 14,
-     "loop": true
+     "loop": true,
+     "eventos": [
+      {
+       "tipo": "foot_contact",
+       "fase": 0,
+       "pie": "near"
+      },
+      {
+       "tipo": "foot_contact",
+       "fase": 0.5,
+       "pie": "far"
+      }
+     ],
+     "locomocion": {
+      "unidades_ciclo": 91.42857142857143
+     }
     },
     "attack": {
      "archivo": "personajes/rick_attack.png",
      "cuadros": 6,
      "fps": 14,
-     "loop": false
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impact",
+       "fase": 0.5
+      }
+     ]
     },
     "attack_heavy": {
      "archivo": "personajes/rick_attack_heavy.png",
