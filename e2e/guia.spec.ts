@@ -52,4 +52,27 @@ test.describe('Flecha guía', () => {
     await gancho(page, 'avanzar', 0.2)
     expect((await guia(page)).flecha).toBeNull()
   })
+
+  test('el chip del objetivo siempre dice qué toca y al tocarlo sale la flecha', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'alana')
+    await gancho(page, 'irAPostal', 'claro_escondido')
+    await gancho(page, 'avanzar', 0.5)
+    type Obj = { clave: string; texto: string; icono: string; chip: { x: number; y: number; width: number; height: number } }
+    const obj = () => gancho<Obj>(page, 'hudObjetivo')
+    await expect.poll(async () => (await obj()).clave, { timeout: 10_000 }).toBe('explorar')
+    expect((await obj()).texto).toMatch(/^Explora \d+\/\d+$/)
+    // con nivel para el jefe el objetivo cambia
+    await gancho(page, 'ponerNivel', GUIA.nivelParaJefe)
+    await expect.poll(async () => (await obj()).clave, { timeout: 10_000 }).toBe('jefe')
+    expect((await guia(page)).flecha).toBeNull()
+    // tocarlo pide la flecha sin esperar
+    const c = (await obj()).chip
+    const z = await gancho<{ cssZoom: number }>(page, 'escala')
+    await page.mouse.click((c.x + c.width / 2) * z.cssZoom, (c.y + c.height / 2) * z.cssZoom)
+    await expect.poll(async () => (await guia(page)).visible, { timeout: 10_000 }).toBe(true)
+    await gancho(page, 'avanzar', 0.2)
+    expect((await guia(page)).flecha?.destino.tipo).toBe('arena')
+    await sinErrores(errores)
+  })
 })

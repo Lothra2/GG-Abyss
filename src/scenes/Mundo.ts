@@ -893,6 +893,12 @@ export class Mundo extends Phaser.Scene {
     this.demoTutorial = { paso: demo.paso, x: demo.donde.x, y: demo.donde.y }
   }
 
+  /** Tocar el chip del objetivo: la flecha sale ya, sin esperar */
+  pedirGuia(): void {
+    this.relojGuia.tick(999)
+    this.sonido.efecto('descubrir', { volumen: 0.25, rate: 1.5 })
+  }
+
   /** Saltar todas las demostraciones */
   saltarTutorial(): void {
     this.partida.tutorial = [...PASOS_TUTORIAL]

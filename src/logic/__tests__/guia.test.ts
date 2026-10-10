@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { elegirDestino, posicionFlecha, RelojGuia } from '../guia'
+import { elegirDestino, objetivoActual, posicionFlecha, RelojGuia } from '../guia'
 import type { Zona } from '../../kit/mapa'
 import { DIRECCIONES } from '../direccion'
 import { GUIA } from '../../config/balance'
@@ -41,5 +41,17 @@ describe('flecha guía', () => {
     const abajo = posicionFlecha(vista, h, { x: 320, y: 3000 })!
     expect(abajo.y).toBe(360 - GUIA.margenAbajo)
     expect(posicionFlecha(vista, h, { x: 500, y: 200 })).toBeNull()
+  })
+})
+
+describe('objetivo actual', () => {
+  it('sigue el mismo orden que la flecha: explorar, crecer, jefe, portal', () => {
+    expect(objetivoActual({ nivel: 1, jefeVencido: false, descubiertas: 2, totalZonas: 9 })).toMatchObject({ clave: 'explorar', texto: 'Explora 2/9' })
+    expect(objetivoActual({ nivel: 3, jefeVencido: false, descubiertas: 9, totalZonas: 9 }).clave).toBe('crecer')
+    expect(objetivoActual({ nivel: GUIA.nivelParaJefe, jefeVencido: false, descubiertas: 2, totalZonas: 9 }).clave).toBe('jefe')
+    expect(objetivoActual({ nivel: 1, jefeVencido: true, descubiertas: 2, totalZonas: 9 }).clave).toBe('portal')
+  })
+  it('siempre trae un ícono, para Alana', () => {
+    for (const nivel of [1, GUIA.nivelParaJefe]) for (const jefeVencido of [false, true]) expect(objetivoActual({ nivel, jefeVencido, descubiertas: 0, totalZonas: 3 }).icono).toMatch(/^icono_/)
   })
 })

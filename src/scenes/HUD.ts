@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { DIRECCIONES, vectorDe } from '../logic/direccion'
+import { objetivoActual, type Objetivo } from '../logic/guia'
 import { TarjetaBotin, type DatosTarjeta } from '../game/ui/TarjetaBotin'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
@@ -58,6 +59,11 @@ export class HUD extends Phaser.Scene {
   private manoIcono: Phaser.GameObjects.Image | null = null
   private saltar!: Boton
   private tMano = 0
+  /** F7: el objetivo de ahora, siempre a la vista debajo de los contadores. Tocarlo muestra la flecha. */
+  private chip!: Phaser.GameObjects.NineSlice
+  private chipIcono!: Phaser.GameObjects.Image
+  private chipTexto!: Phaser.GameObjects.BitmapText
+  private objetivo: Objetivo | null = null
   private combate!: HudCombate
   private bNivel!: Phaser.GameObjects.BitmapText
   private bRescate!: Phaser.GameObjects.BitmapText
@@ -125,6 +131,13 @@ export class HUD extends Phaser.Scene {
     // la flecha guía en el borde: aparece si pasa un rato sin progreso
     this.flecha = this.textures.exists(K.ui('flecha_guia')) ? this.add.image(0, 0, K.ui('flecha_guia'), 0).setVisible(false).setAlpha(0).setDepth(300) : null
     this.tFlecha = 0
+    this.objetivo = null
+    this.chip = this.add.nineslice(0, 0, K.ui('panel_hundido'), undefined, 60, 26, 6, 6, 6, 6).setOrigin(0, 0).setAlpha(0.9)
+    this.chip.setInteractive({ useHandCursor: true })
+    this.chip.on('pointerdown', (p: Phaser.Input.Pointer) => !this.mundo.enPresentacion && Bloqueo.tomar(p.id))
+    this.chip.on('pointerup', () => !this.mundo.enPresentacion && this.mundo.pedirGuia())
+    this.chipIcono = this.add.image(0, 0, K.ui('icono_zona')).setOrigin(0, 0.5)
+    this.chipTexto = texto(this, 0, 0, '', 'fuente_ui', 1, { origen: [0, 0.5], tinte: 0xffe6b0 })
     this.mano = this.textures.exists(K.ui('cursor_mano')) ? this.add.image(0, 0, K.ui('cursor_mano')).setOrigin(0.2, 0).setVisible(false).setDepth(310) : null
     this.manoIcono = this.add.image(0, 0, K.ui('marca_destino')).setVisible(false).setDepth(309)
     this.saltar = crearBoton(this, { x: 0, y: 0, etiqueta: 'Saltar', icono: 'icono_jugar', origen: [0.5, 0], alToque: () => this.mundo.saltarTutorial() })
@@ -149,7 +162,7 @@ export class HUD extends Phaser.Scene {
       this.game.events.off('botin-recogido', this.alBotinRecogido)
       this.game.events.off('destello', this.alDestello)
       this.combate.destruir()
-      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudOrbes', 'hudNivel', 'hudCine', 'hudTarjeta', 'tarjetaPoner', 'hudTutorial')
+      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudOrbes', 'hudNivel', 'hudCine', 'hudTarjeta', 'tarjetaPoner', 'hudTutorial', 'hudObjetivo')
     })
     alCambiarEscala(this, () => this.acomodar())
     this.actualizarContadores()
@@ -161,6 +174,7 @@ export class HUD extends Phaser.Scene {
       hudCombate: () => this.combate.layout(),
       hudOrbes: () => this.combate.niveles(),
       hudTarjeta: () => this.tarjeta.info(),
+      hudObjetivo: () => ({ ...this.objetivo, chip: this.chip.getBounds(), alfa: Math.round(this.chip.alpha * 100) / 100 }),
       hudTutorial: () => ({ mano: !!this.mano?.visible, icono: this.manoIcono?.visible ? this.manoIcono.texture.key : null, saltar: this.saltar.visible ? this.saltar.getBounds() : null }),
       tarjetaPoner: (() => this.tarjeta.tocarPoner()) as never,
       hudCine: () => ({ franjas: this.franjaArriba.visible ? this.franjaArriba.height : 0, titulo: this.tituloCine.text, alfa: Math.round(this.tituloCine.alpha * 100) / 100, banner: this.banner.alpha }),
@@ -215,9 +229,44 @@ export class HUD extends Phaser.Scene {
     this.pausa.setPosition(w - mg, mg)
     this.bolsa.setPosition(w - mg, mg + this.pausa.alto + 4)
     const yBajo = mg + this.pausa.alto + this.bolsa.alto + 8
+    this.acomodarChip()
     this.fps?.setPosition(w - mg, yBajo)
     this.avisoCalidadImg?.setPosition(w - mg - 12, yBajo + 18)
     if (this.cartel) this.mostrarCartel(this.cartelInfo!.icono, this.cartelInfo!.texto)
+  }
+
+  /** El chip va pegado debajo de los contadores, del mismo ancho mínimo */
+  private acomodarChip(): void {
+    if (!this.chip) return
+    const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+    const mg = MARGENES.MARGEN
+    this.chipTexto.setScale(esc)
+    const alto = Math.max(26, this.chipTexto.displayHeight + 8)
+    const ancho = Math.max(this.panel.width, 8 + 24 + 6 + this.chipTexto.displayWidth + 10)
+    const y = mg + this.panel.height + 4
+    this.chip.setPosition(mg, y).setSize(Math.ceil(ancho), alto)
+    this.chipIcono.setPosition(mg + 8, Math.round(y + alto / 2))
+    this.chipTexto.setPosition(mg + 8 + 24 + 6, Math.round(y + alto / 2))
+  }
+
+  /** Cuando cambia el objetivo el chip late una vez para que se note */
+  private actualizarObjetivo(): void {
+    const p = this.mundo.partida
+    if (!p) return
+    const r = this.mundo.resumenDescubrimiento
+    const o = objetivoActual({ nivel: p.nivel, jefeVencido: p.jefeVencido, descubiertas: r.zonas, totalZonas: r.totalZonas })
+    const cambio = !this.objetivo || this.objetivo.clave !== o.clave
+    if (this.objetivo && this.objetivo.texto === o.texto) return
+    this.objetivo = o
+    if (this.textures.exists(K.ui(o.icono))) this.chipIcono.setTexture(K.ui(o.icono), 0)
+    this.chipTexto.setText(o.texto)
+    this.acomodarChip()
+    if (cambio) {
+      const partes = [this.chip, this.chipIcono, this.chipTexto]
+      this.tweens.killTweensOf(partes)
+      for (const q of partes) q.setAlpha(0.3)
+      this.tweens.add({ targets: partes, alpha: 0.95, duration: 260, ease: 'Quad.easeOut' })
+    }
   }
 
   private mostrarNivel(n: number): void {
@@ -262,6 +311,7 @@ export class HUD extends Phaser.Scene {
     for (const o of [this.iconoZonas, this.iconoSecretos, this.iconoOro, this.txtZonas, this.txtSecretos, this.txtOro, this.pausa, this.bolsa]) o.setAlpha(a)
     this.panel.setAlpha(0.9 * a)
     this.combate.atenuar(a)
+    for (const o of [this.chip, this.chipIcono, this.chipTexto]) o.setVisible(pl.franjas < 0.05)
     const alto = Math.round(h * 0.085 * pl.franjas)
     this.franjaArriba.setPosition(0, 0).setSize(w, alto).setVisible(alto > 0)
     this.franjaAbajo.setPosition(0, h).setSize(w, alto).setVisible(alto > 0)
@@ -442,10 +492,12 @@ export class HUD extends Phaser.Scene {
     this.combate.update(deltaMs / 1000)
     this.dibujarFlecha(deltaMs / 1000)
     this.dibujarTutorial(deltaMs / 1000)
+    this.actualizarObjetivo()
     this.tarjeta.update(deltaMs / 1000)
     this.dibujarCine()
     // durante la presentación el panel no atrapa toques: el toque la salta
     if (this.panel.input) this.panel.input.enabled = !this.mundo.enPresentacion
+    if (this.chip.input) this.chip.input.enabled = !this.mundo.enPresentacion
     if (this.mundo.partida && this.mundo.partida.oro !== this.oroMostrado) this.actualizarContadores()
     if (this.fps) {
       this.acumFps += deltaMs
