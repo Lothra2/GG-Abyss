@@ -1,5 +1,5 @@
 import type { Azar } from './azar'
-import { JEFE, MODO_PEQUE } from '../config/balance'
+import { JEFE, JEFE_CAMPANA, MODO_PEQUE } from '../config/balance'
 
 /**
  * El Minotauro del Bosque (PLAN.md F4): máquina de estados con fases y temporizadores, sin Phaser.
@@ -7,10 +7,12 @@ import { JEFE, MODO_PEQUE } from '../config/balance'
  * Todo ataque grande avisa 1.2 s antes (1.8 s en modo peque) y la vida del jefe nunca sube.
  */
 
-export type AtaqueJefe = 'golpe' | 'golpe_fuerte' | 'carga' | 'pisoton' | 'salto' | 'grito'
+export type AtaqueJefe = 'golpe' | 'golpe_fuerte' | 'carga' | 'pisoton' | 'salto' | 'grito' | 'onda' | 'raices'
+/** F8: qué jefe es (cambia qué ataques elige) */
+export type PerfilJefe = 'minotauro' | 'campana'
 export type EstadoJefe = 'dormido' | 'intro' | 'quieto' | 'perseguir' | 'aviso' | 'saltando' | 'cargando' | 'aturdido' | 'muerto'
 /** `frente` es una elipse delante del jefe, `circulo` es a su alrededor o en el destino del salto, `linea` es la carga */
-export type FormaAtaque = 'frente' | 'circulo' | 'linea'
+export type FormaAtaque = 'frente' | 'circulo' | 'linea' | 'anillo' | 'raices'
 
 export interface Jefe {
   x: number
@@ -40,6 +42,13 @@ export interface Jefe {
   cargaPego: boolean
   /** hasta que pueda volver a gritar */
   gritoEnS: number
+  perfil: PerfilJefe
+  /** F8: dónde salen las raíces de la llamada (se fijan al avisar) */
+  puntos?: { x: number; y: number }[]
+  /** F8: el próximo ataque que hace sí o sí (un patrón nuevo se enseña solo, la primera vez) */
+  forzar: AtaqueJefe | null
+  /** F8: ya enseñó la llamada de raíces */
+  raicesVistas: boolean
 }
 
 export interface EntradaJefe {
@@ -56,9 +65,11 @@ export interface OrdenJefe {
   mover?: { dx: number; dy: number; vel: number }
   mirarA?: { x: number; y: number }
   /** empezó el aviso de un ataque grande: dibujarlo y que dure `seg` */
-  aviso?: { ataque: AtaqueJefe; forma: FormaAtaque; seg: number; x: number; y: number; radio: number; dx: number; dy: number; largo: number; ancho: number }
+  aviso?: { ataque: AtaqueJefe; forma: FormaAtaque; seg: number; x: number; y: number; radio: number; dx: number; dy: number; largo: number; ancho: number; interior?: number; puntos?: { x: number; y: number }[] }
   /** el ataque cae ahora */
-  golpe?: { ataque: AtaqueJefe; forma: FormaAtaque; dano: readonly [number, number]; x: number; y: number; radio: number; dx: number; dy: number; largo: number; ancho: number }
+  golpe?: { ataque: AtaqueJefe; forma: FormaAtaque; dano: readonly [number, number]; x: number; y: number; radio: number; dx: number; dy: number; largo: number; ancho: number; interior?: number; puntos?: { x: number; y: number }[] }
+  /** F8: raíces que salen del piso un rato (tapan el paso donde cayeron) */
+  raices?: { puntos: { x: number; y: number }[]; radio: number; seg: number }
   fase2?: boolean
   rugir?: boolean
   invocar?: number
@@ -69,11 +80,18 @@ export interface OrdenJefe {
   atacando?: AtaqueJefe
 }
 
-export function nuevoJefe(cx: number, cy: number, vida: number = JEFE.vida): Jefe {
+export function nuevoJefe(cx: number, cy: number, vida: number = JEFE.vida, perfil: PerfilJefe = 'minotauro'): Jefe {
   return {
     x: cx, y: cy, cx, cy, vida, vidaMax: vida, fase: 1, estado: 'dormido', t: 0, pausaS: 1, ataque: null,
     dirX: 0, dirY: 1, destX: cx, destY: cy, origX: cx, origY: cy, cargaPego: false, gritoEnS: 4,
+    perfil, forzar: null, raicesVistas: false,
   }
+}
+
+/** F8: si un punto cae en el anillo de la onda (entre el borde de adentro y el de afuera) */
+export function enAnillo(x: number, y: number, cx: number, cy: number, interior: number, exterior: number): boolean {
+  const d = Math.hypot(x - cx, y - cy)
+  return d > interior && d <= exterior
 }
 
 const norm = (dx: number, dy: number) => {
@@ -114,8 +132,15 @@ export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boole
     j.ataque = null
     return { fase2: false, murio: true }
   }
+  // el guardián de la campana enseña la llamada de raíces sola, la primera vez que llega a raicesPct
+  if (j.perfil === 'campana' && !j.raicesVistas && j.fase === 2 && (j.vida / j.vidaMax) * 100 <= JEFE_CAMPANA.raicesPct) {
+    j.raicesVistas = true
+    j.forzar = 'raices'
+  }
   if (j.fase === 1 && (j.vida / j.vidaMax) * 100 <= JEFE.fase2Pct) {
     j.fase = 2
+    // la onda se enseña sola, apenas empieza la fase 2
+    if (j.perfil === 'campana') j.forzar = 'onda'
     // el rugido de la fase 2 corta lo que estuviera haciendo
     if (j.estado !== 'dormido') {
       j.estado = 'intro'
@@ -130,7 +155,7 @@ export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boole
 
 /** Segundos de aviso de un ataque grande: 1.2 s, o 1.8 s en modo peque */
 export function avisoDe(ataque: AtaqueJefe, modoPeque: boolean): number {
-  const base = ataque === 'golpe_fuerte' ? JEFE.golpeFuerte.avisoS : ataque === 'carga' ? JEFE.carga.avisoS : ataque === 'pisoton' ? JEFE.pisoton.avisoS : ataque === 'salto' ? JEFE.salto.avisoS : ataque === 'grito' ? JEFE.grito.avisoS : 0
+  const base = ataque === 'onda' ? JEFE_CAMPANA.onda.avisoS : ataque === 'raices' ? JEFE_CAMPANA.raices.avisoS : ataque === 'golpe_fuerte' ? JEFE.golpeFuerte.avisoS : ataque === 'carga' ? JEFE.carga.avisoS : ataque === 'pisoton' ? JEFE.pisoton.avisoS : ataque === 'salto' ? JEFE.salto.avisoS : ataque === 'grito' ? JEFE.grito.avisoS : 0
   return base * (modoPeque ? MODO_PEQUE.avisos : 1)
 }
 
@@ -156,6 +181,22 @@ export function distanciaASegmento(px: number, py: number, ax: number, ay: numbe
 
 function elegir(j: Jefe, e: EntradaJefe, rng: Azar, dist: number): AtaqueJefe | null {
   const cerca = dist <= JEFE.golpe.radio + 28
+  if (j.forzar) {
+    const a = j.forzar
+    j.forzar = null
+    return a
+  }
+  if (j.perfil === 'campana') {
+    // fase 1: solo el golpe y el golpe frontal; fase 2 suma la onda; desde raicesPct, las raíces
+    const pesos: [AtaqueJefe, number][] = [
+      ['golpe', cerca ? 45 : 0],
+      ['golpe_fuerte', dist <= 130 ? 35 : 0],
+    ]
+    if (j.fase === 2) pesos.push(['onda', dist <= 240 ? 30 : 0])
+    if (j.raicesVistas) pesos.push(['raices', 26])
+    if (pesos.every(([, p]) => p === 0)) return null
+    return rng.pesos(pesos)
+  }
   const pesos: [AtaqueJefe, number][] = [
     ['golpe', cerca ? 45 : 0],
     ['golpe_fuerte', dist <= 120 ? 30 : 0],
@@ -319,6 +360,27 @@ function empezarAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, e: EntradaJefe, dir
   } else if (a === 'grito') {
     o.aviso = { ...base, forma: 'circulo', x: j.x, y: j.y, radio: 0, dx: 0, dy: 1, largo: 0, ancho: 0 }
     o.rugir = true
+  } else if (a === 'onda') {
+    // la campana va a sonar: un anillo alrededor del jefe. Adentro (cerca de la campana) no llega
+    const on = JEFE_CAMPANA.onda
+    o.aviso = { ...base, forma: 'anillo', x: j.x, y: j.y, radio: on.exterior, interior: on.interior, dx: 0, dy: 1, largo: 0, ancho: 0 }
+  } else if (a === 'raices') {
+    // tres manchas donde van a salir raíces: donde está la heroína y a los dos costados (si camina, se salva)
+    const r = JEFE_CAMPANA.raices
+    const px = -dir.dy
+    const py = dir.dx
+    const tope = JEFE.arenaRadio - JEFE.margenBorde
+    j.puntos = [0, -1, 1].map((k) => {
+      let x = e.heroeX + px * r.separacion * k
+      let y = e.heroeY + py * r.separacion * k
+      const d = Math.hypot(x - j.cx, y - j.cy)
+      if (d > tope) {
+        x = j.cx + ((x - j.cx) / d) * tope
+        y = j.cy + ((y - j.cy) / d) * tope
+      }
+      return { x, y }
+    })
+    o.aviso = { ...base, forma: 'raices', x: e.heroeX, y: e.heroeY, radio: r.radio, dx: 0, dy: 1, largo: 0, ancho: 0, puntos: j.puntos }
   }
   return o
 }
@@ -359,6 +421,25 @@ function resolverAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, ratasVivas: number
       j.pausaS = pausa()
       o.invocar = Math.max(0, Math.min(JEFE.grito.ratas, JEFE.grito.maxRatas - ratasVivas))
       break
+    case 'onda': {
+      // suena la campana: el anillo pega y el guardián queda aturdido (la ventana para pegarle)
+      const on = JEFE_CAMPANA.onda
+      o.golpe = { ataque: 'onda', forma: 'anillo', dano: on.dano, x: j.x, y: j.y, radio: on.exterior, interior: on.interior, dx: 0, dy: 1, largo: 0, ancho: 0 }
+      j.estado = 'aturdido'
+      j.t = on.aturdidoS
+      j.pausaS = 0.8
+      o.aturdido = on.aturdidoS
+      break
+    }
+    case 'raices': {
+      const r = JEFE_CAMPANA.raices
+      const puntos = j.puntos ?? []
+      o.golpe = { ataque: 'raices', forma: 'raices', dano: r.dano, x: j.x, y: j.y, radio: r.radio, dx: 0, dy: 1, largo: 0, ancho: 0, puntos }
+      o.raices = { puntos, radio: r.radio, seg: r.duranS }
+      j.estado = 'quieto'
+      j.pausaS = pausa()
+      break
+    }
   }
   return o
 }

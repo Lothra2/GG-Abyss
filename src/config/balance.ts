@@ -315,6 +315,20 @@ export const JEFE = {
 }
 
 /**
+ * F8, el Guardián de la Campana (la Catedral). Tres patrones que se enseñan de a uno:
+ * golpe frontal (desde el principio), onda de campana (desde la fase 2, la primera vez sola) y llamada de raíces
+ * (desde `raicesPct`, la primera vez sola). La onda es un anillo: cerca de la campana (adentro de `interior`) no llega.
+ * Después de la onda queda aturdido un rato: es la ventana clara para pegarle.
+ */
+export const JEFE_CAMPANA = {
+  vida: 720,
+  onda: { dano: [12, 16] as [number, number], interior: 64, exterior: 176, avisoS: 1.6, aturdidoS: 1.6 },
+  // radio 48: el aviso del kit (96 x 48) a escala 1, sin decimales
+  raices: { dano: [10, 14] as [number, number], radio: 48, avisoS: 1.4, separacion: 96, duranS: 3.5 },
+  raicesPct: 35,
+}
+
+/**
  * El peso de los golpes: una pausa cortita del mundo (hitstop) y una sacudida de cámara según lo que pasó.
  * Las pausas no se encadenan: en cualquier segundo no se congela más de topePausaPorSeg (el torbellino pega muchas veces).
  */

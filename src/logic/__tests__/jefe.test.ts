@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Azar } from '../azar'
-import { avisoDe, danarJefe, despertar, reposar, distanciaAlBorde, distanciaASegmento, nuevoJefe, pensarJefe, type AtaqueJefe, type EntradaJefe, type Jefe, type OrdenJefe } from '../jefe'
-import { JEFE } from '../../config/balance'
+import { avisoDe, danarJefe, despertar, enAnillo, reposar, distanciaAlBorde, distanciaASegmento, nuevoJefe, pensarJefe, type AtaqueJefe, type EntradaJefe, type Jefe, type OrdenJefe } from '../jefe'
+import { JEFE, JEFE_CAMPANA } from '../../config/balance'
 
 const entrada = (j: Jefe, extra: Partial<EntradaJefe> = {}): EntradaJefe => ({ dt: 0.05, heroeX: j.cx - 90, heroeY: j.cy + 10, heroeVivo: true, modoPeque: false, ratasVivas: 0, ...extra })
 
@@ -301,5 +301,65 @@ describe('geometría de la arena', () => {
     expect(distanciaASegmento(5, 3, 0, 0, 10, 0)).toBeCloseTo(3)
     expect(distanciaASegmento(-4, 3, 0, 0, 10, 0)).toBeCloseTo(5)
     expect(distanciaASegmento(3, 3, 5, 5, 5, 5)).toBeCloseTo(Math.hypot(2, 2))
+  })
+})
+
+describe('F8: el Guardián de la Campana', () => {
+  const campana = (): Jefe => {
+    const j = nuevoJefe(2300, 1660, JEFE_CAMPANA.vida, 'campana')
+    despertar(j)
+    return j
+  }
+  const ataques = (os: { o: OrdenJefe }[]) => os.flatMap(({ o }) => (o.aviso ? [o.aviso.ataque] : o.atacando ? [o.atacando] : []))
+
+  it('en la fase 1 solo usa el golpe y el golpe frontal (nunca la onda ni las raíces, ni los ataques del minotauro)', () => {
+    const j = campana()
+    const a = ataques(correr(j, 90, new Azar(3), (jj) => ({ heroeX: jj.x - 60, heroeY: jj.y })))
+    expect(a.length).toBeGreaterThan(3)
+    expect(new Set(a)).toEqual(new Set(a.filter((x) => x === 'golpe' || x === 'golpe_fuerte')))
+    expect(a).toContain('golpe_fuerte')
+  })
+
+  it('al pasar a la fase 2 lo primero que hace es la onda, sola; y sale aturdido después', () => {
+    const j = campana()
+    correr(j, 3, new Azar(1))
+    danarJefe(j, j.vidaMax * 0.45)
+    expect(j.fase).toBe(2)
+    const os = correr(j, 12, new Azar(1), (jj) => ({ heroeX: jj.x - 100, heroeY: jj.y }))
+    expect(ataques(os)[0]).toBe('onda')
+    const golpe = os.find(({ o }) => o.golpe?.ataque === 'onda')!.o
+    expect(golpe.golpe!.forma).toBe('anillo')
+    expect(golpe.golpe!.interior).toBe(JEFE_CAMPANA.onda.interior)
+    expect(golpe.aturdido).toBe(JEFE_CAMPANA.onda.aturdidoS)
+  })
+
+  it('la onda no llega cerca de la campana ni lejos del anillo', () => {
+    expect(enAnillo(10, 0, 0, 0, 64, 176)).toBe(false)
+    expect(enAnillo(120, 0, 0, 0, 64, 176)).toBe(true)
+    expect(enAnillo(200, 0, 0, 0, 64, 176)).toBe(false)
+  })
+
+  it('las raíces se enseñan solas al bajar de raicesPct: tres manchas donde está la heroína y a los costados, que tapan un rato', () => {
+    const j = campana()
+    correr(j, 3, new Azar(2))
+    danarJefe(j, j.vidaMax * 0.45)
+    correr(j, 12, new Azar(2), (jj) => ({ heroeX: jj.x - 100, heroeY: jj.y }))
+    danarJefe(j, j.vida - j.vidaMax * (JEFE_CAMPANA.raicesPct / 100) + 1)
+    expect(j.raicesVistas).toBe(true)
+    const os = correr(j, 12, new Azar(2), (jj) => ({ heroeX: jj.x - 100, heroeY: jj.y }))
+    expect(ataques(os)[0]).toBe('raices')
+    const r = os.find(({ o }) => o.raices)!.o.raices!
+    expect(r.puntos).toHaveLength(3)
+    expect(r.seg).toBe(JEFE_CAMPANA.raices.duranS)
+    // ninguna mancha cae fuera de la arena
+    for (const p of r.puntos) expect(Math.hypot(p.x - j.cx, p.y - j.cy)).toBeLessThanOrEqual(JEFE.arenaRadio)
+  })
+
+  it('el minotauro no cambió: nunca usa la onda ni las raíces', () => {
+    const j = despierto()
+    danarJefe(j, j.vidaMax * 0.5)
+    const a = ataques(correr(j, 60, new Azar(5)))
+    expect(a).not.toContain('onda')
+    expect(a).not.toContain('raices')
   })
 })

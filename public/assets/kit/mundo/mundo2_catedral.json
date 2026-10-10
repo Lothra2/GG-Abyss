@@ -7116,13 +7116,13 @@
     0,
     5,
     5,
-    5,
     0,
     0,
     0,
     0,
     0,
     0,
+    0,
     5,
     5,
     5,
@@ -8233,7 +8233,6 @@
     0,
     0,
     0,
-    5,
     5,
     5,
     5,
@@ -8261,7 +8260,8 @@
     5,
     5,
     5,
-    5,
+    0,
+    0,
     5,
     5,
     5,
@@ -8576,9 +8576,8 @@
     5,
     5,
     5,
-    0,
     0,
-    0,
+    5,
     0,
     0,
     0,
@@ -8594,6 +8593,7 @@
     0,
     0,
     0,
+    5,
     5,
     5,
     5,
@@ -8758,8 +8758,7 @@
     5,
     5,
     0,
-    0,
-    0,
+    5,
     0,
     0,
     0,
@@ -8769,6 +8768,7 @@
     0,
     0,
     0,
+    5,
     5,
     5,
     5,
@@ -8983,11 +8983,11 @@
     0,
     0,
     0,
-    0,
-    0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -9056,10 +9056,6 @@
     5,
     5,
     5,
-    0,
-    0,
-    0,
-    0,
     0,
     0,
     0,
@@ -9067,7 +9063,11 @@
     0,
     0,
     0,
-    0,
+    5,
+    5,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -9136,11 +9136,10 @@
     5,
     5,
     5,
-    0,
     0,
     0,
     0,
-    0,
+    5,
     0,
     0,
     0,
@@ -9152,6 +9151,7 @@
     0,
     0,
     0,
+    5,
     0,
     0,
     0,
@@ -9377,7 +9377,7 @@
     5,
     5,
     0,
-    0,
+    5,
     0,
     0,
     0,
@@ -9532,9 +9532,8 @@
     0,
     0,
     0,
-    5,
-    5,
-    5,
+    0,
+    0,
     0,
     0,
     0,
@@ -9554,6 +9553,7 @@
     0,
     0,
     0,
+    0,
     5,
     5,
     5,
@@ -9613,12 +9613,11 @@
     0,
     0,
     0,
-    5,
-    5,
     0,
     0,
     0,
     0,
+    5,
     0,
     0,
     0,
@@ -9637,6 +9636,7 @@
     5,
     5,
     5,
+    5,
     0,
     0,
     0,
@@ -10127,7 +10127,7 @@
     0,
     0,
     0,
-    0,
+    5,
     0,
     5,
     5,
@@ -10198,8 +10198,7 @@
     5,
     5,
     0,
-    0,
-    0,
+    5,
     0,
     0,
     0,
@@ -10209,6 +10208,7 @@
     0,
     0,
     0,
+    5,
     5,
     5,
     5,
@@ -15814,25 +15814,6 @@
     },
     {
      "id": 12,
-     "name": "pedestal_brasas_0",
-     "type": "deco",
-     "x": 784,
-     "y": 732,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "pedestal_brasas_0"
-      }
-     ]
-    },
-    {
-     "id": 13,
      "name": "columna_raiz",
      "type": "deco",
      "x": 272,
@@ -15851,7 +15832,7 @@
      ]
     },
     {
-     "id": 14,
+     "id": 13,
      "name": "columna_raiz",
      "type": "deco",
      "x": 272,
@@ -15870,7 +15851,7 @@
      ]
     },
     {
-     "id": 15,
+     "id": 14,
      "name": "columna_raiz",
      "type": "deco",
      "x": 432,
@@ -15889,7 +15870,7 @@
      ]
     },
     {
-     "id": 16,
+     "id": 15,
      "name": "columna_rota",
      "type": "deco",
      "x": 432,
@@ -15908,7 +15889,7 @@
      ]
     },
     {
-     "id": 17,
+     "id": 16,
      "name": "columna_raiz",
      "type": "deco",
      "x": 752,
@@ -15927,11 +15908,30 @@
      ]
     },
     {
-     "id": 18,
+     "id": 17,
      "name": "columna_raiz",
      "type": "deco",
      "x": 752,
      "y": 1084,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "columna_raiz"
+      }
+     ]
+    },
+    {
+     "id": 18,
+     "name": "columna_raiz",
+     "type": "deco",
+     "x": 912,
+     "y": 668,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -15950,25 +15950,6 @@
      "name": "columna_raiz",
      "type": "deco",
      "x": 912,
-     "y": 668,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "columna_raiz"
-      }
-     ]
-    },
-    {
-     "id": 20,
-     "name": "columna_raiz",
-     "type": "deco",
-     "x": 912,
      "y": 1084,
      "width": 0,
      "height": 0,
@@ -15984,45 +15965,7 @@
      ]
     },
     {
-     "id": 21,
-     "name": "brasero_apagado",
-     "type": "deco",
-     "x": 208,
-     "y": 700,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "brasero_apagado"
-      }
-     ]
-    },
-    {
-     "id": 22,
-     "name": "brasero_apagado",
-     "type": "deco",
-     "x": 976,
-     "y": 700,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "brasero_apagado"
-      }
-     ]
-    },
-    {
-     "id": 23,
+     "id": 20,
      "name": "arco_roto",
      "type": "deco",
      "x": 1136,
@@ -16041,7 +15984,7 @@
      ]
     },
     {
-     "id": 24,
+     "id": 21,
      "name": "raices_muro",
      "type": "deco",
      "x": 1072,
@@ -16060,7 +16003,7 @@
      ]
     },
     {
-     "id": 25,
+     "id": 22,
      "name": "raices_muro",
      "type": "deco",
      "x": 1232,
@@ -16079,7 +16022,7 @@
      ]
     },
     {
-     "id": 26,
+     "id": 23,
      "name": "columna_rota",
      "type": "deco",
      "x": 1296,
@@ -16098,7 +16041,7 @@
      ]
     },
     {
-     "id": 27,
+     "id": 24,
      "name": "columna_rota",
      "type": "deco",
      "x": 1936,
@@ -16117,7 +16060,7 @@
      ]
     },
     {
-     "id": 28,
+     "id": 25,
      "name": "columna_rota",
      "type": "deco",
      "x": 1936,
@@ -16136,7 +16079,7 @@
      ]
     },
     {
-     "id": 29,
+     "id": 26,
      "name": "columna_rota",
      "type": "deco",
      "x": 1296,
@@ -16155,45 +16098,7 @@
      ]
     },
     {
-     "id": 30,
-     "name": "brasero_apagado",
-     "type": "deco",
-     "x": 1360,
-     "y": 476,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "brasero_apagado"
-      }
-     ]
-    },
-    {
-     "id": 31,
-     "name": "brasero_apagado",
-     "type": "deco",
-     "x": 1872,
-     "y": 476,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "brasero_apagado"
-      }
-     ]
-    },
-    {
-     "id": 32,
+     "id": 27,
      "name": "raices_muro",
      "type": "deco",
      "x": 2032,
@@ -16212,26 +16117,7 @@
      ]
     },
     {
-     "id": 33,
-     "name": "brasero_apagado",
-     "type": "deco",
-     "x": 2096,
-     "y": 668,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "brasero_apagado"
-      }
-     ]
-    },
-    {
-     "id": 34,
+     "id": 28,
      "name": "columna_rota",
      "type": "deco",
      "x": 2224,
@@ -16250,7 +16136,7 @@
      ]
     },
     {
-     "id": 35,
+     "id": 29,
      "name": "columna_raiz",
      "type": "deco",
      "x": 272,
@@ -16269,7 +16155,7 @@
      ]
     },
     {
-     "id": 36,
+     "id": 30,
      "name": "columna_raiz",
      "type": "deco",
      "x": 1072,
@@ -16288,7 +16174,7 @@
      ]
     },
     {
-     "id": 37,
+     "id": 31,
      "name": "columna_raiz",
      "type": "deco",
      "x": 272,
@@ -16307,7 +16193,7 @@
      ]
     },
     {
-     "id": 38,
+     "id": 32,
      "name": "columna_raiz",
      "type": "deco",
      "x": 1072,
@@ -16326,7 +16212,7 @@
      ]
     },
     {
-     "id": 39,
+     "id": 33,
      "name": "raices_muro",
      "type": "deco",
      "x": 336,
@@ -16345,7 +16231,7 @@
      ]
     },
     {
-     "id": 40,
+     "id": 34,
      "name": "raices_muro",
      "type": "deco",
      "x": 720,
@@ -16364,7 +16250,7 @@
      ]
     },
     {
-     "id": 41,
+     "id": 35,
      "name": "raices_muro",
      "type": "deco",
      "x": 1104,
@@ -16383,7 +16269,7 @@
      ]
     },
     {
-     "id": 42,
+     "id": 36,
      "name": "puente_piedra",
      "type": "deco",
      "x": 368,
@@ -16402,7 +16288,7 @@
      ]
     },
     {
-     "id": 43,
+     "id": 37,
      "name": "losa_hundida_0",
      "type": "deco",
      "x": 816,
@@ -16421,7 +16307,7 @@
      ]
     },
     {
-     "id": 44,
+     "id": 38,
      "name": "losa_hundida_1",
      "type": "deco",
      "x": 816,
@@ -16440,7 +16326,7 @@
      ]
     },
     {
-     "id": 45,
+     "id": 39,
      "name": "losa_hundida_0",
      "type": "deco",
      "x": 816,
@@ -16459,7 +16345,7 @@
      ]
     },
     {
-     "id": 46,
+     "id": 40,
      "name": "losa_hundida_1",
      "type": "deco",
      "x": 816,
@@ -16478,7 +16364,7 @@
      ]
     },
     {
-     "id": 47,
+     "id": 41,
      "name": "losa_hundida_0",
      "type": "deco",
      "x": 816,
@@ -16497,7 +16383,7 @@
      ]
     },
     {
-     "id": 48,
+     "id": 42,
      "name": "losa_hundida_1",
      "type": "deco",
      "x": 816,
@@ -16516,11 +16402,11 @@
      ]
     },
     {
-     "id": 49,
-     "name": "brasero_apagado",
+     "id": 43,
+     "name": "columna_raiz",
      "type": "deco",
-     "x": 688,
-     "y": 1756,
+     "x": 1552,
+     "y": 1532,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -16530,16 +16416,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "brasero_apagado"
+       "value": "columna_raiz"
       }
      ]
     },
     {
-     "id": 50,
-     "name": "raices_cortina",
+     "id": 44,
+     "name": "columna_raiz",
      "type": "deco",
-     "x": 1616,
-     "y": 1178,
+     "x": 1936,
+     "y": 1532,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -16549,16 +16435,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "raices_cortina"
+       "value": "columna_raiz"
       }
      ]
     },
     {
-     "id": 51,
-     "name": "raices_cortina",
+     "id": 45,
+     "name": "raices_muro",
      "type": "deco",
-     "x": 1360,
-     "y": 1690,
+     "x": 1552,
+     "y": 1260,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -16568,7 +16454,64 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "raices_cortina"
+       "value": "raices_muro"
+      }
+     ]
+    },
+    {
+     "id": 46,
+     "name": "raices_muro",
+     "type": "deco",
+     "x": 1808,
+     "y": 1260,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "raices_muro"
+      }
+     ]
+    },
+    {
+     "id": 47,
+     "name": "raices_muro",
+     "type": "deco",
+     "x": 2192,
+     "y": 1340,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "raices_muro"
+      }
+     ]
+    },
+    {
+     "id": 48,
+     "name": "raices_muro",
+     "type": "deco",
+     "x": 2448,
+     "y": 1340,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "raices_muro"
       }
      ]
     }
@@ -16585,7 +16528,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 52,
+     "id": 49,
      "name": "portal_llegada",
      "type": "portal_llegada",
      "x": 336,
@@ -16604,7 +16547,7 @@
      ]
     },
     {
-     "id": 53,
+     "id": 50,
      "name": "portal_volver",
      "type": "portal_volver",
      "x": 336,
@@ -16623,7 +16566,7 @@
      ]
     },
     {
-     "id": 54,
+     "id": 51,
      "name": "jugador_inicio",
      "type": "jugador_inicio",
      "x": 496,
@@ -16636,7 +16579,7 @@
      "properties": []
     },
     {
-     "id": 55,
+     "id": 52,
      "name": "thor_inicio",
      "type": "thor_inicio",
      "x": 464,
@@ -16649,7 +16592,7 @@
      "properties": []
     },
     {
-     "id": 56,
+     "id": 53,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 592,
@@ -16673,11 +16616,11 @@
      ]
     },
     {
-     "id": 57,
+     "id": 54,
      "name": "pedestal_brasas",
      "type": "pedestal_brasas",
      "x": 784,
-     "y": 752,
+     "y": 732,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -16692,7 +16635,7 @@
      ]
     },
     {
-     "id": 58,
+     "id": 55,
      "name": "cofre",
      "type": "cofre",
      "x": 432,
@@ -16711,7 +16654,45 @@
      ]
     },
     {
-     "id": 59,
+     "id": 56,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 208,
+     "y": 700,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "id": 57,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 976,
+     "y": 700,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "id": 58,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1328,
@@ -16735,7 +16716,7 @@
      ]
     },
     {
-     "id": 60,
+     "id": 59,
      "name": "cofre",
      "type": "cofre",
      "x": 1360,
@@ -16754,7 +16735,64 @@
      ]
     },
     {
+     "id": 60,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 1360,
+     "y": 476,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 2
+      }
+     ]
+    },
+    {
      "id": 61,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 1872,
+     "y": 476,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 2
+      }
+     ]
+    },
+    {
+     "id": 62,
+     "name": "brasa",
+     "type": "brasa",
+     "x": 1648,
+     "y": 368,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "claustro"
+      }
+     ]
+    },
+    {
+     "id": 63,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1904,
@@ -16778,7 +16816,7 @@
      ]
     },
     {
-     "id": 62,
+     "id": 64,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1936,
@@ -16802,7 +16840,7 @@
      ]
     },
     {
-     "id": 63,
+     "id": 65,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1872,
@@ -16826,7 +16864,7 @@
      ]
     },
     {
-     "id": 64,
+     "id": 66,
      "name": "cofre",
      "type": "cofre",
      "x": 2160,
@@ -16855,50 +16893,30 @@
      ]
     },
     {
-     "id": 65,
-     "name": "peligro_agua",
-     "type": "peligro_agua",
-     "x": 784,
-     "y": 1424,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": []
-    },
-    {
-     "id": 66,
-     "name": "peligro_agua",
-     "type": "peligro_agua",
-     "x": 848,
-     "y": 1424,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": []
-    },
-    {
      "id": 67,
-     "name": "peligro_agua",
-     "type": "peligro_agua",
-     "x": 784,
-     "y": 1456,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 2096,
+     "y": 668,
      "width": 0,
      "height": 0,
      "rotation": 0,
      "visible": true,
      "point": true,
-     "properties": []
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 2
+      }
+     ]
     },
     {
      "id": 68,
      "name": "peligro_agua",
      "type": "peligro_agua",
-     "x": 848,
-     "y": 1456,
+     "x": 784,
+     "y": 1424,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -16910,8 +16928,8 @@
      "id": 69,
      "name": "peligro_agua",
      "type": "peligro_agua",
-     "x": 784,
-     "y": 1488,
+     "x": 848,
+     "y": 1424,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -16923,8 +16941,8 @@
      "id": 70,
      "name": "peligro_agua",
      "type": "peligro_agua",
-     "x": 848,
-     "y": 1488,
+     "x": 784,
+     "y": 1456,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -16936,8 +16954,8 @@
      "id": 71,
      "name": "peligro_agua",
      "type": "peligro_agua",
-     "x": 784,
-     "y": 1520,
+     "x": 848,
+     "y": 1456,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -16949,8 +16967,8 @@
      "id": 72,
      "name": "peligro_agua",
      "type": "peligro_agua",
-     "x": 848,
-     "y": 1520,
+     "x": 784,
+     "y": 1488,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -16962,8 +16980,8 @@
      "id": 73,
      "name": "peligro_agua",
      "type": "peligro_agua",
-     "x": 784,
-     "y": 1552,
+     "x": 848,
+     "y": 1488,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -16975,6 +16993,45 @@
      "id": 74,
      "name": "peligro_agua",
      "type": "peligro_agua",
+     "x": 784,
+     "y": 1520,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 75,
+     "name": "peligro_agua",
+     "type": "peligro_agua",
+     "x": 848,
+     "y": 1520,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 76,
+     "name": "peligro_agua",
+     "type": "peligro_agua",
+     "x": 784,
+     "y": 1552,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 77,
+     "name": "peligro_agua",
+     "type": "peligro_agua",
      "x": 848,
      "y": 1552,
      "width": 0,
@@ -16985,7 +17042,7 @@
      "properties": []
     },
     {
-     "id": 75,
+     "id": 78,
      "name": "peligro_agua",
      "type": "peligro_agua",
      "x": 784,
@@ -16998,7 +17055,7 @@
      "properties": []
     },
     {
-     "id": 76,
+     "id": 79,
      "name": "peligro_agua",
      "type": "peligro_agua",
      "x": 848,
@@ -17011,7 +17068,7 @@
      "properties": []
     },
     {
-     "id": 77,
+     "id": 80,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1104,
@@ -17035,7 +17092,7 @@
      ]
     },
     {
-     "id": 78,
+     "id": 81,
      "name": "enemigo",
      "type": "enemigo",
      "x": 496,
@@ -17059,7 +17116,7 @@
      ]
     },
     {
-     "id": 79,
+     "id": 82,
      "name": "cofre",
      "type": "cofre",
      "x": 240,
@@ -17076,6 +17133,488 @@
        "value": "reforzado"
       }
      ]
+    },
+    {
+     "id": 83,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 688,
+     "y": 1756,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "id": 84,
+     "name": "brasa",
+     "type": "brasa",
+     "x": 976,
+     "y": 1744,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "nave"
+      }
+     ]
+    },
+    {
+     "id": 85,
+     "name": "forja",
+     "type": "forja",
+     "x": 1744,
+     "y": 1498,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 86,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 1488,
+     "y": 1308,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "id": 87,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 2000,
+     "y": 1308,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "id": 88,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 1488,
+     "y": 1724,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "id": 89,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 2000,
+     "y": 1724,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "id": 90,
+     "name": "brasa",
+     "type": "brasa",
+     "x": 1968,
+     "y": 1648,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "forja"
+      }
+     ]
+    },
+    {
+     "id": 91,
+     "name": "cofre",
+     "type": "cofre",
+     "x": 1488,
+     "y": 1616,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "nivel",
+       "type": "string",
+       "value": "dorado"
+      }
+     ]
+    },
+    {
+     "id": 92,
+     "name": "arena_jefe",
+     "type": "arena_jefe",
+     "x": 2320,
+     "y": 1680,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "radio",
+       "type": "float",
+       "value": 176
+      }
+     ]
+    },
+    {
+     "id": 93,
+     "name": "jefe",
+     "type": "jefe",
+     "x": 2320,
+     "y": 1648,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "enemigo",
+       "type": "string",
+       "value": "guardian_campana"
+      },
+      {
+       "name": "nombre",
+       "type": "string",
+       "value": "Guardián de la Campana"
+      },
+      {
+       "name": "titulo",
+       "type": "string",
+       "value": "Guardián de la Catedral"
+      }
+     ]
+    },
+    {
+     "id": 94,
+     "name": "campana",
+     "type": "campana",
+     "x": 2320,
+     "y": 1520,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 95,
+     "name": "portal_jefe",
+     "type": "portal_jefe",
+     "x": 2320,
+     "y": 1904,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "color",
+       "type": "string",
+       "value": "rojo"
+      },
+      {
+       "name": "destino",
+       "type": "string",
+       "value": "mundo3"
+      }
+     ]
+    },
+    {
+     "id": 96,
+     "name": "cofre",
+     "type": "cofre",
+     "x": 2448,
+     "y": 1904,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "nivel",
+       "type": "string",
+       "value": "dorado"
+      },
+      {
+       "name": "tras_jefe",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 97,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 2160,
+     "y": 1372,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "id": 98,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 2480,
+     "y": 1372,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "id": 99,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 2160,
+     "y": 1948,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "id": 100,
+     "name": "brasero_brasa",
+     "type": "brasero_brasa",
+     "x": 2480,
+     "y": 1948,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "id": 101,
+     "name": "compuerta_raices",
+     "type": "compuerta_raices",
+     "x": 1376,
+     "y": 1722,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "nave_forja"
+      },
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 1
+      },
+      {
+       "name": "x0",
+       "type": "float",
+       "value": 42
+      },
+      {
+       "name": "y0",
+       "type": "float",
+       "value": 52
+      },
+      {
+       "name": "x1",
+       "type": "float",
+       "value": 43
+      },
+      {
+       "name": "y1",
+       "type": "float",
+       "value": 53
+      }
+     ]
+    },
+    {
+     "id": 102,
+     "name": "compuerta_raices",
+     "type": "compuerta_raices",
+     "x": 1600,
+     "y": 1178,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "atajo"
+      },
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 2
+      },
+      {
+       "name": "x0",
+       "type": "float",
+       "value": 49
+      },
+      {
+       "name": "y0",
+       "type": "float",
+       "value": 36
+      },
+      {
+       "name": "x1",
+       "type": "float",
+       "value": 50
+      },
+      {
+       "name": "y1",
+       "type": "float",
+       "value": 36
+      }
+     ]
+    },
+    {
+     "id": 103,
+     "name": "compuerta_raices",
+     "type": "compuerta_raices",
+     "x": 2080,
+     "y": 1562,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "campanario"
+      },
+      {
+       "name": "requiere",
+       "type": "float",
+       "value": 3
+      },
+      {
+       "name": "x0",
+       "type": "float",
+       "value": 64
+      },
+      {
+       "name": "y0",
+       "type": "float",
+       "value": 46
+      },
+      {
+       "name": "x1",
+       "type": "float",
+       "value": 65
+      },
+      {
+       "name": "y1",
+       "type": "float",
+       "value": 48
+      }
+     ]
     }
    ]
   },
@@ -17090,7 +17629,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 80,
+     "id": 104,
      "name": "La Escalera Hundida",
      "type": "zona",
      "x": 160,
@@ -17138,7 +17677,7 @@
      ]
     },
     {
-     "id": 81,
+     "id": 105,
      "name": "El Atrio de las Luciérnagas",
      "type": "zona",
      "x": 128,
@@ -17186,7 +17725,7 @@
      ]
     },
     {
-     "id": 82,
+     "id": 106,
      "name": "Los Claustros Quebrados",
      "type": "zona",
      "x": 992,
@@ -17234,7 +17773,7 @@
      ]
     },
     {
-     "id": 83,
+     "id": 107,
      "name": "La Capilla Escondida",
      "type": "zona",
      "x": 2048,
@@ -17287,7 +17826,7 @@
      ]
     },
     {
-     "id": 84,
+     "id": 108,
      "name": "La Nave Inundada",
      "type": "zona",
      "x": 160,
@@ -17333,6 +17872,102 @@
        "value": 0.2
       }
      ]
+    },
+    {
+     "id": 109,
+     "name": "La Forja Apagada",
+     "type": "zona",
+     "x": 1376,
+     "y": 1184,
+     "width": 672,
+     "height": 608,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "musica",
+       "type": "string",
+       "value": "catedral"
+      },
+      {
+       "name": "ambiente",
+       "type": "string",
+       "value": "catedral"
+      },
+      {
+       "name": "descubrir",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "luz",
+       "type": "string",
+       "value": "#ffcf9a"
+      },
+      {
+       "name": "oscuridad",
+       "type": "float",
+       "value": 0.6
+      },
+      {
+       "name": "particulas",
+       "type": "string",
+       "value": "polvo"
+      },
+      {
+       "name": "niebla",
+       "type": "float",
+       "value": 0.15
+      }
+     ]
+    },
+    {
+     "id": 110,
+     "name": "El Campanario Invertido",
+     "type": "zona",
+     "x": 2080,
+     "y": 1248,
+     "width": 448,
+     "height": 768,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "musica",
+       "type": "string",
+       "value": "jefe"
+      },
+      {
+       "name": "ambiente",
+       "type": "string",
+       "value": "catedral"
+      },
+      {
+       "name": "descubrir",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "luz",
+       "type": "string",
+       "value": "#b08aff"
+      },
+      {
+       "name": "oscuridad",
+       "type": "float",
+       "value": 0.7
+      },
+      {
+       "name": "particulas",
+       "type": "string",
+       "value": "esporas,gotas"
+      },
+      {
+       "name": "niebla",
+       "type": "float",
+       "value": 0.2
+      }
+     ]
     }
    ]
   },
@@ -17347,7 +17982,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 85,
+     "id": 111,
      "name": "escalera_hundida",
      "type": "postal",
      "x": 528,
@@ -17360,7 +17995,7 @@
      "properties": []
     },
     {
-     "id": 86,
+     "id": 112,
      "name": "atrio_luciernagas",
      "type": "postal",
      "x": 528,
@@ -17373,7 +18008,7 @@
      "properties": []
     },
     {
-     "id": 87,
+     "id": 113,
      "name": "claustros_quebrados",
      "type": "postal",
      "x": 1392,
@@ -17386,7 +18021,7 @@
      "properties": []
     },
     {
-     "id": 88,
+     "id": 114,
      "name": "capilla_escondida",
      "type": "postal",
      "x": 2128,
@@ -17399,11 +18034,37 @@
      "properties": []
     },
     {
-     "id": 89,
+     "id": 115,
      "name": "nave_inundada",
      "type": "postal",
      "x": 720,
      "y": 1520,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 116,
+     "name": "forja_apagada",
+     "type": "postal",
+     "x": 1744,
+     "y": 1520,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 117,
+     "name": "campanario_invertido",
+     "type": "postal",
+     "x": 2320,
+     "y": 1648,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -17415,5 +18076,5 @@
   }
  ],
  "nextlayerid": 200,
- "nextobjectid": 90
+ "nextobjectid": 118
 }

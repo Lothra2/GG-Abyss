@@ -3,13 +3,15 @@ import type { Manifest } from '../kit/tipos'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
 import { existeMundo, idMundo, manifestParaMundo, MUNDO_BOSQUE } from '../kit/mundos'
+import { Mecanismos, OBJETOS_MECANISMOS } from '../game/Mecanismos'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
 import { encolarAudio, encolarBotin, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
 import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
 import { PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S } from '../config/juego'
-import { AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, MUSICA_ESTADOS, OLFATO } from '../config/balance'
+import { AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, JEFE_CAMPANA, MUSICA_ESTADOS, OLFATO } from '../config/balance'
+import { enAnillo } from '../logic/jefe'
 import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
@@ -64,13 +66,13 @@ function fxDeCombate(dirs: readonly string[]): string[] {
 }
 
 /** Objetos del manifest que el mapa usa sin ponerlos en la capa `objetos` */
-const EXTRAS_MUNDO = ['portal_azul', 'portal_rojo', 'aviso_jefe']
+const EXTRAS_MUNDO = ['portal_azul', 'portal_rojo', 'aviso_jefe', ...OBJETOS_MECANISMOS]
 
 const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual', 'mecanismos', 'darBrasas',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -106,7 +108,12 @@ export class Mundo extends Phaser.Scene {
   private tEnMundo = 0
   /** F8: el agua negra que se pisa al lado del vado: caer ahí la devuelve a la orilla (sin perder nada) */
   private peligroAgua = new Set<number>()
+  /** F8: las brasas de la forja y lo que abren (solo en la Catedral) */
+  mecanismos: Mecanismos | null = null
+  private destinoBrasa: { firma: string; p: { x: number; y: number } | null } = { firma: '', p: null }
   private ultimaSegura = { x: 0, y: 0 }
+  /** F8: a dónde va la oscuridad de la Catedral cuando el guardián se libera */
+  private aclaradoMeta = 1
   private enAgua = 0
   caidasAgua = 0
   private alm!: Almacen
@@ -256,6 +263,8 @@ export class Mundo extends Phaser.Scene {
     this.tEnMundo = 0
     this.enAgua = 0
     this.caidasAgua = 0
+    this.aclaradoMeta = 1
+    this.destinoBrasa = { firma: '', p: null }
     // la escena es la misma al volver de Continuará o de otro mundo: el portal tiene que poder usarse otra vez, y lo
     // del jefe del mundo anterior no sigue acá (un mundo sin jefe no hereda el del Bosque)
     this.saliendoAContinuara = false
@@ -422,6 +431,23 @@ export class Mundo extends Phaser.Scene {
     })
 
     this.crearJefe(evEnemigos)
+    // F8: las brasas, los braseros, la forja y las compuertas de raíces (la Catedral)
+    this.mecanismos = new Mecanismos({
+      escena: this,
+      m,
+      mapa: this.mapa,
+      grilla: this.grilla,
+      brasas: () => this.partida.brasas,
+      sonido: (n, op) => this.sonido.efecto(n, op),
+      estallido: (x, y, llave, n) => this.atmosfera.particulas.estallido(x, y, llave, n),
+      texto: (x, y, t, tinte) => this.textoFlotante(x, y, t, tinte),
+      liberado: () => this.partida.jefeVencido,
+      alRecoger: (id, n) => {
+        this.relojGuia.progreso()
+        this.game.events.emit('brasa-recogida', { id, n, total: this.mecanismos?.total ?? 3 })
+        this.guardar()
+      },
+    })
     this.alCambioInventario(false)
 
     this.entrada = new Entrada(this, {
@@ -486,7 +512,8 @@ export class Mundo extends Phaser.Scene {
   private crearJefe(evEnemigos: EventosEnemigos): void {
     const ent = entidadesDeTipo(this.mapa, 'jefe')[0]
     const are = entidadesDeTipo(this.mapa, 'arena_jefe')[0]
-    if (!ent || !are || !this.m.personajes.minotauro || !this.textures.exists(K.pers('minotauro', 'idle'))) return
+    const tipoJefe = String(ent?.props.enemigo ?? 'minotauro')
+    if (!ent || !are || !this.m.personajes[tipoJefe] || !this.textures.exists(K.pers(tipoJefe, 'idle'))) return
     this.arena = { x: are.x, y: are.y, radio: Number(are.props.radio ?? JEFE.arenaRadio) }
     const ev: EventosJefe = {
       golpeCirculo: (x, y, radio, dano, elipse) => {
@@ -498,6 +525,14 @@ export class Mundo extends Phaser.Scene {
       golpeCarga: (dano) => {
         if (!this.combate.caido) this.combate.golpeDeEnemigo(dano)
       },
+      // F8: la onda de la campana: el anillo pega, cerca de la campana (o lejos del anillo) no
+      golpeAnillo: (x, y, interior, exterior, dano) => {
+        if (this.combate.caido) return
+        if (enAnillo(this.heroina.x, this.heroina.y, x, y, interior, exterior)) this.combate.golpeDeEnemigo(dano)
+        else if (this.mejoras && Math.hypot(this.heroina.x - x, this.heroina.y - y) <= interior) this.textoFlotante(this.heroina.x, this.heroina.y - 48, '¡A salvo!', 0x5ae0d0)
+      },
+      // F8: la llamada de raíces: salen del piso donde cayeron y tapan el paso un rato
+      raices: (puntos, _radio, seg) => this.brotarRaices(puntos, seg),
       invocar: (n, x, y) => {
         const hay = this.enemigos.invocadasVivas
         for (let k = 0; k < Math.min(n, JEFE.grito.maxRatas - hay); k++) {
@@ -522,12 +557,33 @@ export class Mundo extends Phaser.Scene {
       },
       alMorir: () => this.victoria(),
     }
-    this.jefe = new JefeSprite(this, this.m, this.grilla, ent, this.arena, this.partida.jefeVida ?? JEFE.vida, ev)
+    this.jefe = new JefeSprite(this, this.m, this.grilla, ent, this.arena, this.partida.jefeVida ?? (tipoJefe === 'guardian_campana' ? JEFE_CAMPANA.vida : JEFE.vida), ev)
     this.enemigos.adicionales.push(this.jefe)
     this.game.events.on('heroina-cae', this.alCaerEnArena, this)
     if (this.partida.jefeVencido) {
       this.jefe.quitar()
       this.victoria(true)
+    }
+  }
+
+  /** F8: raíces que salen del piso por unos segundos (la llamada del Guardián de la Campana). No atrapan a la heroína. */
+  private brotarRaices(puntos: { x: number; y: number }[], seg: number): void {
+    const c = this.mapa.cuadro
+    const key = K.obj('raices_cortina', 'idle')
+    const def = this.m.mundo.objetos.raices_cortina
+    for (const p of puntos) {
+      const tx = Math.floor(p.x / c)
+      const ty = Math.floor(p.y / c)
+      // donde está parada no se cierra (no la encierra)
+      const ella = Math.floor(this.heroina.x / c) === tx && Math.floor(this.heroina.y / c) === ty
+      const liberar = ella ? null : this.grilla.bloquearRect(tx, ty, tx, ty)
+      const s = def && this.textures.exists(key) ? this.add.sprite(Math.round(p.x), Math.round(p.y + 16), key, 0).setOrigin(def.apoyo[0] / def.w, def.apoyo[1] / def.h).setDepth(PROF.OBJETOS + p.y).setScale(1, 0.1) : null
+      if (s) this.tweens.add({ targets: s, scaleY: 1, duration: 220, ease: 'Back.easeOut' })
+      this.atmosfera.particulas.estallido(p.x, p.y, 'polvo', 6)
+      this.time.delayedCall(seg * 1000, () => {
+        liberar?.()
+        if (s) this.tweens.add({ targets: s, scaleY: 0.1, alpha: 0, duration: 300, onComplete: () => s.destroy() })
+      })
     }
   }
 
@@ -633,6 +689,8 @@ export class Mundo extends Phaser.Scene {
     this.soltarAnillo()
     this.enemigos.quitarInvocadas()
     this.entidades.mostrarCofresTrasJefe()
+    // F8: el Guardián de la Campana no muere: se libera de la corrupción y la catedral se ilumina
+    if (this.jefe?.tipo === 'guardian_campana') this.liberarCatedral(!yaVencido)
     if (a && yaVencido) {
       this.encenderPiedras(true)
       this.abrirPortalJefe(false)
@@ -661,6 +719,19 @@ export class Mundo extends Phaser.Scene {
       this.time.delayedCall(2600, () => this.abrirPortalJefe(true))
       this.guardar()
     }
+  }
+
+  /** F8: la campana pasa a turquesa, se prenden los braseros que quedaban y la oscuridad baja de a poco */
+  private liberarCatedral(animar: boolean): void {
+    this.mecanismos?.liberar()
+    if (!animar) {
+      this.atmosfera.aclarado = 0.45
+      this.aclaradoMeta = 0.45
+      return
+    }
+    // baja de a poco con el reloj del juego (en `paso`), no con una animación en tiempo real
+    this.aclaradoMeta = 0.45
+    this.game.events.emit('destello', { color: 0x8affe8, alfa: this.suave ? 0.12 : 0.35, ms: 1200 })
   }
 
   private abrirPortalJefe(animar: boolean): void {
@@ -865,6 +936,8 @@ export class Mundo extends Phaser.Scene {
     this.botin.limpiar()
     this.proyectiles.limpiar()
     this.enemigos.destruir()
+    this.mecanismos?.destruir()
+    this.mecanismos = null
     this.sonido.detener()
     this.decos.destruir()
     this.atmosfera.destruir()
@@ -915,7 +988,9 @@ export class Mundo extends Phaser.Scene {
     else this.relojGuia.tick(dt)
     this.flechaGuia = null
     if (!this.relojGuia.visible) return
-    const destino = elegirDestino({
+    // F8: mientras falten brasas, la flecha apunta a la más cercana a la que se llega caminando
+    const brasa = this.brasaAlcanzable()
+    const destino = brasa ? { tipo: 'zona' as const, nombre: 'Brasa', x: brasa.x, y: brasa.y } : elegirDestino({
       heroe: { x: this.heroina.x, y: this.heroina.y },
       nivel: p.nivel,
       zonas: this.mapa.zonas,
@@ -928,6 +1003,25 @@ export class Mundo extends Phaser.Scene {
     const v = this.cameras.main.worldView
     const pos = posicionFlecha({ x: v.x, y: v.y, w: v.width, h: v.height }, { x: this.heroina.x, y: this.heroina.y }, destino)
     if (pos) this.flechaGuia = { ...pos, destino }
+  }
+
+  /** La brasa que falta más cerca a la que se llega caminando (con las compuertas como están). Se recalcula poco. */
+  private brasaAlcanzable(): { x: number; y: number } | null {
+    const mc = this.mecanismos
+    if (!mc?.hay) return null
+    const info = mc.info()
+    const firma = `${info.brasas}|${Math.floor(this.heroina.x / 256)}|${Math.floor(this.heroina.y / 256)}`
+    if (firma === this.destinoBrasa.firma) return this.destinoBrasa.p
+    const faltan = info.piezas.filter((b) => !b.recogida).sort((a, b) => Math.hypot(a.x - this.heroina.x, a.y - this.heroina.y) - Math.hypot(b.x - this.heroina.x, b.y - this.heroina.y))
+    let p: { x: number; y: number } | null = null
+    for (const b of faltan) {
+      if (buscarCamino(this.grilla, this.heroina.x, this.heroina.y, b.x, b.y + 18, { radio: 6, radioBusqueda: 3 })) {
+        p = { x: b.x, y: b.y }
+        break
+      }
+    }
+    this.destinoBrasa = { firma, p }
+    return p
   }
 
   /**
@@ -1046,6 +1140,8 @@ export class Mundo extends Phaser.Scene {
     const pistas: Pista[] = this.entidades.cofres
       .filter((c) => !c.abierto && !c.abriendo && c.s.visible)
       .map((c) => ({ llave: c.llave, x: c.e.x, y: c.e.y + 22, secreto: c.secreto }))
+    // F8: en la Catedral Thor huele primero las brasas que faltan (las pistas secretas van primero)
+    for (const b of this.mecanismos?.info().piezas ?? []) if (!b.recogida) pistas.push({ llave: `brasa:${b.id}`, x: b.x, y: b.y + 18, secreto: true })
     for (const p of ordenarPistas(pistas, { x: this.heroina.x, y: this.heroina.y }).slice(0, 4)) {
       const camino = buscarCamino(this.grilla, this.thor.x, this.thor.y, p.x, p.y, { radio: 6, radioBusqueda: 3 })
       if (!camino || camino.length === 0) continue
@@ -1349,8 +1445,10 @@ export class Mundo extends Phaser.Scene {
     this.actualizarAudio(dtReal)
     this.actualizarTutorial()
     this.tEnMundo += dt
+    this.mecanismos?.revisar({ x: this.heroina.x, y: this.heroina.y })
     this.revisarPortalVolver()
     this.revisarAgua(dt)
+    if (this.atmosfera.aclarado > this.aclaradoMeta) this.atmosfera.aclarado = Math.max(this.aclaradoMeta, this.atmosfera.aclarado - dt * 0.15)
     this.tJugado += dt
     // lo que la heroína iba a usar: cuando llega, lo usa
     const pend = this.pendiente
@@ -1377,6 +1475,7 @@ export class Mundo extends Phaser.Scene {
     this.autoguardadoEn -= dtVisual
     if (this.autoguardadoEn <= 0) this.guardar()
     this.decos.actualizar(this.tViento, dtVisual, vista, heroe, luces)
+    this.mecanismos?.update(this.t, luces)
     this.criaturas.update(this.t, dtVisual, heroe, vista, this.atmosfera.oscuridadFinal)
     this.atmosfera.update(this.t, dtVisual, vista, heroe, luces, (fn) => this.decos.forEachActivo(fn), rafaga)
     this.sonido.update(dtVisual)
@@ -1503,7 +1602,11 @@ export class Mundo extends Phaser.Scene {
       tutorial: () => ({ hechos: [...this.partida.tutorial], demo: this.demoTutorial ? { paso: this.demoTutorial.paso } : null }),
       saltarTutorial: (() => this.saltarTutorial()) as never,
       irAMundo: ((destino: string) => this.irAMundo(destino, { x: Math.round(this.heroina.x), y: Math.round(this.heroina.y) }, false)) as never,
-      mundoActual: () => ({ id: idMundo(this.m.mundo), nombre: this.m.mundo.nombre, partida: this.partida.mundo, otros: Object.keys(this.partida.otrosMundos), zonas: this.mapa.zonas.map((z) => z.nombre), jefe: !!this.jefe, portalVolver: entidadesDeTipo(this.mapa, 'portal_volver').map((e) => ({ x: e.x, y: e.y }))[0] ?? null, peligroAgua: entidadesDeTipo(this.mapa, 'peligro_agua').map((e) => ({ x: e.x, y: e.y })), caidasAgua: this.caidasAgua }),
+      mundoActual: () => ({ id: idMundo(this.m.mundo), nombre: this.m.mundo.nombre, partida: this.partida.mundo, otros: Object.keys(this.partida.otrosMundos), zonas: this.mapa.zonas.map((z) => z.nombre), jefe: !!this.jefe, portalVolver: entidadesDeTipo(this.mapa, 'portal_volver').map((e) => ({ x: e.x, y: e.y }))[0] ?? null, peligroAgua: entidadesDeTipo(this.mapa, 'peligro_agua').map((e) => ({ x: e.x, y: e.y })), caidasAgua: this.caidasAgua, aclarado: Math.round(this.atmosfera.aclarado * 100) / 100, jefeTipo: this.jefe?.tipo ?? null }),
+      mecanismos: () => this.mecanismos?.info() ?? null,
+      darBrasas: ((n: number) => {
+        for (const b of this.mecanismos?.info().piezas ?? []) if (this.partida.brasas.length < n && !this.partida.brasas.includes(b.id)) this.partida.brasas.push(b.id)
+      }) as never,
       musicaEstado: () => ({ estado: this.estadoMusica, agua: Math.round(this.detalleAgua * 100) / 100 }),
       planoJefe: () => ({ ...this.planoJefe, entradaPausada: this.entrada.estaPausada, camara: { x: Math.round(this.camara.cx), y: Math.round(this.camara.cy) } }),
       guia: () => ({ sinProgreso: Math.round(this.relojGuia.sinProgreso * 10) / 10, visible: this.relojGuia.visible, flecha: this.flechaGuia }),

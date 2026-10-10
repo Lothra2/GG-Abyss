@@ -188,4 +188,131 @@ test.describe('La Catedral de las Raíces', () => {
     }
     expect(tiro).toBe(true)
   })
+
+  test('las tres brasas: cada una prende braseros, abre una compuerta de raíces y la forja se enciende con la tercera; queda guardado', async ({ page }) => {
+    test.setTimeout(240_000)
+    const errores = vigilarErrores(page)
+    await bajarALaCatedral(page, 'alana')
+    await gancho(page, 'matarEnemigos')
+    type Mec = { brasas: number; total: number; pedestal: string; forja: string; braseros: { requiere: number; encendido: boolean }[]; compuertas: { id: string; abierta: boolean }[]; piezas: { id: string; x: number; y: number; recogida: boolean }[] }
+    const mec = () => gancho<Mec>(page, 'mecanismos')
+    const m0 = await mec()
+    expect(m0.total).toBe(3)
+    expect(m0.forja).toBe('forja_0')
+    expect(m0.compuertas.every((c) => !c.abierta)).toBe(true)
+    expect(m0.braseros.every((b) => !b.encendido)).toBe(true)
+    await expect.poll(async () => (await gancho<{ clave: string; texto: string }>(page, 'hudObjetivo')).texto, { timeout: 10_000 }).toBe('Brasas 0/3')
+    const pieza = (id: string) => m0.piezas.find((b) => b.id === id)!
+    // con todo cerrado no se llega caminando a la brasa de la forja
+    await gancho(page, 'ponerHeroina', pieza('nave').x - 40, pieza('nave').y)
+    await avanzar(page, 0.2)
+    await gancho(page, 'tocar', pieza('forja').x, pieza('forja').y + 30)
+    await avanzar(page, 40, true)
+    expect(Math.hypot((await pos(page)).x - pieza('forja').x, (await pos(page)).y - pieza('forja').y)).toBeGreaterThan(200)
+    // la brasa de la nave: el pedestal y los braseros del atrio se prenden y se abre la compuerta de la forja
+    await gancho(page, 'ponerHeroina', pieza('nave').x, pieza('nave').y)
+    await avanzar(page, 0.3)
+    let m = await mec()
+    expect(m.brasas).toBe(1)
+    expect(m.pedestal).toBe('pedestal_brasas_1')
+    expect(m.forja).toBe('forja_1')
+    expect(m.compuertas.find((c) => c.id === 'nave_forja')!.abierta).toBe(true)
+    expect(m.compuertas.find((c) => c.id === 'atajo')!.abierta).toBe(false)
+    expect(m.braseros.filter((b) => b.requiere === 1).every((b) => b.encendido)).toBe(true)
+    // ahora sí se llega caminando a la forja
+    await gancho(page, 'tocar', pieza('forja').x, pieza('forja').y)
+    await avanzar(page, 60, true)
+    m = await mec()
+    expect(m.brasas, 'llegó caminando a la brasa de la forja').toBe(2)
+    expect(m.compuertas.find((c) => c.id === 'atajo')!.abierta).toBe(true)
+    // la del claustro: la tercera enciende la forja y abre el camino al campanario
+    await gancho(page, 'ponerHeroina', pieza('claustro').x, pieza('claustro').y)
+    await avanzar(page, 0.3)
+    m = await mec()
+    expect(m.brasas).toBe(3)
+    expect(m.forja).toBe('forja_3')
+    expect(m.compuertas.every((c) => c.abierta)).toBe(true)
+    expect(m.braseros.every((b) => b.encendido)).toBe(true)
+    // con las tres se llega caminando al campanario y el guardián despierta
+    const arena = (await gancho<{ arena: { x: number; y: number } }>(page, 'jefe')).arena
+    await gancho(page, 'ponerNivel', 8)
+    await gancho(page, 'tocar', arena.x, arena.y)
+    await avanzar(page, 60, true)
+    await expect.poll(async () => (await gancho<{ peleando: boolean }>(page, 'jefe')).peleando, { timeout: 20_000 }).toBe(true)
+    await gancho(page, 'danarJefe', 9999)
+    await avanzar(page, 1)
+    // guardado: al volver sigue todo encendido y abierto
+    await gancho(page, 'guardarAhora')
+    await page.reload()
+    await abrirMundo(page, 'alana')
+    await listo(page)
+    m = await mec()
+    expect(m.brasas).toBe(3)
+    expect(m.forja).toBe('forja_3')
+    expect(m.compuertas.every((c) => c.abierta)).toBe(true)
+    await sinErrores(errores)
+  })
+
+  test('el Guardián de la Campana: enseña sus tres patrones de a uno, se libera, la catedral se aclara y la bajada sigue', async ({ page }) => {
+    test.setTimeout(240_000)
+    const errores = vigilarErrores(page)
+    await bajarALaCatedral(page, 'rick')
+    await gancho(page, 'darBrasas', 3)
+    await gancho(page, 'ponerNivel', 10)
+    await avanzar(page, 0.5)
+    expect((await gancho<{ jefeTipo: string | null }>(page, 'mundoActual')).jefeTipo).toBe('guardian_campana')
+    type J = { peleando: boolean; vencido: boolean; fase: number; vida: number; vidaMax: number; avisos: { ataque: string; forma: string }[] }
+    const jefe = () => gancho<J>(page, 'jefe')
+    await gancho(page, 'entrarArena')
+    await expect.poll(async () => (await jefe()).peleando, { timeout: 20_000 }).toBe(true)
+    const vistos = async (seg: number) => {
+      const s = new Set<string>()
+      for (let t = 0; t < seg; t += 0.1) {
+        await gancho(page, 'curarTodo')
+        await avanzar(page, 0.1)
+        for (const a of (await jefe()).avisos) s.add(a.ataque)
+      }
+      return s
+    }
+    // fase 1: solo el golpe frontal anunciado
+    const f1 = await vistos(14)
+    expect(f1.has('golpe_fuerte'), 'en la fase 1 usa el golpe frontal').toBe(true)
+    expect(f1.has('onda') || f1.has('raices')).toBe(false)
+    // fase 2: lo primero que hace es la onda (sola), con el anillo en el piso
+    const j1 = await jefe()
+    await gancho(page, 'danarJefe', j1.vida - j1.vidaMax * 0.5)
+    await expect.poll(async () => (await jefe()).fase, { timeout: 5_000 }).toBe(2)
+    let primero = ''
+    for (let t = 0; t < 12 && !primero; t += 0.1) {
+      await gancho(page, 'curarTodo')
+      await avanzar(page, 0.1)
+      primero = (await jefe()).avisos[0]?.ataque ?? ''
+    }
+    expect(primero).toBe('onda')
+    expect((await jefe()).avisos[0]!.forma).toBe('anillo')
+    // con poca vida, la llamada de raíces se enseña sola
+    await vistos(3)
+    const j2 = await jefe()
+    await gancho(page, 'danarJefe', j2.vida - j2.vidaMax * 0.3)
+    primero = ''
+    for (let t = 0; t < 14 && !primero; t += 0.1) {
+      await gancho(page, 'curarTodo')
+      await avanzar(page, 0.1)
+      const a = (await jefe()).avisos[0]?.ataque ?? ''
+      if (a && a !== 'onda' && a !== 'golpe_fuerte') primero = a
+    }
+    expect(primero).toBe('raices')
+    // se libera: la campana turquesa y la catedral más clara
+    await gancho(page, 'danarJefe', 9999)
+    await expect.poll(async () => (await jefe()).vencido, { timeout: 10_000 }).toBe(true)
+    await expect.poll(async () => (await gancho<{ campana: string }>(page, 'mecanismos')).campana, { timeout: 10_000 }).toBe('campana_libre')
+    for (let i = 0; i < 8; i++) await avanzar(page, 1)
+    expect((await gancho<{ aclarado: number }>(page, 'mundoActual')).aclarado).toBeLessThan(0.6)
+    // la bajada más honda: el kit no trae el mundo 3, el portal lleva a Continuará
+    // el portal se abre después de la cámara lenta de la victoria (en tiempo real: en el Chromium sin GPU tarda)
+    await expect.poll(async () => (await gancho<{ portal: boolean }>(page, 'jefe')).portal, { timeout: 60_000 }).toBe(true)
+    await gancho(page, 'irAlPortal')
+    await esperarEscena(page, 'Continuara')
+    await sinErrores(errores)
+  })
 })

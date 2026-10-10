@@ -324,11 +324,19 @@ test('captura la Catedral: la bajada, la escalera, el atrio, los claustros con e
     await page.screenshot({ path: join(dir, `bajada${v.sufijo}.png`) })
     await esperarEscena(page, 'Mundo')
     await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true && typeof a.mundoActual === 'function' }, null, { timeout: 120_000 })
-    for (const n of ['escalera_hundida', 'atrio_luciernagas', 'claustros_quebrados']) {
+    for (const n of ['escalera_hundida', 'atrio_luciernagas', 'claustros_quebrados', 'capilla_escondida', 'nave_inundada', 'forja_apagada']) {
       await gancho(page, 'irAPostal', n)
       await gancho(page, 'avanzar', 1.5)
       await page.waitForTimeout(3500)
       await page.screenshot({ path: join(dir, `${n}${v.sufijo}.png`) })
+    }
+    // con las tres brasas: la forja encendida y el atrio con sus braseros y el pedestal
+    await gancho(page, 'darBrasas', 3)
+    for (const [n, archivo] of [['forja_apagada', 'forja_encendida'], ['atrio_luciernagas', 'atrio_con_brasas']] as const) {
+      await gancho(page, 'irAPostal', n)
+      await gancho(page, 'avanzar', 1.5)
+      await page.waitForTimeout(3500)
+      await page.screenshot({ path: join(dir, `${archivo}${v.sufijo}.png`) })
     }
     // el guardián preparando su golpe grande
     const g = (await gancho<{ id: number; tipo: string; x: number; y: number }[]>(page, 'enemigos')).find((e) => e.tipo === 'guardian_cobre')!

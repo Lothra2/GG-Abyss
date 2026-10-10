@@ -1498,6 +1498,71 @@
      "loop": false
     }
    }
+  },
+  "guardian_campana": {
+   "tipo": "jefe",
+   "nombre": "guardian_campana",
+   "celda": 96,
+   "pivote": [
+    48,
+    93
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/guardian_campana_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/guardian_campana_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "attack": {
+     "archivo": "enemigos/guardian_campana_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false
+    },
+    "hit": {
+     "archivo": "enemigos/guardian_campana_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/guardian_campana_die.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": false
+    },
+    "attack_heavy": {
+     "archivo": "enemigos/guardian_campana_attack_heavy.png",
+     "cuadros": 7,
+     "fps": 12,
+     "loop": false
+    },
+    "charge": {
+     "archivo": "enemigos/guardian_campana_charge.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true
+    },
+    "warcry": {
+     "archivo": "enemigos/guardian_campana_warcry.png",
+     "cuadros": 7,
+     "fps": 10,
+     "loop": false
+    },
+    "leap": {
+     "archivo": "enemigos/guardian_campana_leap.png",
+     "cuadros": 9,
+     "fps": 12,
+     "loop": false
+    }
+   }
   }
  },
  "fx": {
@@ -7326,7 +7391,9 @@
     "atrio_luciernagas": "mundo/postales/atrio_luciernagas.png",
     "claustros_quebrados": "mundo/postales/claustros_quebrados.png",
     "capilla_escondida": "mundo/postales/capilla_escondida.png",
-    "nave_inundada": "mundo/postales/nave_inundada.png"
+    "nave_inundada": "mundo/postales/nave_inundada.png",
+    "forja_apagada": "mundo/postales/forja_apagada.png",
+    "campanario_invertido": "mundo/postales/campanario_invertido.png"
    },
    "objetos": {
     "columna_raiz": {
@@ -7708,6 +7775,184 @@
        "archivo": "mundo/objetos/losa_hundida_1_idle.png",
        "cuadros": 1,
        "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "forja_0": {
+     "w": 160,
+     "h": 128,
+     "apoyo": [
+      80,
+      122
+     ],
+     "solido": [
+      -64,
+      -26,
+      128,
+      26
+     ],
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/forja_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "forja_1": {
+     "w": 160,
+     "h": 128,
+     "apoyo": [
+      80,
+      122
+     ],
+     "solido": [
+      -64,
+      -26,
+      128,
+      26
+     ],
+     "luz": {
+      "color": "#ffb050",
+      "radius": 90,
+      "flicker": false,
+      "pulse": true,
+      "dy": 60
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/forja_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "forja_2": {
+     "w": 160,
+     "h": 128,
+     "apoyo": [
+      80,
+      122
+     ],
+     "solido": [
+      -64,
+      -26,
+      128,
+      26
+     ],
+     "luz": {
+      "color": "#ffb050",
+      "radius": 120,
+      "flicker": false,
+      "pulse": true,
+      "dy": 60
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/forja_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "forja_3": {
+     "w": 160,
+     "h": 128,
+     "apoyo": [
+      80,
+      122
+     ],
+     "solido": [
+      -64,
+      -26,
+      128,
+      26
+     ],
+     "luz": {
+      "color": "#ffb050",
+      "radius": 260,
+      "flicker": true,
+      "pulse": false,
+      "dy": 60
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/forja_3_idle.png",
+       "cuadros": 6,
+       "fps": 8,
+       "loop": true
+      }
+     }
+    },
+    "brasa": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      27
+     ],
+     "solido": null,
+     "luz": {
+      "color": "#ffb050",
+      "radius": 110,
+      "pulse": true,
+      "dy": 12
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/brasa_idle.png",
+       "cuadros": 8,
+       "fps": 10,
+       "loop": true
+      }
+     }
+    },
+    "campana": {
+     "w": 96,
+     "h": 128,
+     "apoyo": [
+      48,
+      124
+     ],
+     "solido": null,
+     "luz": {
+      "color": "#8a4ac8",
+      "radius": 140,
+      "pulse": true,
+      "dy": 40
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/campana_idle.png",
+       "cuadros": 4,
+       "fps": 3,
+       "loop": true
+      }
+     }
+    },
+    "campana_libre": {
+     "w": 96,
+     "h": 128,
+     "apoyo": [
+      48,
+      124
+     ],
+     "solido": null,
+     "luz": {
+      "color": "#5ae0d0",
+      "radius": 220,
+      "pulse": true,
+      "dy": 40
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/campana_libre_idle.png",
+       "cuadros": 4,
+       "fps": 3,
        "loop": true
       }
      }

@@ -8,7 +8,7 @@ import type { Grilla } from '../logic/grilla'
 import { moverCuerpo } from '../logic/movimiento'
 import { fx, juego } from '../logic/azar'
 import { danarJefe, despertar, nuevoJefe, pensarJefe, reposar, type EstadoJefe, type Jefe, type OrdenJefe } from '../logic/jefe'
-import { IMPACTO, JEFE } from '../config/balance'
+import { IMPACTO, JEFE, JEFE_CAMPANA } from '../config/balance'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
 import { texto } from './Texto'
@@ -23,6 +23,10 @@ export interface EventosJefe {
   efecto(nombre: string, x: number, y: number, escala?: number): void
   sonido(nombre: string, op?: { volumen?: number; rate?: number }): void
   sacudir(fuerte?: boolean): void
+  /** F8: la onda de la campana pega en el anillo entre `interior` y `exterior` */
+  golpeAnillo?(x: number, y: number, interior: number, exterior: number, dano: readonly [number, number]): void
+  /** F8: salen raíces del piso que tapan el paso un rato */
+  raices?(puntos: { x: number; y: number }[], radio: number, seg: number): void
   alFase2(): void
   alMorir(): void
 }
@@ -43,6 +47,10 @@ interface Telegrafo {
   resta: number
   total: number
   linea?: { x: number; y: number; dx: number; dy: number; largo: number; ancho: number }
+  /** F8: el anillo de la onda de la campana */
+  anillo?: { x: number; y: number; interior: number; exterior: number }
+  /** F8: las manchas de la llamada de raíces */
+  extra?: Phaser.GameObjects.Sprite[]
 }
 
 /**
@@ -51,9 +59,12 @@ interface Telegrafo {
  */
 export class JefeSprite implements Atacable {
   readonly id = 777777
-  readonly tipo = 'minotauro'
+  /** el personaje del manifest: el minotauro del Bosque o el guardián de la campana de la Catedral */
+  readonly tipo: string
   readonly esJefe = true
   readonly nombre: string
+  /** lo que dice abajo del nombre en la entrada */
+  readonly titulo: string
   readonly logica: Jefe
   readonly radioArena: number
   readonly sprite: Phaser.GameObjects.Sprite
@@ -79,15 +90,21 @@ export class JefeSprite implements Atacable {
     vida: number,
     private ev: EventosJefe,
   ) {
+    this.tipo = String(ent.props.enemigo ?? 'minotauro')
     this.nombre = String(ent.props.nombre ?? 'Minotauro del Bosque')
+    this.titulo = String(ent.props.titulo ?? 'Guardián de Las Alturas')
     this.radioArena = arena.radio
-    this.logica = nuevoJefe(arena.x, arena.y, JEFE.vida)
-    this.logica.vida = Math.max(1, Math.min(JEFE.vida, vida))
+    const campana = this.tipo === 'guardian_campana'
+    const vidaMax = campana ? JEFE_CAMPANA.vida : JEFE.vida
+    this.logica = nuevoJefe(arena.x, arena.y, vidaMax, campana ? 'campana' : 'minotauro')
+    this.logica.vida = Math.max(1, Math.min(vidaMax, vida))
     if ((this.logica.vida / this.logica.vidaMax) * 100 <= JEFE.fase2Pct) this.logica.fase = 2
-    const p = m.personajes.minotauro!
+    // un guardado que ya pasó de raicesPct no vuelve a enseñarlas
+    if (campana && (this.logica.vida / this.logica.vidaMax) * 100 <= JEFE_CAMPANA.raicesPct) this.logica.raicesVistas = true
+    const p = m.personajes[this.tipo]!
     for (const [n, a] of Object.entries(p.anims)) this.cuadros[n] = { cuadros: a.cuadros, fps: a.fps }
-    crearAnimsPersonaje(escena, m, 'minotauro')
-    this.sprite = escena.add.sprite(arena.x, arena.y, K.pers('minotauro', 'idle'), 0).setOrigin(p.pivote[0] / p.celda, p.pivote[1] / p.celda)
+    crearAnimsPersonaje(escena, m, this.tipo)
+    this.sprite = escena.add.sprite(arena.x, arena.y, K.pers(this.tipo, 'idle'), 0).setOrigin(p.pivote[0] / p.celda, p.pivote[1] / p.celda)
     this.sombra = new Sombra(escena, 64, 0.4)
     if (escena.textures.exists(K.ui('estandarte'))) {
       const img = escena.add.image(0, 0, K.ui('estandarte')).setOrigin(0.5, 1)
@@ -289,6 +306,7 @@ export class JefeSprite implements Atacable {
       this.ev.sonido('jefe_pisoton', { volumen: 0.8, rate: 0.7 })
     }
     if (o.golpe) this.soltarGolpe(o.golpe)
+    if (o.raices) this.ev.raices?.(o.raices.puntos, o.raices.radio, o.raices.seg)
     if (o.invocar && o.invocar > 0) {
       this.poner('warcry', true)
       this.bloqueoAnimS = 0.8
@@ -314,6 +332,23 @@ export class JefeSprite implements Atacable {
       this.ev.golpeCarga(g.dano)
       return
     }
+    if (g.forma === 'anillo') {
+      // suena la campana: el anillo pega, el centro (cerca de ella) se salva
+      this.ev.golpeAnillo?.(g.x, g.y, g.interior ?? 0, g.radio, g.dano)
+      this.ev.efecto('onda_pisoton', g.x, g.y, 2)
+      this.ev.sonido('bloqueo', { volumen: 0.9, rate: 0.45 })
+      this.ev.sonido('jefe_pisoton', { volumen: 0.6, rate: 0.8 })
+      this.ev.sacudir(true)
+      this.limpiarTelegrafos(g.ataque)
+      return
+    }
+    if (g.forma === 'raices') {
+      for (const p of g.puntos ?? []) this.ev.golpeCirculo(p.x, p.y, g.radio, g.dano, true)
+      this.ev.sonido('romper', { volumen: 0.8, rate: 0.6 })
+      this.ev.sacudir(false)
+      this.limpiarTelegrafos(g.ataque)
+      return
+    }
     this.ev.golpeCirculo(g.x, g.y, g.radio, g.dano, g.ataque !== 'golpe')
     if (g.ataque === 'pisoton' || g.ataque === 'salto') {
       this.ev.efecto('onda_pisoton', g.x, g.y, 2)
@@ -332,7 +367,27 @@ export class JefeSprite implements Atacable {
   private mostrarAviso(a: NonNullable<OrdenJefe['aviso']>): void {
     const tex = K.obj('aviso_jefe', 'llenar')
     const t: Telegrafo = { ataque: a.ataque, resta: a.seg, total: a.seg }
-    if (a.forma === 'linea') {
+    if (a.forma === 'anillo') {
+      // el anillo de la onda: violeta, con el centro libre bien marcado (ahí no llega)
+      t.anillo = { x: a.x, y: a.y, interior: a.interior ?? 0, exterior: a.radio }
+      t.g = this.escena.add.graphics().setDepth(PROF.SOMBRAS + 2)
+      this.poner('warcry', true)
+      this.bloqueoAnimS = a.seg
+      this.ev.sonido('bloqueo', { volumen: 0.5, rate: 0.6 })
+    } else if (a.forma === 'raices' && this.escena.textures.exists(tex)) {
+      if (!this.escena.anims.exists('aviso_jefe_llenar')) {
+        this.escena.anims.create({ key: 'aviso_jefe_llenar', frames: this.escena.anims.generateFrameNumbers(tex, { start: 0, end: 7 }), frameRate: 8, repeat: 0 })
+      }
+      // una mancha por raíz, del tamaño del aviso del kit (x1)
+      t.extra = (a.puntos ?? []).map((p) => {
+        const s2 = this.escena.add.sprite(Math.round(p.x), Math.round(p.y), tex, 0).setDepth(PROF.SOMBRAS + 2).setAlpha(0.92).setTint(0xc58aff)
+        s2.play({ key: 'aviso_jefe_llenar', frameRate: 8 / Math.max(0.2, a.seg) })
+        return s2
+      })
+      this.poner('warcry', true)
+      this.bloqueoAnimS = a.seg
+      this.ev.sonido('jefe_rugido', { volumen: 0.4, rate: 0.9 })
+    } else if (a.forma === 'linea') {
       t.linea = { x: a.x, y: a.y, dx: a.dx, dy: a.dy, largo: a.largo, ancho: a.ancho }
       t.g = this.escena.add.graphics().setDepth(PROF.SOMBRAS + 2)
       this.ev.sonido('jefe_rugido', { volumen: 0.4, rate: 1.4 })
@@ -382,6 +437,25 @@ export class JefeSprite implements Atacable {
         t.g.lineStyle(1, fin ? 0xffffff : 0xff6a4a, 0.95)
         t.g.strokePoints([new Phaser.Geom.Point(f0.a[0]!, f0.a[1]!), new Phaser.Geom.Point(f1.a[0]!, f1.a[1]!), new Phaser.Geom.Point(f1.b[0]!, f1.b[1]!), new Phaser.Geom.Point(f0.b[0]!, f0.b[1]!)], true, true)
       }
+      if (t.g && t.anillo) {
+        const r = t.anillo
+        const k = 1 - Math.max(0, t.resta) / t.total
+        const fin = t.resta < 0.3 && Math.floor(t.resta * 20) % 2 === 0
+        t.g.clear()
+        // la banda que pega se va llenando de afuera hacia adentro; el centro se ve claro y libre
+        t.g.fillStyle(0x8a4ac8, 0.16)
+        t.g.fillCircle(r.x, r.y, r.exterior)
+        t.g.fillStyle(0x8a4ac8, 0.32 * k)
+        t.g.fillCircle(r.x, r.y, r.exterior)
+        t.g.lineStyle(2, fin ? 0xffffff : 0xc58aff, 0.95)
+        t.g.strokeCircle(r.x, r.y, r.exterior)
+        // el lugar seguro: turquesa, como los rastros de vida
+        t.g.fillStyle(0x0a0b10, 0.55)
+        t.g.fillCircle(r.x, r.y, r.interior)
+        t.g.lineStyle(2, 0x5ae0d0, 0.95)
+        t.g.strokeCircle(r.x, r.y, r.interior)
+      }
+      for (const e of t.extra ?? []) e.setAlpha(t.resta < 0.3 ? (Math.floor(t.resta * 20) % 2 === 0 ? 1 : 0.55) : 0.92)
       if (t.s) {
         t.s.setPosition(Math.round(t.s.x), Math.round(t.s.y))
         // el aviso del piso parpadea justo antes de caer: es el momento de salir
@@ -393,6 +467,7 @@ export class JefeSprite implements Atacable {
       if (t.resta <= -0.15) {
         t.s?.destroy()
         t.g?.destroy()
+        for (const e of t.extra ?? []) e.destroy()
         this.telegrafos.splice(i, 1)
       }
     }
@@ -403,20 +478,21 @@ export class JefeSprite implements Atacable {
     for (const t of this.telegrafos) {
       t.s?.destroy()
       t.g?.destroy()
+      for (const e of t.extra ?? []) e.destroy()
     }
     this.telegrafos = []
   }
 
   /** Para las pruebas: cuántos avisos hay y sus datos */
   avisos(): { ataque: string; forma: string; resta: number; total: number }[] {
-    return this.telegrafos.map((t) => ({ ataque: t.ataque, forma: t.linea ? 'linea' : t.s ? 'circulo' : 'otro', resta: Math.round(t.resta * 100) / 100, total: t.total }))
+    return this.telegrafos.map((t) => ({ ataque: t.ataque, forma: t.linea ? 'linea' : t.anillo ? 'anillo' : t.extra ? 'raices' : t.s ? 'circulo' : 'otro', resta: Math.round(t.resta * 100) / 100, total: t.total }))
   }
 
   private poner(anim: string, forzar = false, fps?: number): void {
-    const ok = this.m.personajes.minotauro!.anims
+    const ok = this.m.personajes[this.tipo]!.anims
     let a = anim
     if (!ok[a]) a = ok.idle ? 'idle' : Object.keys(ok)[0]!
-    const key = K.anim('minotauro', a, DIRECCIONES[this.dir]!)
+    const key = K.anim(this.tipo, a, DIRECCIONES[this.dir]!)
     if (key === this.animActual && !forzar) return
     this.animActual = key
     if (this.escena.anims.exists(key)) this.sprite.play(fps ? { key, frameRate: fps } : key)

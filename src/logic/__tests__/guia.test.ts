@@ -62,3 +62,10 @@ describe('objetivo en un mundo sin jefe', () => {
     expect(objetivoActual({ nivel: 9, jefeVencido: false, descubiertas: 3, totalZonas: 3, hayJefe: false }).clave).toBe('explorar')
   })
 })
+
+describe('objetivo en la Catedral', () => {
+  it('mientras falten brasas el objetivo son las brasas; con las tres, lo de siempre', () => {
+    expect(objetivoActual({ nivel: 3, jefeVencido: false, descubiertas: 2, totalZonas: 6, hayJefe: false, brasas: { tiene: 1, total: 3 } })).toMatchObject({ clave: 'brasas', texto: 'Brasas 1/3', icono: 'brasa' })
+    expect(objetivoActual({ nivel: 3, jefeVencido: false, descubiertas: 2, totalZonas: 6, hayJefe: false, brasas: { tiene: 3, total: 3 } }).clave).toBe('explorar')
+  })
+})

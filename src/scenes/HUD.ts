@@ -73,6 +73,7 @@ export class HUD extends Phaser.Scene {
   private bNivel!: Phaser.GameObjects.BitmapText
   private bRescate!: Phaser.GameObjects.BitmapText
   private alNivel = (e: { nivel: number }) => this.mostrarNivel(e.nivel)
+  private alBrasa = (e: { n: number; total: number }) => this.mostrarAnuncio(e.n >= e.total ? '¡La forja despierta!' : `¡Brasa ${e.n} de ${e.total}!`)
   private alRescate = (e: { mensaje: string }) => this.mostrarRescate(e.mensaje)
   private cartel: Phaser.GameObjects.Container | null = null
   private cartelTimer?: Phaser.Time.TimerEvent
@@ -150,6 +151,7 @@ export class HUD extends Phaser.Scene {
     this.bNivel = texto(this, 0, 0, '', 'fuente_titulo', 2, { origen: [0.5, 0.5] }).setAlpha(0).setDepth(520)
     this.bRescate = texto(this, 0, 0, '', 'fuente_titulo', 2, { origen: [0.5, 0.5] }).setAlpha(0).setDepth(530)
     this.game.events.on('nivel-subido', this.alNivel)
+    this.game.events.on('brasa-recogida', this.alBrasa)
     this.game.events.on('rescate', this.alRescate)
 
     if (params.medir || params.test) {
@@ -179,6 +181,7 @@ export class HUD extends Phaser.Scene {
       this.game.events.off('cartel', this.alCartel)
       this.game.events.off('calidad-baja-automatica', this.alCalidad)
       this.game.events.off('nivel-subido', this.alNivel)
+      this.game.events.off('brasa-recogida', this.alBrasa)
       this.game.events.off('rescate', this.alRescate)
       this.game.events.off('jefe-empieza', this.alJefeEmpieza)
       this.game.events.off('botin-recogido', this.alBotinRecogido)
@@ -279,11 +282,14 @@ export class HUD extends Phaser.Scene {
     const p = this.mundo.partida
     if (!p) return
     const r = this.mundo.resumenDescubrimiento
-    const o = objetivoActual({ nivel: p.nivel, jefeVencido: p.jefeVencido, descubiertas: r.zonas, totalZonas: r.totalZonas, hayJefe: !!this.mundo.jefe || p.jefeVencido })
+    const mc = this.mundo.mecanismos
+    const o = objetivoActual({ nivel: p.nivel, jefeVencido: p.jefeVencido, descubiertas: r.zonas, totalZonas: r.totalZonas, hayJefe: !!this.mundo.jefe || p.jefeVencido, ...(mc?.hay ? { brasas: { tiene: p.brasas.length, total: mc.total } } : {}) })
     const cambio = !this.objetivo || this.objetivo.clave !== o.clave
     if (this.objetivo && this.objetivo.texto === o.texto) return
     this.objetivo = o
-    if (this.textures.exists(K.ui(o.icono))) this.chipIcono.setTexture(K.ui(o.icono), 0)
+    // el ícono es de la interfaz, o un objeto del mundo (la brasa de la Catedral)
+    if (this.textures.exists(K.ui(o.icono))) this.chipIcono.setTexture(K.ui(o.icono), 0).setScale(1)
+    else if (this.textures.exists(K.obj(o.icono, 'idle'))) this.chipIcono.setTexture(K.obj(o.icono, 'idle'), 0).setScale(0.75)
     this.chipTexto.setText(o.texto)
     this.acomodarChip()
     if (cambio) {
@@ -295,7 +301,12 @@ export class HUD extends Phaser.Scene {
   }
 
   private mostrarNivel(n: number): void {
-    this.bNivel.setText(`¡Nivel ${n}!`).setAlpha(0)
+    this.mostrarAnuncio(`¡Nivel ${n}!`)
+  }
+
+  /** El texto grande del centro que aparece y se va (nivel, brasa) */
+  private mostrarAnuncio(t: string): void {
+    this.bNivel.setText(t).setAlpha(0)
     this.tweens.killTweensOf(this.bNivel)
     this.tweens.add({ targets: this.bNivel, alpha: 1, duration: 250, yoyo: false, onComplete: () => this.tweens.add({ targets: this.bNivel, alpha: 0, delay: 1800, duration: 700 }) })
   }
@@ -344,7 +355,10 @@ export class HUD extends Phaser.Scene {
     if (pl.titulo !== this.cineTitulo) {
       this.cineTitulo = pl.titulo
       const nombre = this.mundo.jefe?.nombre ?? 'Minotauro del Bosque'
-      const t = pl.titulo === 'nombre' ? [nombre, 'Guardián de Las Alturas', 0xffffff] : pl.titulo === 'enojo' ? ['¡Se enojó!', 'Mira bien sus avisos rojos', 0xff9a7a] : pl.titulo === 'victoria' ? ['¡Victoria!', `Venciste al ${nombre}`, 0xffffff] : ['', '', 0xffffff]
+      // el Guardián de la Campana no se vence: se libera (F8)
+      const campana = this.mundo.jefe?.tipo === 'guardian_campana'
+      const titulo = this.mundo.jefe?.titulo ?? 'Guardián de Las Alturas'
+      const t = pl.titulo === 'nombre' ? [nombre, titulo, 0xffffff] : pl.titulo === 'enojo' ? (campana ? ['¡Suena la campana!', 'Cerca de la campana estás a salvo', 0xc58aff] : ['¡Se enojó!', 'Mira bien sus avisos rojos', 0xff9a7a]) : pl.titulo === 'victoria' ? (campana ? ['¡Libre!', 'El guardián vuelve a cuidar la catedral', 0x8affe8] : ['¡Victoria!', `Venciste al ${nombre}`, 0xffffff]) : ['', '', 0xffffff]
       this.tituloCine.setText(String(t[0])).setTint(Number(t[2]))
       this.subCine.setText(String(t[1]))
     }

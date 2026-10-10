@@ -45,6 +45,8 @@ export class Atmosfera {
   private vinetaImg: Phaser.GameObjects.Image | null = null
   private tinteRect: Phaser.GameObjects.Rectangle | null = null
   private ultimasLuces = 0
+  /** F8: cuánto queda de la oscuridad de las zonas (1 normal; la Catedral liberada se aclara) */
+  aclarado = 1
   /** F8: en un interior (la Catedral), si un punto cae sobre un muro */
   private sobreMuro: ((x: number, y: number) => boolean) | null = null
   /** se llama al cambiar de zona (el mundo descubre la zona y cambia el sonido) */
@@ -164,7 +166,7 @@ export class Atmosfera {
 
     this.cambiarZona(zonaEn(this.mapa.zonas, heroe.x, heroe.y))
     this.atm = mezclar(this.atm, atmosferaDe(this.zona), dt)
-    this.oscFinal = oscuridadFinal(aj.noche, this.atm.oscuridad, aj.modoPeque)
+    this.oscFinal = oscuridadFinal(aj.noche, this.atm.oscuridad * this.aclarado, aj.modoPeque)
 
     const noche = nocheEfectiva(aj.noche, aj.modoPeque) + this.atm.oscuridad
     const luces = lucesObjetos
