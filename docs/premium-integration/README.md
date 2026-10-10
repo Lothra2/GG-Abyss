@@ -1,6 +1,6 @@
 # Pixel Forja Premium — integración piloto de Rick
 
-Rama: `codex/pixel-forja-premium-integration`. Submódulo Pixel Forja: `e0a5581` (el kit de 48 px se generó en `0d54491`; los commits siguientes ajustan el ataque de 32 px, el estudio, la documentación y el JSON genérico, sin cambiar los PNG de 48 px ni el manifest del kit).
+Rama: `codex/pixel-forja-premium-integration`. Submódulo Pixel Forja: `6db6bdf` (el kit de 48 px se generó en `0d54491`; los commits siguientes ajustan el ataque de 32 px, el estudio, la documentación y los exportadores genéricos, sin cambiar los PNG de 48 px ni el manifest del kit).
 
 El kit se generó desde ese submódulo en una carpeta temporal, con `npm exec -- tsx tools/pixel_forja/scripts/game-kit.ts out/premium-kit --fichas fichas`. La carpeta `fichas/` solo tenía `.gitkeep`. Se compararon los 635 archivos con el kit previo: mismo conjunto de rutas; los cambios de contenido relevantes fueron `manifest.json` y siete PNG de Rick. Se copiaron esos archivos desde la generación, sin editar PNG ni manifest a mano. El verificador inspeccionó 633 rutas y 516 hojas sin errores.
 
