@@ -71,7 +71,7 @@ export class Entrada {
     const s = this.pulsado
     if (!s || s.id !== p.id) return
     this.pulsado = null
-    if (this.bloqueada || Bloqueo.tomado(p.id)) return
+    if (this.bloqueada || Bloqueo.tomado(p.id, s.t0)) return
     const dur = performance.now() - s.t0
     if (s.hold) return
     if (dur < MANTENER_MS || Math.hypot(p.x - s.x0, p.y - s.y0) < TOQUE_MAX_PX) {
@@ -91,7 +91,7 @@ export class Entrada {
     const s = this.pulsado
     if (s && !this.bloqueada) {
       const p = this.escena.input.manager.pointers.find((q) => q.id === s.id) ?? this.escena.input.activePointer
-      if (!s.hold && ahora - s.t0 >= MANTENER_MS && !Bloqueo.tomado(s.id)) {
+      if (!s.hold && ahora - s.t0 >= MANTENER_MS && !Bloqueo.tomado(s.id, s.t0)) {
         s.hold = true
         s.acum = ahora - RECALCULAR_MS
       }
