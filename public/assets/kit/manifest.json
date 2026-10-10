@@ -2879,24 +2879,31 @@
     }
    },
    "cascada": {
-    "w": 128,
-    "h": 128,
+    "w": 131,
+    "h": 144,
     "apoyo": [
-     64,
-     112
+     65,
+     79
     ],
     "solido": null,
+    "capa": "suelo",
     "luz": {
      "color": "#bfe6ff",
-     "radius": 110,
+     "radius": 114,
      "pulse": true,
-     "dy": 40
+     "dy": 30
     },
+    "espuma": [
+     -53,
+     -13,
+     53,
+     17
+    ],
     "anims": {
      "idle": {
       "archivo": "mundo/objetos/cascada_idle.png",
-      "cuadros": 4,
-      "fps": 10,
+      "cuadros": 6,
+      "fps": 12,
       "loop": true
      }
     }

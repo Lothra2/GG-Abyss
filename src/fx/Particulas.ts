@@ -123,7 +123,7 @@ export class Particulas {
       h = d.h
     }
     const s = this.libres.pop() ?? this.escena.add.sprite(0, 0, tex, 0)
-    s.setTexture(tex, 0).setActive(true).setVisible(true).setAlpha(0).setScale(1).setAngle(0).setFlipX(false).setOrigin(0.5, 0.5)
+    s.setTexture(tex, 0).setActive(true).setVisible(true).setAlpha(0).setScale(1).setAngle(0).setFlipX(false).setOrigin(0.5, 0.5).clearTint()
     const brilla = BRILLAN.has(tipo) || llave === 'brillo'
     s.setBlendMode(brilla ? Phaser.BlendModes.ADD : Phaser.BlendModes.NORMAL)
     s.setDepth(brilla ? PROF.BRILLA_EN_OSCURO : PROF.PARTICULAS)
@@ -294,9 +294,25 @@ export class Particulas {
         case 'antorcha':
           emite('b', 3.5, () => this.crear('mota', 'brasa', d.x + (r() - 0.5) * 4, d.y - 40, { vx: (r() - 0.5) * 8, vy: -14 - r() * 12, vida: 0.6 + r() * 0.7, local: true }))
           break
-        case 'cascada':
-          emite('g', 14, () => this.crear('mota', 'gota', d.x + (r() - 0.5) * 100, d.y - 10 + r() * 6, { vx: (r() - 0.5) * 20, vy: -28 - r() * 24, gravedad: 120, vida: 0.7, local: true }))
+        case 'cascada': {
+          // a lo largo de la línea donde el agua golpea: gotas que saltan y bruma blanca que sube
+          const e = d.def.espuma ?? [-50, 0, 50, 0]
+          const punto = (): [number, number] => {
+            const u = r()
+            return [d.x + e[0] + (e[2] - e[0]) * u, d.y + e[1] + (e[3] - e[1]) * u]
+          }
+          const largo = Math.hypot(e[2] - e[0], e[3] - e[1])
+          emite('g', largo * 0.18, () => {
+            const [x, y] = punto()
+            this.crear('mota', 'gota', x, y - 2 + r() * 4, { vx: (r() - 0.5) * 24, vy: -30 - r() * 30, gravedad: 120, vida: 0.7, local: true })
+          })
+          emite('h', largo * 0.025, () => {
+            const [x, y] = punto()
+            const p = this.crear('mota', 'humo', x, y - 4, { vx: (r() - 0.5) * 6, vy: -6 - r() * 6, vida: 2.4, porEdad: true, alfaMax: 0.45, local: true })
+            p?.s.setTint(0xdff2ff)
+          })
           break
+        }
         case 'hongo_gigante_azul':
         case 'hongo_gigante_morado':
           emite('e', 1.6, () => this.crear('mota', 'espora', d.x + (r() - 0.5) * 24, d.y - 46 - r() * 8, { vx: (r() - 0.5) * 4, vy: -4 - r() * 4, vida: 3 + r() * 2, local: true }))

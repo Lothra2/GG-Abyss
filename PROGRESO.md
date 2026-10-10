@@ -51,6 +51,7 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 - F5, pantalla completa: botón en la pausa (Android y PC). En iPad no existe la API y el botón dice "Instalar" y abre un panel con 3 pasos. Faltan los íconos de Safari: ASSETS_PENDIENTES.md #28.
 - F5, el kit ya está guardado en el repo (`public/assets/kit`, 634 archivos), así que construir NO necesita el submódulo privado. Por eso el plan B de Netlify es mucho más simple de lo que decía el plan: un GitHub Action manual (`.github/workflows/netlify.yml`) sin llaves del submódulo.
 - Orbes de vida y maná rehechos en PixelForja a pedido de Rick (se veía un rectángulo dentro del líquido). El defecto estaba en el arte, no en el juego: `orb()` en `tools/pixel_forja/src/engine/ui/hud.ts` sombreaba con cortes rectos. Ahora es una esfera de vidrio con tramado 4 x 4, superficie en elipse con espuma, burbujas y aro de hierro con hilo de oro. `orbe_*_ola` pasa a 36 cuadros (una ola por nivel 1 a 9). El HUD usa la ola en todos los niveles con líquido y aire, y el orbe solo se ve vacío en 0 y lleno en 100 % (con 1 punto de vida se ve un poquito). La regla de no tocar el taller se rompió a propósito porque Rick pidió el arreglo y el arte tiene que salir de PixelForja, no de código del juego. El cambio está en la rama `claude/ecstatic-ramanujan-oq0r0o` de `pixel_forja` y el submódulo apunta a ese commit.
+- Cascada del Bosque GG rehecha en PixelForja a pedido de Rick: no calzaba con el acantilado (era un trapecio fijo de 100 px puesto en un punto, y el borde de la meseta cruza el río en diagonal) y no echaba espuma. Ahora `bosqueMap` mide cada columna del río (labio real y pie real de la roca) y `fittedWaterfall` pinta la cortina justo encima de la pared, con espuma que hierve, estela río abajo, bruma y gotas, en capa suelo. El kit trae `espuma` (la línea donde golpea el agua) y `Particulas` suelta gotas y bruma a lo largo de esa línea. La cascada reserva el mismo cuadro que la vieja: al regenerar solo cambian la cascada, su postal y la vista del mapa, el resto del bosque, los cofres y los enemigos quedan igual.
 - F1b, las pruebas e2e llegan a cofres, carteles y fogatas por la parada del objeto (`teleport` a la parada): la caminata larga ya la cubre F1a.
 
 - Entrega del taller (5 tandas, submódulo en 8ba7f2a): adoptada en F1a. Decos usa tronco y copa por separado, pasto con sus anims, capa `superficie` para los pasos, 13 postales. Falta usar en sus fases: iconos de cartel (F1b), Abuelo que sonríe (F1b), títulos y logo (F1b), flecha y naturaleza (F2), botín bajo (F3), Thor cava (F3), minotauro 96 y carga (F4), íconos de app (F5). En balance se quitaron las escalas temporales del trol y del minotauro.
@@ -105,6 +106,10 @@ npm run typecheck && npm test && npm run build && npm run e2e
 - Para ganar rápido en una prueba: abrir `?test=1&heroe=rick` y en la consola `__ABYSS__.ponerNivel(10)`, `__ABYSS__.entrarArena()`, `__ABYSS__.danarJefe(9999)`.
 - Los avisos grandes se ven en el piso: círculo que se llena (pisotón y salto), elipse delante (golpe fuerte) y línea roja (la carga). En modo peque duran 1.8 s.
 
+### Cascada
+- `docs/capturas/f5/cascada_y_vado.png` y `cascada_y_vado_tablet.png`: la cortina tapa justo la pared del acantilado y abajo hay espuma y estela.
+- En el juego: `?test=1&heroe=sophie` y en la consola `__ABYSS__.teleport(1760, 960)`.
+
 ### Orbes
 - `docs/capturas/f5/combate_amazona.png` y las demás `combate_*`: los orbes abajo a los lados.
 - `docs/capturas/f5/orbes_niveles.png`: los 11 niveles de vida y de maná, a 2x.
@@ -138,8 +143,8 @@ El juego ya trae el kit dentro del repo, así que Netlify no necesita clonar `pi
 ### 4. Lighthouse
 En Chrome del escritorio, con el sitio abierto: F12, Lighthouse, Progressive Web App (si tu Chrome ya no trae la categoría, el panel Application, Manifest y Service workers muestran los mismos chequeos). No lo pude correr aquí: lo que sí está probado por pruebas automáticas es el manifest, el service worker y el modo sin red.
 
-### 5. Pasar los orbes nuevos a la rama del taller
-El submódulo sigue la rama `claude/perfeccionar-ejecucion-smh3ad` de `pixel_forja`, y el arreglo de los orbes quedó en `claude/ecstatic-ramanujan-oq0r0o` (un solo commit encima de 8ba7f2a). Antes del próximo `git submodule update --remote tools/pixel_forja`, mezclarlo en la rama del taller (PR o merge en GitHub). Si no, el `npm run kit` siguiente trae de vuelta los orbes viejos.
+### 5. Pasar los orbes y la cascada nuevos a la rama del taller
+El submódulo sigue la rama `claude/perfeccionar-ejecucion-smh3ad` de `pixel_forja`, y los arreglos de los orbes y de la cascada quedaron en `claude/ecstatic-ramanujan-oq0r0o` (dos commits encima de 8ba7f2a). Antes del próximo `git submodule update --remote tools/pixel_forja`, mezclarlo en la rama del taller (PR o merge en GitHub). Si no, el `npm run kit` siguiente trae de vuelta los orbes y la cascada viejos.
 
 ### 6. Demo con las niñas
 Ver las secciones "Para que Rick revise" de cada fase.

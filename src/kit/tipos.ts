@@ -58,6 +58,8 @@ export interface ObjetoMundo {
   solidos?: Rect4[]
   capa?: 'suelo'
   luz?: LuzObjeto
+  /** línea donde el agua golpea abajo (cascada), relativa al apoyo [x0, y0, x1, y1] */
+  espuma?: [number, number, number, number]
   anims: Record<string, AnimHoja>
 }
 
