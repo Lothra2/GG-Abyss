@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { DIRECCIONES, vectorDe } from '../logic/direccion'
+import { TarjetaBotin, type DatosTarjeta } from '../game/ui/TarjetaBotin'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
 import { uiImagenes } from '../kit/manifest'
@@ -35,6 +36,8 @@ export class HUD extends Phaser.Scene {
   private pausa!: Boton
   private bolsa!: Boton
   private flecha: Phaser.GameObjects.Image | null = null
+  private tarjeta!: TarjetaBotin
+  private alBotinRecogido = (d: DatosTarjeta) => this.tarjeta.mostrar(d)
   /** el cine del jefe: franjas negras y el título grande */
   private franjaArriba!: Phaser.GameObjects.Rectangle
   private franjaAbajo!: Phaser.GameObjects.Rectangle
@@ -109,6 +112,9 @@ export class HUD extends Phaser.Scene {
     this.tituloCine = texto(this, 0, 0, '', 'fuente_titulo', 2, { origen: [0.5, 0.5] }).setDepth(260).setAlpha(0)
     this.subCine = texto(this, 0, 0, '', 'fuente_ui', 1, { origen: [0.5, 0.5], tinte: 0xffe6b0 }).setDepth(260).setAlpha(0)
     this.game.events.on('jefe-empieza', this.alJefeEmpieza)
+    // la tarjeta del botín: comparar al recoger y ponérselo de una
+    this.tarjeta = new TarjetaBotin(this, this.mundo.cat, (i) => this.mundo.equiparDeBolsa(i).ok)
+    this.game.events.on('botin-recogido', this.alBotinRecogido)
     this.velo = this.add.rectangle(0, 0, 10, 10, 0xffffff, 1).setOrigin(0, 0).setDepth(230).setVisible(false)
     this.game.events.on('destello', this.alDestello)
     // la flecha guía en el borde: aparece si pasa un rato sin progreso
@@ -131,9 +137,10 @@ export class HUD extends Phaser.Scene {
       this.game.events.off('nivel-subido', this.alNivel)
       this.game.events.off('rescate', this.alRescate)
       this.game.events.off('jefe-empieza', this.alJefeEmpieza)
+      this.game.events.off('botin-recogido', this.alBotinRecogido)
       this.game.events.off('destello', this.alDestello)
       this.combate.destruir()
-      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudOrbes', 'hudNivel', 'hudCine')
+      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudOrbes', 'hudNivel', 'hudCine', 'hudTarjeta', 'tarjetaPoner')
     })
     alCambiarEscala(this, () => this.acomodar())
     this.actualizarContadores()
@@ -144,6 +151,8 @@ export class HUD extends Phaser.Scene {
       abrirPausa: (() => this.abrirPausa()) as never,
       hudCombate: () => this.combate.layout(),
       hudOrbes: () => this.combate.niveles(),
+      hudTarjeta: () => this.tarjeta.info(),
+      tarjetaPoner: (() => this.tarjeta.tocarPoner()) as never,
       hudCine: () => ({ franjas: this.franjaArriba.visible ? this.franjaArriba.height : 0, titulo: this.tituloCine.text, alfa: Math.round(this.tituloCine.alpha * 100) / 100, banner: this.banner.alpha }),
       hudNivel: () => ({ texto: this.bNivel.text, alpha: this.bNivel.alpha, rescate: this.bRescate.text, alphaRescate: this.bRescate.alpha }),
     })
@@ -164,6 +173,7 @@ export class HUD extends Phaser.Scene {
     const h = this.scale.height
     const mg = MARGENES.MARGEN
     const esc = e.zoom >= 3 ? 1 : 2
+    this.tarjeta?.acomodar()
     for (const t of [this.txtZonas, this.txtSecretos, this.txtOro]) t.setScale(esc)
     const fila = Math.max(26, this.txtZonas.displayHeight + 8)
     const ancho = 24 + 6 + Math.max(this.txtZonas.displayWidth, this.txtSecretos.displayWidth, this.txtOro.displayWidth, 30 * esc) + 16
@@ -382,6 +392,7 @@ export class HUD extends Phaser.Scene {
   override update(_t: number, deltaMs: number): void {
     this.combate.update(deltaMs / 1000)
     this.dibujarFlecha(deltaMs / 1000)
+    this.tarjeta.update(deltaMs / 1000)
     this.dibujarCine()
     // durante la presentación el panel no atrapa toques: el toque la salta
     if (this.panel.input) this.panel.input.enabled = !this.mundo.enPresentacion

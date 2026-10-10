@@ -6,6 +6,7 @@ import { juego } from '../logic/azar'
 import { tamanoOro } from '../logic/botin'
 import { colorDeRareza, itemDe, type Catalogo, type ItemCat } from '../logic/catalogo'
 import type { Resultado } from '../logic/inventario'
+import type { Juicio } from '../logic/veredicto'
 import { hexANumero, texto } from './Texto'
 import { Sombra } from './Sombras'
 import type { Heroina } from './Heroina'
@@ -23,6 +24,8 @@ interface Drop {
   caida: Phaser.GameObjects.Sprite | null
   sombra: Sombra
   avisoLlenaS: number
+  /** flechita verde encima si conviene ponérselo */
+  marca: Phaser.GameObjects.Image | null
 }
 
 interface Moneda {
@@ -44,6 +47,8 @@ export interface DepsBotin {
   recoger: (id: string) => Resultado
   /** suma oro a la partida (con su número flotante) */
   alOro: (n: number, x: number, y: number) => void
+  /** ¿conviene ponérselo? (para la flechita verde sobre el objeto en el piso) */
+  juicio?: (id: string) => Juicio | null
 }
 
 const RADIO_RECOGER = 26
@@ -80,7 +85,7 @@ export class Botin {
 
   info() {
     return {
-      drops: this.drops.map((x) => ({ id: x.id, x: Math.round(x.x), y: Math.round(x.y), rareza: x.item.rarity, haz: !!x.haz, cae: !!x.caida })),
+      drops: this.drops.map((x) => ({ id: x.id, x: Math.round(x.x), y: Math.round(x.y), rareza: x.item.rarity, haz: !!x.haz, cae: !!x.caida, mejor: !!x.marca })),
       monedas: this.monedas.map((m) => ({ oro: m.oro, x: Math.round(m.x), y: Math.round(m.y) })),
     }
   }
@@ -127,7 +132,9 @@ export class Botin {
       // rebote del ícono: sube y cae con rebote
       e.tweens.add({ targets: icono, y: { from: y - 44, to: y - 10 }, duration: 520, ease: 'Bounce.easeOut' })
     }
-    this.drops.push({ id, item, x, y, edad: 0, icono, haz, caida, sombra, avisoLlenaS: 0 })
+    const dr: Drop = { id, item, x, y, edad: 0, icono, haz, caida, sombra, avisoLlenaS: 0, marca: null }
+    this.drops.push(dr)
+    this.ponerMarca(dr)
     if (item.rarity === 'rare') this.d.sonido.efecto('descubrir', { volumen: 0.5 })
     else if (item.rarity === 'set' || item.rarity === 'legendary' || item.rarity === 'unique') this.d.sonido.efecto('legendario', { volumen: 0.6 })
   }
@@ -162,6 +169,7 @@ export class Botin {
       const dr = this.drops[i]!
       dr.edad += dt
       dr.avisoLlenaS = Math.max(0, dr.avisoLlenaS - dt)
+      if (dr.marca) dr.marca.setY(Math.round(dr.y - 40 + Math.sin(dr.edad * 4) * 2))
       if (dr.edad < ESPERA_S) continue
       if (Math.hypot(h.x - dr.x, h.y - dr.y) > RADIO_RECOGER) continue
       const r = this.d.recoger(dr.id)
@@ -220,7 +228,25 @@ export class Botin {
     e.tweens.add({ targets: tx, y: tx.y - 22, alpha: 0, duration: 1400, ease: 'Sine.easeOut', onComplete: () => tx.destroy() })
   }
 
+  /** La flechita verde: aparece sobre lo que es mejor que lo puesto */
+  private ponerMarca(dr: Drop): void {
+    const e = this.d.escena
+    const mejor = this.d.juicio?.(dr.id) === 'mejor'
+    if (mejor && !dr.marca && e.textures.exists(K.ui('flecha_guia'))) {
+      dr.marca = e.add.image(dr.x, dr.y - 40, K.ui('flecha_guia'), 4).setTint(0x7dff6a).setDepth(PROF.OBJETOS + dr.y + 320)
+    } else if (!mejor && dr.marca) {
+      dr.marca.destroy()
+      dr.marca = null
+    }
+  }
+
+  /** Cambió lo puesto: las flechitas se recalculan */
+  refrescarMarcas(): void {
+    for (const dr of this.drops) this.ponerMarca(dr)
+  }
+
   private quitar(dr: Drop): void {
+    dr.marca?.destroy()
     dr.icono.destroy()
     dr.haz?.destroy()
     dr.caida?.destroy()

@@ -38,6 +38,7 @@ import { Impactos, type TipoImpacto } from '../logic/impacto'
 import { Guia, ordenarPistas, type Pista } from '../logic/olfato'
 import { elegirDestino, posicionFlecha, RelojGuia, type Destino } from '../logic/guia'
 import { DirectorJefe, type Plano } from '../logic/escenaJefe'
+import { veredicto } from '../logic/veredicto'
 import { buscarCamino } from '../logic/camino'
 import { Presentacion } from '../game/Presentacion'
 import { alCambiarEscala } from '../game/Pantalla'
@@ -300,11 +301,18 @@ export class Mundo extends Phaser.Scene {
       thor: this.thor,
       sonido: this.sonido,
       recoger: (id) => {
+        // el veredicto se calcula antes de guardarlo (contra lo que tenía puesto), y el hueco donde cae en la bolsa
+        const v = veredicto(this.cat, this.partida.equipo, id, this.combate.clase)
+        const hueco = this.partida.bolsa.indexOf(null)
         const r = recogerInv(this.inv(), this.cat, id)
-        if (r.ok) this.alCambioInventario()
+        if (r.ok) {
+          this.alCambioInventario()
+          if (v && r.donde === 'bolsa') this.game.events.emit('botin-recogido', { id, indice: hueco, veredicto: v })
+        }
         return r
       },
       alOro: (n, x, y) => this.alOro(n, x, y),
+      juicio: (id) => veredicto(this.cat, this.partida.equipo, id, this.combate.clase)?.juicio ?? null,
     })
     this.enemigos = new Enemigos(this, m, this.grilla, this.mapa.entidades, evEnemigos)
     this.combate = new Combate({
@@ -632,6 +640,7 @@ export class Mundo extends Phaser.Scene {
     this.combate.refrescarStats()
     this.thor.ponerArmadura(nivelArmaduraThor(this.cat, this.partida.equipo))
     this.heroina.velMult = 1 + this.combate.stats.velocidadPct / 100
+    this.botin?.refrescarMarcas()
     if (guardar) this.guardar()
   }
 
