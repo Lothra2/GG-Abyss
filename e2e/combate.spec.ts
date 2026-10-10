@@ -205,6 +205,30 @@ test.describe('Combate', () => {
     await expect.poll(async () => (await gancho<{ texto: string }>(page, 'hudNivel')).texto, { timeout: 10_000 }).toBe('¡Nivel 2!')
   })
 
+  test('los orbes muestran el nivel justo: lleno solo al 100 %, vacío solo en 0 y un poquito con 1 punto', async ({ page }) => {
+    await abrirMundo(page, 'sophie')
+    const orbes = () => gancho<{ vida: number; mana: number }>(page, 'hudOrbes')
+    const esperado = (f: number) => (f <= 0 ? 0 : f >= 1 ? 10 : Math.min(9, Math.max(1, Math.round(f * 10))))
+    await expect.poll(async () => (await orbes()).vida, { timeout: 10_000 }).toBe(10)
+    const c0 = await combate(page)
+    // a media vida
+    await gancho(page, 'danar', Math.round(c0.vidaMax * 0.45))
+    const c = await combate(page)
+    expect(c.caido).toBe(false)
+    await expect.poll(async () => (await orbes()).vida, { timeout: 10_000 }).toBe(esperado(c.vida / c.vidaMax))
+    expect((await orbes()).vida).toBeGreaterThan(1)
+    expect((await orbes()).vida).toBeLessThan(10)
+    // con 1 punto de vida no se ve vacío
+    await gancho(page, 'curarTodo')
+    const c1 = await combate(page)
+    await gancho(page, 'danar', c1.vidaMax - 1)
+    const c2 = await combate(page)
+    expect(c2.caido).toBe(false)
+    expect(c2.vida).toBeGreaterThan(0)
+    await expect.poll(async () => (await orbes()).vida, { timeout: 10_000 }).toBe(esperado(c2.vida / c2.vidaMax))
+    expect(await orbes().then((o) => o.vida)).toBeGreaterThanOrEqual(1)
+  })
+
   test('la interfaz de combate queda pegada al borde de abajo, sin encimarse', async ({ page }) => {
     await abrirMundo(page, 'sophie')
     const l = await gancho<{ orbeVida: R; orbeMana: R; cinturon: R; xp: R; botones: { x: number; y: number; lado: number }[] }>(page, 'hudCombate')

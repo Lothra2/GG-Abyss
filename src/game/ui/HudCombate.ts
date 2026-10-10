@@ -61,9 +61,12 @@ export class HudCombate {
     this.orbeMana = escena.add.image(0, 0, k('orbe_mana'), 10).setOrigin(0, 1)
     this.olaVida = escena.add.sprite(0, 0, k('orbe_vida_ola'), 0).setOrigin(0, 1).setVisible(false)
     this.olaMana = escena.add.sprite(0, 0, k('orbe_mana_ola'), 0).setOrigin(0, 1).setVisible(false)
-    for (const [n, s] of [['orbe_vida_ola', this.olaVida], ['orbe_mana_ola', this.olaMana]] as const) {
-      if (!escena.anims.exists(n)) escena.anims.create({ key: n, frames: escena.anims.generateFrameNumbers(k(n), { start: 0, end: 3 }), frameRate: 6, repeat: -1 })
-      s.play(n)
+    // una ola por nivel: el cuadro (N - 1) * 4 + t es el nivel N (1 a 9) en el paso t
+    for (const n of ['orbe_vida_ola', 'orbe_mana_ola']) {
+      for (let nivel = 1; nivel <= 9; nivel++) {
+        const key = `${n}_${nivel}`
+        if (!escena.anims.exists(key)) escena.anims.create({ key, frames: escena.anims.generateFrameNumbers(k(n), { start: (nivel - 1) * 4, end: (nivel - 1) * 4 + 3 }), frameRate: 6, repeat: -1 })
+      }
     }
     this.numVida = texto(escena, 0, 0, '', 'fuente_ui', 1, { origen: [0.5, 0.5], tinte: 0xffe9e9 })
     this.numMana = texto(escena, 0, 0, '', 'fuente_ui', 1, { origen: [0.5, 0.5], tinte: 0xe0ecff })
@@ -192,8 +195,10 @@ export class HudCombate {
     this.numVida.setText(String(Math.ceil(p.vida)))
     this.numMana.setText(String(Math.floor(p.mana)))
     this.flashMana = Math.max(0, this.flashMana - dt)
-    if (this.flashMana > 0) this.orbeMana.setTint(0xff7070)
-    else this.orbeMana.clearTint()
+    for (const o of [this.orbeMana, this.olaMana]) {
+      if (this.flashMana > 0) o.setTint(0xff7070)
+      else o.clearTint()
+    }
 
     // barra del jefe
     const j = this.mundo.jefe
@@ -243,12 +248,26 @@ export class HudCombate {
   }
 
   private pintarOrbe(img: Phaser.GameObjects.Image, ola: Phaser.GameObjects.Sprite, f: number): void {
-    const n = Math.round(f * 10)
-    // a media altura el orbe usa su versión con olas moviéndose
-    const usaOla = n >= 4 && n <= 6
+    // vacío solo en 0 y lleno solo en 100 %: con 1 punto de vida todavía se ve un poquito de líquido
+    const n = f <= 0 ? 0 : f >= 1 ? 10 : Phaser.Math.Clamp(Math.round(f * 10), 1, 9)
+    // con líquido y aire la superficie siempre se mueve, cada nivel con su propia ola
+    const usaOla = n >= 1 && n <= 9
     ola.setVisible(usaOla)
     img.setVisible(!usaOla)
-    if (!usaOla) img.setFrame(n)
+    if (!usaOla) {
+      img.setFrame(n)
+      return
+    }
+    const key = `${ola === this.olaVida ? 'orbe_vida_ola' : 'orbe_mana_ola'}_${n}`
+    // al cambiar de nivel sigue en el mismo paso de la ola, así no salta
+    if (ola.anims.currentAnim?.key !== key) ola.play({ key, startFrame: ola.anims.currentFrame ? ola.anims.currentFrame.index - 1 : 0 })
+  }
+
+  /** El nivel que muestra cada orbe (0 a 10), para las pruebas */
+  niveles() {
+    const de = (img: Phaser.GameObjects.Image, ola: Phaser.GameObjects.Sprite) =>
+      ola.visible ? Number(ola.anims.currentAnim?.key.split('_').pop()) : Number(img.frame.name)
+    return { vida: de(this.orbeVida, this.olaVida), mana: de(this.orbeMana, this.olaMana) }
   }
 
   destruir(): void {

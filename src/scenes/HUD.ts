@@ -99,7 +99,7 @@ export class HUD extends Phaser.Scene {
       this.game.events.off('nivel-subido', this.alNivel)
       this.game.events.off('rescate', this.alRescate)
       this.combate.destruir()
-      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudNivel')
+      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudOrbes', 'hudNivel')
     })
     alCambiarEscala(this, () => this.acomodar())
     this.actualizarContadores()
@@ -109,6 +109,7 @@ export class HUD extends Phaser.Scene {
       hudCartel: () => (this.cartel ? { abierto: true, ...this.cartelInfo } : { abierto: false }),
       abrirPausa: (() => this.abrirPausa()) as never,
       hudCombate: () => this.combate.layout(),
+      hudOrbes: () => this.combate.niveles(),
       hudNivel: () => ({ texto: this.bNivel.text, alpha: this.bNivel.alpha, rescate: this.bRescate.text, alphaRescate: this.bRescate.alpha }),
     })
   }

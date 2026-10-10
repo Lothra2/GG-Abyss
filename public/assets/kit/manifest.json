@@ -4543,13 +4543,13 @@
    "archivo": "ui/orbe_vida_ola.png",
    "w": 72,
    "h": 72,
-   "cuadros": 4
+   "cuadros": 36
   },
   "orbe_mana_ola": {
    "archivo": "ui/orbe_mana_ola.png",
    "w": 72,
    "h": 72,
-   "cuadros": 4
+   "cuadros": 36
   },
   "panel": {
    "archivo": "ui/panel.png",
