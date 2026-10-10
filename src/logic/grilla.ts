@@ -112,15 +112,20 @@ export class Grilla {
     return true
   }
 
-  /** ¿Se puede ir en línea recta de un punto al otro con un círculo de radio r? */
+  /**
+   * ¿Se puede ir en línea recta de un punto al otro con un círculo de radio r? Se mira cada 2 px con el radio + 1:
+   * así cualquier punto del medio (está a 1 px o menos de una muestra) también queda libre. Con muestras más
+   * separadas y el radio justo, el atajo podía rozar la punta de una esquina y la heroína se trababa al primer paso.
+   */
   lineaLibre(x0: number, y0: number, x1: number, y1: number, r: number, camino = false): boolean {
     const dx = x1 - x0
     const dy = y1 - y0
     const largo = Math.hypot(dx, dy)
-    const pasos = Math.max(1, Math.ceil(largo / 4))
+    const pasos = Math.max(1, Math.ceil(largo / 2))
     for (let i = 0; i <= pasos; i++) {
       const t = i / pasos
-      if (!this.circuloLibre(x0 + dx * t, y0 + dy * t, r, camino)) return false
+      // el punto de partida puede estar justo al borde: ahí alcanza con el radio justo
+      if (!this.circuloLibre(x0 + dx * t, y0 + dy * t, i === 0 ? r : r + 1, camino)) return false
     }
     return true
   }

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Grilla } from '../grilla'
 import { buscarCamino, largoCamino, RADIO_HEROINA } from '../camino'
+import { seguirCamino } from '../movimiento'
 import { leerJson } from '../../../scripts/lib/verificacion'
 import { entidadesDeTipo, parsearMapa } from '../../kit/mapa'
 import type { Manifest, MapaTiled } from '../../kit/tipos'
@@ -150,4 +151,47 @@ describe('F8: cuadros a evitar (el agua del vado)', () => {
     const fin = c[c.length - 1]!
     expect(agua.includes(Math.floor(fin.y / cuadro) * ancho + Math.floor(fin.x / cuadro))).toBe(false)
   })
+})
+
+describe('seguir el camino nunca se traba en una esquina', () => {
+  const KIT = 'public/assets/kit/'
+  const manifest = leerJson<Manifest>(KIT + 'manifest.json')
+  const mapa = parsearMapa(leerJson<MapaTiled>(KIT + manifest.mundo.mapa))
+  const g = new Grilla(mapa)
+  /** Camina como la heroína (150 px/s a 60 cuadros) y dice si llegó o se trabó */
+  const caminar = (x: number, y: number, mx: number, my: number) => {
+    const c = buscarCamino(g, x, y, mx, my, { radio: RADIO_HEROINA })
+    if (!c) return { hay: false, llego: false }
+    let p = { x, y }
+    for (let i = 0; i < 60 * 180 && c.length; i++) {
+      const r = seguirCamino(g, { x: p.x, y: p.y, radio: RADIO_HEROINA }, c, 150, 1 / 60)
+      if (r.trabado) return { hay: true, llego: false, en: p }
+      p = { x: r.x, y: r.y }
+    }
+    return { hay: true, llego: Math.hypot(p.x - mx, p.y - my) < 6 }
+  }
+  it('el caso del Bosque: de la Pradera de las Mariposas al Abuelo Roble', () => {
+    expect(caminar(967.3, 2243.9, 1106.6, 1455.6)).toMatchObject({ hay: true, llego: true })
+  })
+  it('desde muchos puntos hacia muchos puntos, se llega siempre que haya camino', () => {
+    let semilla = 7
+    const azar = () => ((semilla = (semilla * 1103515245 + 12345) >>> 0) / 2 ** 32)
+    const libre = () => {
+      for (;;) {
+        const x = azar() * mapa.ancho * 32
+        const y = azar() * mapa.alto * 32
+        if (g.circuloLibre(x, y, RADIO_HEROINA)) return { x, y }
+      }
+    }
+    let probados = 0
+    for (let k = 0; k < 150; k++) {
+      const a = libre()
+      const b = libre()
+      const r = caminar(a.x, a.y, b.x, b.y)
+      if (!r.hay) continue
+      probados++
+      expect(r, `de ${a.x.toFixed(1)},${a.y.toFixed(1)} a ${b.x.toFixed(1)},${b.y.toFixed(1)}`).toMatchObject({ llego: true })
+    }
+    expect(probados).toBeGreaterThan(40)
+  }, 120_000)
 })
