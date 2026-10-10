@@ -8,7 +8,7 @@ import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
 import { PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S } from '../config/juego'
-import { AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, OLFATO } from '../config/balance'
+import { AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, MUSICA_ESTADOS, OLFATO } from '../config/balance'
 import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
@@ -40,6 +40,7 @@ import { Guia, ordenarPistas, type Pista } from '../logic/olfato'
 import { elegirDestino, posicionFlecha, RelojGuia, type Destino } from '../logic/guia'
 import { DirectorJefe, type Plano } from '../logic/escenaJefe'
 import { veredicto } from '../logic/veredicto'
+import { DirectorMusica, type EstadoMusica } from '../logic/musica'
 import { buscarCamino } from '../logic/camino'
 import { Presentacion } from '../game/Presentacion'
 import { alCambiarEscala } from '../game/Pantalla'
@@ -67,7 +68,7 @@ const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
-  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe',
+  'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
 ]
 
@@ -130,6 +131,12 @@ export class Mundo extends Phaser.Scene {
   private director = new DirectorJefe()
   planoJefe: Plano = new DirectorJefe().tick(0)
   private bloqueoPorJefe = false
+  /** F7: la música por estados y los detalles de ambiente por cercanía */
+  private directorMusica = new DirectorMusica()
+  private relojAudio = 0
+  estadoMusica: EstadoMusica = 'explorar'
+  private detalleAgua = 0
+  private alertaHasta = new Map<number, number>()
   /** la flecha guía: tiempo sin progreso, la firma del progreso y lo que hay que dibujar */
   private relojGuia = new RelojGuia(GUIA.esperaS)
   private firmaProgreso = ''
@@ -791,6 +798,53 @@ export class Mundo extends Phaser.Scene {
     if (pos) this.flechaGuia = { ...pos, destino }
   }
 
+  /**
+   * F7: cada cuarto de segundo, la música según lo que pasa (explorar, amenaza, combate, descanso) y el agua que
+   * suena más fuerte cuanto más cerca está la heroína del río o del lago.
+   */
+  private actualizarAudio(dt: number): void {
+    this.relojAudio -= dt
+    if (this.relojAudio > 0) return
+    const paso = 0.25 - this.relojAudio
+    this.relojAudio = 0.25
+    const h = this.heroina
+    let alertas = 0
+    let elite = false
+    // un enemigo está en la pelea si la persigue, le pega o avisa; entre golpes (quieto, aturdido) sigue contando si
+    // está cerca, y queda en la memoria 2 s para que la música no salte con cada pausa del enemigo
+    const ahora = this.t
+    for (const e of this.enemigos.lista) {
+      const d = Math.hypot(e.x - h.x, e.y - h.y)
+      if (!e.vivo || d > MUSICA_ESTADOS.radioAlerta) continue
+      const activo = e.estado === 'perseguir' || e.estado === 'atacando' || e.estado === 'aviso' || e.estado === 'grito' || ((e.estado === 'quieto' || e.estado === 'aturdido') && d < 220)
+      if (activo) this.alertaHasta.set(e.id, ahora + 2)
+      if ((this.alertaHasta.get(e.id) ?? -1) >= ahora) {
+        alertas++
+        if (e.elite) elite = true
+      }
+    }
+    const f = this.entidades.fogataCercana(h)
+    const fogata = !!f && Math.hypot(f.x - h.x, f.y - h.y) <= MUSICA_ESTADOS.radioFogata
+    this.estadoMusica = this.directorMusica.tick(paso, { alertas, elite, fogata })
+    const pista: Record<EstadoMusica, string | null> = { explorar: null, amenaza: 'musica_amenaza', combate: 'musica_combate', descanso: 'musica_fogata' }
+    this.sonido.fijarEstado(this.mejoras ? pista[this.estadoMusica] : null)
+    // el agua cercana: el cuadro de agua más próximo en 7 cuadros a la redonda
+    const c = this.mapa.cuadro
+    const tx = Math.floor(h.x / c)
+    const ty = Math.floor(h.y / c)
+    let mejor = Infinity
+    for (let dy = -7; dy <= 7; dy++) {
+      for (let dx = -7; dx <= 7; dx++) {
+        const x = tx + dx
+        const y = ty + dy
+        if (x < 0 || y < 0 || x >= this.mapa.ancho || y >= this.mapa.alto || !this.mapa.agua[y * this.mapa.ancho + x]) continue
+        mejor = Math.min(mejor, Math.hypot(dx, dy))
+      }
+    }
+    this.detalleAgua = this.mejoras && mejor < 7 ? Math.max(0, 1 - mejor / 7) * 0.8 : 0
+    this.sonido.fijarDetalle('ambiente_agua', this.detalleAgua)
+  }
+
   private tocaThor(x: number, y: number): boolean {
     const t = this.thor
     return Math.abs(x - t.x) <= 16 && y >= t.y - 30 && y <= t.y + 6
@@ -1105,6 +1159,7 @@ export class Mundo extends Phaser.Scene {
     this.olfatoRecarga = Math.max(0, this.olfatoRecarga - dt)
     this.actualizarGuia(dt)
     this.proyectiles.impactoAlFallar = this.mejoras
+    this.actualizarAudio(dtReal)
     this.tJugado += dt
     // lo que la heroína iba a usar: cuando llega, lo usa
     const pend = this.pendiente
@@ -1254,6 +1309,7 @@ export class Mundo extends Phaser.Scene {
       abrirTienda: (() => this.abrirTienda()) as never,
       olfatear: (() => this.olfatear()) as never,
       abrirAlbum: (() => this.abrirAlbum()) as never,
+      musicaEstado: () => ({ estado: this.estadoMusica, agua: Math.round(this.detalleAgua * 100) / 100 }),
       planoJefe: () => ({ ...this.planoJefe, entradaPausada: this.entrada.estaPausada, camara: { x: Math.round(this.camara.cx), y: Math.round(this.camara.cy) } }),
       guia: () => ({ sinProgreso: Math.round(this.relojGuia.sinProgreso * 10) / 10, visible: this.relojGuia.visible, flecha: this.flechaGuia }),
       /** como si hubiera pasado el rato sin progreso */

@@ -31,6 +31,10 @@ export class Sonido {
   private musicaFija: string | null = null
   private ultimaMusicaZona = 'musica_bosque'
   private musicaMeta: string | null = null
+  /** F7: la música del momento (amenaza, combate, fogata); null = la de la zona */
+  private musicaEstado: string | null = null
+  /** F7: detalles que suenan según la distancia a su fuente (agua cerca del río...): nombre a volumen 0..1 */
+  private detalles = new Map<string, number>()
   private ultimoPaso = 0
   private ultimaVariante = -1
   private ultimoNombrePaso = ''
@@ -45,14 +49,27 @@ export class Sonido {
     this.ambienteMeta = `ambiente_${zona?.ambiente ?? 'bosque'}`
     const musica = zona?.musica && zona.musica !== 'jefe' ? zona.musica : 'bosque'
     // la música de la pelea (o de la victoria) no se pisa al cambiar de zona
-    this.musicaMeta = this.musicaFija ?? `musica_${musica}`
     this.ultimaMusicaZona = `musica_${musica}`
+    this.musicaMeta = this.musicaFija ?? this.musicaEstado ?? this.ultimaMusicaZona
+  }
+
+  /** F7: la música según lo que pasa (la del jefe y la victoria mandan igual por encima) */
+  fijarEstado(nombre: string | null): void {
+    if (nombre && !this.escena.cache.audio.exists(K.aud(nombre))) nombre = null
+    this.musicaEstado = nombre
+    this.musicaMeta = this.musicaFija ?? this.musicaEstado ?? this.ultimaMusicaZona
+  }
+
+  /** F7: un detalle de ambiente con su volumen (0 lo apaga de a poco) */
+  fijarDetalle(nombre: string, v: number): void {
+    if (v <= 0.001) this.detalles.delete(nombre)
+    else this.detalles.set(nombre, Math.min(1, v))
   }
 
   /** La pelea con el jefe manda la música. Con null se suelta y vuelve la de la zona. */
   fijarMusica(nombre: string | null): void {
     this.musicaFija = nombre
-    this.musicaMeta = nombre ?? this.ultimaMusicaZona
+    this.musicaMeta = nombre ?? this.musicaEstado ?? this.ultimaMusicaZona
   }
 
   private asegurar(nombre: string, fundido: number): Lazo | null {
@@ -71,7 +88,8 @@ export class Sonido {
     const { musica, efectos } = this.vol()
     const metas: [string | null, number, number][] = [
       [this.ambienteMeta, VOL_AMBIENTE * efectos, 1.2],
-      [this.musicaMeta, VOL_MUSICA * musica, 2],
+      [this.musicaMeta, VOL_MUSICA * musica, 1.5],
+      ...[...this.detalles].map(([n, v]) => [n, VOL_AMBIENTE * efectos * v, 1.5] as [string, number, number]),
     ]
     for (const [nombre, v, fundido] of metas) {
       if (!nombre) continue
@@ -82,7 +100,7 @@ export class Sonido {
       }
     }
     for (const l of [...this.lazos.values()]) {
-      const quiere = l.nombre === this.ambienteMeta || l.nombre === this.musicaMeta
+      const quiere = l.nombre === this.ambienteMeta || l.nombre === this.musicaMeta || this.detalles.has(l.nombre)
       const meta = quiere ? l.meta : 0
       const velocidad = 1 / Math.max(0.1, l.fundido)
       if (l.vol < meta) l.vol = Math.min(meta, l.vol + (Math.max(meta, 0.2) * velocidad) * dt)

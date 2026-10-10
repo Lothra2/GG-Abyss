@@ -393,6 +393,24 @@ export const ESCENA_JEFE = {
   lenta: { factor: 0.35, seg: 1.8 },
 }
 
+/** F7: la música por estados. Tiempos en segundos; los cambios se funden en 1.5 s */
+export const MUSICA_ESTADOS = {
+  /** cuántos enemigos alertas hacen "combate" (o un élite solo) */
+  combateDesde: 3,
+  subirAmenazaS: 1.5,
+  subirCombateS: 2.5,
+  /** volver a la calma */
+  bajarS: 6,
+  /** sentarse a la fogata */
+  descansoS: 2,
+  /** después de un cambio, la música se queda al menos esto */
+  minimoS: 5,
+  /** a esta distancia un enemigo alerta cuenta */
+  radioAlerta: 420,
+  /** a esta distancia de una fogata es descanso */
+  radioFogata: 110,
+}
+
 export const CAMARA = {
   lerp: 0.12,
   adelanto: 40,
