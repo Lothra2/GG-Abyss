@@ -3,7 +3,7 @@ import type { Manifest, Personaje } from '../kit/tipos'
 import { K } from '../kit/claves'
 import type { Grilla, Punto } from '../logic/grilla'
 import { buscarCamino, largoCamino, RADIO_HEROINA } from '../logic/camino'
-import { caminarDireccion, seguirCamino } from '../logic/movimiento'
+import { caminarDireccion, cuadrosDe, faseImpacto, ritmoAnim, seguirCamino } from '../logic/movimiento'
 import { DIRECCIONES, indiceDireccion } from '../logic/direccion'
 import { COMBATE } from '../config/balance'
 import { PROF } from '../config/juego'
@@ -81,9 +81,11 @@ export class Heroina {
     this.sombra = new Sombra(escena, 22)
     this.capas = new CapasSprite(escena, m, id, this.sprite)
     this.sprite.on(Phaser.Animations.Events.ANIMATION_UPDATE, (_a: unknown, frame: Phaser.Animations.AnimationFrame) => {
-      if (this.estado === 'idle') return
-      // los pies tocan en los cuadros 1 y 5 de 8
-      if (frame.index % 4 === 1) this.ev.paso?.(this.x, this.y, this.estado === 'run')
+      if (this.estado === 'idle' || this.accionActual) return
+      // premium: el manifest dice en qué cuadros pisa. Si no, los pies tocan en los cuadros 1 y 5 de 8
+      const pasos = cuadrosDe(this.personaje.anims[this.estado] ?? { cuadros: 0, fps: 0 }, 'paso')
+      const pisa = pasos ? pasos.includes(frame.index - 1) : frame.index % 4 === 1
+      if (pisa) this.ev.paso?.(this.x, this.y, this.estado === 'run')
     })
     this.aplicarAnim(true)
     this.colocar()
@@ -121,7 +123,9 @@ export class Heroina {
     const dur = op.dur ?? def.cuadros / def.fps
     this.parar()
     this.estado = 'idle'
-    this.accionActual = { resta: dur, golpeEn: dur * (op.fraccion ?? 0.5), enGolpe: op.enGolpe, alTerminar: op.alTerminar, interrumpible: op.interrumpible ?? false, anim }
+    // el golpe cae en el cuadro de `impacto` del manifest (premium), si quien llama no pidió otro momento
+    this.sprite.anims.timeScale = 1
+    this.accionActual = { resta: dur, golpeEn: dur * (op.fraccion ?? faseImpacto(def) ?? 0.5), enGolpe: op.enGolpe, alTerminar: op.alTerminar, interrumpible: op.interrumpible ?? false, anim }
     this.sprite.play(key)
     this.animActual = key
     return true
@@ -325,6 +329,10 @@ export class Heroina {
     const idx = mismoEstado ? Math.max(0, (this.sprite.anims.currentFrame?.index ?? 1) - 1) : 0
     this.animActual = key
     if (this.escena.anims.exists(key)) this.sprite.play({ key, startFrame: idx })
+    // premium: al caminar y correr la animación va al ritmo del paso, así los pies no patinan
+    const def = this.personaje.anims[this.estado]
+    const vel = (this.estado === 'run' ? COMBATE.velocidadHeroeCorrer : COMBATE.velocidadHeroe) * this.velMult
+    this.sprite.anims.timeScale = def && this.estado !== 'idle' ? ritmoAnim(vel, def) : 1
   }
 
   destroy(): void {

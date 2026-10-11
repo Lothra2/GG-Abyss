@@ -352,7 +352,8 @@ export class Particulas {
         this.acumLocal.set(k, acum - n)
         for (let i = 0; i < n; i++) fn()
       }
-      switch (d.nombre) {
+      // por lo que es (`base`), no por el id: `hongo_gigante_azul_p` echa esporas igual
+      switch (d.tipo) {
         case 'fogata':
         case 'campamento_fogata':
           emite('b', 6, () => this.crear('mota', 'brasa', d.x + (r() - 0.5) * 10, d.y - 8, { vx: (r() - 0.5) * 10, vy: -18 - r() * 18, vida: 0.7 + r() * 1.0, local: true }))

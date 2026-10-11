@@ -24,7 +24,10 @@ export interface Luz {
 
 export interface DefDeco {
   i: number
+  /** el id en el manifest: para las texturas */
   nombre: string
+  /** lo que es: `def.base ?? nombre`. Todo comportamiento por nombre (copas, reacciones, partículas, ojos) usa esto */
+  tipo: string
   def: ObjetoMundo
   x: number
   y: number
@@ -173,19 +176,20 @@ export class Decos {
       const dd: DefDeco = {
         i,
         nombre: d.sprite,
+        tipo: def.base ?? d.sprite,
         def,
         x: d.x,
         y: d.y,
         ph: hash2(d.x, d.y),
         anim,
-        copa: (RE_COPA.test(d.sprite) && def.h >= 64) || !!def.anims.copa,
+        copa: (RE_COPA.test(def.base ?? d.sprite) && def.h >= 64) || !!def.anims.copa,
         hechizado: !!def.anims.despierto,
-        pasto: d.sprite === 'pasto_alto' && !!def.anims.apartar_izq && !!def.anims.apartar_der,
+        pasto: (def.base ?? d.sprite) === 'pasto_alto' && !!def.anims.apartar_izq && !!def.anims.apartar_der,
         separado: !!def.anims.copa && !!(def.anims.tronco || def.anims.tronco_dormido),
         capaSuelo: def.capa === 'suelo',
-        sombra: !!cfgS && tiraSombra(d.sprite, def, cfgS),
+        sombra: !!cfgS && tiraSombra(def.base ?? d.sprite, def, cfgS),
         refleja: !!agua && def.capa !== 'suelo' && aguaDebajo(agua, d.x, d.y, REFLEJO.cerca),
-        reac: reaccionDe(d.sprite),
+        reac: reaccionDe(def.base ?? d.sprite),
         frente: capaDe(def) === 'frente',
         x0,
         y0,
@@ -233,7 +237,7 @@ export class Decos {
   /** Un activo por nombre de objeto, para las pruebas */
   activosDe(nombre: string): Activo[] {
     const out: Activo[] = []
-    this.activos.forEach((a) => a.d.nombre === nombre && out.push(a))
+    this.activos.forEach((a) => (a.d.nombre === nombre || a.d.tipo === nombre) && out.push(a))
     return out
   }
 
@@ -490,7 +494,7 @@ export class Decos {
       // luz propia del objeto
       if (def.luz) luces.push({ x: d.x, y: d.y - (def.luz.dy ?? 0), r: def.luz.radius, color: def.luz.color, flicker: def.luz.flicker, pulse: def.luz.pulse, ph: d.ph })
       // luz de los ojos de un árbol despierto
-      if (a.despierto && !an.endsWith('dormido')) luces.push({ x: d.x, y: d.y - 54, r: 46, color: d.nombre.endsWith('1') ? COLOR.OJOS_HECHIZADO_1 : COLOR.OJOS_HECHIZADO, pulse: true, ph: d.ph })
+      if (a.despierto && !an.endsWith('dormido')) luces.push({ x: d.x, y: d.y - 54, r: 46, color: d.tipo.endsWith('1') ? COLOR.OJOS_HECHIZADO_1 : COLOR.OJOS_HECHIZADO, pulse: true, ph: d.ph })
 
       // copas: transparentes cuando la heroína pasa detrás. Con tronco y copa separados, solo baja la copa.
       if (d.copa) {
@@ -533,14 +537,14 @@ export class Decos {
 
   /** Posiciones de todos los decorados con ese nombre (las piedras de la arena) */
   posicionesDe(nombre: string): { x: number; y: number }[] {
-    return this.defs.filter((d) => d.nombre === nombre).map((d) => ({ x: d.x, y: d.y }))
+    return this.defs.filter((d) => d.nombre === nombre || d.tipo === nombre).map((d) => ({ x: d.x, y: d.y }))
   }
 
   /** Cambia la animación de fondo de un decorado en (x, y): las piedras de la arena que se encienden una tras otra */
   fijarAnim(nombre: string, x: number, y: number, anim: string): boolean {
     let hubo = false
     for (const d of this.defs) {
-      if (d.nombre === nombre && Math.abs(d.x - x) < 2 && Math.abs(d.y - y) < 2 && d.def.anims[anim]) {
+      if ((d.nombre === nombre || d.tipo === nombre) && Math.abs(d.x - x) < 2 && Math.abs(d.y - y) < 2 && d.def.anims[anim]) {
         d.anim = anim
         hubo = true
       }
@@ -552,7 +556,7 @@ export class Decos {
   reproducir(t: number, nombre: string, anim: string): boolean {
     let hubo = false
     for (const a of this.activos.values()) {
-      if (a.d.nombre === nombre && a.d.def.anims[anim]) {
+      if ((a.d.nombre === nombre || a.d.tipo === nombre) && a.d.def.anims[anim]) {
         a.forzada = { anim, t0: t }
         hubo = true
       }

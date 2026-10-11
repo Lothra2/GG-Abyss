@@ -10,6 +10,23 @@ export interface AnimHoja {
   cuadros: number
   fps: number
   loop: boolean
+  /** movimiento premium del taller: en qué cuadro cae cada paso, golpe, grito o suelta */
+  eventos?: EventoAnim[]
+  /** pixeles por ciclo de la animación (caminar, correr, cargar): para que los pies no patinen */
+  avance?: number
+  /** jefes: [desde, hasta] cuadros de la preparación de un golpe fuerte */
+  aviso?: [number, number]
+  /** jefes: cuánto sube el sprite sobre su sombra en cada cuadro (el salto del minotauro) */
+  elevacion?: number[]
+}
+
+export interface EventoAnim {
+  tipo: 'paso' | 'impacto' | 'suelta' | 'grito' | 'despegue' | 'aterriza' | string
+  cuadro: number
+  fase?: number
+  pie?: string
+  /** dónde pega (desde el pivote), por dirección o uno solo */
+  punto?: Record<string, [number, number]> | [number, number]
 }
 
 export interface AnimFx extends AnimHoja {
@@ -81,6 +98,8 @@ export interface ObjetoMundo {
   capa?: 'suelo' | 'frente' | 'fondo'
   /** sombra horneada por el taller, del mismo tamaño que el objeto (F10). Sin ella se usa la sombra larga */
   sombra?: string
+  /** copia de otro objeto (por ejemplo `hongos_p` con su sombra): lo que se decide por nombre se busca con `base ?? id` */
+  base?: string
   luz?: LuzObjeto
   /** línea donde el agua golpea abajo (cascada), relativa al apoyo [x0, y0, x1, y1] */
   espuma?: [number, number, number, number]

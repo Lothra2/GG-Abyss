@@ -252,6 +252,12 @@ export class JefeSprite implements Atacable {
     const espera = def ? (def.cuadros / def.fps) * 1000 : 600
     this.escena.time.delayedCall(espera + 250, () => {
       if (!this.sprite.active) return
+      // el guardián trae `libre`: se queda parado y en paz, en turquesa, en vez de deshacerse en polvo
+      if (this.cuadros.libre) {
+        this.dir = 0
+        this.poner('libre', true)
+        return
+      }
       const polvo = this.escena.time.addEvent({ delay: 90, repeat: 14, callback: () => alPolvo(this.x + (fx().next() - 0.5) * 40, this.y - fx().next() * this.cuerpo.alto * 0.7) })
       this.escena.tweens.add({ targets: [this.sprite], alpha: 0, duration: 1400, ease: 'Sine.easeIn', onComplete: () => polvo.remove(false) })
       this.escena.tweens.add({ targets: this.sombra.img, alpha: 0, duration: 1400 })
@@ -507,11 +513,22 @@ export class JefeSprite implements Atacable {
   private colocar(): void {
     const x = Math.round(this.x)
     const y = Math.round(this.y)
-    this.sprite.setPosition(x, y).setDepth(PROF.OBJETOS + this.y)
+    // el salto no se dibuja dentro de la celda: el taller dice cuánto subir el sprite en cada cuadro y la sombra queda abajo
+    const sube = this.elevacion()
+    this.sprite.setPosition(x, y - sube).setDepth(PROF.OBJETOS + this.y)
     this.sombra.poner(this.x, this.y)
     this.pintarTono()
-    // la dirección de los ataques sigue a la heroína solo si no hay animación en curso
-    if (this.estandarte) this.estandarte.setPosition(x, y - 100).setDepth(PROF.OBJETOS + 9300)
+    // el estandarte con el nombre, arriba de la cabeza (crece con la celda del jefe)
+    if (this.estandarte) this.estandarte.setPosition(x, y - this.cuerpo.alto - 30).setDepth(PROF.OBJETOS + 9300)
+  }
+
+  /** Cuánto sube el sprite en este cuadro (el `leap` del manifest trae `elevacion`), o 0 */
+  private elevacion(): number {
+    const a = this.sprite.anims.currentAnim
+    if (!a || !a.key.includes('_leap_')) return 0
+    const el = this.m.personajes[this.tipo]?.anims.leap?.elevacion
+    const f = this.sprite.anims.currentFrame?.index ?? 1
+    return el ? Math.round(el[Math.max(0, Math.min(el.length - 1, f - 1))] ?? 0) : 0
   }
 
   destruir(): void {

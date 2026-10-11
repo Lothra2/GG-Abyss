@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { capaDe, cuerpoJefe, posParalaje, tapa } from '../capas'
+import { bordeFrente, capaDe, corrimientoTira, cuerpoJefe, frenteDeZona, posParalaje, tapa } from '../capas'
 
 describe('capas del taller', () => {
   it('lee la capa del manifest y lo demás va con los objetos', () => {
@@ -29,5 +29,28 @@ describe('jefes grandes', () => {
     expect(cuerpoJefe(96, { radio: 30, alto: 72 })).toEqual({ radio: 30, alto: 72 })
     expect(cuerpoJefe(128, { radio: 30, alto: 72 })).toEqual({ radio: 40, alto: 96 })
     expect(cuerpoJefe(192, { radio: 30, alto: 72 }).alto).toBe(144)
+  })
+})
+
+describe('primer plano por zona', () => {
+  it('lee los ids de la propiedad frente de la zona', () => {
+    expect(frenteDeZona({ frente: 'frente_ramas_0, frente_hojas_1,,' })).toEqual(['frente_ramas_0', 'frente_hojas_1'])
+    expect(frenteDeZona({})).toEqual([])
+    expect(frenteDeZona(undefined)).toEqual([])
+  })
+
+  it('las ramas cuelgan de arriba y las hojas suben de abajo', () => {
+    expect(bordeFrente({ h: 96, apoyo: [128, 0] })).toBe('arriba')
+    expect(bordeFrente({ h: 64, apoyo: [64, 64] })).toBe('abajo')
+  })
+
+  it('la tira se corre un poco más que el mundo y nunca sale del período', () => {
+    for (const sx of [0, 100, 1234.5, 99999, -50]) {
+      const d = corrimientoTira(sx, 256)
+      expect(d).toBeLessThanOrEqual(0)
+      expect(d).toBeGreaterThan(-256 - 1)
+      expect(Number.isInteger(d)).toBe(true)
+    }
+    expect(corrimientoTira(0, 256)).toBe(0)
   })
 })

@@ -36,3 +36,26 @@ export function cuerpoJefe(celda: number, base: { radio: number; alto: number })
   const k = Math.max(0.5, celda / 96)
   return { radio: Math.round(base.radio * k), alto: Math.round(base.alto * k) }
 }
+
+/** Los ids del primer plano que pide una zona en su propiedad `frente` (separados por coma) */
+export function frenteDeZona(props: Record<string, unknown> | undefined): string[] {
+  const v = props?.frente
+  if (typeof v !== 'string') return []
+  return v.split(',').map((s) => s.trim()).filter(Boolean)
+}
+
+/** ¿Cuelga del borde de arriba (ramas) o sube del de abajo (hojas)? Se mira el apoyo: arriba al centro o abajo */
+export function bordeFrente(def: { h: number; apoyo: [number, number] }): 'arriba' | 'abajo' {
+  return def.apoyo[1] < def.h / 2 ? 'arriba' : 'abajo'
+}
+
+/**
+ * Corrimiento horizontal de una tira del primer plano pegada a la pantalla. La tira se repite cada `periodo` px;
+ * con paralaje 1.15 se corre un 15 % más rápido que el mundo. Devuelve un valor entre -periodo y 0, entero.
+ */
+export function corrimientoTira(scrollX: number, periodo: number, k = PARALAJE_FRENTE): number {
+  if (periodo <= 0) return 0
+  const d = (scrollX * (k - 1)) % periodo
+  const r = Math.round(d < 0 ? d + periodo : d) % periodo
+  return r === 0 ? 0 : -r
+}

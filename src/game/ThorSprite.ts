@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import type { Manifest, Personaje } from '../kit/tipos'
 import { K } from '../kit/claves'
 import type { Grilla, Punto } from '../logic/grilla'
-import { moverCuerpo } from '../logic/movimiento'
+import { moverCuerpo, ritmoAnim } from '../logic/movimiento'
 import { DIRECCIONES, indiceDireccion } from '../logic/direccion'
 import { THOR } from '../config/balance'
 import { PROF } from '../config/juego'
@@ -331,6 +331,9 @@ export class ThorSprite {
     if (key === this.animActual && !forzar) return
     this.animActual = key
     if (this.escena.anims.exists(key)) this.sprite.play(key)
+    // premium: el paso al ritmo de lo que avanza, así las patas no patinan
+    const def = this.personaje.anims[anim]
+    this.sprite.anims.timeScale = def && (anim === 'walk' || anim === 'run') ? ritmoAnim(anim === 'run' ? THOR.correr : THOR.velocidad, def) : 1
   }
 
   destroy(): void {

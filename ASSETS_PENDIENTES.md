@@ -61,6 +61,12 @@ Todo el pedido, con tamaños, cuadros, apoyos y prioridades, está en `docs/enca
 | 2 | Relieve (acantilados, rampas, desniveles), suelo con variantes y calcomanías, árboles en 3 tamaños y 3 formas, sombras horneadas, capa `frente`, fondo de abismo y vitrales en la Catedral, espuma de orilla | mundos de una sola altura, elipse de sombra, negro donde no hay mapa |
 | 3 | Mundo 3, Las Galerías del Eco: mapa, cristales que se prenden, faroles, carrito, mural, la figura de los ojos, polilla, minero de piedra, sombra, la Polilla Reina y el audio | el portal del campanario lleva a Continuará |
 
+### 33. El `avance` de caminar y correr no cuadra con la velocidad del juego
+
+- **Qué pasa:** con la fórmula de `docs/KIT_JUEGO.md` (`ritmo = velocidad * cuadros / (avance * fps)`) y los números del kit, la animación tendría que ir mucho más rápido de lo que se ve bien. Sophie camina a 105 px/s y su `walk` trae `avance` 13.2 con 8 cuadros a 10 fps: ritmo 6.4. Si `avance` es por ciclo, el dibujo camina a 16.5 px/s. Alana da 9.8, Rick 17.6 y Thor 21.3. Corriendo, Sophie da 38 px/s contra los 140 del juego.
+- **Pedido:** confirmar si `avance` es por ciclo, por paso o por cuadro, y que salga en la misma unidad para todos. Mejor todavía, agregar `velocidad_natural` en px/s, la velocidad a la que el pie no patina.
+- **Mientras tanto:** el juego usa la fórmula con tope entre 0.7 y 1.5.
+
 ---
 
 ## Entregado por el taller

@@ -136,7 +136,7 @@ export class Entidades {
       const s = escena.add.sprite(c.x, c.y, tex, 0).setOrigin(def.apoyo[0] / def.w, def.apoyo[1] / def.h).setDepth(PROF.OBJETOS + c.y).setVisible(!roto)
       this.rompibles.push({ e: c, s, objeto, llave, roto })
     }
-    for (const d of mapa.decos) if (d.sprite === 'abuelo_roble_v3') this.abuelos.push({ x: d.x, y: d.y })
+    for (const d of mapa.decos) if ((m.mundo.objetos[d.sprite]?.base ?? d.sprite) === 'abuelo_roble_v3') this.abuelos.push({ x: d.x, y: d.y })
   }
 
   /** Lo que hay bajo un toque en el mundo (con un poco de margen para el dedo), o null */

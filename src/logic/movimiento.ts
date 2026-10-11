@@ -101,3 +101,28 @@ export function caminarDireccion(g: Grilla, c: Cuerpo, dirX: number, dirY: numbe
   const mueve = r.movido > 0.01
   return { x: r.x, y: r.y, vx: mueve ? ux : 0, vy: mueve ? uy : 0, llego: false, trabado: !mueve }
 }
+
+/**
+ * Movimiento premium del taller: la animación de caminar o correr se acelera o se frena para que los pies no
+ * patinen. `avance` son los pixeles que avanza un ciclo entero de la animación (lo dice el manifest).
+ * ritmo = velocidad * cuadros / (avance * fps). Sin avance, 1. Con tope para que nunca se vea ridículo.
+ */
+export function ritmoAnim(velocidad: number, a: { cuadros: number; fps: number; avance?: number }): number {
+  if (!a.avance || a.avance <= 0 || a.fps <= 0) return 1
+  const r = (velocidad * a.cuadros) / (a.avance * a.fps)
+  // tope: con los números de hoy del taller la fórmula pide hasta 6x (anotado en ASSETS_PENDIENTES #33)
+  return Math.max(0.7, Math.min(1.5, r))
+}
+
+/** Los cuadros (desde 0) donde cae un evento del manifest de cierto tipo, o null si la animación no trae eventos */
+export function cuadrosDe(a: { eventos?: { tipo: string; cuadro: number }[] }, tipo: string): number[] | null {
+  if (!a.eventos) return null
+  return a.eventos.filter((e) => e.tipo === tipo).map((e) => e.cuadro)
+}
+
+/** En qué fracción de la animación cae el golpe (`impacto`), o null si no lo trae */
+export function faseImpacto(a: { cuadros: number; eventos?: { tipo: string; cuadro: number; fase?: number }[] }): number | null {
+  const e = a.eventos?.find((x) => x.tipo === 'impacto')
+  if (!e) return null
+  return Math.max(0.05, Math.min(0.95, (e.cuadro + (e.fase ?? 0.5)) / Math.max(1, a.cuadros)))
+}

@@ -97,6 +97,11 @@ export function encolarObjetosMundo(e: Escena, m: Manifest, nombres: Iterable<st
   }
 }
 
+/** El primer plano (ramas y hojas) no va en el mapa: lo piden las zonas. Se cargan todos los que traiga el mundo */
+export function objetosDeFrente(m: Manifest): string[] {
+  return Object.entries(m.mundo.objetos).filter(([, o]) => o.capa === 'frente').map(([n]) => n).sort()
+}
+
 /** Las capas de fondo (el abismo con paralaje) no van en el mapa: se cargan todas las que traiga el mundo */
 export function objetosDeFondo(m: Manifest): string[] {
   return Object.entries(m.mundo.objetos).filter(([, o]) => o.capa === 'fondo').map(([n]) => n).sort()

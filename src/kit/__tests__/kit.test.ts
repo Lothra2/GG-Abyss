@@ -80,7 +80,14 @@ describe('kit de PixelForja', () => {
     expect(manifest.fx.proyectil_flecha_down).toBeDefined()
     expect(manifest.fx.proyectil_naturaleza_up).toBeDefined()
     expect(manifest.fx.onda_pisoton).toBeDefined()
-    expect(manifest.personajes.minotauro!.celda).toBe(96)
+    // los jefes llenan la pantalla: 96 agrandados antes, 128 dibujados a su tamaño desde la parte 1 del taller
+    for (const id of ['minotauro', 'guardian_campana']) {
+      const j = manifest.personajes[id]
+      if (!j) continue
+      expect(j.celda, id).toBeGreaterThanOrEqual(96)
+      expect(j.pivote[0], id).toBeLessThanOrEqual(j.celda)
+      expect(j.pivote[1], id).toBeLessThanOrEqual(j.celda)
+    }
     expect(manifest.personajes.thor!.anims.dig).toBeDefined()
   })
 

@@ -6,7 +6,9 @@ import { existeMundo, idMundo, manifestParaMundo, MUNDO_BOSQUE } from '../kit/mu
 import { Mecanismos, OBJETOS_MECANISMOS } from '../game/Mecanismos'
 import { ID_MERCADER, Mercader } from '../game/Mercader'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
-import { encolarAudio, encolarBotin, encolarCapas, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales, objetosDeFondo } from '../kit/cargador'
+import { encolarAudio, encolarBotin, encolarCapas, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales, objetosDeFondo, objetosDeFrente } from '../kit/cargador'
+import { Frente } from '../fx/Frente'
+import { frenteDeZona } from '../logic/capas'
 import { FondoParalaje } from '../fx/FondoParalaje'
 import { Niebla } from '../logic/niebla'
 import { pisoDe, thorBrilla, topeOscuridad } from '../logic/abismo'
@@ -111,6 +113,7 @@ export class Mundo extends Phaser.Scene {
   decos!: Decos
   private reflejos!: Reflejos
   private fondo!: FondoParalaje
+  private frente!: Frente
   /** F10: lo que ya descubrió del minimapa. `versionNiebla` sube cada vez que se descubre algo (el HUD redibuja) */
   niebla!: Niebla
   versionNiebla = 0
@@ -276,7 +279,7 @@ export class Mundo extends Phaser.Scene {
 
   create(): void {
     const mapa = this.mapaDelMundo()
-    encolarObjetosMundo(this, this.m, new Set([...mapa.decos.map((d) => d.sprite), ...EXTRAS_MUNDO, ...objetosDeFondo(this.m)]))
+    encolarObjetosMundo(this, this.m, new Set([...mapa.decos.map((d) => d.sprite), ...EXTRAS_MUNDO, ...objetosDeFondo(this.m), ...objetosDeFrente(this.m)]))
     // enemigos del mapa y los efectos de combate
     // lo que se rompe y las armaduras de Thor que se pueden conseguir en el Mundo 1
     encolarObjetosMundo(this, this.m, new Set(mapa.entidades.filter((e) => e.tipo === 'rompible').map((e) => String(e.props.objeto ?? 'caja'))))
@@ -367,6 +370,7 @@ export class Mundo extends Phaser.Scene {
 
     this.reflejos = new Reflejos(this, this.mapa, [this.heroina.sprite, this.thor.sprite])
     this.fondo = new FondoParalaje(this, m, objetosDeFondo(m))
+    this.frente = new Frente(this, m)
     this.camara = new Camara(this, ancho, alto)
     this.camara.centrarEn(pos.x, pos.y)
 
@@ -565,6 +569,7 @@ export class Mundo extends Phaser.Scene {
       const o = this.camara.origenPantalla
       this.atmosfera.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y, this.camara.zoom)
       this.fondo.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y)
+      this.frente.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y)
     })
 
     if (!params.postal) {
@@ -1074,6 +1079,7 @@ export class Mundo extends Phaser.Scene {
     this.decos.destruir()
     this.reflejos?.destruir()
     this.fondo?.destruir()
+    this.frente?.destruir()
     this.atmosfera.destruir()
     if (this.scene.isActive('HUD')) this.scene.stop('HUD')
   }
@@ -1460,6 +1466,8 @@ export class Mundo extends Phaser.Scene {
 
   private alCambiarZona(z: Zona | null): void {
     this.sonido.fijarZona(z)
+    // el primer plano de la zona (ramas arriba, hojas abajo), si la zona lo pide
+    this.frente?.zona(frenteDeZona(z?.props))
     if (!z) return
     const r = descubrirZona(this.descub, z)
     if (!r.nueva) return
@@ -1656,6 +1664,7 @@ export class Mundo extends Phaser.Scene {
     this.reflejos.activo = cal.reflejos
     this.reflejos.update(this.t)
     this.fondo.update(vista)
+    this.frente.update(vista)
     this.relojNiebla -= dtVisual
     if (this.relojNiebla <= 0) {
       this.relojNiebla = 0.25
@@ -1734,7 +1743,7 @@ export class Mundo extends Phaser.Scene {
       tocar: ((x: number, y: number) => this.entrada.tocar(x, y)) as never,
       estado: () => JSON.parse(JSON.stringify(this.partida)),
       atmosfera: () => this.atmosfera.info(),
-      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, capasFondo: this.fondo.cantidad }),
+      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible }),
       camara: () => ({ x: this.camara.cx, y: this.camara.cy, ancho: this.camara.ancho, alto: this.camara.alto, manual: this.camara.manual }),
       mapa: () => ({
         ancho: this.mapa.ancho * this.mapa.cuadro,
