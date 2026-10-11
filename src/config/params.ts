@@ -15,6 +15,8 @@ export interface Params {
   tutorial: boolean
   /** ?medir=1: el medidor de frames y respuesta a la entrada en pantalla (para probar en la tablet de verdad) */
   medir: boolean
+  /** ?intro=1: el intro sale aunque ya se haya visto (y también en modo prueba) */
+  intro: boolean
 }
 
 export function leerParams(search: string = typeof location !== 'undefined' ? location.search : ''): Params {
@@ -33,6 +35,7 @@ export function leerParams(search: string = typeof location !== 'undefined' ? lo
     sw: q.get('sw') === '1',
     tutorial: q.get('tutorial') === '1',
     medir: q.get('medir') === '1',
+    intro: q.get('intro') === '1',
   }
 }
 

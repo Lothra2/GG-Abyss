@@ -9,6 +9,9 @@ import { crearBoton, type Boton } from '../game/ui/Boton'
 import { Bloqueo } from '../game/ui/Bloqueo'
 import { recargarSiHayVersionNueva } from '../pwa'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
+import { introVista } from './Intro'
+import { mostrarIntro } from '../logic/intro'
+import { params } from '../config/params'
 
 /**
  * Pantalla de título (PLAN.md F1b, tarea 1): la entrada al abismo con su luz, el logo de GG Abyss y "Toca para empezar".
@@ -22,6 +25,7 @@ export class Titulo extends Phaser.Scene {
   private icono!: Phaser.GameObjects.Image
   private placa!: Phaser.GameObjects.NineSlice
   private botonCreditos!: Boton
+  private botonIntro!: Boton
   private empezando = false
   private musica?: Phaser.Sound.BaseSound
   private version?: Phaser.GameObjects.BitmapText
@@ -66,6 +70,9 @@ export class Titulo extends Phaser.Scene {
       },
     })
     this.botonCreditos.setDepth(110)
+    // el intro otra vez, para quien lo quiera ver (o mostrárselo a alguien)
+    this.botonIntro = crearBoton(this, { x: 0, y: 0, etiqueta: 'Intro', origen: [1, 1], sonido: 'click', alToque: () => this.empezar(true) })
+    this.botonIntro.setDepth(110)
     // la versión, chiquita abajo a la izquierda: para saber qué se está jugando
     this.version = texto(this, 0, 0, `v ${__VERSION_JUEGO__}`, 'fuente_ui', 1, { origen: [0, 1], tinte: 0x8a8698, profundidad: 110 })
     recargarSiHayVersionNueva(this)
@@ -75,10 +82,10 @@ export class Titulo extends Phaser.Scene {
     })
     this.input.keyboard?.once('keydown', () => this.empezar())
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      quitarGanchos('titulo')
+      quitarGanchos('titulo', 'verIntro')
       this.fondo.destruir()
     })
-    agregarGanchos({ titulo: () => ({ empezando: this.empezando, logo: !!this.logo, musica: !!this.musica, creditos: this.botonCreditos.getBounds() }), empezar: (() => this.empezar()) as never })
+    agregarGanchos({ titulo: () => ({ empezando: this.empezando, logo: !!this.logo, musica: !!this.musica, creditos: this.botonCreditos.getBounds() }), empezar: (() => this.empezar()) as never, verIntro: (() => this.empezar(true)) as never })
   }
 
   private acomodar(): void {
@@ -97,18 +104,21 @@ export class Titulo extends Phaser.Scene {
     const total = 24 + 8 + this.toca.displayWidth
     const y = Math.round(h * 0.78)
     this.botonCreditos.setPosition(w - 6, h - 6)
+    this.botonIntro.setPosition(w - 6 - this.botonCreditos.ancho - 4, h - 6)
     this.version?.setPosition(6, h - 6)
     this.placa.setPosition(Math.round(w / 2), y).setSize(total + 28, Math.max(36, this.toca.displayHeight + 16))
     this.icono.setPosition(Math.round(w / 2 - total / 2 + 12), y)
     this.toca.setPosition(Math.round(w / 2 - total / 2 + 24 + 8 + this.toca.displayWidth / 2), y)
   }
 
-  private empezar(): void {
+  /** El primer toque: la primera vez en este aparato va al intro (ya con el sonido desbloqueado), después a elegir */
+  private empezar(verIntro = false): void {
     if (this.empezando) return
     this.empezando = true
     if (this.cache.audio.exists(K.aud('click'))) this.sound.play(K.aud('click'), { volume: 0.7 })
+    const destino = verIntro || mostrarIntro(introVista(), params.test, params.intro) ? 'Intro' : 'SeleccionJugador'
     this.cameras.main.fadeOut(300, 7, 10, 18)
-    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('SeleccionJugador'))
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start(destino))
   }
 
   override update(_t: number, ms: number): void {

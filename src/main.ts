@@ -8,6 +8,7 @@ import { instalarAudio } from './game/Audio'
 import { Boot } from './scenes/Boot'
 import { Titulo } from './scenes/Titulo'
 import { SeleccionJugador } from './scenes/SeleccionJugador'
+import { Intro } from './scenes/Intro'
 import { SalaKit } from './scenes/SalaKit'
 import { Mundo } from './scenes/Mundo'
 import { HUD } from './scenes/HUD'
@@ -36,7 +37,7 @@ const game = new Phaser.Game({
   scale: { mode: Phaser.Scale.NONE, width: escala.ancho, height: escala.alto, zoom: escala.cssZoom },
   render: { powerPreference: 'high-performance', mipmapFilter: 'NEAREST' },
   input: { activePointers: 3, touch: { capture: true } },
-  scene: [Boot, Titulo, SeleccionJugador, SalaKit, Mundo, HUD, Pausa, Creditos, Inventario, Tienda, Album, Continuara, Bajada, Instalar],
+  scene: [Boot, Titulo, Intro, SeleccionJugador, SalaKit, Mundo, HUD, Pausa, Creditos, Inventario, Tienda, Album, Continuara, Bajada, Instalar],
   callbacks: { preBoot: (g) => g.registry.set('escala', escala) },
 })
 

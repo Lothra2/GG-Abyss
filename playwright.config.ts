@@ -21,7 +21,7 @@ export default defineConfig({
   use: { baseURL: 'http://localhost:4173', launchOptions, trace: 'off' },
   projects: [
     { name: 'escritorio', testIgnore: /postales|tablet/, use: { viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1 } },
-    { name: 'tablet', testMatch: /(humo|flujo|mundo|tutorial|catedral|entrada|ataque|minimapa)\.spec\.ts|\.tablet\.spec\.ts/, use: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
+    { name: 'tablet', testMatch: /(humo|flujo|mundo|tutorial|catedral|entrada|ataque|minimapa|intro)\.spec\.ts|\.tablet\.spec\.ts/, use: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
     { name: 'postales', testMatch: /postales\.spec\.ts/, use: { viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 } },
   ],
   webServer: { command: 'npm run build && npm run preview -- --port 4173 --strictPort', url: 'http://localhost:4173', reuseExistingServer: true, timeout: 180_000 },
