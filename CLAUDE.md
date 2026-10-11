@@ -31,4 +31,5 @@ Juego tipo Diablo de la familia GG (Sophie 8, Alana 5). Cada jefe abre un portal
 ## Cómo trabajar
 - Una fase de PLAN.md a la vez. Commit por tarea, push al final con todo en verde.
 - Nunca decir que algo está probado si no se corrió.
+- Publicar: Netlify (gg-abyss.netlify.app) construye solo con cada push a la rama que tenga configurada. Después de subir, correr `npm run verificar-publicacion`: nunca decir "publicado" si no dio OK (compara el commit con /version.json del sitio en vivo).
 - Escribir en español venezolano casual: sin em dash, sin punto y coma, pocos paréntesis. Directo.

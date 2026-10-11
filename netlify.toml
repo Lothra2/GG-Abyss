@@ -16,3 +16,9 @@
   for = "/sw.js"
   [headers.values]
     Cache-Control = "no-cache"
+
+# qué commit está publicado: siempre fresco
+[[headers]]
+  for = "/version.json"
+  [headers.values]
+    Cache-Control = "no-cache"

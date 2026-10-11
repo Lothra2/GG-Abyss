@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto'
+import { execSync } from 'node:child_process'
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 
@@ -13,7 +14,7 @@ if (!existsSync(join(dist, 'sw.js'))) {
   process.exit(1)
 }
 
-const NO_GUARDAR = [/\/sw\.js$/, /\/mundo\/postales\/(?!arena_del_minotauro)/, /\.map$/]
+const NO_GUARDAR = [/\/sw\.js$/, /\/version\.json$/, /\/mundo\/postales\/(?!arena_del_minotauro)/, /\.map$/]
 
 function listar(dir: string): string[] {
   const out: string[] = []
@@ -43,3 +44,16 @@ let sw = readFileSync(join(dist, 'sw.js'), 'utf8')
 sw = sw.replace("'__VERSION__'", JSON.stringify(version)).replace('/* __ARCHIVOS__ */ []', JSON.stringify(lista))
 writeFileSync(join(dist, 'sw.js'), sw)
 console.log(`sw.js listo: versión ${version}, ${lista.length} archivos para guardar`)
+
+// version.json: qué commit quedó publicado (Netlify da COMMIT_REF). Lo lee `npm run verificar-publicacion`
+// para no decir "publicado" sin ver que el sitio en vivo es el nuevo. No se guarda en el service worker.
+let commit = process.env.COMMIT_REF ?? ''
+if (!commit) {
+  try {
+    commit = execSync('git rev-parse HEAD', { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim()
+  } catch {
+    commit = 'desconocido'
+  }
+}
+writeFileSync(join(dist, 'version.json'), JSON.stringify({ commit: commit.slice(0, 7), sw: version, fecha: new Date().toISOString(), rama: process.env.BRANCH ?? null }, null, 1))
+console.log(`version.json: ${commit.slice(0, 7)}`)

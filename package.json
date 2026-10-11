@@ -14,7 +14,8 @@
     "e2e": "playwright test",
     "kit": "tsx tools/pixel_forja/scripts/game-kit.ts public/assets/kit --fichas fichas",
     "verificar-kit": "tsx scripts/verificar-kit.ts",
-    "postales": "tsx scripts/comparar-postales.ts"
+    "postales": "tsx scripts/comparar-postales.ts",
+    "verificar-publicacion": "tsx scripts/verificar-publicacion.ts"
   },
   "dependencies": {
     "phaser": "3.90.0"
