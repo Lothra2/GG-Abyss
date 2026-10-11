@@ -29,6 +29,11 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - Bosque Profundo premium con sombras horneadas, calcomanías, primer plano por zona y objetos `_p` con `base`.
   - Verificación: `verificar-kit` bien, 389 tests unitarios y e2e completo (escritorio, tablet y postales) 191 pasaron y 5 se saltan a propósito, sin fallos.
   - Duda al taller sobre el `avance` (ASSETS_PENDIENTES #33).
+- Entrega grande del taller `9e8a6da` integrada:
+  - Bosque y Catedral premium enteros, espuma y reflejo del agua, el abismo de la Catedral con su paralaje, reacciones nuevas y ranas, peces y ardillas que huyen.
+  - Mundo 3 jugable (PLAN.md F11, "Estado del Mundo 3"): cristales, polilla, sombra, minero, carrito, figura, mural y la Polilla Reina con su escudo de luz.
+  - Intro con los cinco paneles pintados en capas, la pared de fuego, el humo, el logo en llamas, `musica_intro` y `latido`. Si el kit no trae los paneles sigue el intro con piezas prestadas.
+  - El kit pesa 74.1 MB (antes 59.5): la tablet guarda todo para jugar sin red.
 - Intro al estilo Diablo: sale una vez por aparato después del primer toque del título. Se salta tocando y el título tiene un botón "Intro". Las ilustraciones de cine están pedidas al taller (encargo, parte 4).
 - Verificación de F10a, F11 e intro:
   - Typecheck limpio y 380 tests unitarios.

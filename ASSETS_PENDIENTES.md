@@ -66,12 +66,24 @@ Todo el pedido, con tamaños, cuadros, apoyos y prioridades, está en `docs/enca
 - **Qué pasa:** con la fórmula de `docs/KIT_JUEGO.md` (`ritmo = velocidad * cuadros / (avance * fps)`) y los números del kit, la animación tendría que ir mucho más rápido de lo que se ve bien. Sophie camina a 105 px/s y su `walk` trae `avance` 13.2 con 8 cuadros a 10 fps: ritmo 6.4. Si `avance` es por ciclo, el dibujo camina a 16.5 px/s. Alana da 9.8, Rick 17.6 y Thor 21.3. Corriendo, Sophie da 38 px/s contra los 140 del juego.
 - **Pedido:** confirmar si `avance` es por ciclo, por paso o por cuadro, y que salga en la misma unidad para todos. Mejor todavía, agregar `velocidad_natural` en px/s, la velocidad a la que el pie no patina.
 - **Mientras tanto:** el juego usa la fórmula con tope entre 0.7 y 1.5.
+- **Resuelto en `9e8a6da`:** `avance` es por ciclo y viene `velocidad_natural`. El juego usa `ritmo = velocidad / velocidad_natural` con el mismo tope.
 
 ### 34. Una rana y un pez en el mismo punto del Bosque
 
 - **Qué pasa:** en `mundo1_bosque.json` hay dos entidades `criatura` en (1840, 2416): una `rana` y un `pez`. La rana tendría que estar en la orilla y el pez en el agua.
 - **Pedido:** separarlas, la rana en tierra a la orilla y el pez adentro del lago.
 - **Mientras tanto:** no rompe nada (las criaturas no se guardan). La prueba de llaves únicas solo mira lo que se guarda.
+
+### 35. El corte del abismo del intro se ve como un diagrama
+
+- **Qué pasa:** `intro_corte_abismo` (480 x 540, momento 2 del intro) muestra los pisos como bloques iguales: árboles todos iguales arriba, barras y cinco cajas idénticas con una luz roja. Los otros cuatro paneles se ven de cine, este parece un esquema.
+- **Pedido:** rehacerlo como un corte de hormiguero con siete mini escenas que se reconozcan: el bosque con raíces, la catedral con su campana, las galerías con cristales, el mar callado, la ciudad dormida, las fraguas rojas y el fondo con dos ojos. Mismo tamaño, mismas capas (`fondo` 0.8 y `frente` 1), la luz roja subiendo desde abajo.
+- **Mientras tanto:** el juego lo usa así, con la cámara bajando por él.
+
+### 36. Palancas, puertas, rejas y piedras sin poner en los mapas
+
+- **Qué pasa:** el kit trae `palanca`, `puerta`, `reja`, `piedra_empujable` y la campana chica con sus animaciones, pero ningún mapa los usa todavía.
+- **Pedido:** cuando el diseño de F9 lo pida, ponerlos en el mapa como entidades con su `id`, a qué abren (`abre: <id>`) y su estado inicial. El juego los conecta cuando lleguen.
 
 ---
 

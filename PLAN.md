@@ -898,7 +898,7 @@ Lo que dice Rick: "los siento muy planos", "no se siente como Stardew Valley", "
 
 **Cuidado.** El relieve cambia la grilla: los acantilados son sólidos y las rampas son paso. Los tests del mapa leen todo del mapa, pero hay que revisar los caminos del tutorial y del jefe. La capa `frente` y los reflejos suman dibujo: se apagan en calidad baja y se mide en la tablet con `?medir=1`.
 
-### F11. Mundo 3 y el camino al fondo (reglas hechas en `logic/abismo.ts`, el mundo espera al taller)
+### F11. Mundo 3 y el camino al fondo (Mundo 3 jugable, pisos 4 a 7 en reglas)
 
 Lo que pide Rick: seguir bajando, mucha más oscuridad, el misterio que vaya subiendo, y que el piso 7 sea el Diablo.
 
@@ -940,6 +940,17 @@ El Mundo 3 se llama Las Galerías del Eco. Los nombres de los pisos 4 a 7 son de
 2. F10a mientras el taller trabaja.
 3. El taller hace el mapa, las piezas, los enemigos, la Polilla Reina y el audio de las Galerías.
 4. El juego: halo, cristales que se prenden, sombra visible en la luz, polilla que apaga, carrito de Thor, jefe, mural, figura y mapa del abismo. Postales en `docs/capturas/f11`.
+
+**Estado del Mundo 3 (hecho con el kit del taller `9e8a6da`).**
+
+- Los cristales se prenden con un golpe (tocándolos o pegando al aire al lado), alumbran y se guardan por mundo en la partida.
+- La polilla de ceniza vuela a apagar el cristal prendido que ve, si no hay roca en el medio. Se vuelve a prender con un golpe.
+- La sombra a oscuras son dos ojos: no pega ni se le pega. Dentro de la luz de un cristal o del brillo de Thor aparece y pelea.
+- El minero de piedra pega con su pico y avisa el golpe grande como el guardián de cobre.
+- El carrito lleva a la heroína por la vía y Thor llega con ella. La figura de los ojos rojos mira desde el puente, Thor gruñe y se va en humo si te acercas. El pedazo del mural cuenta como secreto.
+- La Polilla Reina brilla violeta para que siempre se vea. Con los cuatro cristales grandes apagados el golpe rebota y sale "¡Prende los cristales!". Al prender el cuarto cae aturdida, y vuelve a caer cada 9 s mientras sigan prendidos. Ataques: aletazo, lluvia de polvo con su aviso en el piso (apaga los cristales que tapa, en modo peque nunca los grandes) y llamada de polillas. Tiene su música.
+- El portal de la Catedral baja a las Galerías y el de la reina lleva a Continuará hasta que exista el Mundo 4.
+- Falta: el mural en el álbum (hoy cuenta como secreto) y las postales de `docs/capturas/f11`.
 
 ## 6. Riesgos y mitigación
 
