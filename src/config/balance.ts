@@ -313,8 +313,9 @@ export const COMBATE = {
   critBase: 0.05,
   /** cada punto de armadura reduce el daño: dano * 100 / (100 + armadura * esto) */
   armaduraFactor: 4,
-  velocidadHeroe: 120,
-  velocidadHeroeCorrer: 160,
+  // más pausado desde F10: con la cámara más cerca en la compu se ve el doble de rápido en pantalla
+  velocidadHeroe: 105,
+  velocidadHeroeCorrer: 140,
   correrSiCaminoMayorA: 400,
   /** invulnerabilidad corta tras recibir daño, en s */
   invulnerableS: 0.35,

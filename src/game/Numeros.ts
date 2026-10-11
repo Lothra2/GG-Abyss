@@ -22,7 +22,8 @@ export class Numeros {
     if (this.activos >= COMBATE.topeNumeros) return
     const tex = K.ui('numeros')
     if (!this.escena.textures.exists(tex)) return
-    const zoom = escalaDe(this.escena.game).zoom
+    // el tamaño en pantalla: el zoom de la vista por el de la cámara del mundo
+    const zoom = escalaDe(this.escena.game).zoom * this.escena.cameras.main.zoom
     const escala = (zoom >= 3 ? 1 : 2) + (grande ? 1 : 0)
     const fila = FILAS.indexOf(color)
     const cont = this.escena.add.container(Math.round(x), Math.round(y)).setDepth(PROF.OBJETOS + 9500)

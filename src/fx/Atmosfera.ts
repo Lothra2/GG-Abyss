@@ -78,11 +78,20 @@ export class Atmosfera {
     return this.oscFinal
   }
 
-  redimensionar(ancho: number, alto: number): void {
+  private ox = 0
+  private oy = 0
+
+  /**
+   * `ancho` x `alto` es lo que se ve del mundo (la vista lógica dividida por el zoom de la cámara). Lo pegado a la
+   * pantalla va en `ox, oy` para que, agrandado desde el centro, la cubra justo.
+   */
+  redimensionar(ancho: number, alto: number, ox = 0, oy = 0, zoom = 1): void {
     this.ancho = ancho
     this.alto = alto
-    this.luces.redimensionar(ancho, alto)
-    this.bruma.redimensionar(ancho, alto)
+    this.ox = ox
+    this.oy = oy
+    this.luces.redimensionar(ancho, alto, ox, oy)
+    this.bruma.redimensionar(ancho, alto, ox, oy, zoom)
     if (this.vinetaImg) this.armarFallback()
   }
 
@@ -126,7 +135,7 @@ export class Atmosfera {
     this.quitarFallback()
     const key = 'vineta_tecnica'
     if (this.escena.textures.exists(key)) this.escena.textures.remove(key)
-    const tex = this.escena.textures.createCanvas(key, this.ancho, this.alto)
+    const tex = this.escena.textures.createCanvas(key, Math.ceil(this.ancho), Math.ceil(this.alto))
     if (!tex) return
     const ctx = tex.getContext()
     const g = ctx.createRadialGradient(this.ancho / 2, this.alto / 2, Math.min(this.ancho, this.alto) * 0.35, this.ancho / 2, this.alto / 2, Math.max(this.ancho, this.alto) * 0.75)
@@ -135,8 +144,8 @@ export class Atmosfera {
     ctx.fillStyle = g
     ctx.fillRect(0, 0, this.ancho, this.alto)
     tex.refresh()
-    this.vinetaImg = this.escena.add.image(0, 0, key).setOrigin(0, 0).setScrollFactor(0).setDepth(PROF.VINETA)
-    this.tinteRect = this.escena.add.rectangle(0, 0, this.ancho, this.alto, 0xffffff).setOrigin(0, 0).setScrollFactor(0).setDepth(PROF.VINETA - 1).setBlendMode(Phaser.BlendModes.MULTIPLY).setAlpha(0.12)
+    this.vinetaImg = this.escena.add.image(this.ox, this.oy, key).setOrigin(0, 0).setScrollFactor(0).setDepth(PROF.VINETA)
+    this.tinteRect = this.escena.add.rectangle(this.ox, this.oy, this.ancho, this.alto, 0xffffff).setOrigin(0, 0).setScrollFactor(0).setDepth(PROF.VINETA - 1).setBlendMode(Phaser.BlendModes.MULTIPLY).setAlpha(0.12)
   }
 
   private quitarFallback(): void {

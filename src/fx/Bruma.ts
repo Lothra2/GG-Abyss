@@ -40,17 +40,21 @@ export class Bruma {
     this.nubes = mk(K.nieblaNubes, PROF.BRUMA_B)
   }
 
-  redimensionar(ancho: number, alto: number): void {
-    this.jirones.setSize(ancho, alto)
-    this.nubes.setSize(ancho, alto)
+  private escala = 2
+
+  /** Con la cámara agrandada x`zoom` la textura va a 2 / zoom para que en pantalla se vea igual que siempre */
+  redimensionar(ancho: number, alto: number, ox = 0, oy = 0, zoom = 1): void {
+    this.escala = 2 / Math.max(1, zoom)
+    for (const t of [this.jirones, this.nubes]) t.setSize(Math.ceil(ancho), Math.ceil(alto)).setPosition(ox, oy).setTileScale(this.escala, this.escala)
   }
 
   /** `niebla` ya viene multiplicada por el control de bruma */
   update(t: number, cx: number, cy: number, niebla: number, capas: number): void {
     const a = Phaser.Math.Clamp(niebla, 0, 1.5)
-    // la textura se dibuja a escala 2: la posición va en pixeles de textura
-    this.jirones.setTilePosition((cx * 1 + t * 12) / 2, (cy * 1 + t * 1.5) / 2)
-    this.nubes.setTilePosition((cx * 1.15 + t * 7) / 2, (cy * 1.15 + t * -2) / 2)
+    // la textura se dibuja a escala 2 en pantalla: la posición va en pixeles de textura
+    const e = this.escala
+    this.jirones.setTilePosition((cx * 1 + t * 12) / e, (cy * 1 + t * 1.5) / e)
+    this.nubes.setTilePosition((cx * 1.15 + t * 7) / e, (cy * 1.15 + t * -2) / e)
     this.jirones.setAlpha(Math.min(1, a * 0.85)).setVisible(a * 0.85 > 0.01)
     const conNubes = capas >= 2 && a * 0.55 > 0.01
     this.nubes.setAlpha(Math.min(1, a * 0.55)).setVisible(conNubes)

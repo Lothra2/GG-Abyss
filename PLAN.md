@@ -855,15 +855,15 @@ Lo que dice Rick: "los siento muy planos", "no se siente como Stardew Valley", "
 3. **Luz plana.** La oscuridad baja parejo en toda la pantalla. No hay sombras proyectadas, ni haces que entren entre los árboles, ni contraste entre una zona iluminada y una en sombra.
 4. **No hay primer plano.** Nada pasa por delante de la cámara. Los juegos que se sienten premium meten ramas, hojas o columnas en el borde que se mueven con paralaje.
 5. **La cámara está lejos en la compu.** Con `floor(Hp / 400)` una pantalla de 720 p queda en zoom 1 y muestra unos 40 x 22 cuadros. La tablet muestra 18 x 13. En la compu el mundo se ve chiquito y vacío.
-6. **Se cruza muy rápido.** La heroína camina a 150 px/s y corre a 190. La Catedral se cruza en unos 13 s y el Bosque en unos 20 s.
+6. **Se cruza muy rápido.** La heroína camina a 120 px/s y corre a 160. La Catedral se cruza en unos 13 s y el Bosque en unos 20 s.
 7. **La Catedral tiene huecos negros** grandes donde no hay nada, y los ladrillos se repiten igual en toda la pared.
 
 **Postura.** Esto no se arregla con más filtros. Se arregla con composición, relieve y luz, y casi todo eso tiene que salir del taller. El código pone la cámara, el ritmo, el primer plano, los reflejos y la luz. PixelForja pone el relieve, las variantes y las piezas. El encargo completo para el taller está en `docs/encargos/pixel_forja_F10_F11.md`.
 
 **Lo que hace el juego (código, sin assets nuevos).**
 
-1. **Cámara más cerca en la compu.** Propuesta: `zoom = max(1, floor(Hp / 340))`. A 720 p da zoom 2 (640 x 360 lógicos, 20 x 11 cuadros), a 1080 p zoom 3 (640 x 360), en la tablet sigue en 4 (590 x 410). Las dos pantallas quedan casi con el mismo encuadre. Rick lo dejó en mis manos: va así y se ajusta jugando.
-2. **Ritmo más pausado.** Caminar de 150 a 120 px/s y correr de 190 a 150. Ojo: con la cámara más cerca la velocidad en pantalla se duplica, así que bajar la velocidad no es opcional si se acerca la cámara. Se mide con las niñas, el número va en `balance.ts`.
+1. **Cámara más cerca en la compu.** La vista lógica y el HUD no cambian. La cámara del mundo se agranda un número entero de veces mientras lo que se ve mida 340 px de alto o más (`zoomCamara` en `logic/escala.ts`). A 720 p el mundo va x2 (640 x 360, unos 20 x 11 cuadros), casi el encuadre de la tablet, que sigue igual. Las postales no cambian. Rick lo dejó en mis manos: va así y se ajusta jugando.
+2. **Ritmo más pausado.** La heroína caminaba a 120 px/s y corría a 160 (150 y 190 son de Thor). Pasa a 105 y 140. Ojo: con la cámara más cerca la velocidad en pantalla se duplica, así que bajar la velocidad no es opcional si se acerca la cámara. Se mide con las niñas, el número va en `balance.ts`.
 3. **Primer plano con paralaje.** Una capa `frente` (profundidad 5500, paralaje 1.15) con ramas que cuelgan del borde de arriba en el Bosque y columnas cerca de la cámara en la Catedral. Si la heroína queda detrás, bajan a alfa 0.35.
 4. **Luz que se nota.** La oscuridad ya tiene pozos de luz. Falta: un halo propio de la heroína (siempre, radio 110 px), sombras largas de los objetos hacia abajo a la derecha según el ángulo de la luz de la zona, haces de luz entre copas en los claros (`haz_luz` ya existe) y contraste por zona: zonas de sombra a 0.65 al lado de claros a 0.15 en la misma pantalla.
 5. **Reflejos en el agua.** La heroína, Thor y los árboles de la orilla se reflejan invertidos, con alfa 0.35 y una ondita. Es el mismo sprite espejado y recortado con la máscara del agua, no se dibuja nada nuevo.

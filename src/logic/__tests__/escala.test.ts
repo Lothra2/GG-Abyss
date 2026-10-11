@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { calcularEscala } from '../escala'
+import { ALTO_MUNDO_MIN, calcularEscala, zoomCamara } from '../escala'
 
 describe('calcularEscala', () => {
   it('iPad 1180 x 820 con dpr 2: zoom 4 y vista 590 x 410', () => {
@@ -78,5 +78,23 @@ describe('calcularEscala', () => {
   it('un dpr roto se trata como 1', () => {
     expect(calcularEscala(1280, 720, 0).dpr).toBe(1)
     expect(calcularEscala(1280, 720, Number.NaN).dpr).toBe(1)
+  })
+
+  it('la cámara del mundo se acerca x2 en una compu de 720 p y queda igual en la tablet y en las postales', () => {
+    expect(zoomCamara(calcularEscala(1280, 720, 1).alto)).toBe(2)
+    expect(zoomCamara(calcularEscala(1366, 768, 1).alto)).toBe(2)
+    expect(zoomCamara(calcularEscala(1180, 820, 2).alto)).toBe(1)
+    expect(zoomCamara(calcularEscala(960, 540, 1).alto)).toBe(1)
+  })
+
+  it('lo que se ve del mundo nunca baja del alto mínimo si la pantalla lo tiene', () => {
+    for (const dpr of [1, 1.25, 1.5, 2, 3]) {
+      for (const [w, h] of [[800, 600], [1024, 768], [1280, 720], [1366, 768], [1440, 900], [1920, 1080], [2560, 1440], [1180, 820]]) {
+        const e = calcularEscala(w!, h!, dpr)
+        const z = zoomCamara(e.alto)
+        expect(Number.isInteger(z)).toBe(true)
+        if (e.alto >= ALTO_MUNDO_MIN) expect(e.alto / z).toBeGreaterThanOrEqual(ALTO_MUNDO_MIN)
+      }
+    }
   })
 })

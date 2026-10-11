@@ -30,8 +30,17 @@ export class Luces {
     this.sello = escena.make.image({ key: K.luz, add: false }).setOrigin(0.5, 0.5)
   }
 
-  redimensionar(ancho: number, alto: number): void {
-    this.rt.resize(ancho, alto)
+  /** `ancho` x `alto` es lo que se ve del mundo y `ox, oy` dónde va para cubrir la pantalla con la cámara agrandada */
+  redimensionar(ancho: number, alto: number, ox = 0, oy = 0): void {
+    const w = Math.ceil(ancho)
+    const h = Math.ceil(alto)
+    // resize() de Phaser deja el dibujo en el tamaño viejo: se arma una textura nueva
+    if (w !== this.rt.width || h !== this.rt.height) {
+      const vis = this.rt.visible
+      this.rt.destroy()
+      this.rt = this.escena.add.renderTexture(0, 0, w, h).setOrigin(0, 0).setScrollFactor(0).setDepth(PROF.OSCURIDAD).setVisible(vis)
+    }
+    this.rt.setPosition(ox, oy)
   }
 
   private brillo(i: number): Phaser.GameObjects.Image {

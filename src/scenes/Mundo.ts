@@ -53,6 +53,7 @@ import { demostracion, pasoCumplido, PASOS_TUTORIAL, type PasoTutorial } from '.
 import { buscarCamino } from '../logic/camino'
 import { Presentacion } from '../game/Presentacion'
 import { alCambiarEscala } from '../game/Pantalla'
+import { zoomCamara } from '../logic/escala'
 import { Atmosfera } from '../fx/Atmosfera'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 
@@ -534,7 +535,12 @@ export class Mundo extends Phaser.Scene {
       this.input.keyboard?.once('keydown', () => this.presentacion?.saltar())
     }
 
-    alCambiarEscala(this, () => this.atmosfera.redimensionar(this.scale.width, this.scale.height))
+    alCambiarEscala(this, (e) => {
+      // el mundo se ve más cerca en pantallas grandes, el HUD no cambia (va en su escena)
+      this.camara.zoom = params.postal ? 1 : zoomCamara(e.alto)
+      const o = this.camara.origenPantalla
+      this.atmosfera.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y, this.camara.zoom)
+    })
 
     if (!params.postal) {
       this.scene.launch('HUD')
@@ -1107,9 +1113,11 @@ export class Mundo extends Phaser.Scene {
       portal: this.portalJefe ? { x: this.portalJefe.x, y: this.portalJefe.y } : null,
     })
     if (!destino) return
-    const v = this.cameras.main.worldView
+    const v = this.camara.vista
     const pos = posicionFlecha({ x: v.x, y: v.y, w: v.width, h: v.height }, { x: this.heroina.x, y: this.heroina.y }, destino)
-    if (pos) this.flechaGuia = { ...pos, destino }
+    // la flecha va en el HUD, que no tiene el zoom del mundo
+    const z = this.camara.zoom
+    if (pos) this.flechaGuia = { ...pos, x: pos.x * z, y: pos.y * z, destino }
   }
 
   /** La brasa que falta más cerca a la que se llega caminando (con las compuertas como están). Se recalcula poco. */

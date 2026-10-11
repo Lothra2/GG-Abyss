@@ -21,7 +21,7 @@ Juego tipo Diablo de la familia GG (Sophie 8, Alana 5). Cada jefe abre un portal
 - src/kit/: tipos y cargador del manifest. Lo que esté en el manifest se carga solo.
 - src/scenes/, src/game/: Phaser. src/fx/: atmósfera con interruptor de calidad.
 - Balance en un solo archivo de config.
-- Pixeles perfectos: zoom = max(1, floor(Hp / 400)) con Hp en pixeles físicos, cámara con zoom entero, vista lógica = Wp/zoom x Hp/zoom (PLAN.md 3.2). Nada de 960x540 fijo ni Scale.FIT. El HUD se ancla a los bordes.
+- Pixeles perfectos: zoom = max(1, floor(Hp / 400)) con Hp en pixeles físicos, vista lógica = Wp/zoom x Hp/zoom (PLAN.md 3.2). La cámara del mundo tiene además su zoom entero `zoomCamara` (lo que se ve del mundo mide 340 px de alto o más). El HUD va en su escena sin ese zoom. Nada de 960x540 fijo ni Scale.FIT. El HUD se ancla a los bordes.
 - Tests del mapa y del kit sin cantidades fijas: se lee del mapa y se exige "al menos". El taller agrega postales, zonas y cofres.
 
 ## Comandos
