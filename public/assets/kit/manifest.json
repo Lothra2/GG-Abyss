@@ -51,7 +51,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 14.1
+     "avance": 14.1,
+     "velocidad_natural": 17.63
     },
     "run": {
      "archivo": "personajes/rick_run.png",
@@ -72,7 +73,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 23.3
+     "avance": 23.3,
+     "velocidad_natural": 40.78
     },
     "attack": {
      "archivo": "personajes/rick_attack.png",
@@ -6814,7 +6816,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 16.6
+     "avance": 16.6,
+     "velocidad_natural": 20.75
     },
     "run": {
      "archivo": "personajes/steph_run.png",
@@ -6835,7 +6838,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 27.4
+     "avance": 27.4,
+     "velocidad_natural": 47.95
     },
     "attack": {
      "archivo": "personajes/steph_attack.png",
@@ -13577,7 +13581,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 13.2
+     "avance": 13.2,
+     "velocidad_natural": 16.5
     },
     "run": {
      "archivo": "personajes/sophie_run.png",
@@ -13598,7 +13603,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 21.8
+     "avance": 21.8,
+     "velocidad_natural": 38.15
     },
     "attack": {
      "archivo": "personajes/sophie_attack.png",
@@ -20340,7 +20346,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 7.8
+     "avance": 7.8,
+     "velocidad_natural": 9.75
     },
     "run": {
      "archivo": "personajes/alana_run.png",
@@ -20361,7 +20368,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 12.9
+     "avance": 12.9,
+     "velocidad_natural": 22.58
     },
     "attack": {
      "archivo": "personajes/alana_attack.png",
@@ -27113,7 +27121,8 @@
        "pie": "cerca"
       }
      ],
-     "avance": 18.9
+     "avance": 18.9,
+     "velocidad_natural": 21.26
     },
     "run": {
      "archivo": "mascota/thor_run.png",
@@ -27145,7 +27154,8 @@
        "fase": 0.75
       }
      ],
-     "avance": 56.7
+     "avance": 56.7,
+     "velocidad_natural": 99.23
     },
     "bite": {
      "archivo": "mascota/thor_bite.png",
@@ -27304,7 +27314,8 @@
        "pie": "cerca"
       }
      ],
-     "avance": 18.9
+     "avance": 18.9,
+     "velocidad_natural": 21.26
     },
     "run": {
      "archivo": "mascota/thor_armadura1_run.png",
@@ -27336,7 +27347,8 @@
        "fase": 0.75
       }
      ],
-     "avance": 56.7
+     "avance": 56.7,
+     "velocidad_natural": 99.23
     },
     "bite": {
      "archivo": "mascota/thor_armadura1_bite.png",
@@ -27495,7 +27507,8 @@
        "pie": "cerca"
       }
      ],
-     "avance": 18.9
+     "avance": 18.9,
+     "velocidad_natural": 21.26
     },
     "run": {
      "archivo": "mascota/thor_armadura2_run.png",
@@ -27527,7 +27540,8 @@
        "fase": 0.75
       }
      ],
-     "avance": 56.7
+     "avance": 56.7,
+     "velocidad_natural": 99.23
     },
     "bite": {
      "archivo": "mascota/thor_armadura2_bite.png",
@@ -27686,7 +27700,8 @@
        "pie": "cerca"
       }
      ],
-     "avance": 18.9
+     "avance": 18.9,
+     "velocidad_natural": 21.26
     },
     "run": {
      "archivo": "mascota/thor_armadura3_run.png",
@@ -27718,7 +27733,8 @@
        "fase": 0.75
       }
      ],
-     "avance": 56.7
+     "avance": 56.7,
+     "velocidad_natural": 99.23
     },
     "bite": {
      "archivo": "mascota/thor_armadura3_bite.png",
@@ -27877,7 +27893,8 @@
        "pie": "cerca"
       }
      ],
-     "avance": 18.9
+     "avance": 18.9,
+     "velocidad_natural": 21.26
     },
     "run": {
      "archivo": "mascota/thor_armadura4_run.png",
@@ -27909,7 +27926,8 @@
        "fase": 0.75
       }
      ],
-     "avance": 56.7
+     "avance": 56.7,
+     "velocidad_natural": 99.23
     },
     "bite": {
      "archivo": "mascota/thor_armadura4_bite.png",
@@ -28068,7 +28086,8 @@
        "pie": "cerca"
       }
      ],
-     "avance": 18.9
+     "avance": 18.9,
+     "velocidad_natural": 21.26
     },
     "run": {
      "archivo": "mascota/thor_armadura5_run.png",
@@ -28100,7 +28119,8 @@
        "fase": 0.75
       }
      ],
-     "avance": 56.7
+     "avance": 56.7,
+     "velocidad_natural": 99.23
     },
     "bite": {
      "archivo": "mascota/thor_armadura5_bite.png",
@@ -28612,7 +28632,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 32
+     "avance": 32,
+     "velocidad_natural": 40
     },
     "attack": {
      "archivo": "enemigos/minotauro_attack.png",
@@ -28750,7 +28771,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 55.47
+     "avance": 55.47,
+     "velocidad_natural": 97.07
     },
     "warcry": {
      "archivo": "enemigos/minotauro_warcry.png",
@@ -28921,7 +28943,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 32
+     "avance": 32,
+     "velocidad_natural": 40
     },
     "attack": {
      "archivo": "enemigos/guardian_campana_attack.png",
@@ -29059,7 +29082,8 @@
        "pie": "lejos"
       }
      ],
-     "avance": 55.47
+     "avance": 55.47,
+     "velocidad_natural": 97.07
     },
     "warcry": {
      "archivo": "enemigos/guardian_campana_warcry.png",
@@ -29201,6 +29225,384 @@
     }
    },
    "perfil_movimiento": "premium"
+  },
+  "polilla_ceniza": {
+   "tipo": "enemigo",
+   "nombre": "Polilla de Ceniza",
+   "celda": 48,
+   "pivote": [
+    24,
+    35
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/polilla_ceniza_idle.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/polilla_ceniza_walk.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": true,
+     "avance": 6,
+     "velocidad_natural": 9
+    },
+    "attack": {
+     "archivo": "enemigos/polilla_ceniza_attack.png",
+     "cuadros": 7,
+     "fps": 14,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impacto",
+       "cuadro": 4,
+       "fase": 0.57
+      }
+     ]
+    },
+    "hit": {
+     "archivo": "enemigos/polilla_ceniza_hit.png",
+     "cuadros": 4,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/polilla_ceniza_die.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": false
+    }
+   },
+   "perfil_movimiento": "premium",
+   "vuela": true
+  },
+  "minero_piedra": {
+   "tipo": "enemigo",
+   "nombre": "Minero de Piedra",
+   "celda": 64,
+   "pivote": [
+    32,
+    51
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/minero_piedra_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/minero_piedra_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true,
+     "eventos": [
+      {
+       "tipo": "paso",
+       "cuadro": 0,
+       "fase": 0,
+       "pie": "cerca"
+      },
+      {
+       "tipo": "paso",
+       "cuadro": 4,
+       "fase": 0.5,
+       "pie": "lejos"
+      }
+     ],
+     "avance": 19.6,
+     "velocidad_natural": 24.5
+    },
+    "attack": {
+     "archivo": "enemigos/minero_piedra_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impacto",
+       "cuadro": 3,
+       "fase": 0.5,
+       "punto": [
+        [
+         1,
+         5
+        ],
+        [
+         -13,
+         3
+        ],
+        [
+         -18,
+         -2
+        ],
+        [
+         -13,
+         -8
+        ],
+        [
+         -1,
+         -10
+        ],
+        [
+         13,
+         -8
+        ],
+        [
+         18,
+         -3
+        ],
+        [
+         13,
+         2
+        ]
+       ]
+      }
+     ]
+    },
+    "hit": {
+     "archivo": "enemigos/minero_piedra_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/minero_piedra_die.png",
+     "cuadros": 16,
+     "fps": 8,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "suelta",
+       "cuadro": 5,
+       "fase": 0.31
+      }
+     ]
+    },
+    "attack_heavy": {
+     "archivo": "enemigos/minero_piedra_attack_heavy.png",
+     "cuadros": 11,
+     "fps": 12,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impacto",
+       "cuadro": 6,
+       "fase": 0.55,
+       "punto": [
+        [
+         -13,
+         3
+        ],
+        [
+         -19,
+         -2
+        ],
+        [
+         -14,
+         -8
+        ],
+        [
+         -1,
+         -10
+        ],
+        [
+         13,
+         -9
+        ],
+        [
+         19,
+         -3
+        ],
+        [
+         14,
+         2
+        ],
+        [
+         1,
+         5
+        ]
+       ]
+      }
+     ],
+     "aviso": [
+      1,
+      4
+     ]
+    }
+   },
+   "perfil_movimiento": "premium"
+  },
+  "sombra": {
+   "tipo": "enemigo",
+   "nombre": "Sombra",
+   "celda": 48,
+   "pivote": [
+    24,
+    41
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/sombra_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/sombra_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true,
+     "eventos": [
+      {
+       "tipo": "paso",
+       "cuadro": 0,
+       "fase": 0,
+       "pie": "cerca"
+      },
+      {
+       "tipo": "paso",
+       "cuadro": 4,
+       "fase": 0.5,
+       "pie": "lejos"
+      }
+     ],
+     "avance": 13.8,
+     "velocidad_natural": 17.25
+    },
+    "attack": {
+     "archivo": "enemigos/sombra_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impacto",
+       "cuadro": 3,
+       "fase": 0.5
+      }
+     ]
+    },
+    "hit": {
+     "archivo": "enemigos/sombra_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/sombra_die.png",
+     "cuadros": 16,
+     "fps": 8,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "suelta",
+       "cuadro": 5,
+       "fase": 0.31
+      }
+     ]
+    }
+   },
+   "perfil_movimiento": "premium"
+  },
+  "polilla_reina": {
+   "tipo": "jefe",
+   "nombre": "Polilla Reina",
+   "celda": 128,
+   "pivote": [
+    64,
+    99
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/polilla_reina_idle.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/polilla_reina_walk.png",
+     "cuadros": 8,
+     "fps": 12,
+     "loop": true,
+     "avance": 16,
+     "velocidad_natural": 24
+    },
+    "attack": {
+     "archivo": "enemigos/polilla_reina_attack.png",
+     "cuadros": 7,
+     "fps": 14,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impacto",
+       "cuadro": 4,
+       "fase": 0.57
+      }
+     ]
+    },
+    "hit": {
+     "archivo": "enemigos/polilla_reina_hit.png",
+     "cuadros": 4,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/polilla_reina_die.png",
+     "cuadros": 16,
+     "fps": 8,
+     "loop": false
+    },
+    "attack_heavy": {
+     "archivo": "enemigos/polilla_reina_attack_heavy.png",
+     "cuadros": 12,
+     "fps": 12,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impacto",
+       "cuadro": 8,
+       "fase": 0.67
+      },
+      {
+       "tipo": "suelta",
+       "cuadro": 8,
+       "fase": 0.67
+      }
+     ],
+     "aviso": [
+      3,
+      7
+     ]
+    },
+    "warcry": {
+     "archivo": "enemigos/polilla_reina_warcry.png",
+     "cuadros": 10,
+     "fps": 10,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "grito",
+       "cuadro": 4,
+       "fase": 0.4
+      }
+     ],
+     "aviso": [
+      1,
+      4
+     ]
+    },
+    "aturdida": {
+     "archivo": "enemigos/polilla_reina_aturdida.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    }
+   },
+   "perfil_movimiento": "premium",
+   "vuela": true
   },
   "mercader": {
    "tipo": "npc",
@@ -29835,6 +30237,20 @@
    "fps": 10,
    "loop": false,
    "celda": 48
+  },
+  "aviso_polvo": {
+   "archivo": "fx/aviso_polvo.png",
+   "cuadros": 8,
+   "fps": 10,
+   "loop": false,
+   "celda": 96
+  },
+  "nube_polvo": {
+   "archivo": "fx/nube_polvo.png",
+   "cuadros": 10,
+   "fps": 12,
+   "loop": false,
+   "celda": 96
   }
  },
  "botin": {
@@ -29872,6 +30288,16 @@
   "cuadro": 32,
   "trozo": 960,
   "agua": "mundo/agua.png",
+  "espuma": {
+   "archivo": "mundo/mundo1_bosque_espuma.png",
+   "capa": "espuma",
+   "columnas": 32,
+   "cuadros": 4,
+   "fps": 5
+  },
+  "reflejo": {
+   "capa": "reflejo"
+  },
   "suelo": [
    {
     "archivo": "mundo/suelo/mundo1_bosque_0.png",
@@ -30080,6 +30506,12 @@
       "cuadros": 1,
       "fps": 1,
       "loop": true
+     },
+     "sacudir": {
+      "archivo": "mundo/objetos/arbusto_sacudir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -30099,6 +30531,18 @@
     "anims": {
      "idle": {
       "archivo": "mundo/objetos/arbusto_moras_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "sacudir": {
+      "archivo": "mundo/objetos/arbusto_moras_sacudir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
+     },
+     "sin_moras": {
+      "archivo": "mundo/objetos/arbusto_moras_sin_moras.png",
       "cuadros": 1,
       "fps": 1,
       "loop": true
@@ -30207,6 +30651,12 @@
       "cuadros": 1,
       "fps": 1,
       "loop": true
+     },
+     "rebotar": {
+      "archivo": "mundo/objetos/hongos_rebotar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -30426,6 +30876,18 @@
       "cuadros": 4,
       "fps": 8,
       "loop": true
+     },
+     "apagada": {
+      "archivo": "mundo/objetos/antorcha_apagada.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "prender": {
+      "archivo": "mundo/objetos/antorcha_prender.png",
+      "cuadros": 6,
+      "fps": 10,
+      "loop": false
      }
     }
    },
@@ -30719,6 +31181,12 @@
       "cuadros": 1,
       "fps": 1,
       "loop": true
+     },
+     "mecer": {
+      "archivo": "mundo/objetos/nenufar_mecer.png",
+      "cuadros": 6,
+      "fps": 8,
+      "loop": false
      }
     }
    },
@@ -30737,6 +31205,12 @@
       "cuadros": 1,
       "fps": 1,
       "loop": true
+     },
+     "mecer": {
+      "archivo": "mundo/objetos/nenufar_flor_mecer.png",
+      "cuadros": 6,
+      "fps": 8,
+      "loop": false
      }
     }
    },
@@ -30754,6 +31228,12 @@
       "cuadros": 4,
       "fps": 5,
       "loop": true
+     },
+     "mecer": {
+      "archivo": "mundo/objetos/juncos_mecer.png",
+      "cuadros": 6,
+      "fps": 8,
+      "loop": false
      }
     }
    },
@@ -30878,6 +31358,12 @@
       "cuadros": 4,
       "fps": 4,
       "loop": true
+     },
+     "rebotar": {
+      "archivo": "mundo/objetos/hongo_gigante_azul_rebotar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -30906,6 +31392,12 @@
       "cuadros": 4,
       "fps": 4,
       "loop": true
+     },
+     "rebotar": {
+      "archivo": "mundo/objetos/hongo_gigante_morado_rebotar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -31281,6 +31773,18 @@
       "cuadros": 4,
       "fps": 6,
       "loop": true
+     },
+     "apagada": {
+      "archivo": "mundo/objetos/farol_apagada.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "prender": {
+      "archivo": "mundo/objetos/farol_prender.png",
+      "cuadros": 6,
+      "fps": 10,
+      "loop": false
      }
     }
    },
@@ -31428,6 +31932,18 @@
       "cuadros": 4,
       "fps": 4,
       "loop": true
+     },
+     "cerrar": {
+      "archivo": "mundo/objetos/flores_grandes_0_cerrar.png",
+      "cuadros": 4,
+      "fps": 8,
+      "loop": false
+     },
+     "abrir": {
+      "archivo": "mundo/objetos/flores_grandes_0_abrir.png",
+      "cuadros": 4,
+      "fps": 8,
+      "loop": false
      }
     }
    },
@@ -31445,6 +31961,18 @@
       "cuadros": 4,
       "fps": 4,
       "loop": true
+     },
+     "cerrar": {
+      "archivo": "mundo/objetos/flores_grandes_1_cerrar.png",
+      "cuadros": 4,
+      "fps": 8,
+      "loop": false
+     },
+     "abrir": {
+      "archivo": "mundo/objetos/flores_grandes_1_abrir.png",
+      "cuadros": 4,
+      "fps": 8,
+      "loop": false
      }
     }
    },
@@ -31462,6 +31990,18 @@
       "cuadros": 4,
       "fps": 4,
       "loop": true
+     },
+     "cerrar": {
+      "archivo": "mundo/objetos/flores_grandes_2_cerrar.png",
+      "cuadros": 4,
+      "fps": 8,
+      "loop": false
+     },
+     "abrir": {
+      "archivo": "mundo/objetos/flores_grandes_2_abrir.png",
+      "cuadros": 4,
+      "fps": 8,
+      "loop": false
      }
     }
    },
@@ -31484,6 +32024,12 @@
       "cuadros": 1,
       "fps": 1,
       "loop": true
+     },
+     "rebotar": {
+      "archivo": "mundo/objetos/tocon_hongos_rebotar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -31502,6 +32048,12 @@
       "cuadros": 4,
       "fps": 4,
       "loop": true
+     },
+     "salpicar": {
+      "archivo": "mundo/objetos/charco_salpicar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -32072,6 +32624,12 @@
       "cuadros": 9,
       "fps": 4,
       "loop": true
+     },
+     "sacudir": {
+      "archivo": "mundo/objetos/arbusto_verde_0_sacudir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -32094,6 +32652,12 @@
       "cuadros": 9,
       "fps": 4,
       "loop": true
+     },
+     "sacudir": {
+      "archivo": "mundo/objetos/arbusto_verde_1_sacudir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -32115,6 +32679,18 @@
       "archivo": "mundo/objetos/arbusto_moras_0_idle.png",
       "cuadros": 9,
       "fps": 4,
+      "loop": true
+     },
+     "sacudir": {
+      "archivo": "mundo/objetos/arbusto_moras_0_sacudir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
+     },
+     "sin_moras": {
+      "archivo": "mundo/objetos/arbusto_moras_0_sin_moras.png",
+      "cuadros": 1,
+      "fps": 1,
       "loop": true
      }
     }
@@ -32138,6 +32714,12 @@
       "cuadros": 9,
       "fps": 4,
       "loop": true
+     },
+     "sacudir": {
+      "archivo": "mundo/objetos/arbusto_espinas_0_sacudir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -32201,6 +32783,12 @@
       "cuadros": 1,
       "fps": 1,
       "loop": true
+     },
+     "romper": {
+      "archivo": "mundo/objetos/telarana_romper.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -32923,6 +33511,12 @@
       "cuadros": 1,
       "fps": 1,
       "loop": true
+     },
+     "sacudir": {
+      "archivo": "mundo/objetos/arbusto_flores_grupo_sacudir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -32971,6 +33565,12 @@
       "cuadros": 4,
       "fps": 4,
       "loop": true
+     },
+     "rebotar": {
+      "archivo": "mundo/objetos/hongo_gigante_azul_p_rebotar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -33001,6 +33601,72 @@
       "cuadros": 4,
       "fps": 4,
       "loop": true
+     },
+     "rebotar": {
+      "archivo": "mundo/objetos/hongo_gigante_morado_p_rebotar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
+     }
+    }
+   },
+   "arbol_hechizado_0_p": {
+    "w": 164,
+    "h": 149,
+    "apoyo": [
+     56,
+     122
+    ],
+    "solido": [
+     -14,
+     -8,
+     28,
+     8
+    ],
+    "base": "arbol_hechizado_0",
+    "sombra": "mundo/objetos/arbol_hechizado_0_p_sombra.png",
+    "anims": {
+     "dormido": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_p_dormido.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "despierto": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_p_despierto.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "parpadeo": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_p_parpadeo.png",
+      "cuadros": 5,
+      "fps": 12,
+      "loop": false
+     },
+     "copa": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_p_copa.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_dormido": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_p_tronco_dormido.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_despierto": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_p_tronco_despierto.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco_parpadeo": {
+      "archivo": "mundo/objetos/arbol_hechizado_0_p_tronco_parpadeo.png",
+      "cuadros": 5,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -33241,6 +33907,12 @@
       "cuadros": 9,
       "fps": 4,
       "loop": true
+     },
+     "sacudir": {
+      "archivo": "mundo/objetos/arbusto_verde_0_p_sacudir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -33265,6 +33937,12 @@
       "cuadros": 9,
       "fps": 4,
       "loop": true
+     },
+     "sacudir": {
+      "archivo": "mundo/objetos/arbusto_verde_1_p_sacudir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -33289,6 +33967,48 @@
       "cuadros": 9,
       "fps": 4,
       "loop": true
+     },
+     "sacudir": {
+      "archivo": "mundo/objetos/arbusto_moras_0_p_sacudir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
+     },
+     "sin_moras": {
+      "archivo": "mundo/objetos/arbusto_moras_0_p_sin_moras.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "arbusto_espinas_0_p": {
+    "w": 46,
+    "h": 39,
+    "apoyo": [
+     20,
+     30
+    ],
+    "solido": [
+     -12,
+     -5,
+     24,
+     5
+    ],
+    "base": "arbusto_espinas_0",
+    "sombra": "mundo/objetos/arbusto_espinas_0_p_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/arbusto_espinas_0_p_idle.png",
+      "cuadros": 9,
+      "fps": 4,
+      "loop": true
+     },
+     "sacudir": {
+      "archivo": "mundo/objetos/arbusto_espinas_0_p_sacudir.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -33308,6 +34028,12 @@
       "cuadros": 1,
       "fps": 1,
       "loop": true
+     },
+     "rebotar": {
+      "archivo": "mundo/objetos/hongos_p_rebotar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -33356,6 +34082,132 @@
       "cuadros": 1,
       "fps": 1,
       "loop": true
+     }
+    }
+   },
+   "sauce_v3_p": {
+    "w": 129,
+    "h": 145,
+    "apoyo": [
+     52,
+     119
+    ],
+    "solido": [
+     -7,
+     -6,
+     14,
+     6
+    ],
+    "base": "sauce_v3",
+    "sombra": "mundo/objetos/sauce_v3_p_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/sauce_v3_p_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/sauce_v3_p_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/sauce_v3_p_copa.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "roble_otono_1_p": {
+    "w": 113,
+    "h": 131,
+    "apoyo": [
+     48,
+     110
+    ],
+    "solido": [
+     -8,
+     -6,
+     17,
+     6
+    ],
+    "base": "roble_otono_1",
+    "sombra": "mundo/objetos/roble_otono_1_p_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/roble_otono_1_p_idle.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "tronco": {
+      "archivo": "mundo/objetos/roble_otono_1_p_tronco.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     },
+     "copa": {
+      "archivo": "mundo/objetos/roble_otono_1_p_copa.png",
+      "cuadros": 9,
+      "fps": 5,
+      "loop": true
+     }
+    }
+   },
+   "tocon_p": {
+    "w": 34,
+    "h": 32,
+    "apoyo": [
+     16,
+     24
+    ],
+    "solido": [
+     -8,
+     -5,
+     16,
+     5
+    ],
+    "base": "tocon",
+    "sombra": "mundo/objetos/tocon_p_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/tocon_p_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "tocon_hongos_p": {
+    "w": 43,
+    "h": 40,
+    "apoyo": [
+     20,
+     33
+    ],
+    "solido": [
+     -11,
+     -6,
+     22,
+     6
+    ],
+    "base": "tocon_hongos",
+    "sombra": "mundo/objetos/tocon_hongos_p_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/tocon_hongos_p_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "rebotar": {
+      "archivo": "mundo/objetos/tocon_hongos_p_rebotar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -33554,6 +34406,12 @@
       "cuadros": 1,
       "fps": 1,
       "loop": true
+     },
+     "salpicar": {
+      "archivo": "mundo/objetos/charco_chico_0_salpicar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -33572,6 +34430,12 @@
       "cuadros": 1,
       "fps": 1,
       "loop": true
+     },
+     "salpicar": {
+      "archivo": "mundo/objetos/charco_chico_1_salpicar.png",
+      "cuadros": 6,
+      "fps": 12,
+      "loop": false
      }
     }
    },
@@ -33790,6 +34654,122 @@
       "loop": true
      }
     }
+   },
+   "palanca": {
+    "w": 34,
+    "h": 36,
+    "apoyo": [
+     16,
+     30
+    ],
+    "solido": [
+     -6,
+     -6,
+     12,
+     6
+    ],
+    "sombra": "mundo/objetos/palanca_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/palanca_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "arriba": {
+      "archivo": "mundo/objetos/palanca_arriba.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "bajar": {
+      "archivo": "mundo/objetos/palanca_bajar.png",
+      "cuadros": 8,
+      "fps": 10,
+      "loop": false
+     },
+     "abajo": {
+      "archivo": "mundo/objetos/palanca_abajo.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "puerta_madera": {
+    "w": 64,
+    "h": 64,
+    "apoyo": [
+     32,
+     62
+    ],
+    "solido": [
+     -26,
+     -8,
+     52,
+     8
+    ],
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/puerta_madera_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "cerrada": {
+      "archivo": "mundo/objetos/puerta_madera_cerrada.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "abrir": {
+      "archivo": "mundo/objetos/puerta_madera_abrir.png",
+      "cuadros": 9,
+      "fps": 10,
+      "loop": false
+     },
+     "abierta": {
+      "archivo": "mundo/objetos/puerta_madera_abierta.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     }
+    }
+   },
+   "piedra_empujable": {
+    "w": 38,
+    "h": 36,
+    "apoyo": [
+     16,
+     29
+    ],
+    "solido": [
+     -12,
+     -8,
+     24,
+     8
+    ],
+    "sombra": "mundo/objetos/piedra_empujable_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/piedra_empujable_idle.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "quieta": {
+      "archivo": "mundo/objetos/piedra_empujable_quieta.png",
+      "cuadros": 1,
+      "fps": 1,
+      "loop": true
+     },
+     "arrastrar": {
+      "archivo": "mundo/objetos/piedra_empujable_arrastrar.png",
+      "cuadros": 6,
+      "fps": 6,
+      "loop": true
+     }
+    }
    }
   },
   "particulas": {
@@ -33897,6 +34877,20 @@
     "h": 8,
     "cuadros": 4,
     "fps": 6
+   },
+   "brasa_fria": {
+    "archivo": "mundo/particulas/brasa_fria.png",
+    "w": 4,
+    "h": 4,
+    "cuadros": 3,
+    "fps": 8
+   },
+   "ceniza": {
+    "archivo": "mundo/particulas/ceniza.png",
+    "w": 4,
+    "h": 4,
+    "cuadros": 2,
+    "fps": 4
    }
   },
   "criaturas": {
@@ -34001,6 +34995,72 @@
       "loop": true
      }
     }
+   },
+   "rana": {
+    "w": 16,
+    "h": 16,
+    "anims": {
+     "quieto": {
+      "archivo": "mundo/criaturas/rana_quieto.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     },
+     "huir": {
+      "archivo": "mundo/criaturas/rana_huir.png",
+      "cuadros": 6,
+      "fps": 10,
+      "loop": true
+     }
+    }
+   },
+   "pez": {
+    "w": 16,
+    "h": 16,
+    "anims": {
+     "quieto": {
+      "archivo": "mundo/criaturas/pez_quieto.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     },
+     "huir": {
+      "archivo": "mundo/criaturas/pez_huir.png",
+      "cuadros": 8,
+      "fps": 12,
+      "loop": false
+     }
+    }
+   },
+   "ardilla": {
+    "w": 16,
+    "h": 16,
+    "anims": {
+     "quieto": {
+      "archivo": "mundo/criaturas/ardilla_quieto.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     },
+     "huir": {
+      "archivo": "mundo/criaturas/ardilla_huir.png",
+      "cuadros": 8,
+      "fps": 12,
+      "loop": true
+     }
+    }
+   },
+   "sombra_ojos": {
+    "w": 16,
+    "h": 8,
+    "anims": {
+     "parpadeo": {
+      "archivo": "mundo/criaturas/sombra_ojos_parpadeo.png",
+      "cuadros": 4,
+      "fps": 3,
+      "loop": true
+     }
+    }
    }
   },
   "luz": "mundo/luz.png",
@@ -34023,6 +35083,16 @@
    "cuadro": 32,
    "trozo": 960,
    "agua": "mundo/agua.png",
+   "espuma": {
+    "archivo": "mundo/mundo1_bosque_espuma.png",
+    "capa": "espuma",
+    "columnas": 32,
+    "cuadros": 4,
+    "fps": 5
+   },
+   "reflejo": {
+    "capa": "reflejo"
+   },
    "suelo": [
     {
      "archivo": "mundo/suelo/mundo1_bosque_0.png",
@@ -34231,6 +35301,12 @@
        "cuadros": 1,
        "fps": 1,
        "loop": true
+      },
+      "sacudir": {
+       "archivo": "mundo/objetos/arbusto_sacudir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -34250,6 +35326,18 @@
      "anims": {
       "idle": {
        "archivo": "mundo/objetos/arbusto_moras_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "sacudir": {
+       "archivo": "mundo/objetos/arbusto_moras_sacudir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      },
+      "sin_moras": {
+       "archivo": "mundo/objetos/arbusto_moras_sin_moras.png",
        "cuadros": 1,
        "fps": 1,
        "loop": true
@@ -34358,6 +35446,12 @@
        "cuadros": 1,
        "fps": 1,
        "loop": true
+      },
+      "rebotar": {
+       "archivo": "mundo/objetos/hongos_rebotar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -34577,6 +35671,18 @@
        "cuadros": 4,
        "fps": 8,
        "loop": true
+      },
+      "apagada": {
+       "archivo": "mundo/objetos/antorcha_apagada.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "prender": {
+       "archivo": "mundo/objetos/antorcha_prender.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": false
       }
      }
     },
@@ -34870,6 +35976,12 @@
        "cuadros": 1,
        "fps": 1,
        "loop": true
+      },
+      "mecer": {
+       "archivo": "mundo/objetos/nenufar_mecer.png",
+       "cuadros": 6,
+       "fps": 8,
+       "loop": false
       }
      }
     },
@@ -34888,6 +36000,12 @@
        "cuadros": 1,
        "fps": 1,
        "loop": true
+      },
+      "mecer": {
+       "archivo": "mundo/objetos/nenufar_flor_mecer.png",
+       "cuadros": 6,
+       "fps": 8,
+       "loop": false
       }
      }
     },
@@ -34905,6 +36023,12 @@
        "cuadros": 4,
        "fps": 5,
        "loop": true
+      },
+      "mecer": {
+       "archivo": "mundo/objetos/juncos_mecer.png",
+       "cuadros": 6,
+       "fps": 8,
+       "loop": false
       }
      }
     },
@@ -35029,6 +36153,12 @@
        "cuadros": 4,
        "fps": 4,
        "loop": true
+      },
+      "rebotar": {
+       "archivo": "mundo/objetos/hongo_gigante_azul_rebotar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -35057,6 +36187,12 @@
        "cuadros": 4,
        "fps": 4,
        "loop": true
+      },
+      "rebotar": {
+       "archivo": "mundo/objetos/hongo_gigante_morado_rebotar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -35432,6 +36568,18 @@
        "cuadros": 4,
        "fps": 6,
        "loop": true
+      },
+      "apagada": {
+       "archivo": "mundo/objetos/farol_apagada.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "prender": {
+       "archivo": "mundo/objetos/farol_prender.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": false
       }
      }
     },
@@ -35579,6 +36727,18 @@
        "cuadros": 4,
        "fps": 4,
        "loop": true
+      },
+      "cerrar": {
+       "archivo": "mundo/objetos/flores_grandes_0_cerrar.png",
+       "cuadros": 4,
+       "fps": 8,
+       "loop": false
+      },
+      "abrir": {
+       "archivo": "mundo/objetos/flores_grandes_0_abrir.png",
+       "cuadros": 4,
+       "fps": 8,
+       "loop": false
       }
      }
     },
@@ -35596,6 +36756,18 @@
        "cuadros": 4,
        "fps": 4,
        "loop": true
+      },
+      "cerrar": {
+       "archivo": "mundo/objetos/flores_grandes_1_cerrar.png",
+       "cuadros": 4,
+       "fps": 8,
+       "loop": false
+      },
+      "abrir": {
+       "archivo": "mundo/objetos/flores_grandes_1_abrir.png",
+       "cuadros": 4,
+       "fps": 8,
+       "loop": false
       }
      }
     },
@@ -35613,6 +36785,18 @@
        "cuadros": 4,
        "fps": 4,
        "loop": true
+      },
+      "cerrar": {
+       "archivo": "mundo/objetos/flores_grandes_2_cerrar.png",
+       "cuadros": 4,
+       "fps": 8,
+       "loop": false
+      },
+      "abrir": {
+       "archivo": "mundo/objetos/flores_grandes_2_abrir.png",
+       "cuadros": 4,
+       "fps": 8,
+       "loop": false
       }
      }
     },
@@ -35635,6 +36819,12 @@
        "cuadros": 1,
        "fps": 1,
        "loop": true
+      },
+      "rebotar": {
+       "archivo": "mundo/objetos/tocon_hongos_rebotar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -35653,6 +36843,12 @@
        "cuadros": 4,
        "fps": 4,
        "loop": true
+      },
+      "salpicar": {
+       "archivo": "mundo/objetos/charco_salpicar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -36223,6 +37419,12 @@
        "cuadros": 9,
        "fps": 4,
        "loop": true
+      },
+      "sacudir": {
+       "archivo": "mundo/objetos/arbusto_verde_0_sacudir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -36245,6 +37447,12 @@
        "cuadros": 9,
        "fps": 4,
        "loop": true
+      },
+      "sacudir": {
+       "archivo": "mundo/objetos/arbusto_verde_1_sacudir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -36266,6 +37474,18 @@
        "archivo": "mundo/objetos/arbusto_moras_0_idle.png",
        "cuadros": 9,
        "fps": 4,
+       "loop": true
+      },
+      "sacudir": {
+       "archivo": "mundo/objetos/arbusto_moras_0_sacudir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      },
+      "sin_moras": {
+       "archivo": "mundo/objetos/arbusto_moras_0_sin_moras.png",
+       "cuadros": 1,
+       "fps": 1,
        "loop": true
       }
      }
@@ -36289,6 +37509,12 @@
        "cuadros": 9,
        "fps": 4,
        "loop": true
+      },
+      "sacudir": {
+       "archivo": "mundo/objetos/arbusto_espinas_0_sacudir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -36352,6 +37578,12 @@
        "cuadros": 1,
        "fps": 1,
        "loop": true
+      },
+      "romper": {
+       "archivo": "mundo/objetos/telarana_romper.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -37074,6 +38306,12 @@
        "cuadros": 1,
        "fps": 1,
        "loop": true
+      },
+      "sacudir": {
+       "archivo": "mundo/objetos/arbusto_flores_grupo_sacudir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -37122,6 +38360,12 @@
        "cuadros": 4,
        "fps": 4,
        "loop": true
+      },
+      "rebotar": {
+       "archivo": "mundo/objetos/hongo_gigante_azul_p_rebotar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -37152,6 +38396,72 @@
        "cuadros": 4,
        "fps": 4,
        "loop": true
+      },
+      "rebotar": {
+       "archivo": "mundo/objetos/hongo_gigante_morado_p_rebotar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      }
+     }
+    },
+    "arbol_hechizado_0_p": {
+     "w": 164,
+     "h": 149,
+     "apoyo": [
+      56,
+      122
+     ],
+     "solido": [
+      -14,
+      -8,
+      28,
+      8
+     ],
+     "base": "arbol_hechizado_0",
+     "sombra": "mundo/objetos/arbol_hechizado_0_p_sombra.png",
+     "anims": {
+      "dormido": {
+       "archivo": "mundo/objetos/arbol_hechizado_0_p_dormido.png",
+       "cuadros": 9,
+       "fps": 5,
+       "loop": true
+      },
+      "despierto": {
+       "archivo": "mundo/objetos/arbol_hechizado_0_p_despierto.png",
+       "cuadros": 9,
+       "fps": 5,
+       "loop": true
+      },
+      "parpadeo": {
+       "archivo": "mundo/objetos/arbol_hechizado_0_p_parpadeo.png",
+       "cuadros": 5,
+       "fps": 12,
+       "loop": false
+      },
+      "copa": {
+       "archivo": "mundo/objetos/arbol_hechizado_0_p_copa.png",
+       "cuadros": 9,
+       "fps": 5,
+       "loop": true
+      },
+      "tronco_dormido": {
+       "archivo": "mundo/objetos/arbol_hechizado_0_p_tronco_dormido.png",
+       "cuadros": 9,
+       "fps": 5,
+       "loop": true
+      },
+      "tronco_despierto": {
+       "archivo": "mundo/objetos/arbol_hechizado_0_p_tronco_despierto.png",
+       "cuadros": 9,
+       "fps": 5,
+       "loop": true
+      },
+      "tronco_parpadeo": {
+       "archivo": "mundo/objetos/arbol_hechizado_0_p_tronco_parpadeo.png",
+       "cuadros": 5,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -37392,6 +38702,12 @@
        "cuadros": 9,
        "fps": 4,
        "loop": true
+      },
+      "sacudir": {
+       "archivo": "mundo/objetos/arbusto_verde_0_p_sacudir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -37416,6 +38732,12 @@
        "cuadros": 9,
        "fps": 4,
        "loop": true
+      },
+      "sacudir": {
+       "archivo": "mundo/objetos/arbusto_verde_1_p_sacudir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -37440,6 +38762,48 @@
        "cuadros": 9,
        "fps": 4,
        "loop": true
+      },
+      "sacudir": {
+       "archivo": "mundo/objetos/arbusto_moras_0_p_sacudir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      },
+      "sin_moras": {
+       "archivo": "mundo/objetos/arbusto_moras_0_p_sin_moras.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "arbusto_espinas_0_p": {
+     "w": 46,
+     "h": 39,
+     "apoyo": [
+      20,
+      30
+     ],
+     "solido": [
+      -12,
+      -5,
+      24,
+      5
+     ],
+     "base": "arbusto_espinas_0",
+     "sombra": "mundo/objetos/arbusto_espinas_0_p_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/arbusto_espinas_0_p_idle.png",
+       "cuadros": 9,
+       "fps": 4,
+       "loop": true
+      },
+      "sacudir": {
+       "archivo": "mundo/objetos/arbusto_espinas_0_p_sacudir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -37459,6 +38823,12 @@
        "cuadros": 1,
        "fps": 1,
        "loop": true
+      },
+      "rebotar": {
+       "archivo": "mundo/objetos/hongos_p_rebotar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -37507,6 +38877,132 @@
        "cuadros": 1,
        "fps": 1,
        "loop": true
+      }
+     }
+    },
+    "sauce_v3_p": {
+     "w": 129,
+     "h": 145,
+     "apoyo": [
+      52,
+      119
+     ],
+     "solido": [
+      -7,
+      -6,
+      14,
+      6
+     ],
+     "base": "sauce_v3",
+     "sombra": "mundo/objetos/sauce_v3_p_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/sauce_v3_p_idle.png",
+       "cuadros": 9,
+       "fps": 5,
+       "loop": true
+      },
+      "tronco": {
+       "archivo": "mundo/objetos/sauce_v3_p_tronco.png",
+       "cuadros": 9,
+       "fps": 5,
+       "loop": true
+      },
+      "copa": {
+       "archivo": "mundo/objetos/sauce_v3_p_copa.png",
+       "cuadros": 9,
+       "fps": 5,
+       "loop": true
+      }
+     }
+    },
+    "roble_otono_1_p": {
+     "w": 113,
+     "h": 131,
+     "apoyo": [
+      48,
+      110
+     ],
+     "solido": [
+      -8,
+      -6,
+      17,
+      6
+     ],
+     "base": "roble_otono_1",
+     "sombra": "mundo/objetos/roble_otono_1_p_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/roble_otono_1_p_idle.png",
+       "cuadros": 9,
+       "fps": 5,
+       "loop": true
+      },
+      "tronco": {
+       "archivo": "mundo/objetos/roble_otono_1_p_tronco.png",
+       "cuadros": 9,
+       "fps": 5,
+       "loop": true
+      },
+      "copa": {
+       "archivo": "mundo/objetos/roble_otono_1_p_copa.png",
+       "cuadros": 9,
+       "fps": 5,
+       "loop": true
+      }
+     }
+    },
+    "tocon_p": {
+     "w": 34,
+     "h": 32,
+     "apoyo": [
+      16,
+      24
+     ],
+     "solido": [
+      -8,
+      -5,
+      16,
+      5
+     ],
+     "base": "tocon",
+     "sombra": "mundo/objetos/tocon_p_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/tocon_p_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "tocon_hongos_p": {
+     "w": 43,
+     "h": 40,
+     "apoyo": [
+      20,
+      33
+     ],
+     "solido": [
+      -11,
+      -6,
+      22,
+      6
+     ],
+     "base": "tocon_hongos",
+     "sombra": "mundo/objetos/tocon_hongos_p_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/tocon_hongos_p_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "rebotar": {
+       "archivo": "mundo/objetos/tocon_hongos_p_rebotar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -37705,6 +39201,12 @@
        "cuadros": 1,
        "fps": 1,
        "loop": true
+      },
+      "salpicar": {
+       "archivo": "mundo/objetos/charco_chico_0_salpicar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -37723,6 +39225,12 @@
        "cuadros": 1,
        "fps": 1,
        "loop": true
+      },
+      "salpicar": {
+       "archivo": "mundo/objetos/charco_chico_1_salpicar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
       }
      }
     },
@@ -37941,6 +39449,122 @@
        "loop": true
       }
      }
+    },
+    "palanca": {
+     "w": 34,
+     "h": 36,
+     "apoyo": [
+      16,
+      30
+     ],
+     "solido": [
+      -6,
+      -6,
+      12,
+      6
+     ],
+     "sombra": "mundo/objetos/palanca_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/palanca_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "arriba": {
+       "archivo": "mundo/objetos/palanca_arriba.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "bajar": {
+       "archivo": "mundo/objetos/palanca_bajar.png",
+       "cuadros": 8,
+       "fps": 10,
+       "loop": false
+      },
+      "abajo": {
+       "archivo": "mundo/objetos/palanca_abajo.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "puerta_madera": {
+     "w": 64,
+     "h": 64,
+     "apoyo": [
+      32,
+      62
+     ],
+     "solido": [
+      -26,
+      -8,
+      52,
+      8
+     ],
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/puerta_madera_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "cerrada": {
+       "archivo": "mundo/objetos/puerta_madera_cerrada.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "abrir": {
+       "archivo": "mundo/objetos/puerta_madera_abrir.png",
+       "cuadros": 9,
+       "fps": 10,
+       "loop": false
+      },
+      "abierta": {
+       "archivo": "mundo/objetos/puerta_madera_abierta.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "piedra_empujable": {
+     "w": 38,
+     "h": 36,
+     "apoyo": [
+      16,
+      29
+     ],
+     "solido": [
+      -12,
+      -8,
+      24,
+      8
+     ],
+     "sombra": "mundo/objetos/piedra_empujable_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/piedra_empujable_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "quieta": {
+       "archivo": "mundo/objetos/piedra_empujable_quieta.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "arrastrar": {
+       "archivo": "mundo/objetos/piedra_empujable_arrastrar.png",
+       "cuadros": 6,
+       "fps": 6,
+       "loop": true
+      }
+     }
     }
    },
    "particulas": {
@@ -38048,6 +39672,20 @@
      "h": 8,
      "cuadros": 4,
      "fps": 6
+    },
+    "brasa_fria": {
+     "archivo": "mundo/particulas/brasa_fria.png",
+     "w": 4,
+     "h": 4,
+     "cuadros": 3,
+     "fps": 8
+    },
+    "ceniza": {
+     "archivo": "mundo/particulas/ceniza.png",
+     "w": 4,
+     "h": 4,
+     "cuadros": 2,
+     "fps": 4
     }
    },
    "criaturas": {
@@ -38152,6 +39790,72 @@
        "loop": true
       }
      }
+    },
+    "rana": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/rana_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/rana_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      }
+     }
+    },
+    "pez": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/pez_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/pez_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": false
+      }
+     }
+    },
+    "ardilla": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/ardilla_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/ardilla_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      }
+     }
+    },
+    "sombra_ojos": {
+     "w": 16,
+     "h": 8,
+     "anims": {
+      "parpadeo": {
+       "archivo": "mundo/criaturas/sombra_ojos_parpadeo.png",
+       "cuadros": 4,
+       "fps": 3,
+       "loop": true
+      }
+     }
     }
    },
    "luz": "mundo/luz.png",
@@ -38173,6 +39877,16 @@
    "cuadro": 32,
    "trozo": 960,
    "agua": "mundo/mundo2_agua.png",
+   "espuma": {
+    "archivo": "mundo/mundo2_catedral_espuma.png",
+    "capa": "espuma",
+    "columnas": 32,
+    "cuadros": 4,
+    "fps": 5
+   },
+   "reflejo": {
+    "capa": "reflejo"
+   },
    "suelo": [
     {
      "archivo": "mundo/suelo/mundo2_catedral_0.png",
@@ -38792,6 +40506,1075 @@
       }
      }
     },
+    "ladrillo_0": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_1": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_2": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_3": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_3_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_4": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_4_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_5": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_5_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_musgo_0": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_musgo_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_musgo_1": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_musgo_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_musgo_2": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_musgo_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_roto_0": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_roto_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_roto_1": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_roto_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_roto_2": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_roto_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_raiz_0": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_raiz_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_raiz_1": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_raiz_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "ladrillo_raiz_2": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      32
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/ladrillo_raiz_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "banca_rota": {
+     "w": 73,
+     "h": 47,
+     "apoyo": [
+      32,
+      37
+     ],
+     "solido": [
+      -28,
+      -8,
+      56,
+      8
+     ],
+     "sombra": "mundo/objetos/banca_rota_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/banca_rota_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "candelabro_pie": {
+     "w": 51,
+     "h": 75,
+     "apoyo": [
+      16,
+      62
+     ],
+     "solido": [
+      -6,
+      -4,
+      12,
+      4
+     ],
+     "luz": {
+      "color": "#ffb050",
+      "radius": 90,
+      "flicker": true,
+      "dy": 44
+     },
+     "sombra": "mundo/objetos/candelabro_pie_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/candelabro_pie_idle.png",
+       "cuadros": 4,
+       "fps": 8,
+       "loop": true
+      },
+      "apagada": {
+       "archivo": "mundo/objetos/candelabro_pie_apagada.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "prender": {
+       "archivo": "mundo/objetos/candelabro_pie_prender.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": false
+      }
+     }
+    },
+    "estatua_santo_rota": {
+     "w": 62,
+     "h": 109,
+     "apoyo": [
+      24,
+      93
+     ],
+     "solido": [
+      -14,
+      -8,
+      28,
+      8
+     ],
+     "sombra": "mundo/objetos/estatua_santo_rota_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/estatua_santo_rota_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "libros_tirados": {
+     "w": 40,
+     "h": 24,
+     "apoyo": [
+      20,
+      18
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/libros_tirados_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "musgo_losa_0": {
+     "w": 32,
+     "h": 24,
+     "apoyo": [
+      16,
+      12
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/musgo_losa_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "musgo_losa_1": {
+     "w": 32,
+     "h": 24,
+     "apoyo": [
+      16,
+      12
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/musgo_losa_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "musgo_losa_2": {
+     "w": 32,
+     "h": 24,
+     "apoyo": [
+      16,
+      12
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/musgo_losa_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "musgo_losa_3": {
+     "w": 32,
+     "h": 24,
+     "apoyo": [
+      16,
+      12
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/musgo_losa_3_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "grieta_losa_0": {
+     "w": 32,
+     "h": 20,
+     "apoyo": [
+      16,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/grieta_losa_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "grieta_losa_1": {
+     "w": 32,
+     "h": 20,
+     "apoyo": [
+      16,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/grieta_losa_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "grieta_losa_2": {
+     "w": 32,
+     "h": 20,
+     "apoyo": [
+      16,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/grieta_losa_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "grieta_losa_3": {
+     "w": 32,
+     "h": 20,
+     "apoyo": [
+      16,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/grieta_losa_3_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "escombro_chico_0": {
+     "w": 24,
+     "h": 16,
+     "apoyo": [
+      12,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/escombro_chico_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "escombro_chico_1": {
+     "w": 24,
+     "h": 16,
+     "apoyo": [
+      12,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/escombro_chico_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "escombro_chico_2": {
+     "w": 24,
+     "h": 16,
+     "apoyo": [
+      12,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/escombro_chico_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "cera_derretida_0": {
+     "w": 24,
+     "h": 16,
+     "apoyo": [
+      12,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cera_derretida_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "cera_derretida_1": {
+     "w": 24,
+     "h": 16,
+     "apoyo": [
+      12,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cera_derretida_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "charco_negro_0": {
+     "w": 32,
+     "h": 16,
+     "apoyo": [
+      16,
+      8
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/charco_negro_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "salpicar": {
+       "archivo": "mundo/objetos/charco_negro_0_salpicar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      }
+     }
+    },
+    "charco_negro_1": {
+     "w": 32,
+     "h": 16,
+     "apoyo": [
+      16,
+      8
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/charco_negro_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "salpicar": {
+       "archivo": "mundo/objetos/charco_negro_1_salpicar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      }
+     }
+    },
+    "vitral_0": {
+     "w": 48,
+     "h": 96,
+     "apoyo": [
+      24,
+      95
+     ],
+     "solido": null,
+     "luz": {
+      "color": "#ffb050",
+      "radius": 70,
+      "pulse": true,
+      "dy": 50
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/vitral_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "vitral_1": {
+     "w": 48,
+     "h": 96,
+     "apoyo": [
+      24,
+      95
+     ],
+     "solido": null,
+     "luz": {
+      "color": "#e07090",
+      "radius": 70,
+      "pulse": true,
+      "dy": 50
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/vitral_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "vitral_2": {
+     "w": 48,
+     "h": 96,
+     "apoyo": [
+      24,
+      95
+     ],
+     "solido": null,
+     "luz": {
+      "color": "#5ae0d0",
+      "radius": 70,
+      "pulse": true,
+      "dy": 50
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/vitral_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "luz_vitral_0": {
+     "w": 96,
+     "h": 64,
+     "apoyo": [
+      48,
+      60
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "luz": {
+      "color": "#ffb050",
+      "radius": 80,
+      "pulse": true,
+      "dy": 20
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/luz_vitral_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "luz_vitral_1": {
+     "w": 96,
+     "h": 64,
+     "apoyo": [
+      48,
+      60
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "luz": {
+      "color": "#e07090",
+      "radius": 80,
+      "pulse": true,
+      "dy": 20
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/luz_vitral_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "luz_vitral_2": {
+     "w": 96,
+     "h": 64,
+     "apoyo": [
+      48,
+      60
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "luz": {
+      "color": "#5ae0d0",
+      "radius": 80,
+      "pulse": true,
+      "dy": 20
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/luz_vitral_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "haz_polvo": {
+     "w": 64,
+     "h": 192,
+     "apoyo": [
+      48,
+      190
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/haz_polvo_idle.png",
+       "cuadros": 6,
+       "fps": 6,
+       "loop": true
+      }
+     }
+    },
+    "escalones_rotos": {
+     "w": 96,
+     "h": 64,
+     "apoyo": [
+      48,
+      62
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/escalones_rotos_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "frente_columna": {
+     "w": 64,
+     "h": 256,
+     "apoyo": [
+      32,
+      256
+     ],
+     "solido": null,
+     "capa": "frente",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/frente_columna_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "frente_raices_colgantes": {
+     "w": 128,
+     "h": 160,
+     "apoyo": [
+      64,
+      0
+     ],
+     "solido": null,
+     "capa": "frente",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/frente_raices_colgantes_idle.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "fondo_abismo_0": {
+     "w": 512,
+     "h": 512,
+     "apoyo": [
+      0,
+      0
+     ],
+     "solido": null,
+     "capa": "fondo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/fondo_abismo_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "fondo_abismo_1": {
+     "w": 512,
+     "h": 512,
+     "apoyo": [
+      0,
+      0
+     ],
+     "solido": null,
+     "capa": "fondo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/fondo_abismo_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "fondo_abismo_2": {
+     "w": 512,
+     "h": 512,
+     "apoyo": [
+      0,
+      0
+     ],
+     "solido": null,
+     "capa": "fondo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/fondo_abismo_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "palanca": {
+     "w": 34,
+     "h": 36,
+     "apoyo": [
+      16,
+      30
+     ],
+     "solido": [
+      -6,
+      -6,
+      12,
+      6
+     ],
+     "sombra": "mundo/objetos/palanca_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/palanca_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "arriba": {
+       "archivo": "mundo/objetos/palanca_arriba.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "bajar": {
+       "archivo": "mundo/objetos/palanca_bajar.png",
+       "cuadros": 8,
+       "fps": 10,
+       "loop": false
+      },
+      "abajo": {
+       "archivo": "mundo/objetos/palanca_abajo.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "reja_catedral": {
+     "w": 64,
+     "h": 64,
+     "apoyo": [
+      32,
+      62
+     ],
+     "solido": [
+      -26,
+      -8,
+      52,
+      8
+     ],
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/reja_catedral_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "cerrada": {
+       "archivo": "mundo/objetos/reja_catedral_cerrada.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "abrir": {
+       "archivo": "mundo/objetos/reja_catedral_abrir.png",
+       "cuadros": 9,
+       "fps": 9,
+       "loop": false
+      },
+      "abierta": {
+       "archivo": "mundo/objetos/reja_catedral_abierta.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "piedra_empujable": {
+     "w": 38,
+     "h": 36,
+     "apoyo": [
+      16,
+      29
+     ],
+     "solido": [
+      -12,
+      -8,
+      24,
+      8
+     ],
+     "sombra": "mundo/objetos/piedra_empujable_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/piedra_empujable_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "quieta": {
+       "archivo": "mundo/objetos/piedra_empujable_quieta.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "arrastrar": {
+       "archivo": "mundo/objetos/piedra_empujable_arrastrar.png",
+       "cuadros": 6,
+       "fps": 6,
+       "loop": true
+      }
+     }
+    },
+    "campana_chica": {
+     "w": 47,
+     "h": 56,
+     "apoyo": [
+      16,
+      46
+     ],
+     "solido": [
+      -11,
+      -4,
+      22,
+      4
+     ],
+     "sombra": "mundo/objetos/campana_chica_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/campana_chica_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "sonar": {
+       "archivo": "mundo/objetos/campana_chica_sonar.png",
+       "cuadros": 8,
+       "fps": 10,
+       "loop": false
+      }
+     }
+    },
     "cartel": {
      "w": 32,
      "h": 32,
@@ -38920,6 +41703,20 @@
      }
     }
    },
+   "fondo": [
+    {
+     "objeto": "fondo_abismo_0",
+     "paralaje": 0.6
+    },
+    {
+     "objeto": "fondo_abismo_1",
+     "paralaje": 0.75
+    },
+    {
+     "objeto": "fondo_abismo_2",
+     "paralaje": 0.9
+    }
+   ],
    "particulas": {
     "luciernaga": {
      "archivo": "mundo/particulas/luciernaga.png",
@@ -39025,6 +41822,20 @@
      "h": 8,
      "cuadros": 4,
      "fps": 6
+    },
+    "brasa_fria": {
+     "archivo": "mundo/particulas/brasa_fria.png",
+     "w": 4,
+     "h": 4,
+     "cuadros": 3,
+     "fps": 8
+    },
+    "ceniza": {
+     "archivo": "mundo/particulas/ceniza.png",
+     "w": 4,
+     "h": 4,
+     "cuadros": 2,
+     "fps": 4
     }
    },
    "criaturas": {
@@ -39129,6 +41940,72 @@
        "loop": true
       }
      }
+    },
+    "rana": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/rana_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/rana_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      }
+     }
+    },
+    "pez": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/pez_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/pez_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": false
+      }
+     }
+    },
+    "ardilla": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/ardilla_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/ardilla_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      }
+     }
+    },
+    "sombra_ojos": {
+     "w": 16,
+     "h": 8,
+     "anims": {
+      "parpadeo": {
+       "archivo": "mundo/criaturas/sombra_ojos_parpadeo.png",
+       "cuadros": 4,
+       "fps": 3,
+       "loop": true
+      }
+     }
     }
    },
    "luz": "mundo/luz.png",
@@ -39140,8 +42017,1937 @@
    },
    "referencia": "tools/pixel_forja/scripts/visor/runtime.js anima todo esto en Canvas 2D: es la referencia para el juego.",
    "notas": "Orden de dibujo: capa fondo (paralaje) > agua (cuadros animados) > suelo (trozos de imagen, el agua es transparente) > objetos con capa suelo > sombras horneadas (campo sombra; si no hay, la elipse de siempre) > objetos y personajes ordenados por y > capa frente (no va en el mapa: la zona la declara en su propiedad frente y el juego la pega a los bordes de la pantalla, con paralaje 1.15) > luces (aditivo) > sombras de nube. Cada zona del mapa trae musica, ambiente, luz, oscuridad y particulas."
+  },
+  {
+   "id": "mundo3",
+   "mapa": "mundo/mundo3_galerias.json",
+   "nombre": "Las Galerías del Eco",
+   "ancho": 100,
+   "alto": 80,
+   "cuadro": 32,
+   "trozo": 960,
+   "agua": "mundo/mundo3_agua.png",
+   "espuma": {
+    "archivo": "mundo/mundo3_galerias_espuma.png",
+    "capa": "espuma",
+    "columnas": 32,
+    "cuadros": 4,
+    "fps": 5
+   },
+   "reflejo": {
+    "capa": "reflejo"
+   },
+   "suelo": [
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_0.png",
+     "x": 0,
+     "y": 0
+    },
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_1.png",
+     "x": 960,
+     "y": 0
+    },
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_2.png",
+     "x": 1920,
+     "y": 0
+    },
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_3.png",
+     "x": 2880,
+     "y": 0
+    },
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_4.png",
+     "x": 0,
+     "y": 960
+    },
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_5.png",
+     "x": 960,
+     "y": 960
+    },
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_6.png",
+     "x": 1920,
+     "y": 960
+    },
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_7.png",
+     "x": 2880,
+     "y": 960
+    },
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_8.png",
+     "x": 0,
+     "y": 1920
+    },
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_9.png",
+     "x": 960,
+     "y": 1920
+    },
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_10.png",
+     "x": 1920,
+     "y": 1920
+    },
+    {
+     "archivo": "mundo/suelo/mundo3_galerias_11.png",
+     "x": 2880,
+     "y": 1920
+    }
+   ],
+   "vista": "mundo/mundo3_vista.png",
+   "postales": {
+    "boca_de_la_mina": "mundo/postales/boca_de_la_mina.png",
+    "los_rieles": "mundo/postales/los_rieles.png",
+    "sala_del_eco": "mundo/postales/sala_del_eco.png",
+    "puente_colgante": "mundo/postales/puente_colgante.png",
+    "lago_de_cristal": "mundo/postales/lago_de_cristal.png",
+    "campamento_abandonado": "mundo/postales/campamento_abandonado.png",
+    "cueva_de_la_reina": "mundo/postales/cueva_de_la_reina.png"
+   },
+   "objetos": {
+    "cristal_apagado_0": {
+     "w": 41,
+     "h": 54,
+     "apoyo": [
+      16,
+      44
+     ],
+     "solido": [
+      -7,
+      -6,
+      14,
+      6
+     ],
+     "sombra": "mundo/objetos/cristal_apagado_0_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cristal_apagado_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "cristal_prendido_0": {
+     "w": 41,
+     "h": 54,
+     "apoyo": [
+      16,
+      44
+     ],
+     "solido": [
+      -7,
+      -6,
+      14,
+      6
+     ],
+     "luz": {
+      "color": "#5ae8ff",
+      "radius": 80,
+      "pulse": true,
+      "dy": 20
+     },
+     "sombra": "mundo/objetos/cristal_prendido_0_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cristal_prendido_0_idle.png",
+       "cuadros": 6,
+       "fps": 6,
+       "loop": true
+      },
+      "prenderse": {
+       "archivo": "mundo/objetos/cristal_prendido_0_prenderse.png",
+       "cuadros": 8,
+       "fps": 14,
+       "loop": false
+      }
+     }
+    },
+    "cristal_prenderse": {
+     "w": 41,
+     "h": 54,
+     "apoyo": [
+      16,
+      44
+     ],
+     "solido": [
+      -7,
+      -6,
+      14,
+      6
+     ],
+     "luz": {
+      "color": "#5ae8ff",
+      "radius": 80,
+      "pulse": true,
+      "dy": 20
+     },
+     "sombra": "mundo/objetos/cristal_prenderse_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cristal_prenderse_idle.png",
+       "cuadros": 8,
+       "fps": 14,
+       "loop": false
+      }
+     }
+    },
+    "cristal_apagado_1": {
+     "w": 40,
+     "h": 54,
+     "apoyo": [
+      16,
+      44
+     ],
+     "solido": [
+      -7,
+      -6,
+      14,
+      6
+     ],
+     "sombra": "mundo/objetos/cristal_apagado_1_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cristal_apagado_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "cristal_prendido_1": {
+     "w": 40,
+     "h": 54,
+     "apoyo": [
+      16,
+      44
+     ],
+     "solido": [
+      -7,
+      -6,
+      14,
+      6
+     ],
+     "luz": {
+      "color": "#b07aff",
+      "radius": 80,
+      "pulse": true,
+      "dy": 20
+     },
+     "sombra": "mundo/objetos/cristal_prendido_1_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cristal_prendido_1_idle.png",
+       "cuadros": 6,
+       "fps": 6,
+       "loop": true
+      },
+      "prenderse": {
+       "archivo": "mundo/objetos/cristal_prendido_1_prenderse.png",
+       "cuadros": 8,
+       "fps": 14,
+       "loop": false
+      }
+     }
+    },
+    "cristal_apagado_2": {
+     "w": 41,
+     "h": 53,
+     "apoyo": [
+      16,
+      44
+     ],
+     "solido": [
+      -7,
+      -6,
+      14,
+      6
+     ],
+     "sombra": "mundo/objetos/cristal_apagado_2_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cristal_apagado_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "cristal_prendido_2": {
+     "w": 41,
+     "h": 53,
+     "apoyo": [
+      16,
+      44
+     ],
+     "solido": [
+      -7,
+      -6,
+      14,
+      6
+     ],
+     "luz": {
+      "color": "#ffb35a",
+      "radius": 80,
+      "pulse": true,
+      "dy": 20
+     },
+     "sombra": "mundo/objetos/cristal_prendido_2_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cristal_prendido_2_idle.png",
+       "cuadros": 6,
+       "fps": 6,
+       "loop": true
+      },
+      "prenderse": {
+       "archivo": "mundo/objetos/cristal_prendido_2_prenderse.png",
+       "cuadros": 8,
+       "fps": 14,
+       "loop": false
+      }
+     }
+    },
+    "cristal_grande_apagado": {
+     "w": 86,
+     "h": 129,
+     "apoyo": [
+      32,
+      106
+     ],
+     "solido": [
+      -15,
+      -10,
+      30,
+      10
+     ],
+     "sombra": "mundo/objetos/cristal_grande_apagado_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cristal_grande_apagado_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "cristal_grande_prendido": {
+     "w": 86,
+     "h": 129,
+     "apoyo": [
+      32,
+      106
+     ],
+     "solido": [
+      -15,
+      -10,
+      30,
+      10
+     ],
+     "luz": {
+      "color": "#5ae8ff",
+      "radius": 180,
+      "pulse": true,
+      "dy": 50
+     },
+     "sombra": "mundo/objetos/cristal_grande_prendido_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cristal_grande_prendido_idle.png",
+       "cuadros": 6,
+       "fps": 6,
+       "loop": true
+      }
+     }
+    },
+    "farol_minero": {
+     "w": 50,
+     "h": 72,
+     "apoyo": [
+      16,
+      60
+     ],
+     "solido": [
+      -6,
+      -6,
+      12,
+      6
+     ],
+     "luz": {
+      "color": "#ffb35a",
+      "radius": 200,
+      "flicker": true,
+      "dy": 36
+     },
+     "sombra": "mundo/objetos/farol_minero_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/farol_minero_idle.png",
+       "cuadros": 6,
+       "fps": 8,
+       "loop": true
+      },
+      "apagada": {
+       "archivo": "mundo/objetos/farol_minero_apagada.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "prender": {
+       "archivo": "mundo/objetos/farol_minero_prender.png",
+       "cuadros": 6,
+       "fps": 8,
+       "loop": false
+      }
+     }
+    },
+    "rieles_h": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      16
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/rieles_h_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "rieles_v": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      16
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/rieles_v_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "rieles_curva_ne": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      16
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/rieles_curva_ne_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "rieles_curva_no": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      16
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/rieles_curva_no_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "rieles_curva_se": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      16
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/rieles_curva_se_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "rieles_curva_so": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      16
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/rieles_curva_so_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "carrito_mina": {
+     "w": 56,
+     "h": 53,
+     "apoyo": [
+      24,
+      44
+     ],
+     "solido": [
+      -16,
+      -10,
+      32,
+      10
+     ],
+     "sombra": "mundo/objetos/carrito_mina_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/carrito_mina_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "quieto": {
+       "archivo": "mundo/objetos/carrito_mina_quieto.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "rodar": {
+       "archivo": "mundo/objetos/carrito_mina_rodar.png",
+       "cuadros": 4,
+       "fps": 10,
+       "loop": true
+      }
+     }
+    },
+    "viga_mina": {
+     "w": 131,
+     "h": 111,
+     "apoyo": [
+      48,
+      92
+     ],
+     "solido": null,
+     "solidos": [
+      [
+       -44,
+       -8,
+       12,
+       8
+      ],
+      [
+       32,
+       -8,
+       12,
+       8
+      ]
+     ],
+     "sombra": "mundo/objetos/viga_mina_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/viga_mina_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "puente_colgante_h": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      16
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/puente_colgante_h_idle.png",
+       "cuadros": 2,
+       "fps": 2,
+       "loop": true
+      }
+     }
+    },
+    "puente_colgante_v": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      16
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/puente_colgante_v_idle.png",
+       "cuadros": 2,
+       "fps": 2,
+       "loop": true
+      }
+     }
+    },
+    "pico_tirado": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      26
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/pico_tirado_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "casco_minero": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      26
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/casco_minero_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "linterna_rota": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      26
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/linterna_rota_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "carpa_minero": {
+     "w": 98,
+     "h": 92,
+     "apoyo": [
+      48,
+      76
+     ],
+     "solido": [
+      -40,
+      -12,
+      80,
+      12
+     ],
+     "sombra": "mundo/objetos/carpa_minero_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/carpa_minero_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "estalactitas_frente_0": {
+     "w": 128,
+     "h": 96,
+     "apoyo": [
+      64,
+      0
+     ],
+     "solido": null,
+     "capa": "frente",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/estalactitas_frente_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "estalactitas_frente_1": {
+     "w": 128,
+     "h": 96,
+     "apoyo": [
+      64,
+      0
+     ],
+     "solido": null,
+     "capa": "frente",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/estalactitas_frente_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "mural_3": {
+     "w": 128,
+     "h": 96,
+     "apoyo": [
+      64,
+      95
+     ],
+     "solido": null,
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mural_3_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "figura_ojos": {
+     "w": 48,
+     "h": 64,
+     "apoyo": [
+      24,
+      60
+     ],
+     "solido": null,
+     "luz": {
+      "color": "#ff3a2a",
+      "radius": 36,
+      "pulse": true,
+      "dy": 42
+     },
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/figura_ojos_idle.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "irse": {
+       "archivo": "mundo/objetos/figura_ojos_irse.png",
+       "cuadros": 8,
+       "fps": 10,
+       "loop": false
+      }
+     }
+    },
+    "roca_mina_0": {
+     "w": 35,
+     "h": 35,
+     "apoyo": [
+      16,
+      29
+     ],
+     "solido": [
+      -10,
+      -6,
+      20,
+      6
+     ],
+     "sombra": "mundo/objetos/roca_mina_0_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/roca_mina_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "roca_mina_1": {
+     "w": 52,
+     "h": 45,
+     "apoyo": [
+      24,
+      37
+     ],
+     "solido": [
+      -18,
+      -8,
+      36,
+      8
+     ],
+     "sombra": "mundo/objetos/roca_mina_1_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/roca_mina_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "roca_mina_2": {
+     "w": 34,
+     "h": 34,
+     "apoyo": [
+      16,
+      29
+     ],
+     "solido": [
+      -10,
+      -6,
+      20,
+      6
+     ],
+     "sombra": "mundo/objetos/roca_mina_2_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/roca_mina_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "cajon_mina": {
+     "w": 43,
+     "h": 36,
+     "apoyo": [
+      16,
+      29
+     ],
+     "solido": [
+      -11,
+      -6,
+      24,
+      6
+     ],
+     "sombra": "mundo/objetos/cajon_mina_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cajon_mina_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "barril_mina": {
+     "w": 36,
+     "h": 36,
+     "apoyo": [
+      16,
+      29
+     ],
+     "solido": [
+      -8,
+      -6,
+      16,
+      6
+     ],
+     "sombra": "mundo/objetos/barril_mina_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/barril_mina_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "olla_fria": {
+     "w": 35,
+     "h": 36,
+     "apoyo": [
+      16,
+      29
+     ],
+     "solido": [
+      -9,
+      -5,
+      18,
+      5
+     ],
+     "sombra": "mundo/objetos/olla_fria_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/olla_fria_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "poste_puente": {
+     "w": 29,
+     "h": 46,
+     "apoyo": [
+      8,
+      37
+     ],
+     "solido": null,
+     "sombra": "mundo/objetos/poste_puente_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/poste_puente_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "grava_mina_0": {
+     "w": 32,
+     "h": 24,
+     "apoyo": [
+      16,
+      12
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/grava_mina_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "grava_mina_1": {
+     "w": 32,
+     "h": 24,
+     "apoyo": [
+      16,
+      12
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/grava_mina_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "grava_mina_2": {
+     "w": 32,
+     "h": 24,
+     "apoyo": [
+      16,
+      12
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/grava_mina_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "astillas_0": {
+     "w": 32,
+     "h": 16,
+     "apoyo": [
+      16,
+      8
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/astillas_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "astillas_1": {
+     "w": 32,
+     "h": 16,
+     "apoyo": [
+      16,
+      8
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/astillas_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "esquirlas_cristal_0": {
+     "w": 16,
+     "h": 16,
+     "apoyo": [
+      8,
+      8
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/esquirlas_cristal_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "esquirlas_cristal_1": {
+     "w": 16,
+     "h": 16,
+     "apoyo": [
+      8,
+      8
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/esquirlas_cristal_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "esquirlas_cristal_2": {
+     "w": 16,
+     "h": 16,
+     "apoyo": [
+      8,
+      8
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/esquirlas_cristal_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "fondo_mina_0": {
+     "w": 512,
+     "h": 512,
+     "apoyo": [
+      0,
+      0
+     ],
+     "solido": null,
+     "capa": "fondo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/fondo_mina_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "fondo_mina_1": {
+     "w": 512,
+     "h": 512,
+     "apoyo": [
+      0,
+      0
+     ],
+     "solido": null,
+     "capa": "fondo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/fondo_mina_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "fondo_mina_2": {
+     "w": 512,
+     "h": 512,
+     "apoyo": [
+      0,
+      0
+     ],
+     "solido": null,
+     "capa": "fondo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/fondo_mina_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "cristales_techo_frente_0": {
+     "w": 128,
+     "h": 112,
+     "apoyo": [
+      64,
+      0
+     ],
+     "solido": null,
+     "capa": "frente",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cristales_techo_frente_0_idle.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "cristales_techo_frente_1": {
+     "w": 128,
+     "h": 112,
+     "apoyo": [
+      64,
+      0
+     ],
+     "solido": null,
+     "capa": "frente",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cristales_techo_frente_1_idle.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "escombro_chico_0": {
+     "w": 24,
+     "h": 16,
+     "apoyo": [
+      12,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/escombro_chico_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "escombro_chico_1": {
+     "w": 24,
+     "h": 16,
+     "apoyo": [
+      12,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/escombro_chico_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "escombro_chico_2": {
+     "w": 24,
+     "h": 16,
+     "apoyo": [
+      12,
+      10
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/escombro_chico_2_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "charco_negro_0": {
+     "w": 32,
+     "h": 16,
+     "apoyo": [
+      16,
+      8
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/charco_negro_0_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "salpicar": {
+       "archivo": "mundo/objetos/charco_negro_0_salpicar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      }
+     }
+    },
+    "charco_negro_1": {
+     "w": 32,
+     "h": 16,
+     "apoyo": [
+      16,
+      8
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/charco_negro_1_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "salpicar": {
+       "archivo": "mundo/objetos/charco_negro_1_salpicar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      }
+     }
+    },
+    "palanca": {
+     "w": 34,
+     "h": 36,
+     "apoyo": [
+      16,
+      30
+     ],
+     "solido": [
+      -6,
+      -6,
+      12,
+      6
+     ],
+     "sombra": "mundo/objetos/palanca_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/palanca_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "arriba": {
+       "archivo": "mundo/objetos/palanca_arriba.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "bajar": {
+       "archivo": "mundo/objetos/palanca_bajar.png",
+       "cuadros": 8,
+       "fps": 10,
+       "loop": false
+      },
+      "abajo": {
+       "archivo": "mundo/objetos/palanca_abajo.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "piedra_empujable": {
+     "w": 38,
+     "h": 36,
+     "apoyo": [
+      16,
+      29
+     ],
+     "solido": [
+      -12,
+      -8,
+      24,
+      8
+     ],
+     "sombra": "mundo/objetos/piedra_empujable_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/piedra_empujable_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "quieta": {
+       "archivo": "mundo/objetos/piedra_empujable_quieta.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      },
+      "arrastrar": {
+       "archivo": "mundo/objetos/piedra_empujable_arrastrar.png",
+       "cuadros": 6,
+       "fps": 6,
+       "loop": true
+      }
+     }
+    },
+    "cartel": {
+     "w": 32,
+     "h": 32,
+     "apoyo": [
+      16,
+      29
+     ],
+     "solido": [
+      -3,
+      -3,
+      6,
+      3
+     ],
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/cartel_idle.png",
+       "cuadros": 1,
+       "fps": 1,
+       "loop": true
+      }
+     }
+    },
+    "aviso_carga": {
+     "w": 32,
+     "h": 48,
+     "apoyo": [
+      0,
+      24
+     ],
+     "solido": null,
+     "capa": "suelo",
+     "anims": {
+      "llenar": {
+       "archivo": "mundo/objetos/aviso_carga_llenar.png",
+       "cuadros": 8,
+       "fps": 8,
+       "loop": false
+      }
+     }
+    },
+    "portal_azul": {
+     "w": 64,
+     "h": 96,
+     "apoyo": [
+      32,
+      92
+     ],
+     "solido": null,
+     "luz": {
+      "color": "#6cb4ff",
+      "radius": 140,
+      "pulse": true,
+      "dy": 40
+     },
+     "anims": {
+      "abrir": {
+       "archivo": "mundo/objetos/portal_azul_abrir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      },
+      "girar": {
+       "archivo": "mundo/objetos/portal_azul_girar.png",
+       "cuadros": 8,
+       "fps": 10,
+       "loop": true
+      },
+      "cerrar": {
+       "archivo": "mundo/objetos/portal_azul_cerrar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      }
+     }
+    },
+    "portal_rojo": {
+     "w": 64,
+     "h": 96,
+     "apoyo": [
+      32,
+      92
+     ],
+     "solido": null,
+     "luz": {
+      "color": "#ff6a3a",
+      "radius": 140,
+      "pulse": true,
+      "dy": 40
+     },
+     "anims": {
+      "abrir": {
+       "archivo": "mundo/objetos/portal_rojo_abrir.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      },
+      "girar": {
+       "archivo": "mundo/objetos/portal_rojo_girar.png",
+       "cuadros": 8,
+       "fps": 10,
+       "loop": true
+      },
+      "cerrar": {
+       "archivo": "mundo/objetos/portal_rojo_cerrar.png",
+       "cuadros": 6,
+       "fps": 12,
+       "loop": false
+      }
+     }
+    },
+    "aviso_jefe": {
+     "w": 96,
+     "h": 48,
+     "apoyo": [
+      48,
+      24
+     ],
+     "solido": null,
+     "anims": {
+      "llenar": {
+       "archivo": "mundo/objetos/aviso_jefe_llenar.png",
+       "cuadros": 8,
+       "fps": 8,
+       "loop": false
+      }
+     }
+    }
+   },
+   "fondo": [
+    {
+     "objeto": "fondo_mina_0",
+     "paralaje": 0.6
+    },
+    {
+     "objeto": "fondo_mina_1",
+     "paralaje": 0.75
+    },
+    {
+     "objeto": "fondo_mina_2",
+     "paralaje": 0.9
+    }
+   ],
+   "particulas": {
+    "luciernaga": {
+     "archivo": "mundo/particulas/luciernaga.png",
+     "w": 8,
+     "h": 8,
+     "cuadros": 4,
+     "fps": 6
+    },
+    "hoja_verde": {
+     "archivo": "mundo/particulas/hoja_verde.png",
+     "w": 8,
+     "h": 8,
+     "cuadros": 4,
+     "fps": 6
+    },
+    "hoja_otono": {
+     "archivo": "mundo/particulas/hoja_otono.png",
+     "w": 8,
+     "h": 8,
+     "cuadros": 4,
+     "fps": 6
+    },
+    "mariposa_azul": {
+     "archivo": "mundo/particulas/mariposa_azul.png",
+     "w": 12,
+     "h": 12,
+     "cuadros": 2,
+     "fps": 8
+    },
+    "mariposa_naranja": {
+     "archivo": "mundo/particulas/mariposa_naranja.png",
+     "w": 12,
+     "h": 12,
+     "cuadros": 2,
+     "fps": 8
+    },
+    "mariposa_rosa": {
+     "archivo": "mundo/particulas/mariposa_rosa.png",
+     "w": 12,
+     "h": 12,
+     "cuadros": 2,
+     "fps": 8
+    },
+    "polen": {
+     "archivo": "mundo/particulas/polen.png",
+     "w": 4,
+     "h": 4,
+     "cuadros": 2,
+     "fps": 4
+    },
+    "brasa": {
+     "archivo": "mundo/particulas/brasa.png",
+     "w": 4,
+     "h": 4,
+     "cuadros": 3,
+     "fps": 8
+    },
+    "brillo": {
+     "archivo": "mundo/particulas/brillo.png",
+     "w": 8,
+     "h": 8,
+     "cuadros": 4,
+     "fps": 8
+    },
+    "espora": {
+     "archivo": "mundo/particulas/espora.png",
+     "w": 4,
+     "h": 4,
+     "cuadros": 2,
+     "fps": 4
+    },
+    "humo": {
+     "archivo": "mundo/particulas/humo.png",
+     "w": 16,
+     "h": 16,
+     "cuadros": 4,
+     "fps": 6
+    },
+    "polvo": {
+     "archivo": "mundo/particulas/polvo.png",
+     "w": 4,
+     "h": 4,
+     "cuadros": 2,
+     "fps": 4
+    },
+    "gota": {
+     "archivo": "mundo/particulas/gota.png",
+     "w": 4,
+     "h": 6,
+     "cuadros": 2,
+     "fps": 8
+    },
+    "huella": {
+     "archivo": "mundo/particulas/huella.png",
+     "w": 8,
+     "h": 8,
+     "cuadros": 1,
+     "fps": 1
+    },
+    "luciernaga_turquesa": {
+     "archivo": "mundo/particulas/luciernaga_turquesa.png",
+     "w": 8,
+     "h": 8,
+     "cuadros": 4,
+     "fps": 6
+    },
+    "brasa_fria": {
+     "archivo": "mundo/particulas/brasa_fria.png",
+     "w": 4,
+     "h": 4,
+     "cuadros": 3,
+     "fps": 8
+    },
+    "ceniza": {
+     "archivo": "mundo/particulas/ceniza.png",
+     "w": 4,
+     "h": 4,
+     "cuadros": 2,
+     "fps": 4
+    }
+   },
+   "criaturas": {
+    "cuervo": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/cuervo_quieto.png",
+       "cuadros": 4,
+       "fps": 3,
+       "loop": true
+      },
+      "picotear": {
+       "archivo": "mundo/criaturas/cuervo_picotear.png",
+       "cuadros": 5,
+       "fps": 8,
+       "loop": false
+      },
+      "volar": {
+       "archivo": "mundo/criaturas/cuervo_volar.png",
+       "cuadros": 4,
+       "fps": 12,
+       "loop": true
+      }
+     }
+    },
+    "cuervo_izq": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/cuervo_izq_quieto.png",
+       "cuadros": 4,
+       "fps": 3,
+       "loop": true
+      },
+      "picotear": {
+       "archivo": "mundo/criaturas/cuervo_izq_picotear.png",
+       "cuadros": 5,
+       "fps": 8,
+       "loop": false
+      },
+      "volar": {
+       "archivo": "mundo/criaturas/cuervo_izq_volar.png",
+       "cuadros": 4,
+       "fps": 12,
+       "loop": true
+      }
+     }
+    },
+    "murcielago": {
+     "w": 16,
+     "h": 8,
+     "anims": {
+      "volar": {
+       "archivo": "mundo/criaturas/murcielago_volar.png",
+       "cuadros": 2,
+       "fps": 10,
+       "loop": true
+      }
+     }
+    },
+    "ojos": {
+     "w": 16,
+     "h": 8,
+     "anims": {
+      "mirar": {
+       "archivo": "mundo/criaturas/ojos_mirar.png",
+       "cuadros": 4,
+       "fps": 2,
+       "loop": true
+      },
+      "parpadeo": {
+       "archivo": "mundo/criaturas/ojos_parpadeo.png",
+       "cuadros": 5,
+       "fps": 14,
+       "loop": false
+      }
+     }
+    },
+    "fuego_fatuo": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "flotar": {
+       "archivo": "mundo/criaturas/fuego_fatuo_flotar.png",
+       "cuadros": 6,
+       "fps": 8,
+       "loop": true
+      }
+     }
+    },
+    "fuego_fatuo_violeta": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "flotar": {
+       "archivo": "mundo/criaturas/fuego_fatuo_violeta_flotar.png",
+       "cuadros": 6,
+       "fps": 8,
+       "loop": true
+      }
+     }
+    },
+    "rana": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/rana_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/rana_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      }
+     }
+    },
+    "pez": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/pez_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/pez_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": false
+      }
+     }
+    },
+    "ardilla": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/ardilla_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/ardilla_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      }
+     }
+    },
+    "sombra_ojos": {
+     "w": 16,
+     "h": 8,
+     "anims": {
+      "parpadeo": {
+       "archivo": "mundo/criaturas/sombra_ojos_parpadeo.png",
+       "cuadros": 4,
+       "fps": 3,
+       "loop": true
+      }
+     }
+    }
+   },
+   "luz": "mundo/luz.png",
+   "nube": "mundo/nube.png",
+   "niebla": {
+    "nubes": "mundo/niebla_nubes.png",
+    "jirones": "mundo/niebla_jirones.png",
+    "notas": "Texturas de 256 que pegan por los 4 lados. Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla."
+   },
+   "referencia": "tools/pixel_forja/scripts/visor/runtime.js anima todo esto en Canvas 2D: es la referencia para el juego.",
+   "notas": "Orden de dibujo: capa fondo (paralaje) > agua (cuadros animados) > suelo (trozos de imagen, el agua es transparente) > objetos con capa suelo > sombras horneadas (campo sombra; si no hay, la elipse de siempre) > objetos y personajes ordenados por y > capa frente (no va en el mapa: la zona la declara en su propiedad frente y el juego la pega a los bordes de la pantalla, con paralaje 1.15) > luces (aditivo) > sombras de nube. Cada zona del mapa trae musica, ambiente, luz, oscuridad y particulas.",
+   "cristales": {
+    "capa": "cristales",
+    "total": 42,
+    "grandes": 4,
+    "objetos": {
+     "apagado": "cristal_apagado_<forma>",
+     "prendido": "cristal_prendido_<forma>",
+     "prenderse": "anim prenderse de cristal_prendido_<forma>",
+     "grande_apagado": "cristal_grande_apagado",
+     "grande_prendido": "cristal_grande_prendido"
+    },
+    "notas": "Capa de objetos `cristales` del mapa: cada punto es el pie del cristal (x, y) con id, color (cian, violeta, ambar), forma (0 cian, 1 violeta, 2 ámbar: forma y color van juntos) y grande. Arrancan apagados; el juego los dibuja apagados o prendidos según su estado (src/logic/abismo.ts). Son sólidos como el objeto (14 x 6 al pie; los grandes 30 x 10)."
+   }
   }
  ],
+ "intro": {
+  "intro_bosque_noche": {
+   "w": 480,
+   "h": 270,
+   "notas": "Momento 1: el Bosque GG de noche, tranquilo, con una grieta en el suelo que deja salir una luz roja muy tenue.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "intro/intro_bosque_noche_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.3
+    },
+    {
+     "nombre": "medio",
+     "archivo": "intro/intro_bosque_noche_medio.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.6
+    },
+    {
+     "nombre": "frente",
+     "archivo": "intro/intro_bosque_noche_frente.png",
+     "cuadros": 4,
+     "fps": 6,
+     "paralaje": 1
+    }
+   ]
+  },
+  "intro_corte_abismo": {
+   "w": 480,
+   "h": 540,
+   "notas": "Momento 2: el abismo en corte, como un hormiguero. Los siete pisos uno debajo del otro y la cámara baja por ellos. Las brasas las suma el juego.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "intro/intro_corte_abismo_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.8
+    },
+    {
+     "nombre": "frente",
+     "archivo": "intro/intro_corte_abismo_frente.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 1
+    }
+   ]
+  },
+  "intro_ojos": {
+   "w": 480,
+   "h": 270,
+   "notas": "Momento 3: dos ojos enormes en lo oscuro, de dragón de cuento: se abren de a poco, miran, miran al costado, parpadean. Brasas delante.",
+   "capas": [
+    {
+     "nombre": "medio",
+     "archivo": "intro/intro_ojos_medio.png",
+     "cuadros": 8,
+     "fps": 8,
+     "paralaje": 1
+    }
+   ]
+  },
+  "intro_guardianes": {
+   "w": 480,
+   "h": 270,
+   "notas": "Momento 4: el Minotauro y el Guardián de la Campana en silueta, a contraluz del fuego, enredados por raíces rojas que suben desde abajo y se aprietan.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "intro/intro_guardianes_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.5
+    },
+    {
+     "nombre": "frente",
+     "archivo": "intro/intro_guardianes_frente.png",
+     "cuadros": 4,
+     "fps": 6,
+     "paralaje": 1
+    }
+   ]
+  },
+  "intro_familia": {
+   "w": 480,
+   "h": 270,
+   "notas": "Momento 5: de espaldas, Sophie y Alana con Thor adelante, frente al portal que brilla. Sombras largas hacia la cámara. Thor gira hacia la cámara en los dos últimos cuadros.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "intro/intro_familia_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.4
+    },
+    {
+     "nombre": "medio",
+     "archivo": "intro/intro_familia_medio.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.7
+    },
+    {
+     "nombre": "frente",
+     "archivo": "intro/intro_familia_frente.png",
+     "cuadros": 6,
+     "fps": 8,
+     "paralaje": 1
+    }
+   ]
+  },
+  "fuego_pared": {
+   "archivo": "intro/fuego_pared.png",
+   "w": 128,
+   "h": 96,
+   "cuadros": 8,
+   "fps": 12,
+   "loop": true,
+   "notas": "Pega de lado a lado: repetirla a lo ancho de la pantalla. Sin piedras."
+  },
+  "humo_grande": {
+   "archivo": "intro/humo_grande.png",
+   "w": 128,
+   "h": 128,
+   "cuadros": 6,
+   "fps": 6,
+   "loop": false,
+   "notas": "Cruza la pantalla delante de todo y se desvanece (el último cuadro ya casi no se ve)."
+  },
+  "logo_fuego": {
+   "archivo": "intro/logo_fuego.png",
+   "w": 576,
+   "h": 224,
+   "cuadros": 16,
+   "fps": 12,
+   "loop": true,
+   "columnas": 4,
+   "notas": "Cuadro i en la columna i % 4, fila floor(i / 4). El logo de siempre al doble, con 32 px de aire arriba para las llamas."
+  },
+  "audio": {
+   "musica": "musica_intro",
+   "latido": "latido"
+  },
+  "notas": "Paneles de 480 x 270 (el corte del abismo 480 x 540) para agrandar x2 o x3 entero. Cada capa es una tira de cuadros; dibujar fondo, medio y frente en ese orden, cada una corrida con su paralaje respecto de la cámara. La luz sale de abajo, del fuego. Momentos de GUION_INTRO: brasas y cueva > intro_bosque_noche e intro_corte_abismo, ojos > intro_ojos, guardianes > intro_guardianes, familia > intro_familia, titulo > logo_fuego sobre fuego_pared."
+ },
  "ui": {
   "orbe_vida": {
    "archivo": "ui/orbe_vida.png",
@@ -39724,6 +44530,24 @@
   "esquiva": "audio/esquiva.wav",
   "bloqueo": "audio/bloqueo.wav",
   "thor_rescate": "audio/thor_rescate.wav",
+  "arbusto_sacudir": "audio/arbusto_sacudir.wav",
+  "hongo_rebote": "audio/hongo_rebote.wav",
+  "charco_pisar": "audio/charco_pisar.wav",
+  "rana_salto": "audio/rana_salto.wav",
+  "palanca": "audio/palanca.wav",
+  "puerta_abrir": "audio/puerta_abrir.wav",
+  "reja_abrir": "audio/reja_abrir.wav",
+  "piedra_arrastrar": "audio/piedra_arrastrar.wav",
+  "campana_chica": "audio/campana_chica.wav",
+  "telarana_romper": "audio/telarana_romper.wav",
+  "cristal_prender": "audio/cristal_prender.wav",
+  "cristal_apagar": "audio/cristal_apagar.wav",
+  "polilla_aleteo": "audio/polilla_aleteo.wav",
+  "minero_golpe": "audio/minero_golpe.wav",
+  "sombra_aparece": "audio/sombra_aparece.wav",
+  "carrito_rodar": "audio/carrito_rodar.wav",
+  "figura_irse": "audio/figura_irse.wav",
+  "latido": "audio/latido.wav",
   "paso_pasto_0": "audio/paso_pasto_0.wav",
   "paso_pasto_1": "audio/paso_pasto_1.wav",
   "paso_pasto_2": "audio/paso_pasto_2.wav",
@@ -39747,13 +44571,18 @@
   "musica_amenaza": "audio/musica_amenaza.wav",
   "musica_combate": "audio/musica_combate.wav",
   "musica_fogata": "audio/musica_fogata.wav",
+  "musica_galerias": "audio/musica_galerias.wav",
+  "musica_jefe_polilla": "audio/musica_jefe_polilla.wav",
+  "musica_intro": "audio/musica_intro.wav",
   "ambiente_bosque": "audio/ambiente_bosque.wav",
   "ambiente_agua": "audio/ambiente_agua.wav",
   "ambiente_noche": "audio/ambiente_noche.wav",
   "ambiente_viento": "audio/ambiente_viento.wav",
   "ambiente_cueva": "audio/ambiente_cueva.wav",
   "ambiente_magia": "audio/ambiente_magia.wav",
-  "ambiente_catedral": "audio/ambiente_catedral.wav"
+  "ambiente_catedral": "audio/ambiente_catedral.wav",
+  "ambiente_galerias": "audio/ambiente_galerias.wav",
+  "ambiente_eco": "audio/ambiente_eco.wav"
  },
  "creditos": "CREDITOS.txt"
 }
