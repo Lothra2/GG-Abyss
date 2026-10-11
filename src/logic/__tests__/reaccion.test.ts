@@ -4,7 +4,11 @@ import { meneo, reaccionDe, tocaReaccion } from '../reaccion'
 describe('qué reacciona', () => {
   it('arbustos, flores, hongos y charcos sí', () => {
     expect(reaccionDe('arbusto_verde_0')?.tipo).toBe('sacudir')
-    expect(reaccionDe('juncos')?.tipo).toBe('sacudir')
+    expect(reaccionDe('juncos')?.tipo).toBe('mecer')
+    expect(reaccionDe('nenufar_flor')?.anim).toBe('mecer')
+    expect(reaccionDe('telarana')?.queda).toBe(true)
+    expect(reaccionDe('arbusto_moras_0')?.suelta).toBe('moras')
+    expect(reaccionDe('arbusto_verde_0')?.suelta).toBeUndefined()
     expect(reaccionDe('flores_grandes_1')?.tipo).toBe('sacudir')
     expect(reaccionDe('hongos')?.tipo).toBe('rebotar')
     expect(reaccionDe('hongo_gigante_azul')?.tipo).toBe('rebotar')

@@ -12,8 +12,10 @@ export interface AnimHoja {
   loop: boolean
   /** movimiento premium del taller: en qué cuadro cae cada paso, golpe, grito o suelta */
   eventos?: EventoAnim[]
-  /** pixeles por ciclo de la animación (caminar, correr, cargar): para que los pies no patinen */
+  /** pixeles por ciclo completo de la animación (caminar, correr, cargar): para que los pies no patinen */
   avance?: number
+  /** px/s a los que el pie no patina con el fps de la hoja */
+  velocidad_natural?: number
   /** jefes: [desde, hasta] cuadros de la preparación de un golpe fuerte */
   aviso?: [number, number]
   /** jefes: cuánto sube el sprite sobre su sombra en cada cuadro (el salto del minotauro) */
@@ -147,6 +149,12 @@ export interface MundoManifest {
   niebla: { nubes: string; jirones: string; notas?: string }
   referencia?: string
   notas?: string
+  /** F10: el abismo detrás del piso (la Catedral, las Galerías): capas `fondo` con su paralaje, de la más lejana */
+  fondo?: { objeto: string; paralaje: number }[]
+  /** F10: la espuma de las orillas, un atlas de piezas de 32 con `cuadros` animados (cada cuadro, `filas` más abajo) */
+  espuma?: { archivo: string; capa: string; columnas: number; cuadros: number; fps: number }
+  /** F10: la capa del mapa que marca el agua quieta donde hay reflejo */
+  reflejo?: { capa: string }
 }
 
 export interface UiImagen {

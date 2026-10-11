@@ -91,6 +91,9 @@ describe('movimiento premium', () => {
     expect(ritmoAnim(105, { cuadros: 8, fps: 10, avance: 64 })).toBeGreaterThan(1)
     expect(ritmoAnim(105, { cuadros: 8, fps: 10 })).toBe(1)
     expect(ritmoAnim(9999, { cuadros: 8, fps: 10, avance: 1 })).toBe(1.5)
+    // con velocidad_natural del kit: ritmo = velocidad / natural, con el mismo tope
+    expect(ritmoAnim(80, { cuadros: 8, fps: 10, velocidad_natural: 80 })).toBeCloseTo(1)
+    expect(ritmoAnim(105, { cuadros: 8, fps: 10, avance: 13.2, velocidad_natural: 16.5 })).toBe(1.5)
     expect(ritmoAnim(1, { cuadros: 8, fps: 10, avance: 64 })).toBe(0.7)
   })
 

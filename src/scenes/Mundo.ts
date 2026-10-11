@@ -21,7 +21,7 @@ import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
 import { CALIDAD, PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S, SOMBRA_LARGA } from '../config/juego'
-import { AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, JEFE_CAMPANA, MUSICA_ESTADOS, OLFATO } from '../config/balance'
+import { REACCIONES, AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, JEFE_CAMPANA, MUSICA_ESTADOS, OLFATO } from '../config/balance'
 import { enAnillo } from '../logic/jefe'
 import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
@@ -113,6 +113,10 @@ export class Mundo extends Phaser.Scene {
   decos!: Decos
   private reflejos!: Reflejos
   private fondo!: FondoParalaje
+  /** el agua quieta donde hay reflejo (la capa `reflejo` del taller, o toda el agua si no la trae) */
+  private get aguaQuieta(): { ancho: number; alto: number; cuadro: number; agua: Uint8Array } {
+    return { ancho: this.mapa.ancho, alto: this.mapa.alto, cuadro: this.mapa.cuadro, agua: this.mapa.reflejo }
+  }
   private frente!: Frente
   /** F10: lo que ya descubrió del minimapa. `versionNiebla` sube cada vez que se descubre algo (el HUD redibuja) */
   niebla!: Niebla
@@ -354,11 +358,12 @@ export class Mundo extends Phaser.Scene {
     const decos: Deco[] = [...this.mapa.decos]
     for (const p of entidadesDeTipo(this.mapa, 'portal_llegada')) decos.push({ sprite: p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul', x: p.x, y: p.y })
     const calidadIni = CALIDAD[this.partida.ajustes.calidad]
-    this.decos = new Decos(this, m, decos, { sombra: this.mapa.bioma === 'bosque' ? SOMBRA_LARGA.afuera : SOMBRA_LARGA.adentro, agua: this.mapa })
+    this.decos = new Decos(this, m, decos, { sombra: this.mapa.bioma === 'bosque' ? SOMBRA_LARGA.afuera : SOMBRA_LARGA.adentro, agua: this.aguaQuieta, oscuridadEn: (x, y) => zonaEn(this.mapa.zonas, x, y)?.oscuridad ?? 0 })
     this.decos.sombrasLargas = calidadIni.sombrasLargas
     this.decos.reflejos = calidadIni.reflejos
     this.decos.alDespertar = () => this.sonido.efecto('magia', { volumen: 0.3, detune: -200 })
-    this.decos.alReaccionar = (r, x, y, w, h) => this.alReaccionar(r, x, y, w, h)
+    this.decos.alReaccionar = (r, x, y, w, h, moras) => this.alReaccionar(r, x, y, w, h, moras)
+    this.decos.alPrender = () => this.sonido.efecto('magia', { volumen: 0.35, rate: 1.4 })
 
     const inicio = entidadesDeTipo(this.mapa, 'jugador_inicio')[0]!
     const thorIni = entidadesDeTipo(this.mapa, 'thor_inicio')[0]
@@ -367,8 +372,9 @@ export class Mundo extends Phaser.Scene {
     this.heroina = new Heroina(this, m, this.grilla, id, pos.x, pos.y, { paso: (x, y, corre) => this.alPaso(x, y, corre) })
     this.thor = new ThorSprite(this, m, this.grilla, thorIni?.x ?? pos.x + 30, thorIni?.y ?? pos.y + 10)
     this.criaturas = new Criaturas(this, m, this.mapa.entidades)
+    this.criaturas.alHuir = (especie) => this.sonido.efecto(especie === 'rana' ? 'rana_salto' : especie === 'pez' ? 'charco_pisar' : 'arbusto_sacudir', { volumen: 0.45 })
 
-    this.reflejos = new Reflejos(this, this.mapa, [this.heroina.sprite, this.thor.sprite])
+    this.reflejos = new Reflejos(this, this.aguaQuieta, [this.heroina.sprite, this.thor.sprite])
     this.fondo = new FondoParalaje(this, m, objetosDeFondo(m))
     this.frente = new Frente(this, m)
     this.camara = new Camara(this, ancho, alto)
@@ -1457,11 +1463,20 @@ export class Mundo extends Phaser.Scene {
   }
 
   /** Un arbusto que se sacude, un hongo que rebota o un charco que salpica: sus partículas y un sonido suave */
-  private alReaccionar(r: Reaccion, x: number, y: number, w: number, h: number): void {
+  private alReaccionar(r: Reaccion, x: number, y: number, w: number, h: number, moras: boolean): void {
     if (r.particula) this.atmosfera.particulas.rocio(r.particula, x, r.tipo === 'salpicar' ? y : y - Math.min(h, 40) * 0.6, r.cuantas, w)
-    if (r.tipo === 'sacudir') this.sonido.efecto('paso_pasto_1', { volumen: 0.35, detune: 300 })
+    // el sonido propio del taller si está; si no, uno parecido de los de siempre
+    if (r.sonido && this.cache.audio.exists(K.aud(r.sonido))) this.sonido.efecto(r.sonido, { volumen: 0.5 })
+    else if (r.tipo === 'sacudir' || r.tipo === 'romper') this.sonido.efecto('paso_pasto_1', { volumen: 0.35, detune: 300 })
     else if (r.tipo === 'rebotar') this.sonido.efecto('esquiva', { volumen: 0.25, detune: 600 })
     else this.sonido.efecto('paso_agua_1', { volumen: 0.4 })
+    // las moras curan un poquito (una vez por arbusto): corazones y el sonido de recoger
+    if (moras) {
+      const max = this.combate.stats.vidaMax
+      this.partida.vida = Math.min(max, this.partida.vida + REACCIONES.morasCuran)
+      this.proyectiles.fxEn('curar', this.heroina.x, this.heroina.y - 20, 1)
+      this.sonido.efecto('recoger', { volumen: 0.5, rate: 1.2 })
+    }
   }
 
   private alCambiarZona(z: Zona | null): void {
@@ -1654,6 +1669,7 @@ export class Mundo extends Phaser.Scene {
     this.autoguardadoEn -= dtVisual
     if (this.autoguardadoEn <= 0) this.guardar()
     this.decos.otros[0] = { x: this.thor.sprite.x, y: this.thor.sprite.y }
+    this.decos.enemigos = this.enemigos.vivos.map((e) => ({ x: e.x, y: e.y }))
     this.decos.actualizar(this.tViento, dtVisual, vista, heroe, luces)
     this.mecanismos?.update(this.t, luces)
     this.criaturas.update(this.t, dtVisual, heroe, vista, this.atmosfera.oscuridadFinal)
@@ -1664,7 +1680,7 @@ export class Mundo extends Phaser.Scene {
     this.reflejos.activo = cal.reflejos
     this.reflejos.update(this.t)
     this.fondo.update(vista)
-    this.frente.update(vista)
+    this.frente.update(vista, heroe)
     this.relojNiebla -= dtVisual
     if (this.relojNiebla <= 0) {
       this.relojNiebla = 0.25
@@ -1743,7 +1759,7 @@ export class Mundo extends Phaser.Scene {
       tocar: ((x: number, y: number) => this.entrada.tocar(x, y)) as never,
       estado: () => JSON.parse(JSON.stringify(this.partida)),
       atmosfera: () => this.atmosfera.info(),
-      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible }),
+      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, criaturasChicas: this.criaturas.infoChicos, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible }),
       camara: () => ({ x: this.camara.cx, y: this.camara.cy, ancho: this.camara.ancho, alto: this.camara.alto, manual: this.camara.manual }),
       mapa: () => ({
         ancho: this.mapa.ancho * this.mapa.cuadro,

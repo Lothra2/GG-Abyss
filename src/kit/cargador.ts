@@ -81,6 +81,7 @@ export function encolarMundoBase(e: Escena, m: Manifest): void {
   mu.suelo.forEach((s, i) => {
     if (!yaHay(e, K.sueloDe(id, i))) e.load.image(K.sueloDe(id, i), rutaKit(s.archivo))
   })
+  if (mu.espuma && !yaHay(e, K.espumaDe(id))) e.load.spritesheet(K.espumaDe(id), rutaKit(mu.espuma.archivo), { frameWidth: mu.cuadro, frameHeight: mu.cuadro })
   encolarAtmosfera(e, m)
 }
 
@@ -104,6 +105,8 @@ export function objetosDeFrente(m: Manifest): string[] {
 
 /** Las capas de fondo (el abismo con paralaje) no van en el mapa: se cargan todas las que traiga el mundo */
 export function objetosDeFondo(m: Manifest): string[] {
+  // el mundo dice cuáles y en qué orden (de la más lejana); si no, todas las `fondo` por nombre
+  if (m.mundo.fondo?.length) return m.mundo.fondo.map((f) => f.objeto).filter((n) => m.mundo.objetos[n])
   return Object.entries(m.mundo.objetos).filter(([, o]) => o.capa === 'fondo').map(([n]) => n).sort()
 }
 

@@ -54,7 +54,8 @@ describe('mapa del Bosque GG', () => {
       expect(z.area).toBeGreaterThan(0)
       expect(z.ambiente.length).toBeGreaterThan(0)
     }
-    const llaves = mapa.entidades.map(llaveEntidad)
+    // las llaves guardan lo abierto y lo roto: tienen que ser únicas en todo lo que se guarda (las criaturas no)
+    const llaves = mapa.entidades.filter((e) => e.tipo !== 'criatura').map(llaveEntidad)
     expect(new Set(llaves).size).toBe(llaves.length)
   })
 

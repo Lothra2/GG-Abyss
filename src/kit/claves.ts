@@ -9,6 +9,8 @@ export const K = {
   obj: (n: string, anim: string) => `o_${n}_${anim}`,
   /** la sombra horneada de un objeto */
   objSombra: (n: string) => `o_${n}__sombra`,
+  /** el atlas de la espuma de orilla de un mundo */
+  espumaDe: (mundo: string) => `espuma_${mundo}`,
   cri: (n: string, anim: string) => `c_${n}_${anim}`,
   par: (n: string) => `par_${n}`,
   aud: (n: string) => `a_${n}`,

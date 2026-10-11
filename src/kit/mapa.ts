@@ -56,6 +56,11 @@ export interface MapaJuego {
   agua: Uint8Array
   aguaCuadros: number
   aguaMs: number
+  /** F10: espuma de las orillas, por cuadro 0 (nada) o n (la pieza n - 1 del atlas), y cuántas filas tiene un cuadro del atlas */
+  espuma: Uint16Array
+  espumaFilas: number
+  /** F10: agua quieta donde se ve el reflejo (si el mapa no trae la capa, es la misma del agua) */
+  reflejo: Uint8Array
   decos: Deco[]
   entidades: Entidad[]
   zonas: Zona[]
@@ -106,6 +111,16 @@ export function parsearMapa(json: MapaTiled): MapaJuego {
   const superficie = new Uint8Array(ancho * alto)
   if (supCapa?.data && supCapa.data.length === ancho * alto) supCapa.data.forEach((v, i) => (superficie[i] = Math.min(255, v)))
 
+  // F10: espuma de orilla y agua quieta para el reflejo (capas opcionales del taller)
+  const espCapa = capas.find((l) => l.name === 'espuma' && l.type === 'tilelayer')
+  const espuma = new Uint16Array(ancho * alto)
+  if (espCapa?.data && espCapa.data.length === ancho * alto) espCapa.data.forEach((v, i) => (espuma[i] = Math.min(65535, v)))
+  const espumaFilas = Number(leerProps(espCapa as unknown as { properties?: { name: string; value: string | number | boolean }[] } ?? {}).filas ?? 1) || 1
+  const refCapa = capas.find((l) => l.name === 'reflejo' && l.type === 'tilelayer')
+  const reflejo = new Uint8Array(ancho * alto)
+  if (refCapa?.data && refCapa.data.length === ancho * alto) refCapa.data.forEach((v, i) => (reflejo[i] = v ? 1 : 0))
+  else agua.forEach((v, i) => (reflejo[i] = v ? 1 : 0))
+
   // animación del tile 0 del tileset del agua: cuántos cuadros y cuánto dura cada uno
   const ts = json.tilesets.find((t) => t.name === 'agua')
   const anim = ts?.tiles?.find((t) => t.id === 0)?.animation
@@ -154,7 +169,7 @@ export function parsearMapa(json: MapaTiled): MapaJuego {
   const postales: Postal[] = objetosDe(json.layers, 'postales').map((o) => ({ nombre: o.name, x: o.x, y: o.y }))
 
   const bioma = String(leerProps(json as unknown as { properties?: { name: string; value: string | number | boolean }[] }).bioma ?? 'bosque')
-  return { ancho, alto, cuadro: json.tilewidth, colision, superficie, agua, aguaCuadros, aguaMs, decos, entidades, zonas, postales, bioma }
+  return { ancho, alto, cuadro: json.tilewidth, colision, superficie, agua, aguaCuadros, aguaMs, espuma, espumaFilas, reflejo, decos, entidades, zonas, postales, bioma }
 }
 
 export type Superficie = 'pasto' | 'tierra' | 'piedra' | 'madera' | 'agua'

@@ -524,3 +524,6 @@ export const ABISMO = {
   /** la figura de los ojos rojos: aparece lejos, en el borde de la luz, y se va si te acercas */
   figura: { desdePiso: 3, distMin: 260, distMax: 340, seVaA: 180, thorGrunneA: 240, porPiso: [0, 0, 0, 1, 2, 3, 4, 1] },
 } as const
+
+/** F10: el mundo que reacciona. Las moras de un arbusto curan un poquito, una vez por arbusto */
+export const REACCIONES = { morasCuran: 8 } as const

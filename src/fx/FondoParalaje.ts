@@ -17,7 +17,8 @@ export class FondoParalaje {
       const def = m.mundo.objetos[n]
       const an = def && (def.anims.idle ? 'idle' : Object.keys(def.anims)[0])
       if (!def || !an || !escena.textures.exists(K.obj(n, an))) return
-      const k = PARALAJE_FONDO[Math.min(i, PARALAJE_FONDO.length - 1)]!
+      // el paralaje lo dice el mundo (`fondo: [{ objeto, paralaje }]`); si no, 0.6, 0.75 y 0.9
+      const k = m.mundo.fondo?.find((f) => f.objeto === n)?.paralaje ?? PARALAJE_FONDO[Math.min(i, PARALAJE_FONDO.length - 1)]!
       const t = escena.add.tileSprite(0, 0, 16, 16, K.obj(n, an)).setOrigin(0, 0).setScrollFactor(0).setDepth(PROF.FONDO + i)
       this.capas.push({ t, k })
     })

@@ -77,8 +77,12 @@ export class Frente {
       const piezas = ids.filter((id) => bordeFrente(this.m.mundo.objetos[id]!) === borde)
       if (!piezas.length) continue
       const tira = this.escena.add.container(0, 0)
-      // cada pieza se solapa un cuarto con la siguiente para que la tira no tenga huecos
-      const pasos = piezas.map((id) => Math.round(this.m.mundo.objetos[id]!.w * 0.75))
+      // las ramas y las hojas se solapan un cuarto para que la tira no tenga huecos. Lo alto y angosto (columnas,
+      // raíces colgantes) va suelto: una cada buena parte de la pantalla, si no se vuelve una reja
+      const pasos = piezas.map((id) => {
+        const d = this.m.mundo.objetos[id]!
+        return d.h > d.w * 1.5 ? Math.round(Math.max(d.w * 3, this.ancho * 0.55)) : Math.round(d.w * 0.75)
+      })
       const periodo = pasos.reduce((a, b) => a + b, 0)
       let x = 0
       let i = 0
@@ -107,8 +111,24 @@ export class Frente {
     return [...this.ids]
   }
 
-  update(vista: Phaser.Geom.Rectangle): void {
-    for (const t of this.tiras) t.c.x = corrimientoTira(vista.x, t.periodo) - t.periodo
+  /** `heroe` en coordenadas del mundo: lo del frente que le pasa por encima se aclara para no taparla */
+  update(vista: Phaser.Geom.Rectangle, heroe?: { x: number; y: number }): void {
+    const hx = heroe ? heroe.x - vista.x : -1e9
+    const hy = heroe ? heroe.y - vista.y - 20 : -1e9
+    for (const t of this.tiras) {
+      t.c.x = corrimientoTira(vista.x, t.periodo) - t.periodo
+      for (const o of t.c.list as Phaser.GameObjects.Sprite[]) {
+        const b = o.getBounds()
+        const x0 = b.x - this.ox
+        const y0 = b.y - this.oy
+        const tapa = hx > x0 - 6 && hx < x0 + b.width + 6 && hy > y0 - 6 && hy < y0 + b.height + 6
+        const meta = tapa ? 0.35 : 1
+        if (o.alpha !== meta) {
+          const a = o.alpha + (meta - o.alpha) * 0.2
+          o.setAlpha(Math.abs(meta - a) < 0.02 ? meta : a)
+        }
+      }
+    }
   }
 
   destruir(): void {

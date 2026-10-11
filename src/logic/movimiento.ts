@@ -107,11 +107,12 @@ export function caminarDireccion(g: Grilla, c: Cuerpo, dirX: number, dirY: numbe
  * patinen. `avance` son los pixeles que avanza un ciclo entero de la animación (lo dice el manifest).
  * ritmo = velocidad * cuadros / (avance * fps). Sin avance, 1. Con tope para que nunca se vea ridículo.
  */
-export function ritmoAnim(velocidad: number, a: { cuadros: number; fps: number; avance?: number }): number {
-  if (!a.avance || a.avance <= 0 || a.fps <= 0) return 1
-  const r = (velocidad * a.cuadros) / (a.avance * a.fps)
-  // tope: con los números de hoy del taller la fórmula pide hasta 6x (anotado en ASSETS_PENDIENTES #33)
-  return Math.max(0.7, Math.min(1.5, r))
+export function ritmoAnim(velocidad: number, a: { cuadros: number; fps: number; avance?: number; velocidad_natural?: number }): number {
+  // la velocidad a la que el pie no patina: la trae el kit, o sale del avance (px por ciclo completo)
+  const natural = a.velocidad_natural ?? (a.avance && a.avance > 0 && a.cuadros > 0 ? (a.avance * a.fps) / a.cuadros : 0)
+  if (!natural || natural <= 0) return 1
+  // tope: la familia es chibi y de piernas cortas, el ritmo exacto sería de 3 a 11 veces (KIT_JUEGO.md). Un poco de patinar
+  return Math.max(0.7, Math.min(1.5, velocidad / natural))
 }
 
 /** Los cuadros (desde 0) donde cae un evento del manifest de cierto tipo, o null si la animación no trae eventos */

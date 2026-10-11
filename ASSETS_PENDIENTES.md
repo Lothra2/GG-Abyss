@@ -67,6 +67,12 @@ Todo el pedido, con tamaños, cuadros, apoyos y prioridades, está en `docs/enca
 - **Pedido:** confirmar si `avance` es por ciclo, por paso o por cuadro, y que salga en la misma unidad para todos. Mejor todavía, agregar `velocidad_natural` en px/s, la velocidad a la que el pie no patina.
 - **Mientras tanto:** el juego usa la fórmula con tope entre 0.7 y 1.5.
 
+### 34. Una rana y un pez en el mismo punto del Bosque
+
+- **Qué pasa:** en `mundo1_bosque.json` hay dos entidades `criatura` en (1840, 2416): una `rana` y un `pez`. La rana tendría que estar en la orilla y el pez en el agua.
+- **Pedido:** separarlas, la rana en tierra a la orilla y el pez adentro del lago.
+- **Mientras tanto:** no rompe nada (las criaturas no se guardan). La prueba de llaves únicas solo mira lo que se guarda.
+
 ---
 
 ## Entregado por el taller

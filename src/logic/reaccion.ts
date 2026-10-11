@@ -4,10 +4,18 @@
  * entrega la animación (`sacudir`, `rebotar`, `salpicar`) se usa esa en vez del meneo.
  */
 
-export type TipoReaccion = 'sacudir' | 'rebotar' | 'salpicar'
+export type TipoReaccion = 'sacudir' | 'rebotar' | 'salpicar' | 'mecer' | 'romper'
 
 export interface Reaccion {
   tipo: TipoReaccion
+  /** la animación del taller que la muestra (si el objeto la trae) */
+  anim: string
+  /** el sonido del kit que suena */
+  sonido: string | null
+  /** queda así para siempre (la telaraña rota se queda colgando en su último cuadro) */
+  queda?: boolean
+  /** al pasar suelta algo (el arbusto de moras suelta moras que curan y queda sin moras) */
+  suelta?: 'moras'
   /** a qué distancia del pie del objeto reacciona (px), además de la mitad de su ancho */
   radio: number
   /** cuánto dura el meneo (s) */
@@ -21,10 +29,13 @@ export interface Reaccion {
 }
 
 const REGLAS: [RegExp, Reaccion][] = [
-  [/^(arbusto|juncos|helecho)/, { tipo: 'sacudir', radio: 10, dura: 0.7, espera: 1.2, particula: 'hoja_verde', cuantas: 2 }],
-  [/^flores_grandes/, { tipo: 'sacudir', radio: 8, dura: 0.6, espera: 1.2, particula: 'polen', cuantas: 3 }],
-  [/^(hongos$|tocon_hongos|hongo_gigante)/, { tipo: 'rebotar', radio: 8, dura: 0.55, espera: 1.5, particula: 'espora', cuantas: 3 }],
-  [/^charco/, { tipo: 'salpicar', radio: 4, dura: 0.4, espera: 0.6, particula: 'gota', cuantas: 4 }],
+  [/^arbusto_moras/, { tipo: 'sacudir', anim: 'sacudir', sonido: 'arbusto_sacudir', radio: 10, dura: 0.7, espera: 1.2, particula: 'hoja_verde', cuantas: 2, suelta: 'moras' }],
+  [/^(arbusto|helecho)/, { tipo: 'sacudir', anim: 'sacudir', sonido: 'arbusto_sacudir', radio: 10, dura: 0.7, espera: 1.2, particula: 'hoja_verde', cuantas: 2 }],
+  [/^(juncos|nenufar)/, { tipo: 'mecer', anim: 'mecer', sonido: null, radio: 14, dura: 0.8, espera: 1.2, particula: 'gota', cuantas: 2 }],
+  [/^flores_grandes/, { tipo: 'sacudir', anim: 'sacudir', sonido: 'arbusto_sacudir', radio: 8, dura: 0.6, espera: 1.2, particula: 'polen', cuantas: 3 }],
+  [/^(hongos$|tocon_hongos|hongo_gigante)/, { tipo: 'rebotar', anim: 'rebotar', sonido: 'hongo_rebote', radio: 8, dura: 0.55, espera: 1.5, particula: 'espora', cuantas: 3 }],
+  [/^charco/, { tipo: 'salpicar', anim: 'salpicar', sonido: 'charco_pisar', radio: 4, dura: 0.4, espera: 0.6, particula: 'gota', cuantas: 4 }],
+  [/^telarana/, { tipo: 'romper', anim: 'romper', sonido: 'telarana_romper', radio: 6, dura: 0.5, espera: 9999, particula: null, cuantas: 0, queda: true }],
 ]
 
 export function reaccionDe(nombre: string): Reaccion | null {
@@ -48,6 +59,8 @@ export function meneo(r: Reaccion, el: number, lado: number): { angulo: number; 
   const k = 1 - el / r.dura
   const amort = k * k
   switch (r.tipo) {
+    case 'romper':
+    case 'mecer':
     case 'sacudir':
       return { angulo: Math.sin(el * 26) * 6 * amort * lado, sx: 1, sy: 1, dx: Math.round(Math.sin(el * 30) * 1.4 * amort) }
     case 'rebotar': {

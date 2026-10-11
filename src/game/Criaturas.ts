@@ -36,6 +36,30 @@ interface Ojos {
   fr: number
 }
 
+/** F10: ranas, peces y ardillas. Quietos hasta que alguien pasa cerca: huyen (la rana salta, el pez salta fuera del
+ * agua, la ardilla corre al árbol) y vuelven solos cuando nadie los mira */
+interface Chico {
+  especie: string
+  hx: number
+  hy: number
+  x: number
+  y: number
+  huyendo: number
+  /** -1 en su lugar; si no, cuántos segundos faltan para volver */
+  vuelve: number
+  dx: number
+  s: Phaser.GameObjects.Sprite
+  tex: string
+  fr: number
+  ph: number
+}
+
+const ESPECIES_CHICAS: Record<string, { huye: number; seEsconde: boolean; corre: number }> = {
+  rana: { huye: 50, seEsconde: true, corre: 34 },
+  pez: { huye: 60, seEsconde: false, corre: 0 },
+  ardilla: { huye: 56, seEsconde: true, corre: 22 },
+}
+
 /** Radio al que la heroína asusta a un cuervo (PLAN.md 2.5) */
 const RADIO_SUSTO = 46
 
@@ -46,6 +70,9 @@ const RADIO_SUSTO = 46
 export class Criaturas {
   readonly cuervos: Cuervo[] = []
   readonly ojos: Ojos[] = []
+  readonly chicos: Chico[] = []
+  /** una criatura chica salió huyendo (para el sonido) */
+  alHuir?: (especie: string, x: number, y: number) => void
 
   constructor(
     private escena: Phaser.Scene,
@@ -63,6 +90,11 @@ export class Criaturas {
           hx: e.x, hy: e.y, x: e.x, y: e.y, st: 'quieto', vx: 0, vy: 0, t0: hash2(e.x, e.y) * 5, left, back: 0, s,
           sombra: new Sombra(escena, 9, 0.28), tex: K.cri(nombre, 'quieto'), fr: -1,
         })
+      } else if (ESPECIES_CHICAS[especie] && m.mundo.criaturas[especie]?.anims.quieto && escena.textures.exists(K.cri(especie, 'quieto'))) {
+        const s = escena.add.sprite(e.x, e.y, K.cri(especie, 'quieto'), 0).setOrigin(0.5, 1).setDepth(PROF.OBJETOS + e.y)
+        // el pez vive en el agua: va abajo del suelo, como el reflejo, y se ve donde hay agua
+        if (especie === 'pez') s.setDepth(PROF.REFLEJO + 0.1)
+        this.chicos.push({ especie, hx: e.x, hy: e.y, x: e.x, y: e.y, huyendo: -1, vuelve: -1, dx: 1, s, tex: K.cri(especie, 'quieto'), fr: -1, ph: hash2(e.x, e.y) })
       } else if (especie === 'ojos') {
         const s = escena.add.sprite(e.x, e.y, K.cri('ojos', 'mirar'), 0).setDepth(PROF.BRILLA_EN_OSCURO).setOrigin(0.5, 0.5)
         this.ojos.push({ x: e.x, y: e.y, blinkAt: hash2(e.x, 3) * 6, blinkT: -1, ph: hash2(e.x, e.y), s, tex: K.cri('ojos', 'mirar'), fr: -1 })
@@ -147,6 +179,8 @@ export class Criaturas {
       c.sombra.poner(c.x, c.y)
     }
 
+    this.actualizarChicos(t, dt, heroe, vista)
+
     const o = this.m.mundo.criaturas.ojos!.anims
     const alfa = Phaser.Math.Clamp(0.35 + oscuridad, 0, 1)
     for (const e of this.ojos) {
@@ -177,5 +211,73 @@ export class Criaturas {
       }
       e.s.setAlpha(alfa)
     }
+  }
+
+  /** Criaturas chicas que huyen (F10) */
+  private actualizarChicos(t: number, dt: number, heroe: { x: number; y: number }, vista: Phaser.Geom.Rectangle): void {
+    for (const c of this.chicos) {
+      const def = ESPECIES_CHICAS[c.especie]!
+      const anims = this.m.mundo.criaturas[c.especie]!.anims
+      const enVista = c.hx > vista.x - 48 && c.hx < vista.right + 48 && c.hy > vista.y - 48 && c.hy < vista.bottom + 48
+      if (c.vuelve >= 0) {
+        // escondida: vuelve a su lugar cuando nadie la ve
+        c.vuelve -= dt
+        if (c.vuelve <= 0 && !enVista) {
+          c.vuelve = -1
+          c.x = c.hx
+          c.y = c.hy
+          c.s.setVisible(true).setAlpha(1)
+        }
+        continue
+      }
+      c.s.setVisible(enVista)
+      if (!enVista) continue
+      if (c.huyendo < 0 && Math.hypot(c.x - heroe.x, c.y - heroe.y) < def.huye) {
+        c.huyendo = t
+        c.dx = c.x >= heroe.x ? 1 : -1
+        this.alHuir?.(c.especie, c.x, c.y)
+      }
+      let anim = 'quieto'
+      let f: number
+      const huir = anims.huir
+      if (c.huyendo >= 0 && huir) {
+        const el = t - c.huyendo
+        const dur = huir.cuadros / huir.fps
+        anim = 'huir'
+        f = Math.min(huir.cuadros - 1, Math.floor(el * huir.fps))
+        c.x += c.dx * def.corre * dt * 2
+        if (el >= dur) {
+          c.huyendo = -1
+          if (def.seEsconde) {
+            c.vuelve = 14 + fx().next() * 10
+            c.s.setVisible(false)
+            continue
+          }
+          c.x = c.hx
+          anim = 'quieto'
+          f = 0
+        }
+      } else {
+        c.huyendo = -1
+        const q = anims.quieto!
+        f = Math.floor(t * q.fps + c.ph * q.cuadros) % q.cuadros
+      }
+      const tex = K.cri(c.especie, anim)
+      if (tex !== c.tex && this.escena.textures.exists(tex)) {
+        c.tex = tex
+        c.fr = f
+        c.s.setTexture(tex, f)
+      } else if (f !== c.fr) {
+        c.fr = f
+        c.s.setFrame(f)
+      }
+      c.s.setFlipX(c.dx < 0).setPosition(Math.round(c.x), Math.round(c.y))
+      if (c.especie !== 'pez') c.s.setDepth(PROF.OBJETOS + c.y)
+    }
+  }
+
+  /** Cuántas criaturas chicas hay y cuántas están escondidas (para las pruebas) */
+  get infoChicos(): { total: number; escondidas: number; especies: string[] } {
+    return { total: this.chicos.length, escondidas: this.chicos.filter((c) => c.vuelve >= 0).length, especies: [...new Set(this.chicos.map((c) => c.especie))] }
   }
 }

@@ -13,6 +13,10 @@ export class MundoVista {
   private agua: { img: Phaser.GameObjects.Image; id: number; x: number; y: number }[] = []
   private cuadroAgua = -1
   readonly suelo: Phaser.GameObjects.Image[] = []
+  /** F10: la espuma de las orillas, encima del suelo y debajo de los objetos */
+  private espuma: { img: Phaser.GameObjects.Image; pieza: number; x: number; y: number }[] = []
+  private cuadroEspuma = -1
+  private espumaDef: { columnas: number; cuadros: number; fps: number } | null = null
 
   constructor(escena: Phaser.Scene, m: Manifest, private mapa: MapaJuego) {
     const c = mapa.cuadro
@@ -28,6 +32,18 @@ export class MundoVista {
     m.mundo.suelo.forEach((s, i) => {
       this.suelo.push(escena.add.image(s.x, s.y, K.sueloDe(mundo, i)).setOrigin(0, 0).setDepth(PROF.SUELO))
     })
+    const e = m.mundo.espuma
+    if (e && escena.textures.exists(K.espumaDe(mundo))) {
+      this.espumaDef = e
+      for (let i = 0; i < mapa.espuma.length; i++) {
+        const n = mapa.espuma[i]!
+        if (!n) continue
+        const tx = i % mapa.ancho
+        const ty = (i - tx) / mapa.ancho
+        const img = escena.add.image(tx * c, ty * c, K.espumaDe(mundo), n - 1).setOrigin(0, 0).setDepth(PROF.SUELO + 0.5)
+        this.espuma.push({ img, pieza: n - 1, x: tx * c, y: ty * c })
+      }
+    }
   }
 
   /** Cambia el cuadro del agua cada `aguaMs` y esconde lo que no se ve */
@@ -45,6 +61,24 @@ export class MundoVista {
       if (a.img.visible !== visible) a.img.setVisible(visible)
       if (visible && cambio && a.id === 1) a.img.setFrame(f)
     }
+    // la espuma: el cuadro f de cada pieza está f * filas * columnas cuadros más adelante en el atlas
+    const d = this.espumaDef
+    if (d) {
+      const fe = Math.floor(tSeg * d.fps) % d.cuadros
+      const cambioE = fe !== this.cuadroEspuma
+      this.cuadroEspuma = fe
+      const salto = fe * this.mapa.espumaFilas * d.columnas
+      for (const e of this.espuma) {
+        const visible = e.x > x0 && e.x < x1 && e.y > y0 && e.y < y1
+        if (e.img.visible !== visible) e.img.setVisible(visible)
+        if (visible && cambioE) e.img.setFrame(e.pieza + salto)
+      }
+    }
+  }
+
+  /** Cuántas piezas de espuma hay (para las pruebas) */
+  get espumas(): number {
+    return this.espuma.length
   }
 
   get frameAgua(): number {

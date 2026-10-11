@@ -48,6 +48,14 @@ export interface DefDeco {
   reac: Reaccion | null
   /** primer plano del taller: va encima de todo con paralaje */
   frente: boolean
+  /** una animación que quedó para siempre en su último cuadro desde este segundo (telaraña rota, flor cerrada) */
+  desde?: number
+  /** el arbusto de moras ya las soltó */
+  sinMoras?: boolean
+  /** antorcha apagada en lo oscuro: se prende cuando pasa la heroína con su luz */
+  apagada?: boolean
+  /** flor: cerrada mientras hay un enemigo cerca */
+  cerrada?: boolean
   /** rectángulo del sprite en el mundo */
   x0: number
   y0: number
@@ -92,6 +100,8 @@ export interface Activo {
 export interface OpcionesDecos {
   /** sombras largas del mundo, o null si no hay */
   sombra?: CfgSombra | null
+  /** qué tan oscuro es un punto del mapa (las antorchas de lo oscuro arrancan apagadas) */
+  oscuridadEn?: (x: number, y: number) => number
   /** el agua del mapa, para los reflejos */
   agua?: MapaAgua | null
 }
@@ -115,7 +125,11 @@ export class Decos {
   /** se llama cuando un árbol hechizado despierta (para el sonido) */
   alDespertar?: (x: number, y: number) => void
   /** algo reaccionó al paso: el juego suelta las partículas y el sonido */
-  alReaccionar?: (r: Reaccion, x: number, y: number, ancho: number, alto: number) => void
+  alReaccionar?: (r: Reaccion, x: number, y: number, ancho: number, alto: number, moras: boolean) => void
+  /** una antorcha apagada se prendió */
+  alPrender?: (x: number, y: number) => void
+  /** dónde están los enemigos (las flores se cierran cuando pasan) */
+  enemigos: { x: number; y: number }[] = []
   /** además de la heroína, quién más mueve los arbustos (Thor) */
   otros: { x: number; y: number }[] = []
   /** reloj propio de las reacciones: el del viento se acelera en las ráfagas */
@@ -191,6 +205,7 @@ export class Decos {
         refleja: !!agua && def.capa !== 'suelo' && aguaDebajo(agua, d.x, d.y, REFLEJO.cerca),
         reac: reaccionDe(def.base ?? d.sprite),
         frente: capaDe(def) === 'frente',
+        apagada: !!def.anims.apagada && !!def.anims.prender && (op.oscuridadEn?.(d.x, d.y) ?? 0) >= 0.5,
         x0,
         y0,
         x1: x0 + def.w,
@@ -253,6 +268,7 @@ export class Decos {
 
   /** Animación de fondo del tronco (o del objeto entero) */
   private animBase(d: DefDeco): string {
+    if (d.apagada) return 'apagada'
     if (!d.separado) return d.anim
     return d.hechizado ? 'tronco_dormido' : 'tronco'
   }
@@ -447,6 +463,7 @@ export class Decos {
         else f = Math.max(0, maxF - Math.floor(el * info.fps))
       } else if (an === 'parpadeo' || an === 'tronco_parpadeo') f = Math.min(info.cuadros - 1, Math.floor((t - a.blinkT) * info.fps))
       else if (sonrisa) f = Math.min(info.cuadros - 1, Math.floor((t - a.sonrisaT) * info.fps))
+      else if (d.desde !== undefined && nombre === d.anim) f = Math.min(info.cuadros - 1, Math.floor((t - d.desde) * info.fps))
       else f = Math.floor(t * info.fps + d.ph * info.cuadros) % info.cuadros
 
       if (nombre !== a.anim) {
@@ -477,6 +494,8 @@ export class Decos {
       }
 
       if (d.reac) this.reaccionar(a, d.reac, quienes, t)
+      if (d.apagada && Math.hypot(heroe.x - d.x, heroe.y - d.y) < 70) this.prender(a, t)
+      if (def.anims.cerrar && def.anims.abrir) this.flor(a, t)
 
       // primer plano: se corre más rápido que el mundo y se aclara si tapa a la heroína
       if (d.frente) {
@@ -492,7 +511,7 @@ export class Decos {
       }
 
       // luz propia del objeto
-      if (def.luz) luces.push({ x: d.x, y: d.y - (def.luz.dy ?? 0), r: def.luz.radius, color: def.luz.color, flicker: def.luz.flicker, pulse: def.luz.pulse, ph: d.ph })
+      if (def.luz && !d.apagada) luces.push({ x: d.x, y: d.y - (def.luz.dy ?? 0), r: def.luz.radius, color: def.luz.color, flicker: def.luz.flicker, pulse: def.luz.pulse, ph: d.ph })
       // luz de los ojos de un árbol despierto
       if (a.despierto && !an.endsWith('dormido')) luces.push({ x: d.x, y: d.y - 54, r: 46, color: d.tipo.endsWith('1') ? COLOR.OJOS_HECHIZADO_1 : COLOR.OJOS_HECHIZADO, pulse: true, ph: d.ph })
 
@@ -521,13 +540,49 @@ export class Decos {
       a.reacT = this.reloj
       a.reacLado = quien!.x < d.x ? 1 : -1
       this.reacciones++
-      if (d.def.anims[r.tipo]) a.forzada = { anim: r.tipo, t0: t }
-      this.alReaccionar?.(r, d.x, d.y, d.def.w, d.def.h)
+      const tiene = !!d.def.anims[r.anim]
+      if (tiene && r.queda) {
+        // la telaraña rota se queda colgando en su último cuadro
+        d.anim = r.anim
+        d.desde = t
+      } else if (tiene) a.forzada = { anim: r.anim, t0: t }
+      // el arbusto de moras las suelta una sola vez y queda sin moras
+      const moras = r.suelta === 'moras' && !d.sinMoras
+      if (moras) {
+        d.sinMoras = true
+        if (d.def.anims.sin_moras) d.anim = 'sin_moras'
+      }
+      this.alReaccionar?.(r, d.x, d.y, d.def.w, d.def.h, moras)
     }
-    if (a.reacT < 0 || d.def.anims[r.tipo]) return
+    if (a.reacT < 0 || d.def.anims[r.anim]) return
     const m = meneo(r, this.reloj - a.reacT, a.reacLado)
     for (const sp of [a.s, a.c]) sp?.setAngle(m.angulo).setScale(m.sx, m.sy).setX(d.x + m.dx)
     if (m.angulo === 0 && m.sy === 1 && m.sx === 1) a.reacT = -1
+  }
+
+  /** La antorcha apagada se prende al pasar la heroína con su luz (y desde ahí alumbra) */
+  private prender(a: Activo, t: number): void {
+    const d = a.d
+    d.apagada = false
+    d.anim = d.def.anims.idle ? 'idle' : d.anim
+    a.forzada = { anim: 'prender', t0: t }
+    this.alPrender?.(d.x, d.y)
+  }
+
+  /** La flor se cierra cuando un enemigo pasa cerca y se vuelve a abrir cuando se va */
+  private flor(a: Activo, t: number): void {
+    const d = a.d
+    const cerca = this.enemigos.some((e) => Math.hypot(e.x - d.x, e.y - d.y) < 56)
+    if (cerca && !d.cerrada) {
+      d.cerrada = true
+      d.anim = 'cerrar'
+      d.desde = t
+    } else if (!cerca && d.cerrada) {
+      d.cerrada = false
+      d.anim = d.def.anims.idle ? 'idle' : 'abrir'
+      d.desde = undefined
+      a.forzada = { anim: 'abrir', t0: t }
+    }
   }
 
   /** Cuántas veces reaccionó algo desde que empezó el mundo (para las pruebas) */
