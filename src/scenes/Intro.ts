@@ -2,7 +2,9 @@ import Phaser from 'phaser'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
 import { crearAnimsPersonaje } from '../kit/anims'
-import { encolarAudio, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
+import { encolarAudio, encolarIntro, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
+import { audioIntro, escalaPanel, hojasIntro, introPintado, PANEL_DE_MOMENTO, panelesIntro } from '../kit/intro'
+import type { PanelIntro } from '../kit/tipos'
 import { alCambiarEscala, escalaDe } from '../game/Pantalla'
 import { escalaQueEntra, texto } from '../game/Texto'
 import { crearBoton, type Boton } from '../game/ui/Boton'
@@ -38,8 +40,9 @@ export function introVista(): boolean {
  * - profundidad: la pared de fuego adelante y las brasas subiendo, cada una a su velocidad
  * - los ojos en primer plano con latidos, relámpagos que dejan ver a los guardianes en silueta, la familia a
  *   contraluz del portal con sus sombras largas hacia la cámara, y el título que cae después de un silencio
- * Todo con piezas del kit (fogatas, brasas, personajes, la postal) y luz técnica. Un toque lo salta.
- * Cuando el taller entregue los paneles de cine (encargo, parte 4) reemplazan lo prestado.
+ * Con los paneles pintados del taller (manifest.intro) cada momento es su panel en capas, corrido con su paralaje, la
+ * pared de fuego es la del taller, el humo cruza delante y el logo arde. Sin ellos usa piezas prestadas del kit
+ * (fogatas, brasas, personajes, la postal) y luz técnica. Un toque lo salta.
  */
 export class Intro extends Phaser.Scene {
   private t = 0
@@ -68,6 +71,11 @@ export class Intro extends Phaser.Scene {
   private relampagos = 0
   private cortes = 0
   private golpeTitulo = false
+  /** F11: los paneles pintados del taller */
+  private pintado = false
+  private capas: { s: Phaser.GameObjects.Sprite; panel: string; paralaje: number; x: number; y: number; alto: number }[] = []
+  private familiaFrente: Phaser.GameObjects.Sprite | null = null
+  private humos = 0
 
   constructor() {
     super('Intro')
@@ -81,6 +89,10 @@ export class Intro extends Phaser.Scene {
     encolarPostales(this, m, [POSTAL])
     encolarParticulas(this, m, ['brasa'])
     encolarAudio(this, m, ['musica_amenaza', 'jefe_rugido', 'jefe_pisoton', 'portal', 'ladrido', 'legendario', 'ambiente_magia', 'click'])
+    // los paneles pintados, la pared de fuego, el humo, el logo en llamas, la música y el latido
+    encolarIntro(this, m)
+    const a = audioIntro(m)
+    encolarAudio(this, m, [a.musica, a.latido].filter((x): x is string => !!x))
   }
 
   create(): void {
@@ -94,6 +106,9 @@ export class Intro extends Phaser.Scene {
     this.cortes = 0
     this.golpeTitulo = false
     this.thorLadro = false
+    this.humos = 0
+    this.pintado = introPintado(m) && Object.values(PANEL_DE_MOMENTO).every((n) => panelesIntro(m)[n]!.capas.every((c) => this.textures.exists(K.intro(`${n}_${c.nombre}`))))
+    this.crearAnimsIntro()
     this.cameras.main.setBackgroundColor(0x020205)
     for (const id of ['minotauro', 'guardian_campana', 'sophie', 'alana', 'thor']) crearAnimsPersonaje(this, m, id)
     const fogata = m.mundo.objetos.fogata
@@ -102,14 +117,16 @@ export class Intro extends Phaser.Scene {
     }
 
     // la cueva va detrás del fuego, lo demás delante. El negro de los cortes y las franjas de cine, encima de todo
-    for (const k of PLANOS) this.planos[k] = this.add.container(0, 0).setAlpha(0).setDepth(k === 'cueva' ? 0 : 70)
+    // pintado: los paneles cubren la pantalla y van todos atrás (el fuego y las brasas por delante, el título encima)
+    for (const k of PLANOS) this.planos[k] = this.add.container(0, 0).setAlpha(0).setDepth(this.pintado ? (k === 'titulo' ? 70 : 0) : k === 'cueva' ? 0 : 70)
     this.fuego = this.add.container(0, 0).setDepth(50).setAlpha(0)
     this.negro = this.add.rectangle(0, 0, 16, 16, 0x020205, 1).setOrigin(0, 0).setDepth(180).setAlpha(0)
     this.franjas = [0, 1].map(() => this.add.rectangle(0, 0, 16, 16, 0x000000, 1).setOrigin(0, 0).setDepth(190))
     this.leyenda = texto(this, 0, 0, '', 'fuente_ui', 2, { origen: [0.5, 0.5], tinte: 0xffd8a0, profundidad: 200 })
 
-    if (this.cache.audio.exists(K.aud('musica_amenaza'))) {
-      this.musica = this.sound.add(K.aud('musica_amenaza'), { loop: true, volume: 0 })
+    const mus = [audioIntro(m).musica, 'musica_amenaza'].find((n) => n && this.cache.audio.exists(K.aud(n)))
+    if (mus) {
+      this.musica = this.sound.add(K.aud(mus), { loop: true, volume: 0 })
       this.musica.play()
     }
     // la música del título se pausa y vuelve al terminar (la selección la sigue usando)
@@ -137,7 +154,7 @@ export class Intro extends Phaser.Scene {
       this.musica?.stop()
     })
     agregarGanchos({
-      intro: () => ({ t: Math.round(this.t * 10) / 10, momento: this.beat, texto: this.leyenda.text, duracion: DURACION_INTRO, cortes: this.cortes, latidos: this.latidos, relampagos: this.relampagos, golpeTitulo: this.golpeTitulo, franjas: Math.round(this.franjas[0]?.height ?? 0) }),
+      intro: () => ({ t: Math.round(this.t * 10) / 10, momento: this.beat, pintado: this.pintado, capas: this.capas.length, humos: this.humos, texto: this.leyenda.text, duracion: DURACION_INTRO, cortes: this.cortes, latidos: this.latidos, relampagos: this.relampagos, golpeTitulo: this.golpeTitulo, franjas: Math.round(this.franjas[0]?.height ?? 0) }),
       saltarIntro: (() => this.terminar()) as never,
     })
     this.cameras.main.fadeIn(800, 2, 2, 5)
@@ -162,6 +179,9 @@ export class Intro extends Phaser.Scene {
     this.siluetas = []
     this.thor = null
     this.logo = null
+    this.capas = []
+    this.familiaFrente = null
+    this.postal = null
     this.brasas?.destroy()
     this.brasas = null
     this.negro.setSize(w, h)
@@ -171,8 +191,9 @@ export class Intro extends Phaser.Scene {
     this.franjas[1]!.setPosition(0, h - this.alto).setSize(w, this.alto)
     const cy = h / 2
 
+    if (this.pintado) this.armarPaneles(w, h)
     // plano 2, la cueva: la postal a escala entera que cubre la pantalla, oscurecida y con la luz roja del fuego
-    if (this.textures.exists(K.postal(POSTAL))) {
+    else if (this.textures.exists(K.postal(POSTAL))) {
       const k = Math.max(1, Math.ceil(Math.max(w / 960, h / 540)))
       this.postal = this.add.image(Math.round(w / 2), Math.round(cy), K.postal(POSTAL)).setScale(k).setTint(0x8a6a60)
       this.planos.cueva.add([this.postal, this.add.rectangle(0, 0, w, h, 0x05020a, 0.4).setOrigin(0, 0)])
@@ -181,7 +202,19 @@ export class Intro extends Phaser.Scene {
     // la pared de fuego abajo: fogatas del kit en dos filas, con las piedras fuera de cuadro. Atrás más grandes
     // y apagadas, adelante más chicas y vivas: así se ve una pared y no un campamento
     const kf = Math.max(3, Math.round(h / 130))
-    for (const [k, alfa, sube] of [[kf + 2, 0.75, 0.42], [kf, 1, 0.3]] as const) {
+    const pared = hojasIntro(manifestDe(this)).fuego_pared
+    if (pared && this.textures.exists(K.intro('fuego_pared'))) {
+      // la pared de fuego del taller: pega de lado a lado. Atrás una fila más grande y apagada para que tenga cuerpo
+      const kp = Math.max(1, Math.round(h / 300))
+      for (const [k, alfa] of [[kp + 1, 0.6], [kp, 1]] as const) {
+        for (let x = 0, i = 0; x < w + pared.w * k; x += pared.w * k, i++) {
+          const f = this.add.sprite(Math.round(x), h, K.intro('fuego_pared'), 0).setOrigin(0, 1).setScale(k).setAlpha(alfa)
+          if (this.anims.exists('intro_fuego_pared')) f.play({ key: 'intro_fuego_pared', startFrame: (i * 3 + (k > kp ? 4 : 0)) % pared.cuadros })
+          this.fuego.add(f)
+        }
+      }
+    }
+    for (const [k, alfa, sube] of pared ? [] : ([[kf + 2, 0.75, 0.42], [kf, 1, 0.3]] as const)) {
       const paso = Math.round(32 * k * 0.5)
       for (let x = -paso / 2, i = 0; x < w + paso; x += paso, i++) {
         if (!this.textures.exists(K.obj('fogata', 'idle'))) break
@@ -206,6 +239,30 @@ export class Intro extends Phaser.Scene {
       }).setDepth(60)
     }
 
+    if (!this.pintado) this.armarPrestados(w, h, cy)
+
+    // plano 6, el título
+    const lf = hojasIntro(manifestDe(this)).logo_fuego
+    this.logoEscala = lf && this.textures.exists(K.intro('logo_fuego')) ? escalaQueEntra(lf.w, w * 0.85, 3) : escalaQueEntra(288, w * 0.8, 4)
+    this.logo = lf && this.textures.exists(K.intro('logo_fuego'))
+      ? this.add.sprite(Math.round(w / 2), Math.round(cy - 10 * esc), K.intro('logo_fuego'), 0).setScale(this.logoEscala)
+      : this.textures.exists(K.ui('logo'))
+      ? this.add.sprite(Math.round(w / 2), Math.round(cy - 10 * esc), K.ui('logo'), 0).setScale(this.logoEscala)
+      : texto(this, Math.round(w / 2), Math.round(cy - 10 * esc), 'GG Abyss', 'fuente_titulo', esc + 2, { origen: [0.5, 0.5] })
+    if (this.logo instanceof Phaser.GameObjects.Sprite) {
+      if (this.logo.texture.key === K.intro('logo_fuego') && this.anims.exists('intro_logo_fuego')) this.logo.play('intro_logo_fuego')
+      else if (this.anims.exists('logo')) this.logo.play('logo')
+    }
+    this.planos.titulo.add([this.add.image(Math.round(w / 2), Math.round(cy), K.luz).setTint(0xff7a20).setBlendMode(Phaser.BlendModes.ADD).setScale((w * 0.9) / 64, (h * 0.55) / 64).setAlpha(0.4), this.logo])
+
+    this.leyenda.setPosition(Math.round(w / 2), Math.round(h - this.alto / 2))
+    this.saltar.setPosition(w - 6, Math.round(this.alto / 2))
+    this.beat = null
+  }
+
+  /** Los planos 3 a 5 con piezas prestadas del kit (cuando no están los paneles pintados) */
+  private armarPrestados(w: number, h: number, cy: number): void {
+    const esc = this.esc
     // plano 3, los ojos en primer plano: grandes, con su brillo y el reflejo rojo del fuego abajo
     const ox = 34 * esc
     const oy = Math.round(cy - 6 * esc)
@@ -252,18 +309,86 @@ export class Intro extends Phaser.Scene {
     }
     // el borde de luz del portal sobre ellos
     this.planos.familia.add(this.add.image(Math.round(w / 2), py - 24 * kh, K.luz).setTint(0x8ab8ff).setBlendMode(Phaser.BlendModes.ADD).setScale((80 * kh) / 64).setAlpha(0.3))
+  }
 
-    // plano 6, el título
-    this.logoEscala = escalaQueEntra(288, w * 0.8, 4)
-    this.logo = this.textures.exists(K.ui('logo'))
-      ? this.add.sprite(Math.round(w / 2), Math.round(cy - 10 * esc), K.ui('logo'), 0).setScale(this.logoEscala)
-      : texto(this, Math.round(w / 2), Math.round(cy - 10 * esc), 'GG Abyss', 'fuente_titulo', esc + 2, { origen: [0.5, 0.5] })
-    if (this.logo instanceof Phaser.GameObjects.Sprite && this.anims.exists('logo')) this.logo.play('logo')
-    this.planos.titulo.add([this.add.image(Math.round(w / 2), Math.round(cy), K.luz).setTint(0xff7a20).setBlendMode(Phaser.BlendModes.ADD).setScale((w * 0.9) / 64, (h * 0.55) / 64).setAlpha(0.4), this.logo])
+  /** Las animaciones de las capas y hojas del intro (una vez por juego) */
+  private crearAnimsIntro(): void {
+    const m = manifestDe(this)
+    for (const [n, p] of Object.entries(panelesIntro(m))) {
+      for (const c of p.capas) {
+        const tex = K.intro(`${n}_${c.nombre}`)
+        if (c.cuadros <= 1 || !this.textures.exists(tex)) continue
+        const key = `${tex}_anim`
+        // la familia: Thor gira hacia la cámara en los dos últimos cuadros (se pasa a esos con el ladrido)
+        if (n === PANEL_DE_MOMENTO.familia && c.nombre === 'frente' && c.cuadros > 2) {
+          if (!this.anims.exists(`${key}_a`)) this.anims.create({ key: `${key}_a`, frames: this.anims.generateFrameNumbers(tex, { start: 0, end: c.cuadros - 3 }), frameRate: c.fps, repeat: -1 })
+          if (!this.anims.exists(`${key}_b`)) this.anims.create({ key: `${key}_b`, frames: this.anims.generateFrameNumbers(tex, { start: c.cuadros - 2, end: c.cuadros - 1 }), frameRate: c.fps / 2, repeat: 0 })
+          continue
+        }
+        // los ojos se abren, miran y parpadean una sola vez: no se repite
+        const unaVez = n === PANEL_DE_MOMENTO.ojos
+        if (!this.anims.exists(key)) this.anims.create({ key, frames: this.anims.generateFrameNumbers(tex, { start: 0, end: c.cuadros - 1 }), frameRate: c.fps, repeat: unaVez ? 0 : -1 })
+      }
+    }
+    for (const [n, h] of Object.entries(hojasIntro(m))) {
+      const key = `intro_${n}`
+      if (this.anims.exists(key) || !this.textures.exists(K.intro(n))) continue
+      this.anims.create({ key, frames: this.anims.generateFrameNumbers(K.intro(n), { start: 0, end: h.cuadros - 1 }), frameRate: h.fps, repeat: h.loop ? -1 : 0 })
+    }
+  }
 
-    this.leyenda.setPosition(Math.round(w / 2), Math.round(h - this.alto / 2))
-    this.saltar.setPosition(w - 6, Math.round(this.alto / 2))
-    this.beat = null
+  /** Los cinco paneles pintados: cada capa a escala entera que cubre la pantalla, con aire para correrla */
+  private armarPaneles(w: number, h: number): void {
+    const m = manifestDe(this)
+    const paneles = panelesIntro(m)
+    for (const [momento, nombre] of Object.entries(PANEL_DE_MOMENTO) as [Momento, string][]) {
+      const p: PanelIntro = paneles[nombre]!
+      const alto = p.h > p.w ? p.h : 0
+      // el corte del abismo es alto: cubre de ancho y la cámara baja por él. Los demás cubren todo con aire a los lados
+      const k = alto ? Math.max(1, Math.ceil(w / p.w)) : escalaPanel(p.w, p.h, w, h, 18 * this.esc)
+      for (const c of p.capas) {
+        const tex = K.intro(`${nombre}_${c.nombre}`)
+        const x = Math.round(w / 2)
+        const y = alto ? 0 : Math.round(h / 2)
+        const s = this.add.sprite(x, y, tex, 0).setOrigin(0.5, alto ? 0 : 0.5).setScale(k)
+        const key = `${tex}_anim`
+        if (this.anims.exists(`${key}_a`)) s.play(`${key}_a`)
+        else if (this.anims.exists(key) && momento !== 'ojos') s.play(key)
+        if (momento === 'familia' && c.nombre === 'frente') this.familiaFrente = s
+        this.planos[momento].add(s)
+        this.capas.push({ s, panel: momento, paralaje: c.paralaje, x, y, alto: alto * k })
+      }
+      // el fuego ilumina desde abajo: un velo oscuro arriba para que las franjas de cine no corten de golpe
+      this.planos[momento].add(this.add.rectangle(0, 0, w, h, 0x05020a, 0.15).setOrigin(0, 0))
+    }
+  }
+
+  /** La cámara del panel: se corre despacio de lado (cada capa según su paralaje) o baja por el corte del abismo */
+  private moverPaneles(momento: Momento, k: number): void {
+    const h = this.scale.height
+    const corre = (k - 0.5) * 2 * 14 * this.esc
+    for (const c of this.capas) {
+      if (c.panel !== momento) continue
+      if (c.alto) {
+        // de arriba (el bosque) al fondo, frenando al final; la capa de atrás baja un poco menos
+        const e = 1 - Math.pow(1 - k, 2)
+        c.s.setY(Math.round(-(c.alto - h) * e * c.paralaje))
+      } else c.s.setX(Math.round(c.x - corre * c.paralaje))
+    }
+  }
+
+  /** El humo grande cruza la pantalla delante de todo y se desvanece */
+  private cruzarHumo(): void {
+    const hoja = hojasIntro(manifestDe(this)).humo_grande
+    if (!hoja || !this.textures.exists(K.intro('humo_grande'))) return
+    this.humos++
+    const w = this.scale.width
+    const h = this.scale.height
+    const k = Math.max(2, Math.round(h / 200))
+    const s = this.add.sprite(-hoja.w * k * 0.3, Math.round(h * 0.62), K.intro('humo_grande'), 0).setScale(k).setDepth(120).setAlpha(0.8)
+    const dur = 3200
+    if (this.anims.exists('intro_humo_grande')) s.play({ key: 'intro_humo_grande', frameRate: (hoja.cuadros * 1000) / dur })
+    this.tweens.add({ targets: s, x: w + hoja.w * k * 0.3, duration: dur, ease: 'Sine.easeInOut', onComplete: () => s.destroy() })
   }
 
   /** Al empezar un plano: su sonido, el corte seco si lo pide, y el texto vacío para escribirlo de nuevo */
@@ -280,6 +405,16 @@ export class Intro extends Phaser.Scene {
     }
     if (this.cache.audio.exists(K.aud(b.sonido)) && b.momento !== 'titulo') this.sound.play(K.aud(b.sonido), { volume: b.momento === 'ojos' ? 0.85 : 0.55, rate: b.rate })
     if (b.momento === 'ojos') this.cameras.main.shake(600, 0.005)
+    if (this.pintado) {
+      // el humo cruza al bajar a la cueva y al caer el título
+      if (b.momento === 'cueva' || b.momento === 'titulo') this.cruzarHumo()
+      // los ojos se abren al ritmo del momento: los ocho cuadros en lo que dura
+      if (b.momento === 'ojos') {
+        const key = `${K.intro(`${PANEL_DE_MOMENTO.ojos}_medio`)}_anim`
+        const n = this.capas.find((c) => c.panel === 'ojos')
+        if (n && this.anims.exists(key)) n.s.play({ key, frameRate: n.s.texture.frameTotal / Math.max(1, b.t1 - b.t0 - 0.6) })
+      }
+    }
   }
 
   /** El golpe del título: después del silencio, el logo cae, tiembla todo, salta una lluvia de chispas y sube el fuego */
@@ -348,7 +483,7 @@ export class Intro extends Phaser.Scene {
     }
 
     // los planos suaves entran fundidos (los de corte ya entraron de golpe)
-    const fundido: Partial<Record<Momento, number>> = {
+    const fundido: Partial<Record<Momento, number>> = this.pintado ? {} : {
       cueva: b.momento === 'cueva' ? 1 : b.momento === 'titulo' ? 0.45 : 0,
     }
     for (const [m, c] of Object.entries(this.planos) as [Momento, Phaser.GameObjects.Container][]) {
@@ -357,11 +492,15 @@ export class Intro extends Phaser.Scene {
       c.setAlpha(c.alpha + (meta - c.alpha) * Math.min(1, dt * 2.5))
     }
     // el fuego: tenue al principio, fuerte en la cueva y el título, se apaga en los primeros planos
-    const fuegoMeta = b.momento === 'brasas' ? Math.min(0.5, this.t / 4) : b.momento === 'cueva' || b.momento === 'titulo' ? 1 : b.momento === 'guardianes' ? 0.7 : 0.25
+    // pintado: el bosque está tranquilo (sin fuego), el corte del abismo arde abajo, los paneles traen su propia luz
+    const fuegoMeta = this.pintado
+      ? b.momento === 'titulo' ? 1 : b.momento === 'cueva' ? 0.6 : b.momento === 'guardianes' ? 0.35 : 0
+      : b.momento === 'brasas' ? Math.min(0.5, this.t / 4) : b.momento === 'cueva' || b.momento === 'titulo' ? 1 : b.momento === 'guardianes' ? 0.7 : 0.25
     this.fuego.setAlpha(this.fuego.alpha + (fuegoMeta - this.fuego.alpha) * Math.min(1, dt * 2))
     this.resplandor.forEach((g, i) => g.setAlpha(0.42 + 0.18 * Math.sin(this.t * 7 + i * 1.7) * Math.sin(this.t * 3.1 + i)))
 
     // la cueva: la cámara baja despacio por ella
+    if (this.pintado) this.moverPaneles(b.momento, k)
     if (this.postal) this.postal.setY(Math.round(this.scale.height / 2 + (b.momento === 'cueva' ? 14 * this.esc * (0.5 - k) : 0)))
 
     // los ojos: se abren de a poco, laten y parpadean una vez
@@ -371,7 +510,9 @@ export class Intro extends Phaser.Scene {
       const lat = latidosHasta(this.t, b)
       if (lat > this.latidos) {
         this.latidos = lat
-        if (this.cache.audio.exists(K.aud('jefe_pisoton'))) this.sound.play(K.aud('jefe_pisoton'), { volume: 0.35, rate: 0.45 })
+        const latido = audioIntro(manifestDe(this)).latido
+        if (latido && this.cache.audio.exists(K.aud(latido))) this.sound.play(K.aud(latido), { volume: 0.6 })
+        else if (this.cache.audio.exists(K.aud('jefe_pisoton'))) this.sound.play(K.aud('jefe_pisoton'), { volume: 0.35, rate: 0.45 })
       }
       const fase = ((this.t - b.t0 - 0.6) % 0.85) / 0.85
       const pulso = 1 + 0.15 * Math.max(0, 1 - fase * 4)
@@ -396,6 +537,13 @@ export class Intro extends Phaser.Scene {
     }
 
     // la familia: Thor se da vuelta hacia la cámara y ladra
+    if (b.momento === 'familia' && this.familiaFrente && !this.thorLadro && this.t - b.t0 > 2.6) {
+      // el panel pintado: Thor gira hacia la cámara (los dos últimos cuadros) y ladra
+      this.thorLadro = true
+      const key = `${K.intro(`${PANEL_DE_MOMENTO.familia}_frente`)}_anim_b`
+      if (this.anims.exists(key)) this.familiaFrente.play(key)
+      if (this.cache.audio.exists(K.aud('ladrido'))) this.sound.play(K.aud('ladrido'), { volume: 0.7 })
+    }
     if (b.momento === 'familia' && this.thor && !this.thorLadro && this.t - b.t0 > 2.6) {
       this.thorLadro = true
       const ladra = K.anim('thor', 'bark', 'down')

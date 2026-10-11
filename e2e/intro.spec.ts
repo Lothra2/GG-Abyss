@@ -1,9 +1,9 @@
 import { expect, test, type Page } from '@playwright/test'
-import { esperarEscena, gancho, sinErrores, vigilarErrores } from './util'
+import { esperarEscena, gancho, manifest, sinErrores, vigilarErrores } from './util'
 
 // El intro al estilo Diablo: sale después del primer toque del título, avanza por sus momentos y se salta tocando.
 
-interface InfoIntro { t: number; momento: string; texto: string; duracion: number; cortes: number; franjas: number; latidos: number }
+interface InfoIntro { t: number; momento: string; texto: string; duracion: number; cortes: number; franjas: number; latidos: number; pintado: boolean; capas: number; humos: number }
 const intro = (p: Page) => gancho<InfoIntro>(p, 'intro')
 
 async function abrirIntro(page: Page, extra = '&intro=1'): Promise<void> {
@@ -26,6 +26,13 @@ test.describe('Intro', () => {
     expect(i.franjas).toBeGreaterThan(0)
     expect(i.cortes).toBeGreaterThanOrEqual(1)
     await expect.poll(async () => (await intro(page)).latidos, { timeout: 10_000 }).toBeGreaterThanOrEqual(1)
+    // con los paneles pintados del taller cada momento es su panel en capas y el humo cruza al bajar a la cueva
+    const m = await manifest(page)
+    if (m.intro) {
+      expect(i.pintado).toBe(true)
+      expect(i.capas).toBeGreaterThanOrEqual(5)
+      expect(i.humos).toBeGreaterThanOrEqual(1)
+    }
     await gancho(page, 'saltarIntro')
     await esperarEscena(page, 'SeleccionJugador')
     await sinErrores(errores)
