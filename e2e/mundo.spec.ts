@@ -7,15 +7,28 @@ const info = (page: Page) => gancho<MapaInfo>(page, 'mapa')
 const pos = (page: Page) => gancho<{ x: number; y: number }>(page, 'pos')
 const avanzar = (page: Page, seg: number, parar = false) => gancho(page, 'avanzar', seg, parar)
 
-/** Posiciones de un objeto en el mapa de Tiled */
-async function decosDelMapa(page: Page, nombre: string): Promise<{ x: number; y: number }[]> {
-  return page.evaluate(async (n) => {
+/**
+ * Posiciones de los objetos del mapa de Tiled cuyo sprite calza con `filtro` (un nombre exacto o una familia, como
+ * /^roble/). El taller renombra y agrega variantes (roble_t1_0, arbol_hechizado_0_p...): se lee del mapa, no se fija.
+ */
+async function decosDelMapa(page: Page, filtro: string | RegExp): Promise<{ x: number; y: number; nombre: string }[]> {
+  const re = typeof filtro === 'string' ? `^${filtro}$` : filtro.source
+  return page.evaluate(async (fuente) => {
+    const r = new RegExp(fuente)
     const t = await (await fetch('assets/kit/mundo/mundo1_bosque.json')).json()
     const capa = t.layers.find((l: { name: string }) => l.name === 'objetos')
-    return capa.objects
-      .filter((o: { properties?: { name: string; value: string }[] }) => o.properties?.some((p) => p.name === 'sprite' && p.value === n))
-      .map((o: { x: number; y: number }) => ({ x: o.x, y: o.y }))
-  }, nombre)
+    const out: { x: number; y: number; nombre: string }[] = []
+    for (const o of capa.objects as { x: number; y: number; properties?: { name: string; value: string }[] }[]) {
+      const n = o.properties?.find((p) => p.name === 'sprite')?.value
+      if (n && r.test(n)) out.push({ x: o.x, y: o.y, nombre: n })
+    }
+    return out
+  }, re)
+}
+
+/** Cuántos objetos trae la capa `objetos` del mapa */
+async function totalDelMapa(page: Page): Promise<number> {
+  return (await decosDelMapa(page, /./)).length
 }
 
 async function puntoLibre(page: Page, x: number, y: number): Promise<{ x: number; y: number }> {
@@ -28,7 +41,8 @@ test.describe('Bosque GG vivo', () => {
     await abrirMundo(page)
     await page.waitForTimeout(800)
     const c = await gancho<Record<string, number>>(page, 'conteos')
-    expect(c.decosTotal).toBeGreaterThan(2000)
+    // todo lo del mapa se carga (y el portal de llegada, que es una entidad)
+    expect(c.decosTotal).toBeGreaterThanOrEqual(await totalDelMapa(page))
     expect(c.decos).toBeGreaterThan(20)
     expect(c.decos).toBeLessThan(450)
     const a = await gancho<{ postFx: boolean; capasBruma: number; luces: number }>(page, 'atmosfera')
@@ -200,25 +214,25 @@ test.describe('Bosque GG vivo', () => {
     const f1 = await gancho<number>(page, 'aguaFrame')
     expect(f1).not.toBe(f0)
     // los árboles arrancan en cuadros distintos y cambian con el tiempo
-    const antes = await gancho<{ frame: number }[]>(page, 'decoInfo', 'roble_0')
-    const antes1 = await gancho<{ frame: number }[]>(page, 'decoInfo', 'pino_1')
-    const todos = [...antes, ...antes1]
-    expect(todos.length).toBeGreaterThan(3)
-    expect(new Set(todos.map((d) => d.frame)).size).toBeGreaterThan(1)
+    const nombres = [...new Set((await decosDelMapa(page, /^(roble|pino)/)).map((d) => d.nombre))]
+    const leer = async () => (await Promise.all(nombres.map((n) => gancho<{ frame: number }[]>(page, 'decoInfo', n)))).flat()
+    const antes = await leer()
+    expect(antes.length).toBeGreaterThan(3)
+    expect(new Set(antes.map((d) => d.frame)).size).toBeGreaterThan(1)
     await avanzar(page, 0.5)
-    const despues = await gancho<{ frame: number }[]>(page, 'decoInfo', 'roble_0')
+    const despues = await leer()
     expect(despues.map((d) => d.frame)).not.toEqual(antes.map((d) => d.frame))
   })
 
   test('los árboles hechizados despiertan al acercarse y duermen al irse', async ({ page }) => {
     await abrirMundo(page)
-    const arboles = await decosDelMapa(page, 'arbol_hechizado_0')
+    const arboles = await decosDelMapa(page, /^arbol_hechizado/)
     expect(arboles.length).toBeGreaterThan(0)
     const a = arboles[0]!
     const cerca = await puntoLibre(page, a.x + 20, a.y + 20)
     await gancho(page, 'teleport', cerca.x, cerca.y)
     await avanzar(page, 0.6)
-    const d = await gancho<{ x: number; anim: string; despierto: boolean }[]>(page, 'decoInfo', 'arbol_hechizado_0')
+    const d = await gancho<{ x: number; anim: string; despierto: boolean }[]>(page, 'decoInfo', a.nombre)
     const suyo = d.find((q) => Math.abs(q.x - a.x) < 1)!
     expect(suyo.despierto).toBe(true)
     // con tronco y copa separados la cara va en el tronco: tronco_despierto o tronco_parpadeo
@@ -228,7 +242,7 @@ test.describe('Bosque GG vivo', () => {
     const lejos = await puntoLibre(page, a.x + 300, a.y + 60)
     await gancho(page, 'teleport', lejos.x, lejos.y)
     await avanzar(page, 0.4)
-    const d2 = await gancho<{ x: number; anim: string; despierto: boolean }[]>(page, 'decoInfo', 'arbol_hechizado_0')
+    const d2 = await gancho<{ x: number; anim: string; despierto: boolean }[]>(page, 'decoInfo', a.nombre)
     const suyo2 = d2.find((q) => Math.abs(q.x - a.x) < 1)
     if (suyo2) {
       expect(suyo2.despierto).toBe(false)
@@ -239,14 +253,14 @@ test.describe('Bosque GG vivo', () => {
   test('las copas se vuelven transparentes con la heroína detrás y el pasto alto se aparta', async ({ page }) => {
     await abrirMundo(page)
     // un roble con espacio libre detrás
-    const robles = await decosDelMapa(page, 'roble_1')
+    const robles = await decosDelMapa(page, /^roble/)
     let probado = false
     for (const r of robles.slice(0, 60)) {
       const detras = await puntoLibre(page, r.x, r.y - 50)
       if (Math.hypot(detras.x - r.x, detras.y - (r.y - 50)) > 6) continue
       await gancho(page, 'teleport', detras.x, detras.y)
       await avanzar(page, 0.5)
-      const d = await gancho<{ x: number; y: number; alfa: number }[]>(page, 'decoInfo', 'roble_1')
+      const d = await gancho<{ x: number; y: number; alfa: number }[]>(page, 'decoInfo', r.nombre)
       const suyo = d.find((q) => Math.abs(q.x - r.x) < 1 && Math.abs(q.y - r.y) < 1)
       if (!suyo) continue
       expect(suyo.alfa).toBeLessThanOrEqual(0.5)
@@ -261,7 +275,15 @@ test.describe('Bosque GG vivo', () => {
 
     const pastos = await decosDelMapa(page, 'pasto_alto')
     expect(pastos.length).toBeGreaterThan(0)
-    const g = pastos[0]!
+    // uno donde la heroína se pueda parar (el taller pone algunos al pie de la roca)
+    let g = pastos[0]!
+    for (const q of pastos.slice(0, 40)) {
+      const p = await puntoLibre(page, q.x - 6, q.y + 2)
+      if (Math.hypot(p.x - (q.x - 6), p.y - (q.y + 2)) < 3) {
+        g = q
+        break
+      }
+    }
     await gancho(page, 'teleport', g.x - 6, g.y + 2)
     await avanzar(page, 0.5)
     const d = await gancho<{ x: number; y: number; anim: string; pasto: string }[]>(page, 'decoInfo', 'pasto_alto')
@@ -281,14 +303,14 @@ test.describe('Bosque GG vivo', () => {
 
   test('los árboles grandes se dibujan con tronco y copa separados y solo la copa se vuelve transparente', async ({ page }) => {
     await abrirMundo(page)
-    const robles = await decosDelMapa(page, 'roble_0')
+    const robles = await decosDelMapa(page, /^roble/)
     let visto = false
     for (const r of robles.slice(0, 80)) {
       const detras = await puntoLibre(page, r.x, r.y - 50)
       if (Math.hypot(detras.x - r.x, detras.y - (r.y - 50)) > 6) continue
       await gancho(page, 'teleport', detras.x, detras.y)
       await avanzar(page, 0.5)
-      const d = await gancho<{ x: number; y: number; alfa: number; copa: boolean }[]>(page, 'decoInfo', 'roble_0')
+      const d = await gancho<{ x: number; y: number; alfa: number; copa: boolean }[]>(page, 'decoInfo', r.nombre)
       const suyo = d.find((q) => Math.abs(q.x - r.x) < 1 && Math.abs(q.y - r.y) < 1)
       if (!suyo) continue
       expect(suyo.copa).toBe(true)
