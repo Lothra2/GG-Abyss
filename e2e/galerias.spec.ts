@@ -175,6 +175,12 @@ test.describe('Las Galerías del Eco', () => {
     expect((await gancho<{ estado: string }>(page, 'jefe')).estado).toBe('aturdido')
     await gancho(page, 'danarJefe', 50)
     expect((await gancho<{ vida: number }>(page, 'jefe')).vida).toBe(j0.vida - 50)
+    // vencida, su portal baja más hondo: el kit todavía no trae el Mundo 4, así que Continuará
+    await gancho(page, 'danarJefe', 9999)
+    await expect.poll(async () => (await gancho<{ vencido: boolean }>(page, 'jefe')).vencido, { timeout: 10_000 }).toBe(true)
+    await expect.poll(async () => (await gancho<{ portal: boolean }>(page, 'jefe')).portal, { timeout: 60_000 }).toBe(true)
+    await gancho(page, 'irAlPortal')
+    await esperarEscena(page, 'Continuara')
     await sinErrores(errores)
   })
 })

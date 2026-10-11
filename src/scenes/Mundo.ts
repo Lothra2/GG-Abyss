@@ -1755,6 +1755,9 @@ export class Mundo extends Phaser.Scene {
     if (this.portalJefe) luces.push({ x: this.portalJefe.x, y: this.portalJefe.y - 40, r: 150, color: this.portalJefe.luz, pulse: true, ph: 0.3 })
     // F11: desde el piso 3 Thor brilla un poquito, así nunca se pierde en lo oscuro
     if (thorBrilla(this.piso)) luces.push({ x: this.thor.sprite.x, y: this.thor.sprite.y - 10, r: ABISMO.thorBrilloRadio, color: '#ffe8b0', pulse: true, ph: 0.6 })
+    // en lo hondo el jefe lleva su propio brillo tenue: siempre se ve dónde está, aunque la arena esté a oscuras
+    const jb = this.jefe
+    if (jb && jb.vivo && thorBrilla(this.piso)) luces.push({ x: jb.x, y: jb.y - jb.cuerpo.alto / 2, r: ABISMO.jefeBrilloRadio, color: '#c58aff', pulse: true, ph: 0.2 })
     const heroe = { x: this.heroina.x, y: this.heroina.y }
     this.entidades.update(this.t, heroe, !this.presentacion?.activa)
     this.mercader.update(this.t, heroe)

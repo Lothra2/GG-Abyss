@@ -548,6 +548,8 @@ export const ABISMO = {
   /** desde este piso Thor brilla un poquito, así nunca se pierden de vista */
   thorBrillaDesde: 3,
   thorBrilloRadio: 54,
+  /** y el jefe de esos pisos también, un poco más grande y violeta */
+  jefeBrilloRadio: 120,
   /** Mundo 3: cristales que se prenden al pegarles */
   cristal: { radioLuz: 80, radioLuzGrande: 180, golpeRadio: 26 },
   /** la sombra se ve dentro de una luz que la cubra hasta esta fracción del radio (en el borde de la luz no) */

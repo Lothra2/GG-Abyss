@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { abrirMundo, esperarEscena, gancho, puntoPropioDeZona, sinErrores, vigilarErrores, type MapaInfo } from './util'
+import { abrirMundo, esperarEscena, gancho, manifest, puntoPropioDeZona, sinErrores, vigilarErrores, type MapaInfo } from './util'
 
 // F8, la rebanada del Mundo 2: la Catedral de las Raíces. La escalera hundida, el atrio de las luciérnagas y la entrada
 // de los claustros con el primer guardián de cobre.
@@ -320,11 +320,16 @@ test.describe('La Catedral de las Raíces', () => {
     await expect.poll(async () => (await gancho<{ campana: string }>(page, 'mecanismos')).campana, { timeout: 10_000 }).toBe('campana_libre')
     for (let i = 0; i < 8; i++) await avanzar(page, 1)
     expect((await gancho<{ aclarado: number }>(page, 'mundoActual')).aclarado).toBeLessThan(0.6)
-    // la bajada más honda: el kit no trae el mundo 3, el portal lleva a Continuará
+    // la bajada más honda: si el kit trae el Mundo 3 el portal baja a las Galerías, si no lleva a Continuará
     // el portal se abre después de la cámara lenta de la victoria (en tiempo real: en el Chromium sin GPU tarda)
     await expect.poll(async () => (await gancho<{ portal: boolean }>(page, 'jefe')).portal, { timeout: 60_000 }).toBe(true)
+    const hayMundo3 = (await manifest(page)).mundos?.some((x) => x.mapa.includes('mundo3'))
     await gancho(page, 'irAlPortal')
-    await esperarEscena(page, 'Continuara')
+    if (hayMundo3) {
+      await esperarEscena(page, 'Bajada')
+      await listo(page)
+      await expect.poll(async () => (await mundo(page)).id, { timeout: 30_000 }).toBe('mundo3')
+    } else await esperarEscena(page, 'Continuara')
     await sinErrores(errores)
   })
 })
