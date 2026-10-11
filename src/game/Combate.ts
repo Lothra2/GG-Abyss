@@ -288,6 +288,11 @@ export class Combate {
   /** Daño de la heroína a un enemigo, con números, sonido y la muerte */
   golpear(e: Atacable, mult: number, golpePrevio?: Golpe): void {
     if (!e.vivo) return
+    // F11: la Polilla Reina con los cristales apagados: el golpe rebota (sin número ni impacto)
+    if (e.blindado) {
+      e.recibir(0)
+      return
+    }
     const g = golpePrevio ?? this.tirar(mult)
     const murio = e.recibir(g.dano, this.d.heroina.x, this.d.heroina.y)
     this.d.numeros.mostrar(e.x, e.y - e.cuerpo.alto - 4, String(g.dano) + (g.critico ? '!' : ''), g.critico ? 'amarillo' : 'blanco', g.critico)

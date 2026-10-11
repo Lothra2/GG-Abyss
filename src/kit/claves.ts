@@ -17,6 +17,8 @@ export const K = {
   atlas: (n: string, tam: '32' | '64') => `atlas_${n}_${tam}`,
   anim: (id: string, anim: string, dir: string) => `${id}_${anim}_${dir}`,
   animFx: (n: string) => `afx_${n}`,
+  /** F11: capas de los paneles del intro y sus hojas sueltas */
+  intro: (n: string) => `intro_${n}`,
   suelo: (i: number) => `suelo_${i}`,
   agua: 'agua',
   luz: 'luz',

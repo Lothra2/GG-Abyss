@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Azar } from '../azar'
 import { avisoDe, danarJefe, despertar, enAnillo, reposar, distanciaAlBorde, distanciaASegmento, nuevoJefe, pensarJefe, type AtaqueJefe, type EntradaJefe, type Jefe, type OrdenJefe } from '../jefe'
-import { JEFE, JEFE_CAMPANA } from '../../config/balance'
+import { JEFE, JEFE_CAMPANA, JEFE_POLILLA } from '../../config/balance'
 
 const entrada = (j: Jefe, extra: Partial<EntradaJefe> = {}): EntradaJefe => ({ dt: 0.05, heroeX: j.cx - 90, heroeY: j.cy + 10, heroeVivo: true, modoPeque: false, ratasVivas: 0, ...extra })
 
@@ -361,5 +361,59 @@ describe('F8: el Guardián de la Campana', () => {
     const a = ataques(correr(j, 60, new Azar(5)))
     expect(a).not.toContain('onda')
     expect(a).not.toContain('raices')
+  })
+})
+
+describe('F11: la Polilla Reina', () => {
+  const reina = (): Jefe => {
+    const j = nuevoJefe(2576, 2032, JEFE_POLILLA.vida, 'polilla')
+    despertar(j)
+    return j
+  }
+  const ataques = (os: { o: OrdenJefe }[]) => os.flatMap(({ o }) => (o.aviso ? [o.aviso.ataque] : o.atacando ? [o.atacando] : []))
+
+  it('con los cristales grandes apagados el golpe no le llega', () => {
+    const j = reina()
+    expect(danarJefe(j, 50)).toEqual({ fase2: false, murio: false, escudo: true })
+    expect(j.vida).toBe(JEFE_POLILLA.vida)
+  })
+
+  it('prender el cuarto grande la tumba aturdida y desde ahí se le pega', () => {
+    const j = reina()
+    correr(j, 3, new Azar(4))
+    const os = correr(j, 0.2, new Azar(4), () => ({ vulnerable: true }))
+    expect(os[0]!.o.aturdido).toBe(JEFE_POLILLA.aturdidaS)
+    expect(os[0]!.o.escudo).toBe(false)
+    expect(j.estado).toBe('aturdido')
+    danarJefe(j, 50)
+    expect(j.vida).toBe(JEFE_POLILLA.vida - 50)
+    // si el polvo apaga uno, vuelve el escudo
+    const de = correr(j, 0.1, new Azar(4), () => ({ vulnerable: false }))
+    expect(de[0]!.o.escudo).toBe(true)
+    expect(danarJefe(j, 50).escudo).toBe(true)
+  })
+
+  it('con los cuatro prendidos vuelve a caer cada tanto', () => {
+    const j = reina()
+    const os = correr(j, JEFE_POLILLA.aturdidaS * 2 + JEFE_POLILLA.aturdidaCadaS + 1, new Azar(5), () => ({ vulnerable: true }))
+    expect(os.filter(({ o }) => o.aturdido).length).toBeGreaterThanOrEqual(2)
+  })
+
+  it('usa el aletazo, el polvo donde estaba la heroína y la llamada de polillas; nunca los del minotauro ni la campana', () => {
+    const j = reina()
+    const os = correr(j, 120, new Azar(6), (jj) => ({ heroeX: jj.x - 60, heroeY: jj.y }))
+    const a = new Set(ataques(os))
+    expect(a.has('polvo')).toBe(true)
+    expect(a.has('golpe')).toBe(true)
+    for (const x of ['carga', 'salto', 'pisoton', 'onda', 'raices']) expect(a.has(x as AtaqueJefe)).toBe(false)
+    const polvo = os.find(({ o }) => o.polvo)!.o
+    expect(polvo.polvo!.radio).toBe(JEFE_POLILLA.polvo.radio)
+    expect(polvo.golpe!.ataque).toBe('polvo')
+    const llamada = os.find(({ o }) => o.invocar)
+    expect(llamada!.o.invocar).toBeLessThanOrEqual(JEFE_POLILLA.llamada.polillas)
+  })
+
+  it('el aviso del polvo dura más en modo peque', () => {
+    expect(avisoDe('polvo', true)).toBeGreaterThan(avisoDe('polvo', false))
   })
 })

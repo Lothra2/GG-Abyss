@@ -157,6 +157,10 @@ export interface EnemigoBalance {
   distraeThor?: { radio: number }
   /** F8: golpe pesado anunciado sin ser élite (el guardián de cobre): cada cuánto, radio, aviso y daño */
   pesado?: { cadaS: number; radio: number; avisoS: number; dano: [number, number] }
+  /** F11: la polilla de ceniza va a apagar los cristales prendidos antes que pelear */
+  buscaLuz?: boolean
+  /** F11: la sombra solo se ve (y solo pega y se le pega) dentro de una luz. Afuera son dos ojos */
+  soloEnLuz?: boolean
 }
 
 export const ENEMIGOS: Record<string, EnemigoBalance> = {
@@ -171,6 +175,12 @@ export const ENEMIGOS: Record<string, EnemigoBalance> = {
   // se queda en su lugar y tira una bola violeta lenta que se ve venir: se esquiva de costado o se lo busca de cerca
   vigia_raices: { vida: 26, dano: [3, 5], anim: 'cast', ataquesPorSeg: 0.45, alcance: 230, velocidad: 25, ve: 260, xp: 20, oro: [4, 8], proyectil: 'proyectil_arcano', impacto: 'impacto_arcano' },
   guardian_cobre: { vida: 120, dano: [4, 6], anim: 'attack', ataquesPorSeg: 0.4, alcance: 34, velocidad: 38, ve: 190, xp: 80, oro: [15, 25], pesado: { cadaS: 4.5, radio: 48, avisoS: 1.5, dano: [10, 14] } },
+  // F11, las Galerías. Rápida y frágil: si ve un cristal prendido va a apagarlo. Lo que enseña: cuidar la luz
+  polilla_ceniza: { vida: 10, dano: [1, 3], anim: 'attack', ataquesPorSeg: 0.9, alcance: 24, velocidad: 80, ve: 200, xp: 7, oro: [1, 3], buscaLuz: true },
+  // el gólem minero: lento y duro como el guardián de cobre, con su golpe de pico que avisa
+  minero_piedra: { vida: 95, dano: [3, 5], anim: 'attack', ataquesPorSeg: 0.45, alcance: 32, velocidad: 34, ve: 180, xp: 60, oro: [10, 18], pesado: { cadaS: 5, radio: 44, avisoS: 1.4, dano: [8, 12] } },
+  // vive en lo oscuro: hay que traerla a la luz (un cristal prendido o el brillo de Thor) para pelearle
+  sombra: { vida: 26, dano: [3, 4], anim: 'attack', ataquesPorSeg: 0.7, alcance: 26, velocidad: 58, ve: 200, xp: 20, oro: [3, 6], soloEnLuz: true },
 }
 
 export const TROL_ELITE = {
@@ -233,6 +243,9 @@ export const BOTIN = {
   guardian_cobre: { objeto: 1, oro: 1, cantidad: 1, garantiza: 'rare' } as BotinFuente,
   raicita: { objeto: 0.2, oro: 0.6, cantidad: 1 } as BotinFuente,
   vigia_raices: { objeto: 0.4, oro: 0.8, cantidad: 1 } as BotinFuente,
+  polilla_ceniza: { objeto: 0.15, oro: 0.5, cantidad: 1 } as BotinFuente,
+  minero_piedra: { objeto: 1, oro: 1, cantidad: 1 } as BotinFuente,
+  sombra: { objeto: 0.4, oro: 0.8, cantidad: 1 } as BotinFuente,
   rompible: { objeto: 0.2, oro: 0.5, cantidad: 1, pocionProb: 0.5 },
   cofres: {
     madera: { objetos: 1, oro: [5, 10] as [number, number], raroProb: 0, raroGarantizado: 0, legendarioProb: 0 },
@@ -360,6 +373,26 @@ export const JEFE_CAMPANA = {
   // radio 48: el aviso del kit (96 x 48) a escala 1, sin decimales
   raices: { dano: [10, 14] as [number, number], radio: 48, avisoS: 1.4, separacion: 96, duranS: 3.5 },
   raicesPct: 35,
+}
+
+/**
+ * F11, la Polilla Reina (las Galerías). Vuela alto y no se le puede pegar mientras los cuatro cristales grandes de la
+ * arena estén apagados: hay que prenderlos. Cuando se prende el cuarto cae aturdida y ahí se le pega fuerte.
+ * Ataques: aletazo (chico), lluvia de polvo (una mancha que avisa en el piso: el polvo apaga los cristales que tapa)
+ * y la llamada de polillas. En modo peque el polvo no apaga los cristales grandes.
+ */
+export const JEFE_POLILLA = {
+  vida: 600,
+  aletazo: { dano: [8, 12] as [number, number], radio: 56 },
+  // radio 48: el aviso_polvo del kit (96 x 96) a escala 1
+  polvo: { dano: [10, 14] as [number, number], radio: 48, avisoS: 1.5 },
+  llamada: { polillas: 2, maxPolillas: 4, avisoS: 1, cadaS: 14 },
+  /** cae aturdida al prenderse el cuarto cristal grande */
+  aturdidaS: 5,
+  /** cada cuánto vuelve a caer aturdida si los cuatro siguen prendidos */
+  aturdidaCadaS: 9,
+  /** con los cristales apagados un golpe le hace esto del daño (nada: hay que prenderlos) */
+  danoSinLuz: 0,
 }
 
 /**
@@ -520,7 +553,7 @@ export const ABISMO = {
   /** la sombra se ve dentro de una luz que la cubra hasta esta fracción del radio (en el borde de la luz no) */
   sombraVisibleEn: 0.85,
   /** la polilla de ceniza va al cristal prendido más cercano dentro de esto, y lo apaga al llegar a esto */
-  polilla: { ve: 260, apagaA: 14 },
+  polilla: { ve: 260, apagaA: 40 },
   /** la figura de los ojos rojos: aparece lejos, en el borde de la luz, y se va si te acercas */
   figura: { desdePiso: 3, distMin: 260, distMax: 340, seVaA: 180, thorGrunneA: 240, porPiso: [0, 0, 0, 1, 2, 3, 4, 1] },
 } as const

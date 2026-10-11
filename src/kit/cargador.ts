@@ -4,6 +4,7 @@ import { K } from './claves'
 import { fuentesDe, iconosCartel, iconosHabilidad, uiImagenes } from './manifest'
 import { RUTA_KIT } from '../config/juego'
 import { idMundo } from './mundos'
+import { hojasIntro, panelesIntro } from './intro'
 
 /**
  * Encola en el cargador de Phaser lo que dice el manifest. No hay listas fijas de nombres:
@@ -201,4 +202,18 @@ export function encolarTodo(e: Escena, m: Manifest): void {
   encolarParticulas(e, m)
   encolarAudio(e, m)
   encolarCreditos(e, m)
+}
+
+/** F11: las capas de los paneles del intro y sus hojas sueltas, con el tamaño de cuadro que dice el manifest */
+export function encolarIntro(e: Escena, m: Manifest): void {
+  for (const [n, p] of Object.entries(panelesIntro(m))) {
+    for (const c of p.capas) {
+      const key = K.intro(`${n}_${c.nombre}`)
+      if (!yaHay(e, key)) e.load.spritesheet(key, rutaKit(c.archivo), { frameWidth: p.w, frameHeight: p.h })
+    }
+  }
+  for (const [n, h] of Object.entries(hojasIntro(m))) {
+    const key = K.intro(n)
+    if (!yaHay(e, key)) e.load.spritesheet(key, rutaKit(h.archivo), { frameWidth: h.w, frameHeight: h.h })
+  }
 }

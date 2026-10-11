@@ -6,9 +6,10 @@ import { crearAnimsPersonaje } from '../kit/anims'
 import { DIRECCIONES, indiceDireccion } from '../logic/direccion'
 import type { Grilla } from '../logic/grilla'
 import { moverCuerpo } from '../logic/movimiento'
+import { ordenPolilla, sombraVisible, type Cristal } from '../logic/abismo'
 import { aturdir, matar, nuevoEnemigoIA, pensar, type ConfigIA, type EnemigoIA } from '../logic/ia'
 import { juego } from '../logic/azar'
-import { COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, TROL_ELITE, type EnemigoBalance } from '../config/balance'
+import { ABISMO, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, MODO_PEQUE, TROL_ELITE, type EnemigoBalance } from '../config/balance'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
 import { texto } from './Texto'
@@ -23,6 +24,9 @@ const CUERPO: Record<string, { alto: number; radio: number; sombra: number; barr
   raicita: { alto: 22, radio: 9, sombra: 16, barra: 20 },
   vigia_raices: { alto: 30, radio: 10, sombra: 18, barra: 26 },
   guardian_cobre: { alto: 44, radio: 17, sombra: 36, barra: 40 },
+  polilla_ceniza: { alto: 26, radio: 10, sombra: 16, barra: 22 },
+  minero_piedra: { alto: 40, radio: 16, sombra: 34, barra: 36 },
+  sombra: { alto: 34, radio: 11, sombra: 18, barra: 26 },
 }
 const CUERPO_DEFECTO = { alto: 28, radio: 12, sombra: 22, barra: 26 }
 
@@ -32,6 +36,12 @@ export interface ContextoEnemigos {
   thor?: { x: number; y: number }
   modoPeque: boolean
   dt: number
+  /** F11: los cristales de las Galerías (la polilla de ceniza va a apagarlos) */
+  cristales?: readonly Cristal[]
+  /** F11: las luces del cuadro anterior (la sombra solo se ve dentro de una) */
+  luces?: readonly { x: number; y: number; r: number }[]
+  /** F11: una polilla apagó este cristal */
+  alApagar?(id: string): void
 }
 
 export interface EventosEnemigos {
@@ -57,6 +67,8 @@ export interface Atacable extends Blanco {
   readonly vidaMax: number
   readonly cuerpo: { alto: number; radio: number }
   readonly esJefe?: boolean
+  /** F11: no recibe daño ahora (la Polilla Reina con los cristales grandes apagados) */
+  readonly blindado?: boolean
   golpe(x: number, y: number, margen?: number): boolean
   marcar(v: boolean): void
   recibir(dano: number, desdeX?: number, desdeY?: number): boolean
@@ -86,6 +98,12 @@ export class Enemigo implements Atacable {
   /** segundos que faltan para que caiga el golpe que está preparando (se ve un tinte cálido que late) */
   private anticipaS = 0
   private muertoS = 0
+  /** F11: la polilla espera esto entre un cristal apagado y el siguiente */
+  private apagarEnS = 0
+  /** F11: la sombra fuera de la luz (no se ve, no pega, no se le pega). Afuera quedan sus ojos */
+  oculta = false
+  private alfa = 1
+  private ojos?: Phaser.GameObjects.Sprite
   private cfgIA: ConfigIA
   private durAtaque: number
   private cuadros: Record<string, { cuadros: number; fps: number }> = {}
@@ -137,6 +155,19 @@ export class Enemigo implements Atacable {
       this.estandarte = escena.add.container(0, 0, [img, t])
     }
     this.dir = (ent.id * 3) % 8
+    if (this.cfg.soloEnLuz) {
+      // arranca a oscuras: solo los ojos
+      this.oculta = true
+      this.alfa = 0
+      const ot = K.cri('sombra_ojos', 'parpadeo')
+      if (escena.textures.exists(ot)) {
+        const a = m.mundo.criaturas.sombra_ojos?.anims.parpadeo
+        const key = 'sombra_ojos_parpadeo'
+        if (a && !escena.anims.exists(key)) escena.anims.create({ key, frames: escena.anims.generateFrameNumbers(ot, { start: 0, end: a.cuadros - 1 }), frameRate: a.fps, repeat: -1, repeatDelay: 1800 })
+        this.ojos = escena.add.sprite(ent.x, ent.y, ot, 0).setDepth(PROF.BRILLA_EN_OSCURO)
+        if (escena.anims.exists(key)) this.ojos.play({ key, startFrame: ent.id % 4 })
+      }
+    }
     this.poner('idle', true)
     this.colocar()
   }
@@ -165,7 +196,7 @@ export class Enemigo implements Atacable {
 
   /** ¿cae el toque (en coordenadas de mundo) sobre su cuerpo? Con margen para el dedo. */
   golpe(x: number, y: number, margen = 10): boolean {
-    if (!this.vivo) return false
+    if (!this.vivo || this.oculta) return false
     return Math.abs(x - this.x) <= this.cuerpo.radio + margen && y >= this.y - this.cuerpo.alto - margen && y <= this.y + 8 + margen
   }
 
@@ -176,7 +207,7 @@ export class Enemigo implements Atacable {
 
   /** Daño recibido. Devuelve true si murió con este golpe. */
   recibir(dano: number, desdeX?: number, desdeY?: number): boolean {
-    if (!this.vivo) return false
+    if (!this.vivo || this.oculta) return false
     this.ia.vida = Math.max(0, this.ia.vida - dano)
     this.barraS = 4
     this.destellar()
@@ -273,6 +304,10 @@ export class Enemigo implements Atacable {
       }
     }
 
+    this.apagarEnS = Math.max(0, this.apagarEnS - dt)
+    if (this.cfg.soloEnLuz) this.mirarLuz(ctx)
+    if (this.cfg.buscaLuz && ctx.cristales && this.buscarLuz(dt, ctx)) return
+
     const antes = { x: this.x, y: this.y }
     // la raicita se distrae con Thor: si él está cerca (y más cerca que la heroína), lo persigue a él
     const t = ctx.thor
@@ -311,6 +346,62 @@ export class Enemigo implements Atacable {
     }
   }
 
+  /**
+   * F11: la polilla de ceniza. Si ve un cristal prendido cerca de su casa, vuela a apagarlo antes que pelear.
+   * Devuelve true si este paso lo usó para eso.
+   */
+  private buscarLuz(dt: number, ctx: ContextoEnemigos): boolean {
+    const e = this.ia.estado
+    if (e === 'aturdido' || e === 'atacando' || this.bloqueoAnimS > 0) return false
+    // solo los que ve de verdad: prendidos, cerca de su casa y sin roca en el medio (vuela, pero no atraviesa paredes)
+    const cerca = ctx.cristales!.filter((c) => {
+      if (!c.prendido || c.grande) return false
+      const d = Math.hypot(c.x - this.x, c.y - this.y)
+      if (d > ABISMO.polilla.ve || Math.hypot(c.x - this.ia.casaX, c.y - this.ia.casaY) > ABISMO.polilla.ve + 120) return false
+      if (d <= ABISMO.polilla.apagaA) return true
+      const k = (d - 28) / d
+      return this.grilla.lineaLibre(this.x, this.y, this.x + (c.x - this.x) * k, this.y + (c.y - this.y) * k, 6)
+    })
+    const o = ordenPolilla(this, cerca)
+    if (o.tipo === 'heroina') return false
+    if (o.tipo === 'apagar') {
+      if (this.apagarEnS <= 0) {
+        this.apagarEnS = 1.4
+        const c = cerca.find((q) => q.id === o.cristal)
+        if (c) this.dir = indiceDireccion(c.x - this.x, c.y - this.y)
+        this.poner('attack', true)
+        this.bloqueoAnimS = this.durAtaque
+        this.ev.sonido('polilla_aleteo', { volumen: 0.45, rate: 1.2 })
+        ctx.alApagar?.(o.cristal)
+      }
+      return true
+    }
+    const vel = this.cfg.velocidad * (ctx.modoPeque ? MODO_PEQUE.velocidadEnemigos : 1)
+    const dx = o.x - this.x
+    const dy = o.y - this.y
+    const d = Math.hypot(dx, dy) || 1
+    const r = moverCuerpo(this.grilla, { x: this.x, y: this.y, radio: 8 }, (dx / d) * vel * dt, (dy / d) * vel * dt)
+    this.ia.x = r.x
+    this.ia.y = r.y
+    this.dir = indiceDireccion(dx, dy)
+    this.poner('walk')
+    return true
+  }
+
+  /** F11: la sombra se ve dentro de una luz (un cristal prendido, el brillo de Thor) y se esconde afuera */
+  private mirarLuz(ctx: ContextoEnemigos): void {
+    const ve = sombraVisible(this.x, this.y - 12, ctx.luces ?? [])
+    if (ve === !this.oculta) return
+    this.oculta = !ve
+    if (ve) this.ev.sonido('sombra_aparece', { volumen: 0.4 })
+    else {
+      // se va a lo oscuro: suelta la marca y lo que estaba por pegar
+      this.golpeEn = null
+      this.anticipaS = 0
+      this.marcar(false)
+    }
+  }
+
   private comenzarAtaque(): void {
     const dur = this.durAtaque
     this.golpeEn = { resta: dur * GOLPE_EN.enemigo, tipo: 'normal' }
@@ -321,7 +412,7 @@ export class Enemigo implements Atacable {
   }
 
   private ejecutarGolpe(): void {
-    if (!this.vivo) return
+    if (!this.vivo || this.oculta) return
     if (this.cfg.proyectil) {
       // dispara hacia donde mira
       const v = DIRECCIONES[this.dir]!
@@ -389,6 +480,19 @@ export class Enemigo implements Atacable {
     this.relleno.setVisible(mostrar).setPosition(x - this.cuerpo.barra / 2, by).setSize(w, 3).setDepth(PROF.OBJETOS + 9401)
     if (this.estandarte) this.estandarte.setPosition(x, y - this.cuerpo.alto - 14).setDepth(PROF.OBJETOS + 9300).setVisible(this.vivo)
     if (this.aviso) this.aviso.setPosition(x, y)
+    if (this.cfg.soloEnLuz) {
+      // la sombra aparece y desaparece suave; a oscuras solo quedan los ojos
+      const meta = this.oculta ? 0 : 1
+      this.alfa += (meta - this.alfa) * 0.15
+      if (Math.abs(meta - this.alfa) < 0.02) this.alfa = meta
+      if (this.vivo) this.sprite.setAlpha(this.alfa)
+      this.sombra.img.setAlpha(0.35 * this.alfa)
+      this.ojos?.setPosition(x, y - Math.round(this.cuerpo.alto * 0.8)).setVisible(this.vivo && this.sprite.visible && this.alfa < 0.5)
+      if (this.alfa < 0.5) {
+        this.fondoBarra.setVisible(false)
+        this.relleno.setVisible(false)
+      }
+    }
   }
 
   /** Después de pensar y moverse: acomoda sprites. Se llama cada cuadro. */
@@ -404,6 +508,7 @@ export class Enemigo implements Atacable {
       this.relleno.setVisible(false)
     }
     this.estandarte?.setVisible(v && this.vivo)
+    if (!v) this.ojos?.setVisible(false)
   }
 
   destruir(): void {
@@ -413,6 +518,7 @@ export class Enemigo implements Atacable {
     this.relleno.destroy()
     this.estandarte?.destroy()
     this.aviso?.destroy()
+    this.ojos?.destroy()
     this.destruido = true
   }
 
@@ -425,8 +531,9 @@ export class Enemigos {
   /** el jefe y lo que se sume después: se marcan y se golpean igual que los demás */
   readonly adicionales: Atacable[] = []
 
+  /** La sombra a oscuras no cuenta: no se marca ni se le pega */
   get todos(): Atacable[] {
-    return [...this.lista, ...this.adicionales]
+    return [...this.lista.filter((e) => !e.oculta), ...this.adicionales]
   }
 
   constructor(escena: Phaser.Scene, m: Manifest, grilla: Grilla, entidades: readonly Entidad[], ev: EventosEnemigos) {

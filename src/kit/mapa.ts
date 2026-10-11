@@ -61,6 +61,8 @@ export interface MapaJuego {
   espumaFilas: number
   /** F10: agua quieta donde se ve el reflejo (si el mapa no trae la capa, es la misma del agua) */
   reflejo: Uint8Array
+  /** F11: los cristales del Mundo 3 (capa `cristales`): el pie de cada uno, su forma (0 cian, 1 violeta, 2 ámbar) y si es grande */
+  cristales: { id: string; x: number; y: number; forma: number; grande: boolean }[]
   decos: Deco[]
   entidades: Entidad[]
   zonas: Zona[]
@@ -166,10 +168,15 @@ export function parsearMapa(json: MapaTiled): MapaJuego {
     }
   })
 
+  const cristales = objetosDe(json.layers, 'cristales').map((o) => {
+    const p = leerProps(o)
+    return { id: String(p.id ?? o.name ?? o.id), x: o.x, y: o.y, forma: Number(p.forma ?? 0), grande: p.grande === true }
+  })
+
   const postales: Postal[] = objetosDe(json.layers, 'postales').map((o) => ({ nombre: o.name, x: o.x, y: o.y }))
 
   const bioma = String(leerProps(json as unknown as { properties?: { name: string; value: string | number | boolean }[] }).bioma ?? 'bosque')
-  return { ancho, alto, cuadro: json.tilewidth, colision, superficie, agua, aguaCuadros, aguaMs, espuma, espumaFilas, reflejo, decos, entidades, zonas, postales, bioma }
+  return { ancho, alto, cuadro: json.tilewidth, colision, superficie, agua, aguaCuadros, aguaMs, espuma, espumaFilas, reflejo, cristales, decos, entidades, zonas, postales, bioma }
 }
 
 export type Superficie = 'pasto' | 'tierra' | 'piedra' | 'madera' | 'agua'

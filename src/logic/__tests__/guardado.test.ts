@@ -173,6 +173,19 @@ describe('F8: varios mundos', () => {
     // una partida de antes del minimapa empieza con todo tapado
     expect(migrar({ id: 'sophie' })!.niebla).toBe('')
   })
+
+  it('los cristales prendidos son de cada mundo y se guardan', () => {
+    const p = partidaNueva('alana')
+    cambiarDeMundo(p, 'mundo3')
+    p.cristales.push('c1', 'g2')
+    cambiarDeMundo(p, 'mundo2')
+    expect(p.cristales).toEqual([])
+    const leida = migrar(JSON.parse(JSON.stringify(p)))!
+    expect(leida.otrosMundos.mundo3!.cristales).toEqual(['c1', 'g2'])
+    cambiarDeMundo(leida, 'mundo3')
+    expect(leida.cristales).toEqual(['c1', 'g2'])
+    expect(migrar({ id: 'alana' })!.cristales).toEqual([])
+  })
   it('lo de otros mundos sobrevive a guardar y leer, y un JSON roto no lo rompe', () => {
     const p = partidaNueva('rick')
     cambiarDeMundo(p, 'mundo2')

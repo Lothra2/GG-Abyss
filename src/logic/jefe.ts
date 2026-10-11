@@ -1,5 +1,5 @@
 import type { Azar } from './azar'
-import { JEFE, JEFE_CAMPANA, MODO_PEQUE } from '../config/balance'
+import { JEFE, JEFE_CAMPANA, JEFE_POLILLA, MODO_PEQUE } from '../config/balance'
 
 /**
  * El Minotauro del Bosque (PLAN.md F4): máquina de estados con fases y temporizadores, sin Phaser.
@@ -7,9 +7,9 @@ import { JEFE, JEFE_CAMPANA, MODO_PEQUE } from '../config/balance'
  * Todo ataque grande avisa 1.2 s antes (1.8 s en modo peque) y la vida del jefe nunca sube.
  */
 
-export type AtaqueJefe = 'golpe' | 'golpe_fuerte' | 'carga' | 'pisoton' | 'salto' | 'grito' | 'onda' | 'raices'
+export type AtaqueJefe = 'golpe' | 'golpe_fuerte' | 'carga' | 'pisoton' | 'salto' | 'grito' | 'onda' | 'raices' | 'polvo'
 /** F8: qué jefe es (cambia qué ataques elige) */
-export type PerfilJefe = 'minotauro' | 'campana'
+export type PerfilJefe = 'minotauro' | 'campana' | 'polilla'
 export type EstadoJefe = 'dormido' | 'intro' | 'quieto' | 'perseguir' | 'aviso' | 'saltando' | 'cargando' | 'aturdido' | 'muerto'
 /** `frente` es una elipse delante del jefe, `circulo` es a su alrededor o en el destino del salto, `linea` es la carga */
 export type FormaAtaque = 'frente' | 'circulo' | 'linea' | 'anillo' | 'raices'
@@ -49,6 +49,12 @@ export interface Jefe {
   forzar: AtaqueJefe | null
   /** F8: ya enseñó la llamada de raíces */
   raicesVistas: boolean
+  /** F11: la Polilla Reina no recibe daño mientras los cuatro cristales grandes no estén prendidos */
+  escudo: boolean
+  /** F11: cómo estaban los cristales el paso anterior (prender el cuarto la tumba) */
+  vulnerablePrev: boolean
+  /** F11: con los cuatro prendidos vuelve a caer aturdida cada tanto */
+  aturdeEnS: number
 }
 
 export interface EntradaJefe {
@@ -59,6 +65,8 @@ export interface EntradaJefe {
   modoPeque: boolean
   /** las ratas del grito que siguen vivas */
   ratasVivas: number
+  /** F11: los cuatro cristales grandes de la arena están prendidos (la Polilla Reina se puede golpear) */
+  vulnerable?: boolean
 }
 
 export interface OrdenJefe {
@@ -70,6 +78,10 @@ export interface OrdenJefe {
   golpe?: { ataque: AtaqueJefe; forma: FormaAtaque; dano: readonly [number, number]; x: number; y: number; radio: number; dx: number; dy: number; largo: number; ancho: number; interior?: number; puntos?: { x: number; y: number }[] }
   /** F8: raíces que salen del piso un rato (tapan el paso donde cayeron) */
   raices?: { puntos: { x: number; y: number }[]; radio: number; seg: number }
+  /** F11: el polvo de la reina cayó aquí: apaga los cristales que tapa */
+  polvo?: { x: number; y: number; radio: number }
+  /** F11: la reina perdió el escudo (true) o lo recuperó (false) */
+  escudo?: boolean
   fase2?: boolean
   rugir?: boolean
   invocar?: number
@@ -84,7 +96,7 @@ export function nuevoJefe(cx: number, cy: number, vida: number = JEFE.vida, perf
   return {
     x: cx, y: cy, cx, cy, vida, vidaMax: vida, fase: 1, estado: 'dormido', t: 0, pausaS: 1, ataque: null,
     dirX: 0, dirY: 1, destX: cx, destY: cy, origX: cx, origY: cy, cargaPego: false, gritoEnS: 4,
-    perfil, forzar: null, raicesVistas: false,
+    perfil, forzar: null, raicesVistas: false, escudo: perfil === 'polilla', vulnerablePrev: false, aturdeEnS: 0,
   }
 }
 
@@ -124,8 +136,10 @@ export function reposar(j: Jefe): void {
 }
 
 /** El golpe que recibe el jefe. La vida solo baja: no hay manera de curarlo. Devuelve si cambió de fase o murió. */
-export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boolean } {
+export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boolean; escudo?: boolean } {
   if (j.estado === 'muerto' || dano <= 0) return { fase2: false, murio: false }
+  // la Polilla Reina con los cristales apagados: el golpe no le llega
+  if (j.escudo) return { fase2: false, murio: false, escudo: true }
   j.vida = Math.max(0, j.vida - dano)
   if (j.vida <= 0) {
     j.estado = 'muerto'
@@ -155,6 +169,7 @@ export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boole
 
 /** Segundos de aviso de un ataque grande: 1.2 s, o 1.8 s en modo peque */
 export function avisoDe(ataque: AtaqueJefe, modoPeque: boolean): number {
+  if (ataque === 'polvo') return JEFE_POLILLA.polvo.avisoS * (modoPeque ? MODO_PEQUE.avisos : 1)
   const base = ataque === 'onda' ? JEFE_CAMPANA.onda.avisoS : ataque === 'raices' ? JEFE_CAMPANA.raices.avisoS : ataque === 'golpe_fuerte' ? JEFE.golpeFuerte.avisoS : ataque === 'carga' ? JEFE.carga.avisoS : ataque === 'pisoton' ? JEFE.pisoton.avisoS : ataque === 'salto' ? JEFE.salto.avisoS : ataque === 'grito' ? JEFE.grito.avisoS : 0
   return base * (modoPeque ? MODO_PEQUE.avisos : 1)
 }
@@ -185,6 +200,16 @@ function elegir(j: Jefe, e: EntradaJefe, rng: Azar, dist: number): AtaqueJefe | 
     const a = j.forzar
     j.forzar = null
     return a
+  }
+  if (j.perfil === 'polilla') {
+    // el aletazo de cerca, el polvo a cualquier distancia y, cada tanto, la llamada de polillas
+    const ll = JEFE_POLILLA.llamada
+    const pesos: [AtaqueJefe, number][] = [
+      ['golpe', dist <= JEFE_POLILLA.aletazo.radio + 24 ? 45 : 0],
+      ['polvo', 30],
+      ['grito', j.gritoEnS <= 0 && e.ratasVivas < ll.maxPolillas ? 22 : 0],
+    ]
+    return rng.pesos(pesos)
   }
   if (j.perfil === 'campana') {
     // fase 1: solo el golpe y el golpe frontal; fase 2 suma la onda; desde raicesPct, las raíces
@@ -221,6 +246,7 @@ export function pensarJefe(j: Jefe, e: EntradaJefe, rng: Azar): OrdenJefe {
   const peque = e.modoPeque
   const vel = JEFE.velocidad * (peque ? MODO_PEQUE.velocidadEnemigos : 1)
   const dir = norm(e.heroeX - j.x, e.heroeY - j.y)
+  if (j.perfil === 'polilla' && escudoPolilla(j, e, o)) return o
 
   // la heroína cayó: el jefe se queda donde está, sin curarse, esperando
   if (!e.heroeVivo && j.estado !== 'intro' && j.estado !== 'aturdido') {
@@ -321,6 +347,34 @@ export function pensarJefe(j: Jefe, e: EntradaJefe, rng: Azar): OrdenJefe {
   return empezarAtaque(j, o, a, e, dir)
 }
 
+/**
+ * F11: la Polilla Reina y sus cristales. Prender el cuarto grande la tumba (aturdida, en el piso) y le quita el escudo.
+ * Mientras sigan los cuatro prendidos vuelve a caer cada tanto. Devuelve true si este paso cayó aturdida.
+ */
+function escudoPolilla(j: Jefe, e: EntradaJefe, o: OrdenJefe): boolean {
+  const v = !!e.vulnerable
+  if (j.escudo === v) o.escudo = !v
+  j.escudo = !v
+  if (!v) {
+    j.vulnerablePrev = false
+    return false
+  }
+  // durante el rugido o ya en el piso espera: la caída se cuenta cuando pueda caer
+  if (j.estado === 'intro' || j.estado === 'aturdido') return false
+  const nuevo = !j.vulnerablePrev
+  j.vulnerablePrev = true
+  j.aturdeEnS -= e.dt
+  if (!nuevo && j.aturdeEnS > 0) return false
+  const seg = JEFE_POLILLA.aturdidaS * (e.modoPeque ? MODO_PEQUE.avisos : 1)
+  j.estado = 'aturdido'
+  j.t = seg
+  j.ataque = null
+  j.pausaS = 0.8
+  j.aturdeEnS = JEFE_POLILLA.aturdidaCadaS
+  o.aturdido = seg
+  return true
+}
+
 function empezarAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, e: EntradaJefe, dir: { dx: number; dy: number; d: number }): OrdenJefe {
   j.ataque = a
   j.estado = 'aviso'
@@ -360,6 +414,11 @@ function empezarAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, e: EntradaJefe, dir
   } else if (a === 'grito') {
     o.aviso = { ...base, forma: 'circulo', x: j.x, y: j.y, radio: 0, dx: 0, dy: 1, largo: 0, ancho: 0 }
     o.rugir = true
+  } else if (a === 'polvo') {
+    // la mancha queda donde estaba la heroína al empezar: si camina, se salva
+    j.destX = e.heroeX
+    j.destY = e.heroeY
+    o.aviso = { ...base, forma: 'circulo', x: j.destX, y: j.destY, radio: JEFE_POLILLA.polvo.radio, dx: 0, dy: 1, largo: 0, ancho: 0 }
   } else if (a === 'onda') {
     // la campana va a sonar: un anillo alrededor del jefe. Adentro (cerca de la campana) no llega
     const on = JEFE_CAMPANA.onda
@@ -389,11 +448,21 @@ function resolverAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, ratasVivas: number
   const pausa = () => rng.rango(JEFE.pausaEntreAtaquesS[0], JEFE.pausaEntreAtaquesS[1])
   j.ataque = null
   switch (a) {
-    case 'golpe':
-      o.golpe = { ataque: 'golpe', forma: 'frente', dano: JEFE.golpe.dano, x: j.x + j.dirX * 30, y: j.y + j.dirY * 30, radio: JEFE.golpe.radio, dx: j.dirX, dy: j.dirY, largo: 0, ancho: 0 }
+    case 'golpe': {
+      const g = j.perfil === 'polilla' ? JEFE_POLILLA.aletazo : JEFE.golpe
+      o.golpe = { ataque: 'golpe', forma: 'frente', dano: g.dano, x: j.x + j.dirX * 30, y: j.y + j.dirY * 30, radio: g.radio, dx: j.dirX, dy: j.dirY, largo: 0, ancho: 0 }
       j.estado = 'quieto'
       j.pausaS = pausa()
       break
+    }
+    case 'polvo': {
+      const pv = JEFE_POLILLA.polvo
+      o.golpe = { ataque: 'polvo', forma: 'circulo', dano: pv.dano, x: j.destX, y: j.destY, radio: pv.radio, dx: 0, dy: 1, largo: 0, ancho: 0 }
+      o.polvo = { x: j.destX, y: j.destY, radio: pv.radio }
+      j.estado = 'quieto'
+      j.pausaS = pausa()
+      break
+    }
     case 'golpe_fuerte':
       o.golpe = { ataque: 'golpe_fuerte', forma: 'frente', dano: JEFE.golpeFuerte.dano, x: j.x + j.dirX * JEFE.golpeFuerte.delante, y: j.y + j.dirY * JEFE.golpeFuerte.delante, radio: JEFE.golpeFuerte.radio, dx: j.dirX, dy: j.dirY, largo: 0, ancho: 0 }
       j.estado = 'quieto'
@@ -415,12 +484,15 @@ function resolverAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, ratasVivas: number
       j.ataque = 'carga'
       o.cargar = { dx: j.dirX, dy: j.dirY, vel: JEFE.carga.velocidad }
       break
-    case 'grito':
+    case 'grito': {
+      // el minotauro llama ratas; la Polilla Reina, polillas de ceniza
+      const ll = j.perfil === 'polilla' ? { n: JEFE_POLILLA.llamada.polillas, max: JEFE_POLILLA.llamada.maxPolillas, cada: JEFE_POLILLA.llamada.cadaS } : { n: JEFE.grito.ratas, max: JEFE.grito.maxRatas, cada: JEFE.grito.cadaS }
       j.estado = 'quieto'
-      j.gritoEnS = JEFE.grito.cadaS
+      j.gritoEnS = ll.cada
       j.pausaS = pausa()
-      o.invocar = Math.max(0, Math.min(JEFE.grito.ratas, JEFE.grito.maxRatas - ratasVivas))
+      o.invocar = Math.max(0, Math.min(ll.n, ll.max - ratasVivas))
       break
+    }
     case 'onda': {
       // suena la campana: el anillo pega y el guardián queda aturdido (la ventana para pegarle)
       const on = JEFE_CAMPANA.onda

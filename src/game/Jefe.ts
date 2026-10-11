@@ -2,13 +2,13 @@ import Phaser from 'phaser'
 import type { Manifest } from '../kit/tipos'
 import type { Entidad } from '../kit/mapa'
 import { K } from '../kit/claves'
-import { crearAnimsPersonaje } from '../kit/anims'
+import { crearAnimFx, crearAnimsPersonaje } from '../kit/anims'
 import { DIRECCIONES, indiceDireccion } from '../logic/direccion'
 import type { Grilla } from '../logic/grilla'
 import { moverCuerpo } from '../logic/movimiento'
 import { fx, juego } from '../logic/azar'
-import { danarJefe, despertar, nuevoJefe, pensarJefe, reposar, type EstadoJefe, type Jefe, type OrdenJefe } from '../logic/jefe'
-import { IMPACTO, JEFE, JEFE_CAMPANA } from '../config/balance'
+import { danarJefe, despertar, nuevoJefe, pensarJefe, reposar, type EstadoJefe, type Jefe, type OrdenJefe, type PerfilJefe } from '../logic/jefe'
+import { IMPACTO, JEFE, JEFE_CAMPANA, JEFE_POLILLA } from '../config/balance'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
 import { texto } from './Texto'
@@ -28,8 +28,19 @@ export interface EventosJefe {
   golpeAnillo?(x: number, y: number, interior: number, exterior: number, dano: readonly [number, number]): void
   /** F8: salen raíces del piso que tapan el paso un rato */
   raices?(puntos: { x: number; y: number }[], radio: number, seg: number): void
+  /** F11: el polvo de la Polilla Reina cayó: apaga los cristales que tapa */
+  polvo?(x: number, y: number, radio: number): void
+  /** F11: le pegó con el escudo puesto (los cristales grandes apagados) */
+  escudo?(x: number, y: number): void
   alFase2(): void
   alMorir(): void
+}
+
+/** Qué jefe es según el personaje del manifest, y la vida con la que empieza */
+export function perfilDe(tipo: string): { perfil: PerfilJefe; vida: number } {
+  if (tipo === 'guardian_campana') return { perfil: 'campana', vida: JEFE_CAMPANA.vida }
+  if (tipo === 'polilla_reina') return { perfil: 'polilla', vida: JEFE_POLILLA.vida }
+  return { perfil: 'minotauro', vida: JEFE.vida }
 }
 
 export interface ContextoJefe {
@@ -39,6 +50,8 @@ export interface ContextoJefe {
   heroeVivo: boolean
   modoPeque: boolean
   ratasVivas: number
+  /** F11: los cuatro cristales grandes prendidos (la Polilla Reina) */
+  vulnerable?: boolean
 }
 
 interface Telegrafo {
@@ -97,9 +110,9 @@ export class JefeSprite implements Atacable {
     this.nombre = String(ent.props.nombre ?? 'Minotauro del Bosque')
     this.titulo = String(ent.props.titulo ?? 'Guardián de Las Alturas')
     this.radioArena = arena.radio
-    const campana = this.tipo === 'guardian_campana'
-    const vidaMax = campana ? JEFE_CAMPANA.vida : JEFE.vida
-    this.logica = nuevoJefe(arena.x, arena.y, vidaMax, campana ? 'campana' : 'minotauro')
+    const { perfil, vida: vidaMax } = perfilDe(this.tipo)
+    const campana = perfil === 'campana'
+    this.logica = nuevoJefe(arena.x, arena.y, vidaMax, perfil)
     this.logica.vida = Math.max(1, Math.min(vidaMax, vida))
     if ((this.logica.vida / this.logica.vidaMax) * 100 <= JEFE.fase2Pct) this.logica.fase = 2
     // un guardado que ya pasó de raicesPct no vuelve a enseñarlas
@@ -136,6 +149,9 @@ export class JefeSprite implements Atacable {
   }
   get vidaMax(): number {
     return this.logica.vidaMax
+  }
+  get blindado(): boolean {
+    return this.logica.escudo
   }
   get fase(): number {
     return this.logica.fase
@@ -177,7 +193,13 @@ export class JefeSprite implements Atacable {
   /** Daño recibido. Devuelve true si murió. */
   recibir(dano: number): boolean {
     if (!this.vivo) return false
-    const r = danarJefe(this.logica, dano)
+    const r = this.logica.escudo ? { fase2: false, murio: false, escudo: true } : danarJefe(this.logica, dano)
+    // la Polilla Reina con los cristales apagados: el golpe rebota, sin destello ni daño
+    if (r.escudo) {
+      this.ev.sonido('bloqueo', { volumen: 0.5, rate: 1.3 })
+      this.ev.escudo?.(this.x, this.y - this.cuerpo.alto)
+      return false
+    }
     // destello blanco del golpe; en la fase 2 vuelve a su tono enojado
     this.sprite.setTintFill(0xffffff)
     this.destelloFin = this.escena.time.now + IMPACTO.destelloMs
@@ -192,7 +214,7 @@ export class JefeSprite implements Atacable {
     if (r.fase2) {
       this.limpiarTelegrafos()
       this.ev.alFase2()
-      this.ev.sonido('jefe_rugido', { volumen: 0.9, rate: 0.8 })
+      this.voz({ volumen: 0.9, rate: 0.8 })
       this.ev.sacudir(true)
       this.poner('warcry', true)
       this.bloqueoAnimS = JEFE.fase2RugidoS
@@ -206,7 +228,7 @@ export class JefeSprite implements Atacable {
     if (!despertar(this.logica)) return false
     this.peleando = true
     // su nombre va en la barra de arriba: el estandarte sobre la cabeza ya no hace falta
-    this.ev.sonido('jefe_rugido', { volumen: 1 })
+    this.voz({ volumen: 1 })
     this.ev.sacudir(true)
     this.poner('warcry', true)
     this.bloqueoAnimS = JEFE.introS
@@ -238,7 +260,7 @@ export class JefeSprite implements Atacable {
     this.poner('die', true)
     this.bloqueoAnimS = 99
     this.estandarte?.setVisible(false)
-    this.ev.sonido('jefe_rugido', { volumen: 1, rate: 0.5 })
+    this.voz({ volumen: 1, rate: 0.5 })
     this.ev.sacudir(true)
     this.ev.alMorir()
   }
@@ -272,7 +294,7 @@ export class JefeSprite implements Atacable {
       return
     }
     const j = this.logica
-    const o = pensarJefe(j, { dt: c.dt, heroeX: c.heroeX, heroeY: c.heroeY, heroeVivo: c.heroeVivo, modoPeque: c.modoPeque, ratasVivas: c.ratasVivas }, juego())
+    const o = pensarJefe(j, { dt: c.dt, heroeX: c.heroeX, heroeY: c.heroeY, heroeVivo: c.heroeVivo, modoPeque: c.modoPeque, ratasVivas: c.ratasVivas, vulnerable: c.vulnerable }, juego())
     this.ejecutar(o, c)
     this.colocar()
   }
@@ -299,7 +321,7 @@ export class JefeSprite implements Atacable {
     }
     if (o.aviso) this.mostrarAviso(o.aviso)
     if (o.rugir) {
-      this.ev.sonido('jefe_rugido', { volumen: 0.7, rate: 1.2 })
+      this.voz({ volumen: 0.7, rate: 1.2 })
       this.ev.efecto('grito_de_guerra', j.x, j.y - this.cuerpo.alto)
     }
     if (o.saltar) {
@@ -309,16 +331,23 @@ export class JefeSprite implements Atacable {
     }
     if (o.cargar) {
       this.poner('charge', true)
-      this.ev.sonido('jefe_rugido', { volumen: 0.6, rate: 1.5 })
+      this.voz({ volumen: 0.6, rate: 1.5 })
     }
     if (o.aturdido) {
-      this.poner('hit', true)
+      // la Polilla Reina cae al piso con las alas caídas; los demás se tambalean
+      if (this.logica.perfil === 'polilla') {
+        if (!o.golpe) this.limpiarTelegrafos()
+        this.poner('aturdida', true)
+        this.ev.sonido('polilla_aleteo', { volumen: 0.7, rate: 0.6 })
+        this.ev.efecto('nube_polvo', j.x, j.y, 1)
+      } else this.poner('hit', true)
       this.bloqueoAnimS = o.aturdido
       this.ev.sacudir(true)
       this.ev.sonido('jefe_pisoton', { volumen: 0.8, rate: 0.7 })
     }
     if (o.golpe) this.soltarGolpe(o.golpe)
     if (o.raices) this.ev.raices?.(o.raices.puntos, o.raices.radio, o.raices.seg)
+    if (o.polvo) this.ev.polvo?.(o.polvo.x, o.polvo.y, o.polvo.radio)
     if (o.invocar && o.invocar > 0) {
       this.poner('warcry', true)
       this.bloqueoAnimS = 0.8
@@ -335,7 +364,7 @@ export class JefeSprite implements Atacable {
     else if (e === 'quieto' || e === 'intro') this.poner('idle')
     else if (e === 'aviso') this.poner(this.logica.ataque === 'grito' ? 'warcry' : 'idle')
     else if (e === 'cargando') this.poner('charge')
-    else if (e === 'aturdido') this.poner('idle')
+    else if (e === 'aturdido') this.poner(this.logica.perfil === 'polilla' ? 'aturdida' : 'idle')
   }
 
   private soltarGolpe(g: NonNullable<OrdenJefe['golpe']>): void {
@@ -361,8 +390,13 @@ export class JefeSprite implements Atacable {
       this.limpiarTelegrafos(g.ataque)
       return
     }
-    this.ev.golpeCirculo(g.x, g.y, g.radio, g.dano, g.ataque !== 'golpe')
-    if (g.ataque === 'pisoton' || g.ataque === 'salto') {
+    this.ev.golpeCirculo(g.x, g.y, g.radio, g.dano, g.ataque !== 'golpe' && g.ataque !== 'polvo')
+    if (g.ataque === 'polvo') {
+      // la nube de polvo cae donde estaba el aviso
+      this.ev.efecto('nube_polvo', g.x, g.y, 1)
+      this.ev.sonido('polilla_aleteo', { volumen: 0.8, rate: 0.8 })
+      this.ev.sacudir(false)
+    } else if (g.ataque === 'pisoton' || g.ataque === 'salto') {
       this.ev.efecto('onda_pisoton', g.x, g.y, 2)
       this.ev.sonido('jefe_pisoton', { volumen: 0.9 })
       this.ev.sacudir(true)
@@ -372,6 +406,13 @@ export class JefeSprite implements Atacable {
     } else this.ev.sonido('golpe', { volumen: 0.7, rate: 0.6 })
     this.limpiarTelegrafos(g.ataque)
     void j
+  }
+
+  /** La voz del jefe: el rugido, o el aleteo grave de la Polilla Reina */
+  private voz(a: { volumen?: number; rate?: number } | number, rate?: number): void {
+    const op = typeof a === 'number' ? { volumen: a, rate } : a
+    if (this.logica.perfil === 'polilla') this.ev.sonido('polilla_aleteo', { volumen: op.volumen, rate: (op.rate ?? 1) * 0.7 })
+    else this.ev.sonido('jefe_rugido', op)
   }
 
   /* ---------- avisos en el piso ---------- */
@@ -398,12 +439,24 @@ export class JefeSprite implements Atacable {
       })
       this.poner('warcry', true)
       this.bloqueoAnimS = a.seg
-      this.ev.sonido('jefe_rugido', { volumen: 0.4, rate: 0.9 })
+      this.voz({ volumen: 0.4, rate: 0.9 })
     } else if (a.forma === 'linea') {
       t.linea = { x: a.x, y: a.y, dx: a.dx, dy: a.dy, largo: a.largo, ancho: a.ancho }
       t.g = this.escena.add.graphics().setDepth(PROF.SOMBRAS + 2)
-      this.ev.sonido('jefe_rugido', { volumen: 0.4, rate: 1.4 })
+      this.voz({ volumen: 0.4, rate: 1.4 })
       this.poner('idle')
+    } else if (a.ataque === 'polvo' && this.escena.textures.exists(K.fx('aviso_polvo'))) {
+      // el aviso propio del polvo (96 x 96, en el piso): se llena en lo que dura el aviso
+      t.s = this.escena.add.sprite(Math.round(a.x), Math.round(a.y), K.fx('aviso_polvo'), 0).setDepth(PROF.SOMBRAS + 2).setAlpha(0.92)
+      const k = crearAnimFx(this.escena, this.m, 'aviso_polvo')
+      if (k) t.s.play({ key: k, frameRate: 8 / Math.max(0.2, a.seg) })
+      const c = this.cuadros.attack_heavy
+      if (c) {
+        // sube y tiembla: el cuadro del impacto (el 8) cae justo al terminar el aviso
+        this.poner('attack_heavy', true, 8 / Math.max(0.2, a.seg))
+        this.bloqueoAnimS = a.seg + 0.3
+      }
+      this.voz(0.5, 1.1)
     } else if (a.ataque !== 'grito' && this.escena.textures.exists(tex)) {
       if (!this.escena.anims.exists('aviso_jefe_llenar')) {
         this.escena.anims.create({ key: 'aviso_jefe_llenar', frames: this.escena.anims.generateFrameNumbers(tex, { start: 0, end: 7 }), frameRate: 8, repeat: 0 })
@@ -412,7 +465,7 @@ export class JefeSprite implements Atacable {
       const escala = a.radio > 60 ? 2 : 1
       t.s = this.escena.add.sprite(Math.round(a.x), Math.round(a.y), tex, 0).setScale(escala).setDepth(PROF.SOMBRAS + 2).setAlpha(0.92)
       t.s.play({ key: 'aviso_jefe_llenar', frameRate: 8 / Math.max(0.2, a.seg) })
-      this.ev.sonido('jefe_rugido', { volumen: 0.35, rate: 1.4 })
+      this.voz({ volumen: 0.35, rate: 1.4 })
     }
     // el golpe fuerte y el pisotón se levantan lento hasta el momento del impacto
     if (a.ataque === 'golpe_fuerte' || a.ataque === 'pisoton') {

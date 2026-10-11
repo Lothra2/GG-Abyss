@@ -4,6 +4,8 @@ import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
 import { existeMundo, idMundo, manifestParaMundo, MUNDO_BOSQUE } from '../kit/mundos'
 import { Mecanismos, OBJETOS_MECANISMOS } from '../game/Mecanismos'
+import { Galerias } from '../game/Galerias'
+import { perfilDe } from '../game/Jefe'
 import { ID_MERCADER, Mercader } from '../game/Mercader'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
 import { encolarAudio, encolarBotin, encolarCapas, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales, objetosDeFondo, objetosDeFrente } from '../kit/cargador'
@@ -21,7 +23,7 @@ import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
 import { CALIDAD, PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S, SOMBRA_LARGA } from '../config/juego'
-import { REACCIONES, AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, JEFE_CAMPANA, MUSICA_ESTADOS, OLFATO } from '../config/balance'
+import { REACCIONES, AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, MUSICA_ESTADOS, OLFATO } from '../config/balance'
 import { enAnillo } from '../logic/jefe'
 import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
@@ -74,7 +76,7 @@ export interface EventoDescubrimiento {
 
 /** Los efectos que usa el combate: proyectiles en sus 8 direcciones, impactos, novas, auras y escudos */
 function fxDeCombate(dirs: readonly string[]): string[] {
-  const out = ['aura_nivel', 'curar', 'escudo_de_thor', 'grito_de_guerra', 'nova_fuego', 'tajo', 'impacto_flecha', 'impacto_naturaleza', 'impacto_arcano', 'impacto_fuego', 'impacto_sagrado', 'impacto_veneno', 'onda_pisoton']
+  const out = ['aura_nivel', 'curar', 'escudo_de_thor', 'grito_de_guerra', 'nova_fuego', 'tajo', 'impacto_flecha', 'impacto_naturaleza', 'impacto_arcano', 'impacto_fuego', 'impacto_sagrado', 'impacto_veneno', 'onda_pisoton', 'aviso_polvo', 'nube_polvo']
   for (const base of ['proyectil_flecha', 'proyectil_naturaleza', 'proyectil_arcano', 'proyectil_fuego']) for (const d of dirs) out.push(`${base}_${d}`)
   return out
 }
@@ -88,7 +90,7 @@ const NOMBRES_GANCHOS = [
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
   'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual', 'mecanismos', 'darBrasas', 'mercader', 'aspecto',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
-  'luzMundo',
+  'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable',
 ]
 
 /**
@@ -146,6 +148,13 @@ export class Mundo extends Phaser.Scene {
   private peligroAgua = new Set<number>()
   /** F8: las brasas de la forja y lo que abren (solo en la Catedral) */
   mecanismos: Mecanismos | null = null
+  /** F11: las Galerías (cristales, carrito, figura, mural): solo en el mundo que trae cristales */
+  galerias: Galerias | null = null
+  /** las luces del último cuadro (la sombra solo se ve dentro de una) */
+  private lucesUltimas: Luz[] = []
+  /** la heroína va en el carrito: hasta cuándo (segundos de juego) */
+  private viaje: { resta: number } | null = null
+  private tAvisoEscudo = 0
   mercader!: Mercader
   /** lo que se ve puesto ahora (para no rehacer las capas si no cambió) */
   private aspectoPuesto = ''
@@ -287,6 +296,8 @@ export class Mundo extends Phaser.Scene {
     // enemigos del mapa y los efectos de combate
     // lo que se rompe y las armaduras de Thor que se pueden conseguir en el Mundo 1
     encolarObjetosMundo(this, this.m, new Set(mapa.entidades.filter((e) => e.tipo === 'rompible').map((e) => String(e.props.objeto ?? 'caja'))))
+    // F11: los cristales (apagados y prendidos), el carrito y la figura de las Galerías
+    if (mapa.cristales.length) encolarObjetosMundo(this, this.m, [...Object.keys(this.m.mundo.objetos).filter((n) => n.startsWith('cristal_')), 'carrito_mina', 'figura_ojos'])
     for (const n of [1, 2, 3]) encolarPersonaje(this, this.m, `thor_armadura${n}`, ['idle', 'walk', 'run', 'sit', 'wag', 'bite', 'howl', 'bark', 'pickup', 'dig', 'hurt'])
     for (const t of new Set(mapa.entidades.filter((e) => e.tipo === 'enemigo' || e.tipo === 'jefe').map((e) => String(e.props.enemigo ?? '')))) encolarPersonaje(this, this.m, t)
     // el mercader de las fogatas (si el kit lo trae)
@@ -320,6 +331,8 @@ export class Mundo extends Phaser.Scene {
     this.aclaradoMeta = 1
     this.raicesActivas = []
     this.destinoBrasa = { firma: '', p: null }
+    this.lucesUltimas = []
+    this.viaje = null
     // la escena es la misma al volver de Continuará o de otro mundo: el portal tiene que poder usarse otra vez, y lo
     // del jefe del mundo anterior no sigue acá (un mundo sin jefe no hereda el del Bosque)
     this.saliendoAContinuara = false
@@ -520,6 +533,19 @@ export class Mundo extends Phaser.Scene {
         this.guardar()
       },
     })
+    this.galerias?.destruir()
+    this.galerias = this.mapa.cristales.length
+      ? new Galerias(this, m, this.mapa, this.partida.cristales, {
+          sonido: (n, op) => this.sonido.efecto(n, op),
+          brillo: (x, y) => this.atmosfera.particulas.estallido(x, y, 'luciernaga_turquesa', 10),
+          alCambiar: (ids) => {
+            this.partida.cristales = ids
+            this.relojGuia.progreso()
+          },
+          thorGrune: () => this.sonido.efecto('ladrido', { volumen: 0.35, rate: 0.6 }),
+          alMural: (pieza) => this.alSecretoDeCofre(`mural:${pieza}`, 'El mural de los mineros'),
+        })
+      : null
     this.alCambioInventario(false)
 
     this.entrada = new Entrada(this, {
@@ -536,7 +562,15 @@ export class Mundo extends Phaser.Scene {
       },
       atacarHacia: (x, y) => {
         this.pendiente = null
-        this.combate.atacarHacia(x, y)
+        const pego = this.combate.atacarHacia(x, y)
+        // F11: un golpe al aire cerca de un cristal apagado lo prende
+        const g = this.galerias
+        if (pego && g) {
+          const h = this.heroina
+          const ang = x !== undefined && y !== undefined && Math.hypot(x - h.x, y - h.y) > 4 ? Math.atan2(y - h.y, x - h.x) : null
+          const c = g.cercaDeGolpe(h.x, h.y, ang === null ? 0 : Math.cos(ang), ang === null ? 0 : Math.sin(ang), ang === null ? 40 : 46)
+          if (c) this.time.delayedCall(220, () => g.prender(c))
+        }
       },
       direccion: (dx, dy) => {
         if (dx !== 0 || dy !== 0) {
@@ -621,7 +655,7 @@ export class Mundo extends Phaser.Scene {
         for (let k = 0; k < Math.min(n, JEFE.grito.maxRatas - hay); k++) {
           const ang = (Math.PI * 2 * k) / Math.max(1, n) + 0.7
           const p = this.grilla.puntoLibreCerca(x + Math.cos(ang) * 46, y + Math.sin(ang) * 30, 8, 80) ?? { x, y }
-          this.enemigos.invocar(this, this.m, this.grilla, 'rata', p.x, p.y, evEnemigos)
+          this.enemigos.invocar(this, this.m, this.grilla, tipoJefe === 'polilla_reina' ? 'polilla_ceniza' : 'rata', p.x, p.y, evEnemigos)
         }
       },
       efecto: (n, x, y, esc) => this.proyectiles.fxEn(n, x, y, esc ?? 1),
@@ -638,9 +672,16 @@ export class Mundo extends Phaser.Scene {
         }
         this.game.events.emit('jefe-fase2')
       },
+      // F11: el polvo de la Polilla Reina apaga los cristales que tapa; con el escudo puesto, el golpe rebota
+      polvo: (x, y, radio) => this.galerias?.apagarConPolvo(x, y, radio, this.combate.modoPeque),
+      escudo: (x, y) => {
+        if (this.tAvisoEscudo > this.t) return
+        this.tAvisoEscudo = this.t + 2.5
+        this.textoFlotante(x, y, '¡Prende los cristales!', 0x5ae8ff)
+      },
       alMorir: () => this.victoria(),
     }
-    this.jefe = new JefeSprite(this, this.m, this.grilla, ent, this.arena, this.partida.jefeVida ?? (tipoJefe === 'guardian_campana' ? JEFE_CAMPANA.vida : JEFE.vida), ev)
+    this.jefe = new JefeSprite(this, this.m, this.grilla, ent, this.arena, this.partida.jefeVida ?? perfilDe(tipoJefe).vida, ev)
     this.enemigos.adicionales.push(this.jefe)
     this.game.events.on('heroina-cae', this.alCaerEnArena, this)
     if (this.partida.jefeVencido) {
@@ -687,7 +728,7 @@ export class Mundo extends Phaser.Scene {
     }
     // si la heroína se va lejos de la arena (un salto de prueba, por ejemplo) la pelea se corta sin curar al jefe
     if (j.peleando && Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) > a.radio + 60) this.alCaerEnArena()
-    j.update({ dt, heroeX: this.heroina.x, heroeY: this.heroina.y, heroeVivo: !this.combate.caido, modoPeque: this.combate.modoPeque, ratasVivas: this.enemigos.invocadasVivas })
+    j.update({ dt, heroeX: this.heroina.x, heroeY: this.heroina.y, heroeVivo: !this.combate.caido, modoPeque: this.combate.modoPeque, ratasVivas: this.enemigos.invocadasVivas, vulnerable: this.galerias?.reinaVulnerable })
     // al salir de la arena después de ganar, vuelve la música del bosque
     if (this.musicaVictoriaPuesta && Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) > a.radio + 40) {
       this.musicaVictoriaPuesta = false
@@ -702,7 +743,9 @@ export class Mundo extends Phaser.Scene {
   private empezarJefe(): void {
     if (!this.jefe || !this.arena || !this.jefe.empezar()) return
     this.director.empezar()
-    this.sonido.fijarMusica('musica_jefe')
+    // cada jefe con su música si el taller la trae (la Polilla Reina tiene la suya)
+    const propia = `musica_jefe_${perfilDe(this.jefe.tipo).perfil}`
+    this.sonido.fijarMusica(this.cache.audio.exists(K.aud(propia)) ? propia : 'musica_jefe')
     this.cerrarAnillo()
     this.encenderPiedras()
     this.game.events.emit('jefe-empieza')
@@ -1081,6 +1124,8 @@ export class Mundo extends Phaser.Scene {
     this.mecanismos?.destruir()
     this.mercader?.destruir()
     this.mecanismos = null
+    this.galerias?.destruir()
+    this.galerias = null
     this.sonido.detener()
     this.decos.destruir()
     this.reflejos?.destruir()
@@ -1115,6 +1160,12 @@ export class Mundo extends Phaser.Scene {
     const mo = this.mercader.golpe(x, y)
     if (mo) {
       this.irAUsar(mo)
+      return true
+    }
+    // F11: un cristal apagado (para prenderlo) o el carrito de la mina
+    const go = this.galerias?.golpe(x, y) ?? this.galerias?.golpeCarrito(x, y)
+    if (go) {
+      this.irAUsar(go)
       return true
     }
     const o = this.entidades.golpe(x, y)
@@ -1330,7 +1381,38 @@ export class Mundo extends Phaser.Scene {
   /** Usar algo del mundo: el mercader abre la tienda, lo demás lo resuelve Entidades */
   private usar(o: Objetivo): void {
     if (o.tipo === 'mercader') this.abrirTienda()
+    else if (o.tipo === 'cristal' && this.galerias) {
+      // le pega al cristal: el golpe al aire hacia él y, cuando cae, se prende
+      const g = this.galerias
+      this.combate.atacarHacia(o.x, o.y - 16)
+      this.time.delayedCall(220, () => g.usar(o, () => {}))
+    } else if (o.tipo === 'carrito' && this.galerias) this.galerias.usar(o, (_x, _y, ms) => this.subirAlCarrito(ms))
     else this.entidades.usar(o)
+  }
+
+  /** F11: la heroína viaja adentro del carrito y Thor lo empuja; al llegar se baja */
+  private subirAlCarrito(ms: number): void {
+    this.heroina.parar()
+    this.combate.soltarObjetivo()
+    this.entrada.pausada = true
+    this.viaje = { resta: ms / 1000 }
+  }
+
+  private seguirViaje(dt: number): void {
+    const v = this.viaje
+    const p = this.galerias?.posCarrito
+    if (!v || !p) return
+    v.resta -= dt
+    this.heroina.teleport(p.x, p.y - 3)
+    if (v.resta > -0.1) return
+    this.viaje = null
+    const fin = this.grilla.puntoLibreCerca(p.x + 30, p.y + 10, 8, 120) ?? p
+    this.heroina.teleport(fin.x, fin.y)
+    const tp = this.grilla.puntoLibreCerca(fin.x - 30, fin.y + 6, 6, 120) ?? fin
+    this.thor.teleport(tp.x, tp.y)
+    this.thor.menearCola()
+    if (!this.cartelAbierto && !this.presentacion?.activa) this.entrada.pausada = false
+    this.guardar()
   }
 
   private irAUsar(o: Objetivo): void {
@@ -1624,12 +1706,22 @@ export class Mundo extends Phaser.Scene {
     this.presentacion?.update(dt)
     this.heroina.update(dt)
     if (!this.presentacion?.activa) {
-      this.enemigos.update(dt, { heroe: { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido }, thor: { x: this.thor.x, y: this.thor.y }, modoPeque: this.combate.modoPeque, dt })
+      const g = this.galerias
+      this.enemigos.update(dt, {
+        heroe: { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido },
+        thor: { x: this.thor.x, y: this.thor.y },
+        modoPeque: this.combate.modoPeque,
+        dt,
+        cristales: g?.cristales,
+        luces: this.lucesUltimas,
+        alApagar: g ? (id) => g.apagar(id) : undefined,
+      })
       this.proyectiles.update(dt)
       this.combate.update(dt)
       this.actualizarJefe(dt)
     }
     this.botin.update(dt)
+    if (this.viaje) this.seguirViaje(dt)
     this.olfatoRecarga = Math.max(0, this.olfatoRecarga - dt)
     this.actualizarGuia(dt)
     this.proyectiles.impactoAlFallar = this.mejoras
@@ -1670,8 +1762,10 @@ export class Mundo extends Phaser.Scene {
     if (this.autoguardadoEn <= 0) this.guardar()
     this.decos.otros[0] = { x: this.thor.sprite.x, y: this.thor.sprite.y }
     this.decos.enemigos = this.enemigos.vivos.map((e) => ({ x: e.x, y: e.y }))
+    this.galerias?.update(heroe, luces)
     this.decos.actualizar(this.tViento, dtVisual, vista, heroe, luces)
     this.mecanismos?.update(this.t, luces)
+    this.lucesUltimas = luces
     this.criaturas.update(this.t, dtVisual, heroe, vista, this.atmosfera.oscuridadFinal)
     this.atmosfera.update(this.t, dtVisual, vista, heroe, luces, (fn) => this.decos.forEachActivo(fn), rafaga)
     const cal = CALIDAD[this.partida.ajustes.calidad]
@@ -1761,6 +1855,15 @@ export class Mundo extends Phaser.Scene {
       atmosfera: () => this.atmosfera.info(),
       luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, criaturasChicas: this.criaturas.infoChicos, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible }),
       camara: () => ({ x: this.camara.cx, y: this.camara.cy, ancho: this.camara.ancho, alto: this.camara.alto, manual: this.camara.manual }),
+      // F11: las Galerías
+      galerias: () => (this.galerias ? { ...this.galerias.info, viajando: !!this.viaje, sombras: this.enemigos.lista.filter((e) => e.cfg.soloEnLuz && e.vivo).map((e) => ({ x: Math.round(e.x), y: Math.round(e.y), oculta: e.oculta })) } : null),
+      prenderCristal: ((id?: string) => {
+        const g = this.galerias
+        const c = g?.cristales.find((q) => (id ? q.id === id : !q.prendido))
+        return !!c && !!g && g.prender(c)
+      }) as never,
+      apagarCristal: ((id: string) => this.galerias?.apagar(id)) as never,
+      jefeVulnerable: () => this.galerias?.reinaVulnerable ?? null,
       mapa: () => ({
         ancho: this.mapa.ancho * this.mapa.cuadro,
         alto: this.mapa.alto * this.mapa.cuadro,
@@ -1901,11 +2004,11 @@ export class Mundo extends Phaser.Scene {
         return { x: p.x, y: p.y, enemigo: e.id }
       }) as never,
       proyectilesActivos: () => this.proyectiles.cantidad,
-      objetivos: () => [...this.entidades.objetivos(), ...this.mercader.objetivos()],
+      objetivos: () => [...this.entidades.objetivos(), ...this.mercader.objetivos(), ...(this.galerias?.objetivos() ?? [])],
       mercader: () => this.mercader.info(),
       aspecto: () => ({ capas: this.heroina.capas.info(), clave: this.aspectoPuesto, base: this.heroina.sprite.texture.key, cuadro: Number(this.heroina.sprite.frame.name) }),
       usarObjetivo: ((llave: string) => {
-        const o = [...this.entidades.objetivos(), ...this.mercader.objetivos()].find((q) => q.llave === llave)
+        const o = [...this.entidades.objetivos(), ...this.mercader.objetivos(), ...(this.galerias?.objetivos() ?? [])].find((q) => q.llave === llave)
         if (o) this.irAUsar(o)
         return !!o
       }) as never,

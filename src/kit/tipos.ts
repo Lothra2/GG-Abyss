@@ -224,6 +224,35 @@ export interface Manifest {
   app?: Record<string, IconoApp>
   audio: Record<string, string>
   creditos: string
+  /** F11, parte 4: los paneles pintados del intro, la pared de fuego, el humo y el logo en llamas (ver kit/intro.ts) */
+  intro?: Record<string, unknown>
+}
+
+/** Una capa de un panel del intro: una tira de cuadros del tamaño del panel, corrida con su paralaje */
+export interface CapaIntro {
+  nombre: string
+  archivo: string
+  cuadros: number
+  fps: number
+  paralaje: number
+}
+
+export interface PanelIntro {
+  w: number
+  h: number
+  notas?: string
+  capas: CapaIntro[]
+}
+
+/** Una hoja suelta del intro (fuego_pared, humo_grande, logo_fuego). `columnas` si viene en grilla */
+export interface HojaIntro {
+  archivo: string
+  w: number
+  h: number
+  cuadros: number
+  fps: number
+  loop?: boolean
+  columnas?: number
 }
 
 /* ---------- mapa de Tiled ---------- */
