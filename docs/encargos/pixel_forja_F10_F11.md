@@ -21,6 +21,17 @@ Para el agente que trabaja en `pixel_forja`. Este documento se entiende solo, si
 
 El orden de las partes es el orden de prioridad.
 
+**Lo que el juego ya entiende.** Esto ya está programado y probado: en cuanto el manifest lo traiga, entra solo.
+
+| Del manifest | Lo que hace el juego |
+|---|---|
+| `celda` 128 o 192 en un jefe | El cuerpo para recibir golpes y disparos crece en la misma proporción, igual que su sombra |
+| `"capa": "frente"` en un objeto del mapa | Se dibuja encima de todo con paralaje 1.15 y baja a alfa 0.35 si tapa a la heroína |
+| `"capa": "fondo"` en un objeto del mundo, aunque no esté en el mapa | Repite detrás de todo con paralaje 0.6, 0.75 y 0.9 en orden alfabético del nombre. **Donde va el fondo, el suelo del mapa tiene que quedar transparente**, si no, no se ve |
+| `"sombra": "mundo/objetos/<id>_sombra.png"` | Reemplaza la sombra larga que hoy arma el juego con el mismo cuadro |
+| animación `sacudir`, `rebotar` o `salpicar` en arbustos, flores, hongos o charcos | Se usa esa en vez del meneo que hace el juego hoy |
+
+
 ---
 
 ## Parte 1. Jefes grandes de verdad, sin agrandar

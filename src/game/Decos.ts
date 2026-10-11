@@ -6,6 +6,7 @@ import { COLOR, DECOS, PROF, REFLEJO } from '../config/juego'
 import { hash2 } from '../logic/azar'
 import { aguaDebajo, meneoReflejo, tiraSombra, type CfgSombra, type MapaAgua } from '../logic/luzMundo'
 import { meneo, reaccionDe, tocaReaccion, type Reaccion } from '../logic/reaccion'
+import { capaDe, PARALAJE_FRENTE, posParalaje, tapa } from '../logic/capas'
 
 /** Una luz del mundo: pozo que borra la oscuridad y resplandor de color encima */
 export interface Luz {
@@ -42,6 +43,8 @@ export interface DefDeco {
   refleja: boolean
   /** se sacude, rebota o salpica al pasar (F10) */
   reac: Reaccion | null
+  /** primer plano del taller: va encima de todo con paralaje */
+  frente: boolean
   /** rectángulo del sprite en el mundo */
   x0: number
   y0: number
@@ -161,6 +164,8 @@ export class Decos {
     decos.forEach((d, i) => {
       const def = m.mundo.objetos[d.sprite]
       if (!def) return
+      // el fondo de abismo no se pone en el mapa: es una capa que repite detrás de todo (FondoParalaje)
+      if (capaDe(def) === 'fondo') return
       const anim = def.anims.idle ? 'idle' : def.anims.girar ? 'girar' : def.anims.dormido ? 'dormido' : Object.keys(def.anims)[0]!
       if (!escena.textures.exists(K.obj(d.sprite, anim))) return
       const x0 = d.x - def.apoyo[0]
@@ -181,6 +186,7 @@ export class Decos {
         sombra: !!cfgS && tiraSombra(d.sprite, def, cfgS),
         refleja: !!agua && def.capa !== 'suelo' && aguaDebajo(agua, d.x, d.y, REFLEJO.cerca),
         reac: reaccionDe(d.sprite),
+        frente: capaDe(def) === 'frente',
         x0,
         y0,
         x1: x0 + def.w,
@@ -251,7 +257,7 @@ export class Decos {
     const anim = this.animBase(d)
     const s = this.sprite(K.obj(d.nombre, anim))
     s.setOrigin(d.def.apoyo[0] / d.def.w, d.def.apoyo[1] / d.def.h).setPosition(d.x, d.y)
-    const prof = d.capaSuelo ? PROF.SUELO_OBJ + d.y / 100000 : PROF.OBJETOS + d.y
+    const prof = d.capaSuelo ? PROF.SUELO_OBJ + d.y / 100000 : d.frente ? PROF.FRENTE + d.y / 100000 : PROF.OBJETOS + d.y
     s.setDepth(prof)
     let c: Phaser.GameObjects.Sprite | null = null
     if (d.separado) {
@@ -263,9 +269,16 @@ export class Decos {
     const sh: Phaser.GameObjects.Sprite[] = []
     const rf: Phaser.GameObjects.Sprite[] = []
     const cs = this.cfgSombra
+    // la sombra horneada del taller manda sobre la sombra larga hecha con el cuadro
+    const horneada = !!d.def.sombra && this.escena.textures.exists(K.objSombra(d.nombre))
+    if (horneada) {
+      const k = this.sprite(K.objSombra(d.nombre))
+      k.setOrigin(s.originX, s.originY).setPosition(d.x, d.y).setDepth(PROF.SOMBRAS)
+      sh.push(k)
+    }
     for (const fuente of [s, c]) {
       if (!fuente) continue
-      if (d.sombra && cs && this.sombrasLargas) {
+      if (d.sombra && cs && this.sombrasLargas && !horneada) {
         const k = this.sprite(fuente.texture.key)
         k.setOrigin(fuente.originX, fuente.originY).setPosition(d.x, d.y).setTint(0x000000).setAlpha(cs.alfa).setScale(1, -cs.largo).setAngle(cs.angulo).setDepth(PROF.SOMBRAS)
         sh.push(k)
@@ -445,13 +458,14 @@ export class Decos {
         if (a.c.frame.name !== String(fc)) a.c.setFrame(fc)
       }
       // sombras y reflejos copian el cuadro (el primero es del objeto o del tronco, el segundo de la copa)
-      if (a.sh.length || a.rf.length) {
+      const horneada = a.sh.length > 0 && a.sh[0]!.texture.key === K.objSombra(d.nombre)
+      if ((a.sh.length && !horneada) || a.rf.length) {
         const copiar = (k: Phaser.GameObjects.Sprite, i: number) => {
           const src = i === 0 ? a.s : (a.c ?? a.s)
           if (k.texture !== src.texture) k.setTexture(src.texture.key, src.frame.name)
           else if (k.frame !== src.frame) k.setFrame(src.frame.name)
         }
-        a.sh.forEach(copiar)
+        if (!horneada) a.sh.forEach(copiar)
         a.rf.forEach((k, i) => {
           copiar(k, i)
           k.x = d.x + meneoReflejo(t, d.ph)
@@ -459,6 +473,19 @@ export class Decos {
       }
 
       if (d.reac) this.reaccionar(a, d.reac, quienes, t)
+
+      // primer plano: se corre más rápido que el mundo y se aclara si tapa a la heroína
+      if (d.frente) {
+        const px = posParalaje(d.x, vista.centerX, PARALAJE_FRENTE)
+        const py = posParalaje(d.y, vista.centerY, PARALAJE_FRENTE)
+        a.s.setPosition(px, py)
+        const meta = tapa({ x0: px - (d.x - d.x0), y0: py - (d.y - d.y0), x1: px + (d.x1 - d.x), y1: py }, heroe.x, heroe.y) ? 0.35 : 1
+        if (a.alfa !== meta) {
+          a.alfa += (meta - a.alfa) * Math.min(1, dt * 10)
+          if (Math.abs(a.alfa - meta) < 0.01) a.alfa = meta
+          a.s.setAlpha(a.alfa)
+        }
+      }
 
       // luz propia del objeto
       if (def.luz) luces.push({ x: d.x, y: d.y - (def.luz.dy ?? 0), r: def.luz.radius, color: def.luz.color, flicker: def.luz.flicker, pulse: def.luz.pulse, ph: d.ph })

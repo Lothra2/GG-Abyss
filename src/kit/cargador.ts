@@ -93,7 +93,13 @@ export function encolarObjetosMundo(e: Escena, m: Manifest, nombres: Iterable<st
       const key = K.obj(nombre, an)
       if (!yaHay(e, key)) e.load.spritesheet(key, rutaKit(a.archivo), { frameWidth: o.w, frameHeight: o.h })
     }
+    if (o.sombra && !yaHay(e, K.objSombra(nombre))) e.load.image(K.objSombra(nombre), rutaKit(o.sombra))
   }
+}
+
+/** Las capas de fondo (el abismo con paralaje) no van en el mapa: se cargan todas las que traiga el mundo */
+export function objetosDeFondo(m: Manifest): string[] {
+  return Object.entries(m.mundo.objetos).filter(([, o]) => o.capa === 'fondo').map(([n]) => n).sort()
 }
 
 export function encolarCriaturas(e: Escena, m: Manifest, nombres?: string[]): void {

@@ -77,7 +77,10 @@ export interface ObjetoMundo {
   apoyo: [number, number]
   solido?: Rect4 | null
   solidos?: Rect4[]
-  capa?: 'suelo'
+  /** suelo: debajo de todo. frente: primer plano con paralaje. fondo: el abismo que se ve donde no hay piso (F10) */
+  capa?: 'suelo' | 'frente' | 'fondo'
+  /** sombra horneada por el taller, del mismo tamaño que el objeto (F10). Sin ella se usa la sombra larga */
+  sombra?: string
   luz?: LuzObjeto
   /** línea donde el agua golpea abajo (cascada), relativa al apoyo [x0, y0, x1, y1] */
   espuma?: [number, number, number, number]

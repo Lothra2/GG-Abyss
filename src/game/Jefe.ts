@@ -13,6 +13,7 @@ import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
 import { texto } from './Texto'
 import type { Atacable } from './Enemigos'
+import { cuerpoJefe } from '../logic/capas'
 
 export interface EventosJefe {
   /** el golpe cae sobre un círculo del piso: si la heroína está dentro, recibe el daño */
@@ -67,6 +68,8 @@ export class JefeSprite implements Atacable {
   readonly titulo: string
   readonly logica: Jefe
   readonly radioArena: number
+  /** celda del sprite en el manifest: 96 hoy, 128 cuando el taller entregue los jefes nativos */
+  private celda = 96
   readonly sprite: Phaser.GameObjects.Sprite
   readonly sombra: Sombra
   private estandarte?: Phaser.GameObjects.Container
@@ -102,10 +105,11 @@ export class JefeSprite implements Atacable {
     // un guardado que ya pasó de raicesPct no vuelve a enseñarlas
     if (campana && (this.logica.vida / this.logica.vidaMax) * 100 <= JEFE_CAMPANA.raicesPct) this.logica.raicesVistas = true
     const p = m.personajes[this.tipo]!
+    this.celda = p.celda
     for (const [n, a] of Object.entries(p.anims)) this.cuadros[n] = { cuadros: a.cuadros, fps: a.fps }
     crearAnimsPersonaje(escena, m, this.tipo)
     this.sprite = escena.add.sprite(arena.x, arena.y, K.pers(this.tipo, 'idle'), 0).setOrigin(p.pivote[0] / p.celda, p.pivote[1] / p.celda)
-    this.sombra = new Sombra(escena, 64, 0.4)
+    this.sombra = new Sombra(escena, Math.round(64 * Math.max(1, p.celda / 96)), 0.4)
     if (escena.textures.exists(K.ui('estandarte'))) {
       const img = escena.add.image(0, 0, K.ui('estandarte')).setOrigin(0.5, 1)
       const t = texto(escena, 0, -14, this.nombre, 'fuente_ui', 1, { origen: [0.5, 0.5] })
@@ -140,18 +144,20 @@ export class JefeSprite implements Atacable {
     return this.logica.estado
   }
   get radioHit(): number {
-    return JEFE.cuerpoRadio
+    return this.cuerpo.radio
   }
   get altura(): number {
-    return JEFE.cuerpoAlto / 2
+    return this.cuerpo.alto / 2
   }
+  /** el cuerpo crece con la celda: los jefes nativos de 128 del taller siguen recibiendo los golpes donde se ven */
   get cuerpo(): { alto: number; radio: number } {
-    return { alto: JEFE.cuerpoAlto, radio: JEFE.cuerpoRadio }
+    return cuerpoJefe(this.celda, { alto: JEFE.cuerpoAlto, radio: JEFE.cuerpoRadio })
   }
 
   golpe(x: number, y: number, margen = 10): boolean {
     if (!this.vivo || !this.peleando) return false
-    return Math.abs(x - this.x) <= JEFE.cuerpoRadio + margen && y >= this.y - JEFE.cuerpoAlto - margen && y <= this.y + 8 + margen
+    const c = this.cuerpo
+    return Math.abs(x - this.x) <= c.radio + margen && y >= this.y - c.alto - margen && y <= this.y + 8 + margen
   }
 
   marcar(v: boolean): void {
@@ -246,7 +252,7 @@ export class JefeSprite implements Atacable {
     const espera = def ? (def.cuadros / def.fps) * 1000 : 600
     this.escena.time.delayedCall(espera + 250, () => {
       if (!this.sprite.active) return
-      const polvo = this.escena.time.addEvent({ delay: 90, repeat: 14, callback: () => alPolvo(this.x + (fx().next() - 0.5) * 40, this.y - fx().next() * JEFE.cuerpoAlto * 0.7) })
+      const polvo = this.escena.time.addEvent({ delay: 90, repeat: 14, callback: () => alPolvo(this.x + (fx().next() - 0.5) * 40, this.y - fx().next() * this.cuerpo.alto * 0.7) })
       this.escena.tweens.add({ targets: [this.sprite], alpha: 0, duration: 1400, ease: 'Sine.easeIn', onComplete: () => polvo.remove(false) })
       this.escena.tweens.add({ targets: this.sombra.img, alpha: 0, duration: 1400 })
     })
@@ -288,7 +294,7 @@ export class JefeSprite implements Atacable {
     if (o.aviso) this.mostrarAviso(o.aviso)
     if (o.rugir) {
       this.ev.sonido('jefe_rugido', { volumen: 0.7, rate: 1.2 })
-      this.ev.efecto('grito_de_guerra', j.x, j.y - JEFE.cuerpoAlto)
+      this.ev.efecto('grito_de_guerra', j.x, j.y - this.cuerpo.alto)
     }
     if (o.saltar) {
       this.poner('leap', true)

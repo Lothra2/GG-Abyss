@@ -7,6 +7,8 @@ export const K = {
   retrato: (id: string) => `retrato_${id}`,
   fx: (n: string) => `fx_${n}`,
   obj: (n: string, anim: string) => `o_${n}_${anim}`,
+  /** la sombra horneada de un objeto */
+  objSombra: (n: string) => `o_${n}__sombra`,
   cri: (n: string, anim: string) => `c_${n}_${anim}`,
   par: (n: string) => `par_${n}`,
   aud: (n: string) => `a_${n}`,

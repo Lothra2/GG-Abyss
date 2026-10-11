@@ -6,7 +6,8 @@ import { existeMundo, idMundo, manifestParaMundo, MUNDO_BOSQUE } from '../kit/mu
 import { Mecanismos, OBJETOS_MECANISMOS } from '../game/Mecanismos'
 import { ID_MERCADER, Mercader } from '../game/Mercader'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
-import { encolarAudio, encolarBotin, encolarCapas, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
+import { encolarAudio, encolarBotin, encolarCapas, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales, objetosDeFondo } from '../kit/cargador'
+import { FondoParalaje } from '../fx/FondoParalaje'
 import { aspectoDe, claveAspecto } from '../logic/aspecto'
 import { puntosDeCaida, regionCaminable } from '../logic/lugar'
 import { RADIO_HEROINA } from '../logic/camino'
@@ -106,6 +107,7 @@ export class Mundo extends Phaser.Scene {
   private vista!: MundoVista
   decos!: Decos
   private reflejos!: Reflejos
+  private fondo!: FondoParalaje
   heroina!: Heroina
   private thor!: ThorSprite
   private criaturas!: Criaturas
@@ -265,7 +267,7 @@ export class Mundo extends Phaser.Scene {
 
   create(): void {
     const mapa = this.mapaDelMundo()
-    encolarObjetosMundo(this, this.m, new Set([...mapa.decos.map((d) => d.sprite), ...EXTRAS_MUNDO]))
+    encolarObjetosMundo(this, this.m, new Set([...mapa.decos.map((d) => d.sprite), ...EXTRAS_MUNDO, ...objetosDeFondo(this.m)]))
     // enemigos del mapa y los efectos de combate
     // lo que se rompe y las armaduras de Thor que se pueden conseguir en el Mundo 1
     encolarObjetosMundo(this, this.m, new Set(mapa.entidades.filter((e) => e.tipo === 'rompible').map((e) => String(e.props.objeto ?? 'caja'))))
@@ -353,6 +355,7 @@ export class Mundo extends Phaser.Scene {
     this.criaturas = new Criaturas(this, m, this.mapa.entidades)
 
     this.reflejos = new Reflejos(this, this.mapa, [this.heroina.sprite, this.thor.sprite])
+    this.fondo = new FondoParalaje(this, m, objetosDeFondo(m))
     this.camara = new Camara(this, ancho, alto)
     this.camara.centrarEn(pos.x, pos.y)
 
@@ -549,6 +552,7 @@ export class Mundo extends Phaser.Scene {
       this.camara.zoom = params.postal ? 1 : zoomCamara(e.alto)
       const o = this.camara.origenPantalla
       this.atmosfera.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y, this.camara.zoom)
+      this.fondo.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y)
     })
 
     if (!params.postal) {
@@ -607,7 +611,7 @@ export class Mundo extends Phaser.Scene {
         this.game.events.emit('destello', { color: 0xc8281e, alfa: this.suave ? 0.1 : 0.32, ms: 380 })
         if (this.jefe) {
           this.proyectiles.fxEn('onda_pisoton', this.jefe.x, this.jefe.y, 3)
-          this.proyectiles.fxEn('grito_de_guerra', this.jefe.x, this.jefe.y - JEFE.cuerpoAlto, 2)
+          this.proyectiles.fxEn('grito_de_guerra', this.jefe.x, this.jefe.y - this.jefe.cuerpo.alto, 2)
         }
         this.game.events.emit('jefe-fase2')
       },
@@ -1057,6 +1061,7 @@ export class Mundo extends Phaser.Scene {
     this.sonido.detener()
     this.decos.destruir()
     this.reflejos?.destruir()
+    this.fondo?.destruir()
     this.atmosfera.destruir()
     if (this.scene.isActive('HUD')) this.scene.stop('HUD')
   }
@@ -1466,12 +1471,12 @@ export class Mundo extends Phaser.Scene {
     const j = this.jefe
     if (j && pl.foco === 'jefe') {
       x = j.x
-      y = j.y - JEFE.cuerpoAlto / 2
+      y = j.y - j.cuerpo.alto / 2
       vx = 0
       vy = 0
     } else if (j && pl.foco === 'mezcla' && j.vivo && Math.hypot(j.x - h.x, j.y - h.y) < ESCENA_JEFE.mezclaHasta) {
       x += (j.x - h.x) * ESCENA_JEFE.mezcla
-      y += (j.y - JEFE.cuerpoAlto / 2 - (h.y - 12)) * ESCENA_JEFE.mezcla
+      y += (j.y - j.cuerpo.alto / 2 - (h.y - 12)) * ESCENA_JEFE.mezcla
     }
     this.camara.seguir(dtReal, x, y, vx, vy)
     if (pl.bloquear && !this.bloqueoPorJefe) {
@@ -1625,6 +1630,7 @@ export class Mundo extends Phaser.Scene {
     this.decos.reflejos = cal.reflejos
     this.reflejos.activo = cal.reflejos
     this.reflejos.update(this.t)
+    this.fondo.update(vista)
     this.sonido.update(dtVisual)
 
     // la marca de destino se va cuando llega
@@ -1698,7 +1704,7 @@ export class Mundo extends Phaser.Scene {
       tocar: ((x: number, y: number) => this.entrada.tocar(x, y)) as never,
       estado: () => JSON.parse(JSON.stringify(this.partida)),
       atmosfera: () => this.atmosfera.info(),
-      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones }),
+      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, capasFondo: this.fondo.cantidad }),
       camara: () => ({ x: this.camara.cx, y: this.camara.cy, ancho: this.camara.ancho, alto: this.camara.alto, manual: this.camara.manual }),
       mapa: () => ({
         ancho: this.mapa.ancho * this.mapa.cuadro,

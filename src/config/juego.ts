@@ -8,6 +8,8 @@ export const VERSION_KIT_ESPERADA = 1
 
 /** Profundidades (PLAN.md 2.3). Los objetos y personajes usan OBJETOS + y. */
 export const PROF = {
+  /** el abismo que se ve donde no hay piso, detrás de todo */
+  FONDO: -10,
   AGUA: 0,
   /** entre el agua y el suelo: el suelo tapa el reflejo donde no hay agua */
   REFLEJO: 0.5,
@@ -16,6 +18,8 @@ export const PROF = {
   SOMBRAS: 3,
   OBJETOS: 10,
   NUBES: 5000,
+  /** primer plano del taller (ramas, columnas), con paralaje */
+  FRENTE: 5050,
   PARTICULAS: 5100,
   BRUMA_A: 6000,
   BRUMA_B: 6001,
