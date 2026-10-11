@@ -23,6 +23,12 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - Mundo 3: cristales que se prenden, la sombra que solo se ve en la luz, la polilla que los apaga y la Polilla Reina.
   - La figura de los ojos rojos.
   - La bajada muestra el piso y la columna de los siete.
+- Kit premium de PixelForja integrado (taller `887454d`):
+  - Heroínas y Thor con pasos y golpe en los cuadros del manifest.
+  - Minotauro y guardián a 128 con elevación del salto y `libre` al final.
+  - Bosque Profundo premium con sombras horneadas, calcomanías, primer plano por zona y objetos `_p` con `base`.
+  - Verificación: `verificar-kit` bien, 389 tests unitarios y e2e completo (escritorio, tablet y postales) 191 pasaron y 5 se saltan a propósito, sin fallos.
+  - Duda al taller sobre el `avance` (ASSETS_PENDIENTES #33).
 - Intro al estilo Diablo: sale una vez por aparato después del primer toque del título. Se salta tocando y el título tiene un botón "Intro". Las ilustraciones de cine están pedidas al taller (encargo, parte 4).
 - Verificación de F10a, F11 e intro:
   - Typecheck limpio y 380 tests unitarios.
