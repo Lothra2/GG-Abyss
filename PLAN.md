@@ -862,15 +862,16 @@ Lo que dice Rick: "los siento muy planos", "no se siente como Stardew Valley", "
 
 **Lo que hace el juego (código, sin assets nuevos).**
 
-1. **Cámara más cerca en la compu.** Propuesta: `zoom = max(1, floor(Hp / 340))`. A 720 p da zoom 2 (640 x 360 lógicos, 20 x 11 cuadros), a 1080 p zoom 3 (640 x 360), en la tablet sigue en 4 (590 x 410). Las dos pantallas quedan casi con el mismo encuadre. Cambia una regla de CLAUDE.md, así que lo decide Rick.
+1. **Cámara más cerca en la compu.** Propuesta: `zoom = max(1, floor(Hp / 340))`. A 720 p da zoom 2 (640 x 360 lógicos, 20 x 11 cuadros), a 1080 p zoom 3 (640 x 360), en la tablet sigue en 4 (590 x 410). Las dos pantallas quedan casi con el mismo encuadre. Rick lo dejó en mis manos: va así y se ajusta jugando.
 2. **Ritmo más pausado.** Caminar de 150 a 120 px/s y correr de 190 a 150. Ojo: con la cámara más cerca la velocidad en pantalla se duplica, así que bajar la velocidad no es opcional si se acerca la cámara. Se mide con las niñas, el número va en `balance.ts`.
 3. **Primer plano con paralaje.** Una capa `frente` (profundidad 5500, paralaje 1.15) con ramas que cuelgan del borde de arriba en el Bosque y columnas cerca de la cámara en la Catedral. Si la heroína queda detrás, bajan a alfa 0.35.
 4. **Luz que se nota.** La oscuridad ya tiene pozos de luz. Falta: un halo propio de la heroína (siempre, radio 110 px), sombras largas de los objetos hacia abajo a la derecha según el ángulo de la luz de la zona, haces de luz entre copas en los claros (`haz_luz` ya existe) y contraste por zona: zonas de sombra a 0.65 al lado de claros a 0.15 en la misma pantalla.
 5. **Reflejos en el agua.** La heroína, Thor y los árboles de la orilla se reflejan invertidos, con alfa 0.35 y una ondita. Es el mismo sprite espejado y recortado con la máscara del agua, no se dibuja nada nuevo.
 6. **Sonido que da espacio.** La cascada, la forja y el río suenan más fuerte al acercarse (ya pasa con el agua). En la Catedral un eco suave con un convolver de Web Audio.
 7. **Paneo de llegada a cada zona grande** la primera vez: la cámara se adelanta 1.5 s al punto focal y vuelve. Diablo y Stardew enseñan el lugar antes de dejarte jugar.
+8. **Un mundo que reacciona.** Arbustos que se sacuden, hongos que rebotan, charcos que salpican, criaturas chicas que huyen, antorchas que se prenden al pasar, palancas, puertas y piedras que Thor empuja. El taller hace las animaciones y los sonidos (encargo, parte 2.9), el juego los conecta.
 
-**Lo que hace el taller** (detalle en el encargo).
+**Lo que hace el taller** (detalle en el encargo). Rick pide realismo: no es más resolución, es luz desde un solo lado, rampas con cambio de tono, oclusión donde las cosas se tocan, materiales que se leen, desgaste y escala coherente. Las 7 reglas están en el encargo.
 
 1. **Relieve.** Acantilados de 2 cuadros de alto con cara de roca, borde de pasto colgante y sombra al pie, rampas y escaleras talladas. En la Catedral desniveles con barandas y escalones rotos.
 2. **Suelo hecho a mano.** 4 variantes por tipo de suelo, transiciones orgánicas con máscara de ruido, caminos gastados y calcomanías sueltas (hojas caídas, raíces, grietas, charcos, flores).
@@ -913,7 +914,7 @@ Lo que pide Rick: seguir bajando, mucha más oscuridad, el misterio que vaya sub
 | 6 | Las Fraguas Rojas | 0.60, luz roja | El Carcelero | La puerta del fondo y los diablillos |
 | 7 | El Corazón del Abismo | 0.85, baja con cada fase | El Diablo | Él juntaba la luz. Al vencerlo vuelve a los siete pisos |
 
-Los nombres de los pisos 4 a 7 son de trabajo. El 7 es un Diablo de cuento: grande, rojo, con cuernos y fuego, que impresiona sin dar miedo de verdad. Nada de sangre, nada de sustos de golpe.
+El Mundo 3 se llama Las Galerías del Eco. Los nombres de los pisos 4 a 7 son de trabajo. El 7 es un Diablo de cuento: grande, rojo, con cuernos y fuego, que impresiona sin dar miedo de verdad. Nada de sangre, nada de sustos de golpe.
 
 **Cómo sube el misterio sin asustar a Alana.**
 
@@ -922,7 +923,7 @@ Los nombres de los pisos 4 a 7 son de trabajo. El 7 es un Diablo de cuento: gran
 3. **El mapa del abismo.** En la Bajada se ve una columna con los siete pisos, el actual brillando y el fondo con dos ojos rojos. Cada bajada se ve más oscura.
 4. **El sonido.** Más eco, más silencio, música que se apaga en las salas grandes. Sin voces ni gritos.
 
-**Reglas de oscuridad para modo peque.** La oscuridad de un piso nunca pasa de 0.60 en modo peque. La heroína siempre lleva su halo y Thor tiene un brillo propio desde el piso 3, así nunca se pierden de vista. Lo que ataca siempre se ve antes de pegar (ojos o contorno).
+**Reglas de oscuridad para modo peque** (decidido). La oscuridad de un piso nunca pasa de 0.60 en modo peque. La heroína siempre lleva su halo y Thor tiene un brillo propio desde el piso 3, así nunca se pierden de vista. Lo que ataca siempre se ve antes de pegar (ojos o contorno).
 
 **Mundo 3: Las Galerías del Eco.** Minas de cristal abandonadas debajo de la Catedral.
 

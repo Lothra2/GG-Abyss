@@ -74,6 +74,16 @@ El juego ya toma `celda` y `pivote` del manifest. Del lado del juego se ajustan 
 
 **Regla para todo lo que sigue:** primero el Bosque Profundo como piloto. Rick lo aprueba con postales y recién entonces se pasa al resto del Bosque y a la Catedral.
 
+**Lo que Rick quiere, en sus palabras:** "realismo en mi pixel art, que el mundo se vea increíble e interactivo". Realismo en pixel art no es más resolución. La densidad no cambia: cuadro de 32 y personajes de 48. Realismo es que la luz, los materiales y la escala sean coherentes. Estas reglas valen para cada pieza nueva y para las que se rehagan:
+
+1. **Una sola luz por mundo, siempre desde el mismo lado,** de arriba a la izquierda. Cada objeto tiene su lado iluminado, su lado en sombra y su sombra proyectada en la misma dirección. Un objeto con la luz de otro lado se rechaza.
+2. **Rampas con cambio de tono, no solo de brillo.** Las luces van hacia el amarillo cálido y las sombras hacia el azul o el violeta. Nunca se oscurece agregando negro ni gris.
+3. **Oclusión ambiental.** Donde dos cosas se tocan, como un tronco y el suelo, una piedra y el pasto o una pared y el piso, hay una franja más oscura de 1 a 3 px. Es lo que más asienta las cosas en el suelo.
+4. **Materiales que se leen.** La madera tiene veta, la piedra grietas y bordes gastados, el metal un brillo duro de 1 o 2 px, el agua reflejo y el musgo crece donde llega la humedad, abajo y en el lado de la sombra.
+5. **Perspectiva atmosférica.** Lo que está más lejos o más abajo, como el fondo de abismo o los barrancos, tiene menos contraste y tira al color de la bruma de la zona.
+6. **Desgaste y uso.** Nada está nuevo. Los caminos están pisados, las cercas torcidas, las piedras con musgo y los ladrillos con esquinas rotas. Un mundo viejo se ve más real.
+7. **Escala coherente.** La heroína mide 44 px. Una puerta mide unos 64, un árbol adulto de 120 a 200 y una piedra grande de 48 a 64. Hoy hay árboles que se ven del tamaño de un arbusto.
+
 ### 2.1 Relieve
 
 | Recurso | Tamaño | Cuadros | Apoyo / sólido | Uso |
@@ -151,6 +161,32 @@ Las piezas nuevas llevan un campo nuevo `"capa": "frente"`. El juego las dibuja 
   - Las Alturas, que ya son altas y deberían tener acantilado de verdad.
   - La nave de la Catedral, con las dos alturas.
 - **Postales:** la capa `postales` gana al menos una postal por zona retocada, y los tests del juego las leen solas.
+
+### 2.9 Un mundo que reacciona
+
+Hoy reaccionan el pasto alto, los cuervos, los árboles hechizados y las cajas, barriles y vasijas. Hace falta mucho más. Cada pieza de esta tabla es una animación más del objeto, con el mismo formato de siempre (`anims` con su nombre). El juego las conecta del lado suyo.
+
+| Objeto | Animación nueva | Cuadros y fps | Cuándo |
+|---|---|---|---|
+| Todos los arbustos | `sacudir` | 6 a 14 fps | La heroína pasa por al lado o le pega. Sueltan hojas |
+| `arbusto_moras_*` | `sacudir` y `sin_moras` | 6 y 1 | Al pegarle sueltan moras que curan un poquito |
+| `hongos`, `hongo_gigante_*` | `rebotar` | 6 a 14 fps | Al pisarlos se aplastan y vuelven, y largan esporas |
+| `flores_grandes_*` | `cerrar` y `abrir` | 4 a 10 fps | Se cierran cuando pasa un enemigo y se abren después |
+| `nenufar`, `juncos` | `mecer` | 6 a 10 fps | Al pasar por el agua al lado |
+| Ranas, peces y ardillas, nuevos | `quieto`, `huir` | 4 y 8 a 12 fps | Criaturas chicas de 16 a 24 px que huyen como los cuervos. Ranas en la orilla, peces que saltan en el lago, ardillas que suben al árbol |
+| `charco`, `charco_chico_*` | `salpicar` | 6 a 16 fps | Al pisarlo |
+| `antorcha`, `farol`, `candelabro_pie` | `apagada` y `prender` | 1 y 6 a 12 fps | Las apagadas se prenden al pasar con la luz, y quedan prendidas |
+| `palanca`, nueva | `arriba`, `bajar`, `abajo` | 1, 6 a 12 fps y 1 | Abre atajos y compuertas. 32 x 32, sólida 12 x 6 |
+| `puerta_madera` y `reja_catedral`, nuevas | `cerrada`, `abrir`, `abierta` | 1, 8 a 10 fps y 1 | 64 x 64. Sólidas cerradas |
+| `piedra_empujable`, nueva | `quieta` y `arrastrar` | 1 y 4 a 8 fps | 32 x 32. Thor la empuja para tapar un hueco o destapar un secreto |
+| `campana_chica` en la Catedral | `sonar` | 8 a 12 fps | Al pegarle suena y espanta a los enemigos chicos un rato |
+| Telarañas | `romper` | 6 a 14 fps | Al pasar se rompen y quedan colgando |
+
+Cada interacción trae su sonido corto, de 0.2 a 0.8 s y con pico de 0.5: `arbusto_sacudir`, `hongo_rebote`, `charco_pisar`, `rana_salto`, `palanca`, `puerta_abrir`, `reja_abrir`, `piedra_arrastrar`, `campana_chica` y `telarana_romper`.
+
+### 2.10 Lámina de calidad
+
+Antes de entregar el piloto, una lámina con la misma pantalla del Bosque Profundo antes y después, a zoom 4. Al lado, una lista que diga cómo se cumple cada una de las 7 reglas de realismo de arriba. Si una regla no se cumple, se arregla antes de mandar.
 
 ---
 
