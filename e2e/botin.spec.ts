@@ -54,6 +54,40 @@ test.describe('Botín', () => {
     await sinErrores(errores)
   })
 
+  test('lo que suelta un cofre cae en el piso a su alrededor y se recoge caminando, sin teletransporte', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'matarEnemigos')
+    // todos los cofres que se alcanzan: lo que sueltan se puede agarrar tocándolo
+    const cofres = (await objetivos(page, 'cofre')).slice(0, 4)
+    let probados = 0
+    for (const cofre of cofres) {
+      // solo lo que suelta este cofre (los enemigos muertos dejaron lo suyo por todo el mapa)
+      const delCofre = async () => (await botin(page)).drops.filter((q) => Math.hypot(q.x - cofre.x, q.y - cofre.y) < 130)
+      await gancho(page, 'teleport', cofre.parada.x, cofre.parada.y)
+      const n0 = (await delCofre()).length
+      await gancho(page, 'usarObjetivo', cofre.llave)
+      await expect.poll(async () => (await delCofre()).length + (await inv(page)).bolsa.filter(Boolean).length, { timeout: 20_000 }).toBeGreaterThan(n0)
+      await avanzar(page, 1)
+      for (let k = 0; k < 6; k++) {
+        const d = (await delCofre())[0]
+        if (!d) break
+        // con la bolsa llena lo que cae se queda en el piso a propósito
+        if (!(await inv(page)).bolsa.includes(null)) break
+        // nada queda encima del cofre
+        expect(Math.hypot(d.x - cofre.x, d.y - cofre.y), `drop sobre el cofre ${cofre.llave}`).toBeGreaterThan(20)
+        const antes = (await delCofre()).length
+        await gancho(page, 'tocar', d.x, d.y)
+        await gancho(page, 'avanzar', 4, true)
+        await avanzar(page, 1)
+        expect((await delCofre()).length, `no se agarró ${d.id} en ${d.x},${d.y}`).toBeLessThan(antes)
+      }
+      probados++
+    }
+    expect(probados).toBeGreaterThanOrEqual(2)
+    await sinErrores(errores)
+  })
+
   test('equipar un arma cambia el daño y desequiparla lo devuelve', async ({ page }) => {
     await abrirMundo(page, 'rick')
     const base = await combate(page)

@@ -8,6 +8,8 @@ import { ID_MERCADER, Mercader } from '../game/Mercader'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
 import { encolarAudio, encolarBotin, encolarCapas, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
 import { aspectoDe, claveAspecto } from '../logic/aspecto'
+import { puntosDeCaida, regionCaminable } from '../logic/lugar'
+import { RADIO_HEROINA } from '../logic/camino'
 import { familiaDeArma, NOMBRE_FAMILIA } from '../logic/armas'
 import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
@@ -895,8 +897,16 @@ export class Mundo extends Phaser.Scene {
   /** Sortea el botín de una fuente y lo deja en el piso */
   private soltarPremio(f: Fuente, x: number, y: number): void {
     const premio: Premio = tirarBotin(juego(), this.cat, { nivelHeroe: this.partida.nivel, clase: this.combate.clase, idHeroe: this.heroina.id }, f)
-    this.botin.soltarObjetos(premio.objetos, x, y)
-    this.botin.soltarOro(premio.oro, x + (juego().next() - 0.5) * 30, y + 10)
+    // cada cosa cae en un lugar donde la heroína se puede parar (nunca encima del cofre ni contra una pared)
+    // y del mismo lado que la heroína: si está cerca se mira desde ella, si no desde donde salió el botín
+    const h = this.heroina
+    const desde = Math.hypot(h.x - x, h.y - y) < 260 ? { x: h.x, y: h.y } : { x, y: y + 24 }
+    const region = regionCaminable(this.grilla, desde.x, desde.y, 8)
+    const c = this.mapa.cuadro
+    const pts = puntosDeCaida(premio.objetos.length + 1, x, y, (px, py) => this.grilla.circuloLibre(px, py, RADIO_HEROINA + 2) && region.has(this.grilla.idx(Math.floor(px / c), Math.floor(py / c))))
+    premio.objetos.forEach((id, i) => this.botin.soltar(id, pts[i]!.x, pts[i]!.y))
+    const o = pts[premio.objetos.length]!
+    this.botin.soltarOro(premio.oro, o.x, o.y)
   }
 
   /** Se equipó, se sacó o se recogió algo: stats, armadura de Thor y velocidad se ponen al día */
@@ -1039,16 +1049,17 @@ export class Mundo extends Phaser.Scene {
       this.pendiente = null
       return true
     }
-    // tocar a Thor: olfatea
-    if (this.tocaThor(x, y)) {
-      this.olfatear()
-      return true
-    }
+    // lo que está en el piso va antes que Thor: si el botín cae donde está parado Thor, el toque es para el botín
     const suelo = this.botin.golpe(x, y)
     if (suelo) {
       this.pendiente = null
       this.combate.soltarObjetivo()
       if (this.heroina.irA(suelo.x, suelo.y)) this.ponerMarca(suelo.x, suelo.y)
+      return true
+    }
+    // tocar a Thor: olfatea
+    if (this.tocaThor(x, y)) {
+      this.olfatear()
       return true
     }
     if (this.criaturas.tocar(x, y)) return true
