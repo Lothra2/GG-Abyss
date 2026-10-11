@@ -166,7 +166,11 @@ test.describe('El minotauro', () => {
     const oroAntes = (await gancho<{ oro: number }>(page, 'estado')).oro
     await gancho(page, 'irAlPortal')
     await esperarEscena(page, 'Bajada')
-    expect((await gancho<{ titulo: string; subir: boolean }>(page, 'bajada')).titulo).toBe('La Catedral de las Raíces')
+    const baj = await gancho<{ titulo: string; subir: boolean; piso: number; columna: string[] }>(page, 'bajada')
+    expect(baj.titulo).toBe('La Catedral de las Raíces')
+    // F11: la columna del abismo con el piso 2 brillando y los de abajo a oscuras
+    expect(baj.piso).toBe(2)
+    expect(baj.columna.slice(0, 3)).toEqual(['pasado', 'actual', 'oculto'])
     await esperarEscena(page, 'Mundo')
     await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true }, null, { timeout: 120_000 })
     const m2 = await gancho<{ id: string; partida: string; otros: string[]; zonas: string[]; jefe: boolean; portalVolver: { x: number; y: number } | null }>(page, 'mundoActual')

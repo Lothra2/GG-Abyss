@@ -52,6 +52,8 @@ export class Atmosfera {
   private sobreMuro: ((x: number, y: number) => boolean) | null = null
   /** se llama al cambiar de zona (el mundo descubre la zona y cambia el sonido) */
   alCambiarZona?: (z: Zona | null) => void
+  /** F11: lo más oscuro que puede ponerse este piso (sin esto, el tope de siempre) */
+  tope?: (peque: boolean) => number
 
   constructor(
     private escena: Phaser.Scene,
@@ -176,7 +178,7 @@ export class Atmosfera {
 
     this.cambiarZona(zonaEn(this.mapa.zonas, heroe.x, heroe.y))
     this.atm = mezclar(this.atm, atmosferaDe(this.zona), dt)
-    this.oscFinal = oscuridadFinal(aj.noche, this.atm.oscuridad * this.aclarado, aj.modoPeque)
+    this.oscFinal = oscuridadFinal(aj.noche, this.atm.oscuridad * this.aclarado, aj.modoPeque, this.tope?.(aj.modoPeque))
 
     const noche = nocheEfectiva(aj.noche, aj.modoPeque) + this.atm.oscuridad
     const luces = lucesObjetos

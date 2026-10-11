@@ -9,6 +9,8 @@ import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, 
 import { encolarAudio, encolarBotin, encolarCapas, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales, objetosDeFondo } from '../kit/cargador'
 import { FondoParalaje } from '../fx/FondoParalaje'
 import { Niebla } from '../logic/niebla'
+import { pisoDe, thorBrilla, topeOscuridad } from '../logic/abismo'
+import { ABISMO } from '../config/balance'
 import { aspectoDe, claveAspecto } from '../logic/aspecto'
 import { puntosDeCaida, regionCaminable } from '../logic/lugar'
 import { RADIO_HEROINA } from '../logic/camino'
@@ -113,6 +115,8 @@ export class Mundo extends Phaser.Scene {
   niebla!: Niebla
   versionNiebla = 0
   private relojNiebla = 0
+  /** F11: el piso del abismo de este mundo (1 el Bosque, 2 la Catedral...) */
+  piso = 1
   heroina!: Heroina
   private thor!: ThorSprite
   private criaturas!: Criaturas
@@ -324,6 +328,7 @@ export class Mundo extends Phaser.Scene {
     this.director = new DirectorJefe()
     this.planoJefe = this.director.tick(0)
     this.mapa = this.mapaDelMundo()
+    this.piso = pisoDe(this.partida.mundo)
     this.niebla = new Niebla(this.mapa.ancho, this.mapa.alto, this.mapa.cuadro, this.partida.niebla)
     this.peligroAgua = new Set(entidadesDeTipo(this.mapa, 'peligro_agua').map((e) => Math.floor(e.y / this.mapa.cuadro) * this.mapa.ancho + Math.floor(e.x / this.mapa.cuadro)))
     this.grilla = new Grilla(this.mapa)
@@ -366,6 +371,7 @@ export class Mundo extends Phaser.Scene {
     this.camara.centrarEn(pos.x, pos.y)
 
     this.atmosfera = new Atmosfera(this, m, this.mapa, () => this.partida.ajustes, this.scale.width, this.scale.height)
+    this.atmosfera.tope = (peque) => topeOscuridad(this.piso, peque)
     this.atmosfera.alCambiarZona = (z) => this.alCambiarZona(z)
     this.atmosfera.saltarA(zonaEn(this.mapa.zonas, pos.x, pos.y))
 
@@ -867,7 +873,7 @@ export class Mundo extends Phaser.Scene {
     const nombre = manifestParaMundo(base, destino).mundo.nombre
     this.sonido.efecto('portal', { volumen: 0.8 })
     this.cameras.main.fadeOut(700, 5, 6, 12)
-    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('Bajada', { nombre, subir }))
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('Bajada', { nombre, subir, piso: pisoDe(destino) }))
   }
 
   /**
@@ -1632,6 +1638,8 @@ export class Mundo extends Phaser.Scene {
 
     const luces: Luz[] = []
     if (this.portalJefe) luces.push({ x: this.portalJefe.x, y: this.portalJefe.y - 40, r: 150, color: this.portalJefe.luz, pulse: true, ph: 0.3 })
+    // F11: desde el piso 3 Thor brilla un poquito, así nunca se pierde en lo oscuro
+    if (thorBrilla(this.piso)) luces.push({ x: this.thor.sprite.x, y: this.thor.sprite.y - 10, r: ABISMO.thorBrilloRadio, color: '#ffe8b0', pulse: true, ph: 0.6 })
     const heroe = { x: this.heroina.x, y: this.heroina.y }
     this.entidades.update(this.t, heroe, !this.presentacion?.activa)
     this.mercader.update(this.t, heroe)

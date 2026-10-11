@@ -495,3 +495,32 @@ export const CAMARA = {
 }
 
 export const AUTOGUARDADO_S = 30
+
+/**
+ * F11: el camino al fondo (PLAN.md F11). Siete pisos, cada uno más oscuro. En modo peque la oscuridad nunca pasa de
+ * 0.60 y siempre hay farol. Los nombres de los pisos 4 a 7 son de trabajo.
+ */
+export const ABISMO = {
+  pisos: [
+    { piso: 1, mundo: 'mundo1', nombre: 'El Bosque', oscuridadMax: 0.6, jefe: 'minotauro' },
+    { piso: 2, mundo: 'mundo2', nombre: 'La Catedral de las Raíces', oscuridadMax: 0.65, jefe: 'guardian_campana' },
+    { piso: 3, mundo: 'mundo3', nombre: 'Las Galerías del Eco', oscuridadMax: 0.75, jefe: 'polilla_reina' },
+    { piso: 4, mundo: 'mundo4', nombre: 'El Mar Callado', oscuridadMax: 0.75, jefe: 'pez_farol' },
+    { piso: 5, mundo: 'mundo5', nombre: 'La Ciudad Dormida', oscuridadMax: 0.8, jefe: 'rey_de_piedra' },
+    { piso: 6, mundo: 'mundo6', nombre: 'Las Fraguas Rojas', oscuridadMax: 0.7, jefe: 'carcelero' },
+    { piso: 7, mundo: 'mundo7', nombre: 'El Corazón del Abismo', oscuridadMax: 0.85, jefe: 'diablo' },
+  ],
+  /** la oscuridad de cualquier piso en modo peque nunca pasa de esto */
+  oscuridadMaxPeque: 0.6,
+  /** desde este piso Thor brilla un poquito, así nunca se pierden de vista */
+  thorBrillaDesde: 3,
+  thorBrilloRadio: 54,
+  /** Mundo 3: cristales que se prenden al pegarles */
+  cristal: { radioLuz: 80, radioLuzGrande: 180, golpeRadio: 26 },
+  /** la sombra se ve dentro de una luz que la cubra hasta esta fracción del radio (en el borde de la luz no) */
+  sombraVisibleEn: 0.85,
+  /** la polilla de ceniza va al cristal prendido más cercano dentro de esto, y lo apaga al llegar a esto */
+  polilla: { ve: 260, apagaA: 14 },
+  /** la figura de los ojos rojos: aparece lejos, en el borde de la luz, y se va si te acercas */
+  figura: { desdePiso: 3, distMin: 260, distMax: 340, seVaA: 180, thorGrunneA: 240, porPiso: [0, 0, 0, 1, 2, 3, 4, 1] },
+} as const

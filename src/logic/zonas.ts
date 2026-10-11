@@ -61,8 +61,9 @@ export function nocheEfectiva(noche: number, modoPeque: boolean): number {
 /**
  * Oscuridad final = clamp(noche + zona.oscuridad, 0, 0.6). En modo peque nunca pasa de 0.45.
  */
-export function oscuridadFinal(noche: number, oscuridadZona: number, modoPeque: boolean): number {
-  const tope = modoPeque ? Math.min(OSCURIDAD.finalMax, MODO_PEQUE.oscuridadMax) : OSCURIDAD.finalMax
+export function oscuridadFinal(noche: number, oscuridadZona: number, modoPeque: boolean, topePiso?: number): number {
+  // F11: cada piso del abismo trae su tope (ver logic/abismo.ts), en modo peque ya recortado
+  const tope = topePiso ?? (modoPeque ? Math.min(OSCURIDAD.finalMax, MODO_PEQUE.oscuridadMax) : OSCURIDAD.finalMax)
   const v = nocheEfectiva(noche, modoPeque) + oscuridadZona
   return Math.max(0, Math.min(tope, v))
 }
