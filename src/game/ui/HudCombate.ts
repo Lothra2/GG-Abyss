@@ -5,6 +5,8 @@ import { HUD as MARGENES } from '../../config/juego'
 import { escalaDe, toqueMinimo } from '../Pantalla'
 import { texto } from '../Texto'
 import { Bloqueo } from './Bloqueo'
+import { itemDe } from '../../logic/catalogo'
+import { atlasDeIcono, frameDeIcono } from '../Botin'
 import type { Mundo } from '../../scenes/Mundo'
 
 interface BotonHab {
@@ -40,6 +42,14 @@ export class HudCombate {
   private rellenoXp: Phaser.GameObjects.NineSlice
   private txtNivel: Phaser.GameObjects.BitmapText
   private botones: BotonHab[] = []
+  private ataqueIcono!: Phaser.GameObjects.Image
+  private ataqueAro!: Phaser.GameObjects.Graphics
+  private ataqueZona!: Phaser.GameObjects.Zone
+  private ataqueApretado = false
+  private ataqueArma = ''
+  private ataqueX = 0
+  private ataqueY = 0
+  private ataqueLado = 48
   private numVida: Phaser.GameObjects.BitmapText
   private numMana: Phaser.GameObjects.BitmapText
   private flashMana = 0
@@ -118,8 +128,31 @@ export class HudCombate {
       zona.on('pointerout', soltar)
       this.botones.push({ i, fondo, icono, arco, tecla, zona, x: 0, y: 0, lado: 40, id })
     }
+    // atacar sin elegir enemigo (tablet): el ícono es el arma que lleva puesta; mantenerlo sigue atacando
+    this.ataqueAro = escena.add.graphics()
+    this.ataqueIcono = escena.add.image(0, 0, k('icono_ajustes'))
+    this.ataqueZona = escena.add.zone(0, 0, 48, 48).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true })
+    this.ataqueZona.on('pointerdown', (p: Phaser.Input.Pointer) => {
+      Bloqueo.tomar(p.id)
+      this.ataqueApretado = true
+      this.mundo.combate.atacarHacia()
+    })
+    const soltarAtaque = () => (this.ataqueApretado = false)
+    this.ataqueZona.on('pointerup', soltarAtaque)
+    this.ataqueZona.on('pointerout', soltarAtaque)
+    this.ponerIconoAtaque()
     escena.game.events.on('sin-mana', this.alSinMana, this)
     escena.events.once(Phaser.Scenes.Events.SHUTDOWN, () => escena.game.events.off('sin-mana', this.alSinMana, this))
+  }
+
+  /** El arma puesta, o la de su clase si no tiene ninguna, como ícono del botón de ataque */
+  private ponerIconoAtaque(): void {
+    const c = this.mundo.combate
+    const ej: Record<string, string> = { flecha: 'bow_1', hechizo: 'wand_1', tajo: 'sword_1', pesado: 'greatsword_1', estocada: 'spear_1' }
+    const id = this.mundo.partida.equipo.arma ?? ej[c.ataque?.familia ?? 'tajo']
+    const it = itemDe(this.mundo.cat, id)
+    this.ataqueArma = `${id}|${c.ataque?.familia}`
+    if (it && this.escena.textures.exists(atlasDeIcono(it))) this.ataqueIcono.setTexture(atlasDeIcono(it), frameDeIcono(it))
   }
 
   private alSinMana(): void {
@@ -189,6 +222,27 @@ export class HudCombate {
       b.zona.setPosition(b.x, b.y)
       b.tecla.setPosition(b.x - b.lado / 2 + 2, b.y - b.lado / 2 + 1)
     }
+    this.acomodarAtaque(lado, sep)
+  }
+
+  /** El fondo del botón de ataque: un disco oscuro con borde dorado que se enciende al apretarlo (capa técnica, como el arco de recarga) */
+  private dibujarAroAtaque(): void {
+    const g = this.ataqueAro
+    const r = this.ataqueLado / 2
+    g.clear()
+    g.fillStyle(0x0a0c14, this.ataqueApretado ? 0.7 : 0.5).fillCircle(this.ataqueX, this.ataqueY, r)
+    g.lineStyle(2, 0xffd27a, this.ataqueApretado ? 1 : 0.6).strokeCircle(this.ataqueX, this.ataqueY, r - 1)
+  }
+
+  /** El botón de ataque: arriba de las dos habilidades, un poco más grande */
+  private acomodarAtaque(lado: number, sep: number): void {
+    const [b0, b1] = this.botones as [BotonHab, BotonHab]
+    const l = Math.round(lado * 1.2)
+    this.ataqueLado = l
+    this.ataqueX = Math.round((b0.x + b1.x) / 2)
+    this.ataqueY = Math.round(b0.y - lado / 2 - sep - l / 2)
+    this.ataqueIcono.setPosition(this.ataqueX, this.ataqueY).setScale(Math.max(1, Math.floor(l / 32)))
+    this.ataqueZona.setPosition(this.ataqueX, this.ataqueY).setSize(l, l)
   }
 
   /** Áreas táctiles y posiciones para las pruebas */
@@ -200,11 +254,16 @@ export class HudCombate {
       xp: this.marcoXp.getBounds(),
       jefe: { visible: this.marcoJefe.visible, marco: this.marcoJefe.getBounds(), relleno: this.rellenoJefe.getBounds(), rastro: this.rastroJefe.visible ? this.rastroJefe.getBounds() : null, llenado: Math.round(this.llenado * 100) / 100 },
       botones: this.botones.map((b) => ({ id: b.id, x: b.x, y: b.y, lado: b.lado })),
+      ataque: { x: this.ataqueX, y: this.ataqueY, lado: this.ataqueLado, arma: this.ataqueArma },
     }
   }
 
   update(dt: number): void {
     const c = this.mundo.combate
+    // mantener el botón de ataque sigue pegando (el combate pone el ritmo); el ícono sigue al arma puesta
+    if (this.ataqueApretado) c.atacarHacia()
+    if (this.ataqueArma !== `${this.mundo.partida.equipo.arma ?? (({ flecha: 'bow_1', hechizo: 'wand_1', tajo: 'sword_1', pesado: 'greatsword_1', estocada: 'spear_1' }) as Record<string, string>)[c.ataque?.familia ?? 'tajo']}|${c.ataque?.familia}`) this.ponerIconoAtaque()
+    this.dibujarAroAtaque()
     const p = this.mundo.partida
     const fv = Phaser.Math.Clamp(p.vida / c.stats.vidaMax, 0, 1)
     const fm = Phaser.Math.Clamp(p.mana / c.stats.manaMax, 0, 1)
@@ -292,6 +351,7 @@ export class HudCombate {
     const objs: { setAlpha(v: number): unknown }[] = [this.orbeVida, this.orbeMana, this.olaVida, this.olaMana, this.numVida, this.numMana, this.cinturon, this.marcoXp, this.rellenoXp, this.txtNivel]
     for (const s of this.slots) if (s.icono) objs.push(s.icono)
     for (const b of this.botones) objs.push(b.icono, b.arco, b.tecla, b.fondo)
+    objs.push(this.ataqueIcono, this.ataqueAro)
     for (const o of objs) o.setAlpha(a)
   }
 

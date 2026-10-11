@@ -10,6 +10,8 @@ export interface OrdenesEntrada {
   seguir(x: number, y: number): void
   /** teclado: dirección directa, (0, 0) al soltar */
   direccion(dx: number, dy: number): void
+  /** atacar sin elegir enemigo (clic derecho, Shift + clic, Espacio): hacia ese punto del mundo, o hacia donde mira */
+  atacarHacia?(x?: number, y?: number): void
 }
 
 const MANTENER_MS = 250
@@ -22,6 +24,8 @@ const RECALCULAR_MS = 100
  */
 export class Entrada {
   private pulsado: { id: number; t0: number; x0: number; y0: number; hold: boolean; acum: number } | null = null
+  /** el botón que ataca sin elegir (clic derecho o Shift + clic): mientras está apretado sigue atacando */
+  private atacando: { id: number } | null = null
   private teclas?: Record<string, Phaser.Input.Keyboard.Key>
   private tecladoActivo = false
   private bloqueada = false
@@ -35,8 +39,10 @@ export class Entrada {
     inp.on('pointerup', this.alSubir, this)
     inp.on('pointerupoutside', this.alSubir, this)
     if (inp.keyboard) {
-      this.teclas = inp.keyboard.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT') as Record<string, Phaser.Input.Keyboard.Key>
+      this.teclas = inp.keyboard.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SPACE') as Record<string, Phaser.Input.Keyboard.Key>
     }
+    // el clic derecho es para atacar: sin el menú del navegador
+    inp.mouse?.disableContextMenu()
   }
 
   get estaPausada(): boolean {
@@ -48,6 +54,7 @@ export class Entrada {
     this.bloqueada = v
     if (v) {
       this.pulsado = null
+      this.atacando = null
       if (this.tecladoActivo) {
         this.tecladoActivo = false
         this.o.direccion(0, 0)
@@ -62,12 +69,24 @@ export class Entrada {
 
   private alBajar(p: Phaser.Input.Pointer): void {
     if (this.bloqueada) return
+    // como Diablo: clic derecho o Shift + clic ataca hacia el puntero, sin caminar
+    const shift = !!(p.event as MouseEvent | undefined)?.shiftKey
+    if (!p.wasTouch && this.o.atacarHacia && (p.button === 2 || (p.button === 0 && shift)) && !Bloqueo.tomado(p.id)) {
+      this.atacando = { id: p.id }
+      const w = this.mundo(p)
+      this.o.atacarHacia(w.x, w.y)
+      return
+    }
     if (p.button !== 0 && !p.wasTouch) return
     if (this.pulsado) return
     this.pulsado = { id: p.id, t0: performance.now(), x0: p.x, y0: p.y, hold: false, acum: 0 }
   }
 
   private alSubir(p: Phaser.Input.Pointer): void {
+    if (this.atacando && this.atacando.id === p.id) {
+      this.atacando = null
+      return
+    }
     const s = this.pulsado
     if (!s || s.id !== p.id) return
     this.pulsado = null
@@ -102,7 +121,14 @@ export class Entrada {
       }
     }
 
+    // atacar sin elegir: mientras se mantiene el botón (o Espacio) sigue pegando, el combate pone el ritmo
+    if (this.atacando && !this.bloqueada && this.o.atacarHacia) {
+      const p = this.escena.input.manager.pointers.find((q) => q.id === this.atacando!.id) ?? this.escena.input.activePointer
+      const w = this.mundo(p)
+      this.o.atacarHacia(w.x, w.y)
+    }
     const t = this.teclas
+    if (t && !this.bloqueada && t.SPACE?.isDown) this.o.atacarHacia?.()
     if (t && !this.bloqueada) {
       const dx = (t.D!.isDown || t.RIGHT!.isDown ? 1 : 0) - (t.A!.isDown || t.LEFT!.isDown ? 1 : 0)
       const dy = (t.S!.isDown || t.DOWN!.isDown ? 1 : 0) - (t.W!.isDown || t.UP!.isDown ? 1 : 0)

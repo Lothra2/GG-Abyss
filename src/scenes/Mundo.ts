@@ -499,6 +499,10 @@ export class Mundo extends Phaser.Scene {
         this.combate.soltarObjetivo()
         if (this.heroina.seguirPunto(x, y)) this.ponerMarca(x, y)
       },
+      atacarHacia: (x, y) => {
+        this.pendiente = null
+        this.combate.atacarHacia(x, y)
+      },
       direccion: (dx, dy) => {
         if (dx !== 0 || dy !== 0) {
           this.pendiente = null

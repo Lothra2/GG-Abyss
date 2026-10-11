@@ -12,11 +12,12 @@ import { abanico, Recargas } from '../logic/habilidades'
 import { RelojDesenterrar, RelojesThor, rangoMordida } from '../logic/thorCombate'
 import { bonosDeEquipo } from '../logic/equipo'
 import { ataqueBasico, conAtaque, type AtaqueBasico } from '../logic/armas'
+import { blancoEnCono } from '../logic/apuntar'
 import { itemDe } from '../logic/catalogo'
 import type { TipoImpacto } from '../logic/impacto'
 import { sortearNormal } from '../logic/botin'
 import type { Catalogo } from '../logic/catalogo'
-import { BOTIN, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, JEFE, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, type ClaseId } from '../config/balance'
+import { ATAQUE_LIBRE, BOTIN, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, JEFE, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, type ClaseId } from '../config/balance'
 import { Colchon } from '../logic/colchon'
 import { PROF } from '../config/juego'
 import type { Heroina } from './Heroina'
@@ -192,6 +193,52 @@ export class Combate {
   }
 
   private blancosEnemigos = (): readonly Blanco[] => this.d.enemigos.todos
+
+  /**
+   * Atacar sin elegir enemigo (como Diablo: clic derecho, Shift + clic, Espacio o el botón de ataque). Hacia (x, y) o,
+   * sin punto, hacia donde mira. Si hay un enemigo al alcance en esa dirección le pega a ese; si no, el golpe o la flecha
+   * salen igual hacia allá (la flecha le pega a lo que encuentre en el camino). No camina.
+   */
+  atacarHacia(x?: number, y?: number): boolean {
+    if (!this.puedeActuar() || this.atqCd > 0 || this.canalizando) return false
+    const h = this.d.heroina
+    let ang: number
+    if (x !== undefined && y !== undefined && Math.hypot(x - h.x, y - h.y) > 4) ang = Math.atan2(y - h.y, x - h.x)
+    else {
+      const v = vectorDe(DIRECCIONES[h.dir]!)
+      ang = Math.atan2(v.y, v.x)
+    }
+    this.marcar(null)
+    h.parar()
+    const a = this.ataque
+    const alcance = a.proyectil ? this.stats.alcance : this.stats.alcance + 22
+    // sin punto (el botón de la tablet, Espacio) vale cualquier dirección: el más cercano al alcance
+    const conPunto = x !== undefined && y !== undefined
+    const e = blancoEnCono(this.d.enemigos.todos, { x: h.x, y: h.y }, ang, alcance, conPunto ? (ATAQUE_LIBRE.conoGrados * Math.PI) / 180 : Math.PI)
+    if (e) {
+      this.ataqueBasico(e)
+      return true
+    }
+    // al aire hacia esa dirección
+    h.mirarA(h.x + Math.cos(ang) * 50, h.y + Math.sin(ang) * 50)
+    this.atqCd = 1 / this.stats.ataquesPorSeg
+    const mult = a.danoPct / 100
+    h.accion(a.anim, {
+      fraccion: GOLPE_EN.heroe,
+      interrumpible: true,
+      enGolpe: () => {
+        this.d.sonido.efecto(a.sonido, { volumen: 0.5, rate: 0.9 + juego().next() * 0.2 })
+        if (a.proyectil) return this.disparar(a.proyectil, a.impacto ?? undefined, ang, mult)
+        // cuerpo a cuerpo: le pega a quien haya llegado al arco mientras giraba; si no hay nadie, se ve el golpe al aire
+        const tarde = blancoEnCono(this.d.enemigos.todos, { x: h.x, y: h.y }, ang, this.stats.alcance + 22, (ATAQUE_LIBRE.conoGrados * Math.PI) / 180)
+        if (tarde) {
+          this.golpear(tarde, mult)
+          if (a.impacto) this.d.proyectiles.fxEn(a.impacto, tarde.x, tarde.y - 14)
+        } else this.d.alFallar?.(h.x + Math.cos(ang) * this.stats.alcance, h.y + Math.sin(ang) * this.stats.alcance)
+      },
+    })
+    return true
+  }
 
   private ataqueBasico(e: Atacable): void {
     const h = this.d.heroina

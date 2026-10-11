@@ -39,6 +39,9 @@ export const ATAQUES: Record<FamiliaAtaque, { anim: string; alcance: number; rit
   hechizo: { anim: 'cast', alcance: 200, ritmo: 0.95, danoPct: 100, proyectil: 'proyectil_arcano', impacto: 'impacto_arcano', sonido: 'magia' },
 }
 
+/** Atacar sin elegir enemigo: el cono (grados a cada lado) en el que busca a quién pegarle */
+export const ATAQUE_LIBRE = { conoGrados: 70 }
+
 /** La familia de cada arma del catálogo, por su ícono base */
 export const FAMILIA_DE_ARMA: Record<string, FamiliaAtaque> = {
   sword: 'tajo', scimitar: 'tajo', katana: 'tajo', rapier: 'estocada', dagger: 'tajo', kris: 'tajo', axe: 'tajo', hatchet: 'tajo', mace: 'tajo',
