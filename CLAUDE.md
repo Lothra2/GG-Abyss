@@ -14,7 +14,7 @@ Juego tipo Diablo de la familia GG (Sophie 8, Alana 5). Cada jefe abre un portal
 - Sin IA y sin red. La partida vive en localStorage (ggabyss:v1:perfil:<id>).
 - Para Alana todo con ícono y sonido. Textos en español.
 - El mundo tiene que verse increíble: dirección de arte en PLAN.md, postales en docs/capturas/.
-- Créditos LPC visibles en el juego. Repos privados (gg-abyss y pixel_forja). Ninguna foto de la familia entra al repo.
+- Créditos LPC visibles en el juego. Los repos gg-abyss y pixel_forja son públicos (Netlify clona el submódulo sin llaves). Ninguna foto de la familia entra a ningún repo: las fotos van solo en `private/`, que git ignora.
 
 ## Código
 - src/logic/: reglas puras sin Phaser, todo con tests.
