@@ -8,6 +8,7 @@ import { ID_MERCADER, Mercader } from '../game/Mercader'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
 import { encolarAudio, encolarBotin, encolarCapas, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales, objetosDeFondo } from '../kit/cargador'
 import { FondoParalaje } from '../fx/FondoParalaje'
+import { Niebla } from '../logic/niebla'
 import { aspectoDe, claveAspecto } from '../logic/aspecto'
 import { puntosDeCaida, regionCaminable } from '../logic/lugar'
 import { RADIO_HEROINA } from '../logic/camino'
@@ -108,6 +109,10 @@ export class Mundo extends Phaser.Scene {
   decos!: Decos
   private reflejos!: Reflejos
   private fondo!: FondoParalaje
+  /** F10: lo que ya descubrió del minimapa. `versionNiebla` sube cada vez que se descubre algo (el HUD redibuja) */
+  niebla!: Niebla
+  versionNiebla = 0
+  private relojNiebla = 0
   heroina!: Heroina
   private thor!: ThorSprite
   private criaturas!: Criaturas
@@ -319,6 +324,7 @@ export class Mundo extends Phaser.Scene {
     this.director = new DirectorJefe()
     this.planoJefe = this.director.tick(0)
     this.mapa = this.mapaDelMundo()
+    this.niebla = new Niebla(this.mapa.ancho, this.mapa.alto, this.mapa.cuadro, this.partida.niebla)
     this.peligroAgua = new Set(entidadesDeTipo(this.mapa, 'peligro_agua').map((e) => Math.floor(e.y / this.mapa.cuadro) * this.mapa.ancho + Math.floor(e.x / this.mapa.cuadro)))
     this.grilla = new Grilla(this.mapa)
     // el agua del vado se pisa pero tocar la otra orilla nunca la manda por ahí: caer es solo por despiste
@@ -1394,12 +1400,23 @@ export class Mundo extends Phaser.Scene {
 
   /* ---------- guardado ---------- */
 
+  /** Lo que marca el minimapa: fogatas, mercader, la arena del jefe y el portal */
+  marcasMapa(): { tipo: 'fogata' | 'mercader' | 'jefe' | 'portal'; x: number; y: number }[] {
+    const out: { tipo: 'fogata' | 'mercader' | 'jefe' | 'portal'; x: number; y: number }[] = []
+    for (const f of this.entidades.fogatas) out.push({ tipo: 'fogata', x: f.e.x, y: f.e.y })
+    for (const m of this.mercader?.info() ?? []) out.push({ tipo: 'mercader', x: m.x, y: m.y })
+    if (this.arena && !this.partida.jefeVencido) out.push({ tipo: 'jefe', x: this.arena.x, y: this.arena.y })
+    if (this.portalJefe) out.push({ tipo: 'portal', x: this.portalJefe.x, y: this.portalJefe.y })
+    return out
+  }
+
   /** Guarda la partida: posición, ajustes, lo descubierto, el tiempo jugado */
   guardar(): void {
     if (!this.listo) return
     this.partida.posicion = { x: Math.round(this.heroina.x), y: Math.round(this.heroina.y) }
     this.partida.zonas = this.descub.zonas
     this.partida.secretos = this.descub.secretos
+    this.partida.niebla = this.niebla.texto
     this.partida.tiempoJugado = Math.round(this.tJugado)
     if (this.jefe && !this.partida.jefeVencido) this.partida.jefeVida = Math.round(this.jefe.vida)
     guardarPartida(this.alm, this.partida)
@@ -1631,6 +1648,11 @@ export class Mundo extends Phaser.Scene {
     this.reflejos.activo = cal.reflejos
     this.reflejos.update(this.t)
     this.fondo.update(vista)
+    this.relojNiebla -= dtVisual
+    if (this.relojNiebla <= 0) {
+      this.relojNiebla = 0.25
+      if (this.niebla.revelar(this.heroina.x, this.heroina.y) > 0) this.versionNiebla++
+    }
     this.sonido.update(dtVisual)
 
     // la marca de destino se va cuando llega

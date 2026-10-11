@@ -158,6 +158,21 @@ describe('F8: varios mundos', () => {
     expect(p.otrosMundos.mundo2!.zonas).toEqual(['La Escalera Hundida'])
     expect(p.otrosMundos.mundo1).toBeUndefined()
   })
+  it('la niebla del minimapa es de cada mundo y sobrevive a guardar y leer', () => {
+    const p = partidaNueva('sophie')
+    p.niebla = 'AAAB'
+    cambiarDeMundo(p, 'mundo2')
+    expect(p.niebla).toBe('')
+    p.niebla = 'CCCC'
+    cambiarDeMundo(p, 'mundo1')
+    expect(p.niebla).toBe('AAAB')
+    expect(p.otrosMundos.mundo2!.niebla).toBe('CCCC')
+    const leida = migrar(JSON.parse(JSON.stringify(p)))!
+    expect(leida.niebla).toBe('AAAB')
+    expect(leida.otrosMundos.mundo2!.niebla).toBe('CCCC')
+    // una partida de antes del minimapa empieza con todo tapado
+    expect(migrar({ id: 'sophie' })!.niebla).toBe('')
+  })
   it('lo de otros mundos sobrevive a guardar y leer, y un JSON roto no lo rompe', () => {
     const p = partidaNueva('rick')
     cambiarDeMundo(p, 'mundo2')

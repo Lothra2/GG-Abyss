@@ -113,3 +113,11 @@ export const SOMBRA_LARGA = {
 
 /** Reflejos en el agua quieta: el mismo cuadro dado vuelta, frío y transparente */
 export const REFLEJO = { alfa: 0.32, tinte: 0x9cc4e8, cerca: 26 } as const
+
+/** Colores del minimapa (un pixel por cuadro): suelo según la superficie (0 y 1 pasto, 2 tierra, 3 piedra, 4 madera, 5 agua) */
+export const COLOR_MAPA = {
+  suelo: [0x3d6140, 0x3d6140, 0x8a6a46, 0x7a7e88, 0x9a7444, 0x3a6a9a],
+  agua: 0x3a6a9a,
+  muro: 0x141c1a,
+  borde: 0x2c3a34,
+} as const

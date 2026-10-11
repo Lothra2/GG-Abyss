@@ -13,6 +13,7 @@ import { escalaQueEntra, texto } from '../game/Texto'
 import { crearBoton, type Boton } from '../game/ui/Boton'
 import { Bloqueo } from '../game/ui/Bloqueo'
 import { HudCombate } from '../game/ui/HudCombate'
+import { Minimapa } from '../game/ui/Minimapa'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import type { Mundo, EventoDescubrimiento } from './Mundo'
 
@@ -55,6 +56,7 @@ export class HUD extends Phaser.Scene {
     this.tweens.add({ targets: this.velo, alpha: 0, duration: d.ms, ease: 'Quad.easeOut', onComplete: () => this.velo.setVisible(false) })
   }
   private tFlecha = 0
+  private minimapa: Minimapa | null = null
   /** F7: la manito que enseña a caminar, pegar y abrir, con su ícono y el botón de saltar */
   private mano: Phaser.GameObjects.Image | null = null
   private manoIcono: Phaser.GameObjects.Image | null = null
@@ -187,12 +189,17 @@ export class HUD extends Phaser.Scene {
       this.game.events.off('botin-recogido', this.alBotinRecogido)
       this.game.events.off('destello', this.alDestello)
       this.combate.destruir()
-      quitarGanchos('hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudOrbes', 'hudNivel', 'hudCine', 'hudTarjeta', 'tarjetaPoner', 'hudTutorial', 'hudObjetivo')
+      this.minimapa?.destruir()
+      quitarGanchos('hudMinimapa', 'abrirMinimapa', 'hudBanner', 'hudCartel', 'abrirPausa', 'hudCombate', 'hudOrbes', 'hudNivel', 'hudCine', 'hudTarjeta', 'tarjetaPoner', 'hudTutorial', 'hudObjetivo')
     })
+    const mu = this.mundo
+    this.minimapa = new Minimapa(this, { mapa: mu.mapa, niebla: mu.niebla, version: () => mu.versionNiebla, heroe: () => mu.heroina, marcas: () => mu.marcasMapa() }, `minimapa_${mu.mapa.ancho}x${mu.mapa.alto}`)
     alCambiarEscala(this, () => this.acomodar())
     this.actualizarContadores()
 
     agregarGanchos({
+      hudMinimapa: () => this.minimapa?.info ?? null,
+      abrirMinimapa: ((v: boolean) => { if (this.minimapa) this.minimapa.grandeAbierto = v }) as never,
       hudBanner: () => ({ ...this.bannerInfo, alpha: this.banner.alpha }),
       hudCartel: () => (this.cartel ? { abierto: true, ...this.cartelInfo } : { abierto: false }),
       abrirPausa: (() => this.abrirPausa()) as never,
@@ -255,6 +262,7 @@ export class HUD extends Phaser.Scene {
     this.bRescate.setScale(esc + 1).setPosition(Math.round(w / 2), Math.round(h / 2))
     this.pausa.setPosition(w - mg, mg)
     this.bolsa.setPosition(w - mg, mg + this.pausa.alto + 4)
+    this.minimapa?.acomodar(w - mg - this.pausa.ancho - 4, mg)
     const yBajo = mg + this.pausa.alto + this.bolsa.alto + 8
     this.acomodarChip()
     this.fps?.setPosition(w - mg, yBajo)
@@ -532,6 +540,7 @@ export class HUD extends Phaser.Scene {
   override update(_t: number, deltaMs: number): void {
     this.combate.update(deltaMs / 1000)
     this.dibujarFlecha(deltaMs / 1000)
+    this.minimapa?.update(deltaMs / 1000)
     this.dibujarTutorial(deltaMs / 1000)
     this.actualizarObjetivo()
     this.tarjeta.update(deltaMs / 1000)

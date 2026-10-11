@@ -58,6 +58,8 @@ export interface Partida {
   otrosMundos: Record<string, EstadoMundo>
   /** F8: las brasas de la Catedral que ya volvieron (son del mundo, viajan en `otrosMundos` como las zonas) */
   brasas: string[]
+  /** F10: lo que ya descubrió del minimapa (ver logic/niebla.ts), es del mundo */
+  niebla: string
 }
 
 /** Lo que una partida recuerda de un mundo en el que no está */
@@ -72,6 +74,7 @@ export interface EstadoMundo {
   jefeVencido: boolean
   jefeVida?: number
   brasas: string[]
+  niebla: string
 }
 
 export const MUNDO_INICIAL = 'mundo1'
@@ -117,6 +120,7 @@ export function partidaNueva(id: string, ahora: number = Date.now()): Partida {
     mundo: MUNDO_INICIAL,
     otrosMundos: {},
     brasas: [],
+    niebla: '',
   }
 }
 
@@ -132,6 +136,7 @@ export function estadoDeMundo(p: Partida): EstadoMundo {
     presentacionVista: p.presentacionVista,
     jefeVencido: p.jefeVencido,
     brasas: [...p.brasas],
+    niebla: p.niebla,
   }
   if (p.jefeVida !== undefined) e.jefeVida = p.jefeVida
   return e
@@ -139,7 +144,7 @@ export function estadoDeMundo(p: Partida): EstadoMundo {
 
 /** Un mundo al que nunca fue: empieza en el inicio del mapa */
 export function mundoNuevo(): EstadoMundo {
-  return { posicion: { x: 0, y: 0 }, ultimaFogata: '', zonas: [], secretos: [], cofres: [], rompibles: [], presentacionVista: false, jefeVencido: false, brasas: [] }
+  return { posicion: { x: 0, y: 0 }, ultimaFogata: '', zonas: [], secretos: [], cofres: [], rompibles: [], presentacionVista: false, jefeVencido: false, brasas: [], niebla: '' }
 }
 
 /**
@@ -164,6 +169,7 @@ export function cambiarDeMundo(p: Partida, destino: string, posicionAlVolver?: {
   poner(p.brasas, llega.brasas)
   p.presentacionVista = llega.presentacionVista
   p.jefeVencido = llega.jefeVencido
+  p.niebla = llega.niebla
   if (llega.jefeVida !== undefined) p.jefeVida = llega.jefeVida
   else delete p.jefeVida
   p.mundo = destino
@@ -186,6 +192,7 @@ function leerEstadoMundo(v: unknown): EstadoMundo | null {
     presentacionVista: o.presentacionVista === true,
     jefeVencido: o.jefeVencido === true,
     brasas: textos(o.brasas),
+    niebla: typeof o.niebla === 'string' ? o.niebla : '',
   }
   if (esNum(o.jefeVida)) e.jefeVida = Math.max(0, o.jefeVida)
   return e
@@ -282,6 +289,7 @@ export function migrar(json: unknown, idEsperado?: string): Partida | null {
     mundo: typeof j.mundo === 'string' && j.mundo ? j.mundo : MUNDO_INICIAL,
     otrosMundos: {},
     brasas: textos(j.brasas),
+    niebla: typeof j.niebla === 'string' ? j.niebla : '',
     equipo,
     bolsa,
     cinturon: cinto,
