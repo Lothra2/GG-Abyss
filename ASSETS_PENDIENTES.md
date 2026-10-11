@@ -51,6 +51,16 @@ Las capas de equipo ya salen de PixelForja (arma por tipo, mano libre, pecho por
 | Mano libre `escudo_heater` y `cabeza_reducida` | capas `mano` | las 21 animaciones | hoy usan el dibujo de `shield` y `orb` | se ven como escudo y orbe comunes |
 | Voz o sonido del mercader | `audio/mercader_hola.wav`, 0.6 s | — | cuando saluda a la heroína | saluda solo con el gesto |
 
+### 32. F10 y F11: jefes grandes, mundos premium y el Mundo 3
+
+Todo el pedido, con tamaños, cuadros, apoyos y prioridades, está en `docs/encargos/pixel_forja_F10_F11.md` para mandárselo entero al taller. En corto:
+
+| Parte | Qué | Mientras tanto |
+|---|---|---|
+| 1 | Celdas 96, 128 y 192 nativas. Minotauro y Guardián rehechos a 128 sin agrandar, cabezas dibujadas a ese tamaño, aviso de 4 cuadros o más en cada golpe fuerte | jefes dibujados a 64 y agrandados x1.5 |
+| 2 | Relieve (acantilados, rampas, desniveles), suelo con variantes y calcomanías, árboles en 3 tamaños y 3 formas, sombras horneadas, capa `frente`, fondo de abismo y vitrales en la Catedral, espuma de orilla | mundos de una sola altura, elipse de sombra, negro donde no hay mapa |
+| 3 | Mundo 3, Las Galerías del Eco: mapa, cristales que se prenden, faroles, carrito, mural, la figura de los ojos, polilla, minero de piedra, sombra, la Polilla Reina y el audio | el portal del campanario lleva a Continuará |
+
 ---
 
 ## Entregado por el taller

@@ -844,6 +844,102 @@ Lo que pide Rick: mundos menos fáciles de explorar. Hoy la Catedral se cruza co
 
 **Cuidado.** Agrandar el mapa sube el tiempo de `npm run kit` y la memoria en la tablet: el suelo va en trozos y los enemigos se despiertan por cercanía, eso ya escala. Hay que medir con `?medir=1` en la tablet real antes de dar por hecho el rendimiento.
 
+### F10. Mundos 1 y 2 premium (diseño, todavía sin hacer)
+
+Lo que dice Rick: "los siento muy planos", "no se siente como Stardew Valley", "está muy rápido".
+
+**Diagnóstico honesto, mirando las postales de f7 y f8.**
+
+1. **Todo está a la misma altura.** El Bosque es un piso verde con cosas encima. No hay acantilados, mesetas, escaleras naturales ni bordes que tapen. Sin niveles el ojo no tiene profundidad.
+2. **Sellos repetidos.** El mismo árbol y el mismo cuadro de pasto se repiten en la misma pantalla. Stardew se ve hecho a mano porque cada esquina tiene una composición: un tronco caído, tres hongos, una piedra con musgo, un charco.
+3. **Luz plana.** La oscuridad baja parejo en toda la pantalla. No hay sombras proyectadas, ni haces que entren entre los árboles, ni contraste entre una zona iluminada y una en sombra.
+4. **No hay primer plano.** Nada pasa por delante de la cámara. Los juegos que se sienten premium meten ramas, hojas o columnas en el borde que se mueven con paralaje.
+5. **La cámara está lejos en la compu.** Con `floor(Hp / 400)` una pantalla de 720 p queda en zoom 1 y muestra unos 40 x 22 cuadros. La tablet muestra 18 x 13. En la compu el mundo se ve chiquito y vacío.
+6. **Se cruza muy rápido.** La heroína camina a 150 px/s y corre a 190. La Catedral se cruza en unos 13 s y el Bosque en unos 20 s.
+7. **La Catedral tiene huecos negros** grandes donde no hay nada, y los ladrillos se repiten igual en toda la pared.
+
+**Postura.** Esto no se arregla con más filtros. Se arregla con composición, relieve y luz, y casi todo eso tiene que salir del taller. El código pone la cámara, el ritmo, el primer plano, los reflejos y la luz. PixelForja pone el relieve, las variantes y las piezas. El encargo completo para el taller está en `docs/encargos/pixel_forja_F10_F11.md`.
+
+**Lo que hace el juego (código, sin assets nuevos).**
+
+1. **Cámara más cerca en la compu.** Propuesta: `zoom = max(1, floor(Hp / 340))`. A 720 p da zoom 2 (640 x 360 lógicos, 20 x 11 cuadros), a 1080 p zoom 3 (640 x 360), en la tablet sigue en 4 (590 x 410). Las dos pantallas quedan casi con el mismo encuadre. Cambia una regla de CLAUDE.md, así que lo decide Rick.
+2. **Ritmo más pausado.** Caminar de 150 a 120 px/s y correr de 190 a 150. Ojo: con la cámara más cerca la velocidad en pantalla se duplica, así que bajar la velocidad no es opcional si se acerca la cámara. Se mide con las niñas, el número va en `balance.ts`.
+3. **Primer plano con paralaje.** Una capa `frente` (profundidad 5500, paralaje 1.15) con ramas que cuelgan del borde de arriba en el Bosque y columnas cerca de la cámara en la Catedral. Si la heroína queda detrás, bajan a alfa 0.35.
+4. **Luz que se nota.** La oscuridad ya tiene pozos de luz. Falta: un halo propio de la heroína (siempre, radio 110 px), sombras largas de los objetos hacia abajo a la derecha según el ángulo de la luz de la zona, haces de luz entre copas en los claros (`haz_luz` ya existe) y contraste por zona: zonas de sombra a 0.65 al lado de claros a 0.15 en la misma pantalla.
+5. **Reflejos en el agua.** La heroína, Thor y los árboles de la orilla se reflejan invertidos, con alfa 0.35 y una ondita. Es el mismo sprite espejado y recortado con la máscara del agua, no se dibuja nada nuevo.
+6. **Sonido que da espacio.** La cascada, la forja y el río suenan más fuerte al acercarse (ya pasa con el agua). En la Catedral un eco suave con un convolver de Web Audio.
+7. **Paneo de llegada a cada zona grande** la primera vez: la cámara se adelanta 1.5 s al punto focal y vuelve. Diablo y Stardew enseñan el lugar antes de dejarte jugar.
+
+**Lo que hace el taller** (detalle en el encargo).
+
+1. **Relieve.** Acantilados de 2 cuadros de alto con cara de roca, borde de pasto colgante y sombra al pie, rampas y escaleras talladas. En la Catedral desniveles con barandas y escalones rotos.
+2. **Suelo hecho a mano.** 4 variantes por tipo de suelo, transiciones orgánicas con máscara de ruido, caminos gastados y calcomanías sueltas (hojas caídas, raíces, grietas, charcos, flores).
+3. **Variantes de objetos.** Cada árbol en 3 tamaños y 3 formas, más arbustos y piedras. Grupos armados (tronco caído con hongos y flores) en vez de sellos sueltos.
+4. **Sombras horneadas** de contacto en cada objeto, todas desde la misma luz.
+5. **Piezas de primer plano** para la capa `frente`.
+6. **La Catedral sin huecos negros.** Un fondo de abismo con paralaje (arcos lejanos, niebla, chispas) donde hoy hay negro. Ladrillos con 6 variantes, musgo y grietas. Vitrales que tiran charcos de luz de color.
+7. **Un punto focal por pantalla.** El mapa se revisa en cuadrantes de 20 x 11 cuadros y cada uno tiene que tener algo que mirar.
+
+**Criterio de "premium" para cada postal.** Rick decide, pero cada postal tiene que cumplir esto antes de mostrársela:
+
+- Tres planos de profundidad visibles: suelo, objetos y frente o fondo.
+- Un punto focal claro.
+- Al menos dos fuentes de luz de distinto color o una zona de sombra al lado de una de luz.
+- Ningún objeto idéntico dos veces en la misma pantalla sin variar (tamaño, forma o espejo).
+- Algo que se mueva: agua, hojas, humo, criaturas.
+
+**Orden.**
+
+1. F10a, sin taller: cámara, ritmo, halo de la heroína y reflejos. Postales antes y después en `docs/capturas/f10`. Se prueba con las niñas.
+2. F10b, con taller: el Bosque Profundo como piloto (relieve, variantes, sombras, primer plano). Si Rick lo aprueba se pasa al resto del Bosque.
+3. F10c, con taller: la Catedral (fondo de abismo, ladrillos, vitrales, desniveles).
+4. Recién entonces F9 (mundos más amplios), porque agrandar un mundo plano solo da más mundo plano.
+
+**Cuidado.** El relieve cambia la grilla: los acantilados son sólidos y las rampas son paso. Los tests del mapa leen todo del mapa, pero hay que revisar los caminos del tutorial y del jefe. La capa `frente` y los reflejos suman dibujo: se apagan en calidad baja y se mide en la tablet con `?medir=1`.
+
+### F11. Mundo 3 y el camino al fondo (diseño, todavía sin hacer)
+
+Lo que pide Rick: seguir bajando, mucha más oscuridad, el misterio que vaya subiendo, y que el piso 7 sea el Diablo.
+
+**El arco del abismo.** Siete pisos. Cada jefe es un guardián que la oscuridad de abajo encantó, y al vencerlo se libera (ya pasa con la campana). La pregunta que se arrastra desde el piso 3 es quién está apagando la luz. Se responde en el 7.
+
+| Piso | Mundo | Oscuridad | Jefe | Lo que se descubre |
+|---|---|---|---|---|
+| 1 | El Bosque | 0.15 a 0.55 | El Minotauro | Hay un portal hacia abajo |
+| 2 | La Catedral de las Raíces | 0.45 a 0.65 | El Guardián de la Campana | Las raíces suben desde abajo y encantan a los guardianes |
+| 3 | Las Galerías del Eco | 0.75 | La Polilla Reina | Los mineros huyeron de algo. Primera vez que se ve la figura de los ojos rojos |
+| 4 | El Mar Callado | 0.70, con luz de hongos y medusas | El Pez Farol | La figura se lleva la luz de los faroles |
+| 5 | La Ciudad Dormida | 0.80 | El Rey de Piedra | La gente está dormida de piedra, la luz se la robaron |
+| 6 | Las Fraguas Rojas | 0.60, luz roja | El Carcelero | La puerta del fondo y los diablillos |
+| 7 | El Corazón del Abismo | 0.85, baja con cada fase | El Diablo | Él juntaba la luz. Al vencerlo vuelve a los siete pisos |
+
+Los nombres de los pisos 4 a 7 son de trabajo. El 7 es un Diablo de cuento: grande, rojo, con cuernos y fuego, que impresiona sin dar miedo de verdad. Nada de sangre, nada de sustos de golpe.
+
+**Cómo sube el misterio sin asustar a Alana.**
+
+1. **El mural.** Cada piso tiene un pedazo de un mural escondido que cuenta la historia en dibujos, sin texto. Thor lo olfatea. Se guarda en el álbum y se va armando piso a piso.
+2. **La figura de los ojos rojos.** Desde el piso 3 se ve de lejos, en el borde de la luz, una vez por piso al principio y más seguido después. Thor gruñe, ella se va en humo con un sonido suave. Nunca se acerca ni ataca. En el piso 7 se sabe quién es.
+3. **El mapa del abismo.** En la Bajada se ve una columna con los siete pisos, el actual brillando y el fondo con dos ojos rojos. Cada bajada se ve más oscura.
+4. **El sonido.** Más eco, más silencio, música que se apaga en las salas grandes. Sin voces ni gritos.
+
+**Reglas de oscuridad para modo peque.** La oscuridad de un piso nunca pasa de 0.60 en modo peque. La heroína siempre lleva su halo y Thor tiene un brillo propio desde el piso 3, así nunca se pierden de vista. Lo que ataca siempre se ve antes de pegar (ojos o contorno).
+
+**Mundo 3: Las Galerías del Eco.** Minas de cristal abandonadas debajo de la Catedral.
+
+- **Idea central: la luz es el progreso.** Casi todo está oscuro. Los cristales se prenden al pegarles y se quedan prendidos. Lo que ya se prendió es lo que ya se exploró, así que perderse es difícil y se ve el avance.
+- **Faroles de minero** hacen de fogata y tienen al mercader.
+- **Enemigos.** La polilla de ceniza va hacia la luz y apaga los cristales si llega a uno: hay que cuidarlos. El minero de piedra es lento, pega fuerte y avisa. La sombra solo se ve dentro de la luz: fuera de ella son dos ojos, y al entrar en un cristal prendido se le puede pegar.
+- **Lugares.** La boca de la mina (llegada), los rieles con un carrito que Thor empuja como atajo, el lago de cristal, el puente colgante sobre el abismo, la sala del eco (cada sonido vuelve), el campamento abandonado de los mineros con el pedazo del mural y la cueva de la Polilla Reina.
+- **El jefe.** La Polilla Reina, grande de verdad (celda 128). Tira polvo que apaga la luz del lado donde cae. Alrededor de la arena hay cuatro cristales grandes: si están prendidos, ella queda a la vista y se le puede pegar. Patrones: aleteo que empuja, lluvia de polvo en manchas y llamada de polillas chicas.
+- **Tamaño.** 100 x 80 cuadros, 3 faroles, al menos 3 ramas opcionales y 2 secretos de Thor (la regla de F9 se aplica desde el principio).
+
+**Orden.**
+
+1. Jefes grandes nativos en el taller (sin agrandar x1.5). Se rehacen el Minotauro y el Guardián, y el juego los toma solo desde el manifest. Es lo primero porque se ve en lo que ya existe.
+2. F10a mientras el taller trabaja.
+3. El taller hace el mapa, las piezas, los enemigos, la Polilla Reina y el audio de las Galerías.
+4. El juego: halo, cristales que se prenden, sombra visible en la luz, polilla que apaga, carrito de Thor, jefe, mural, figura y mapa del abismo. Postales en `docs/capturas/f11`.
+
 ## 6. Riesgos y mitigación
 
 | Riesgo | Mitigación |
