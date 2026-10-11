@@ -295,6 +295,27 @@ Nota sobre la sombra: se dibuja como sprite normal y el juego la muestra solo de
 
 ---
 
+## Parte 4. El intro cinematográfico
+
+Hoy el intro está armado con piezas que ya existían (fogatas, la postal de la arena vista desde arriba y los personajes a 48). Funciona, pero no se ve como cine. Para que se vea increíble necesita ilustraciones pintadas para él, en el estilo del juego pero a tamaño de pantalla. El juego ya tiene la escena, los tiempos y el sonido (`src/scenes/Intro.ts` y `src/logic/intro.ts`): estas piezas reemplazan lo prestado.
+
+**Formato común:** paneles de 480 x 270 px, que el juego agranda x2 o x3 entero. La paleta va oscura con fuego naranja y rojo como única luz fuerte. La luz sale de abajo, del fuego, no de arriba a la izquierda como en el mundo. Cada panel en capas separadas (fondo, medio, frente) para que el juego las mueva con paralaje y se sienta profundidad.
+
+| Recurso | Tamaño | Cuadros y fps | Uso |
+|---|---|---|---|
+| `intro_bosque_noche` | 480 x 270, 3 capas | fondo 1, medio 1, frente 4 a 6 fps (copas al viento) | Momento 1: el Bosque GG de noche visto de lejos, tranquilo, con una grieta en el suelo de la que sale una luz roja muy tenue |
+| `intro_corte_abismo` | 480 x 540, 2 capas | 1 cada una, más brasas que el juego suma | Momento 2: el abismo en corte, como un hormiguero. Los siete pisos uno debajo del otro (bosque, catedral, minas de cristal, mar oscuro, ciudad de piedra, fraguas, corazón con fuego) y la cámara baja por ellos |
+| `intro_ojos` | 480 x 270 | 8 cuadros a 8 fps: cerrados, se abren de a poco, miran, parpadean | Momento 3: primer plano de dos ojos enormes en la oscuridad, rojos, con brasas que flotan delante. Que impresione pero no asuste: ojos de dragón de cuento, no de terror |
+| `intro_guardianes` | 480 x 270, 2 capas | 4 cuadros a 6 fps (raíces que se aprietan) | Momento 4: el Minotauro y el Guardián de la Campana en silueta, enredados por raíces rojas que suben desde abajo |
+| `intro_familia` | 480 x 270, 3 capas | frente 6 cuadros a 8 fps | Momento 5: de espaldas, Sophie y Alana con Thor adelante, frente al portal que brilla. Las sombras de las tres largas hacia la cámara, por el fuego de atrás. Thor gira la cabeza hacia la cámara en los últimos cuadros |
+| `logo_fuego` | el ancho del logo de hoy x 2 | 16 cuadros a 12 fps | Momento 6: el logo GG Abyss con fuego que lo recorre y chispas que saltan |
+| `fuego_pared` | 128 x 96, repite hacia los lados | 8 cuadros a 12 fps, sin piedras | La pared de fuego de abajo (hoy son fogatas con sus piedras) |
+| `humo_grande` | 128 x 128 | 6 cuadros a 6 fps, se desvanece | Humo que cruza la pantalla delante de todo |
+| `musica_intro` | 27 s, sin bucle | golpes fuertes en 9 s (los ojos), 13 s (los guardianes) y 23 s (el título), silencio de medio segundo justo antes del título | Va sincronizada con los cortes de `GUION_INTRO`. Épica y grave, coro sin palabras, sin sustos de golpe |
+| `latido` | 1.2 s | — | Latido grave para el momento de los ojos |
+
+**Reglas:** nada de sangre ni de caras de terror (lo ve Alana, de 5 años). Las siluetas se leen al 50 % del tamaño. El fuego siempre se mueve. Entregar también una lámina con los seis paneles en orden, a x2, para que Rick los apruebe antes de animar.
+
 ## Cómo entregar
 
 - **Commits:** uno por parte, con el kit regenerado y los tests del taller en verde (`npm test` en `pixel_forja`).
