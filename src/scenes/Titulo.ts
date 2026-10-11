@@ -7,6 +7,7 @@ import { alCambiarEscala, escalaDe } from '../game/Pantalla'
 import { escalaQueEntra, texto } from '../game/Texto'
 import { crearBoton, type Boton } from '../game/ui/Boton'
 import { Bloqueo } from '../game/ui/Bloqueo'
+import { recargarSiHayVersionNueva } from '../pwa'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 
 /**
@@ -23,6 +24,7 @@ export class Titulo extends Phaser.Scene {
   private botonCreditos!: Boton
   private empezando = false
   private musica?: Phaser.Sound.BaseSound
+  private version?: Phaser.GameObjects.BitmapText
 
   constructor() {
     super('Titulo')
@@ -64,6 +66,9 @@ export class Titulo extends Phaser.Scene {
       },
     })
     this.botonCreditos.setDepth(110)
+    // la versión, chiquita abajo a la izquierda: para saber qué se está jugando
+    this.version = texto(this, 0, 0, `v ${__VERSION_JUEGO__}`, 'fuente_ui', 1, { origen: [0, 1], tinte: 0x8a8698, profundidad: 110 })
+    recargarSiHayVersionNueva(this)
     alCambiarEscala(this, () => this.acomodar())
     this.input.on('pointerdown', (p: Phaser.Input.Pointer) => {
       if (!Bloqueo.tomado(p.id)) this.empezar()
@@ -92,6 +97,7 @@ export class Titulo extends Phaser.Scene {
     const total = 24 + 8 + this.toca.displayWidth
     const y = Math.round(h * 0.78)
     this.botonCreditos.setPosition(w - 6, h - 6)
+    this.version?.setPosition(6, h - 6)
     this.placa.setPosition(Math.round(w / 2), y).setSize(total + 28, Math.max(36, this.toca.displayHeight + 16))
     this.icono.setPosition(Math.round(w / 2 - total / 2 + 12), y)
     this.toca.setPosition(Math.round(w / 2 - total / 2 + 24 + 8 + this.toca.displayWidth / 2), y)

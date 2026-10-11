@@ -5,11 +5,12 @@
 [build.environment]
   NODE_VERSION = "22"
 
-# El kit pesa y no cambia entre despliegues: que el navegador lo guarde bien
+# El kit cambia entre despliegues sin cambiar de nombre (el manifest, las hojas de las heroínas): el navegador
+# lo guarda pero pregunta siempre si cambió (si no, es una respuesta corta 304 y no baja nada)
 [[headers]]
   for = "/assets/kit/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/sw.js"

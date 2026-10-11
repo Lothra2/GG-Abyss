@@ -11,6 +11,7 @@ import { alCambiarEscala, escalaDe, toqueMinimo } from '../game/Pantalla'
 import { texto } from '../game/Texto'
 import { Bloqueo } from '../game/ui/Bloqueo'
 import { CapasSprite } from '../game/Capas'
+import { recargarSiHayVersionNueva } from '../pwa'
 import { aspectoDefecto } from '../logic/aspecto'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 
@@ -52,6 +53,7 @@ export class SeleccionJugador extends Phaser.Scene {
   }
 
   create(): void {
+    recargarSiHayVersionNueva(this)
     const m = manifestDe(this)
     this.alm = (this.registry.get('almacen') as Almacen | undefined) ?? almacenDelNavegador()
     this.registry.set('almacen', this.alm)
