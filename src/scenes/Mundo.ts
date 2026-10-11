@@ -1141,9 +1141,9 @@ export class Mundo extends Phaser.Scene {
     })
     if (!destino) return
     const v = this.camara.vista
-    const pos = posicionFlecha({ x: v.x, y: v.y, w: v.width, h: v.height }, { x: this.heroina.x, y: this.heroina.y }, destino)
-    // la flecha va en el HUD, que no tiene el zoom del mundo
+    // la flecha va en el HUD, que no tiene el zoom del mundo: los márgenes se piden en pixeles del HUD
     const z = this.camara.zoom
+    const pos = posicionFlecha({ x: v.x, y: v.y, w: v.width, h: v.height }, { x: this.heroina.x, y: this.heroina.y }, destino, { ...GUIA, margen: GUIA.margen / z, margenAbajo: GUIA.margenAbajo / z })
     if (pos) this.flechaGuia = { ...pos, x: pos.x * z, y: pos.y * z, destino }
   }
 

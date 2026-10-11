@@ -12,6 +12,22 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 - F8 completo en código (PLAN.md F8, "Estado del mundo completo"): la Catedral se recorre de la escalera al campanario, con las tres brasas, la forja, los tres comportamientos de enemigo y el Guardián de la Campana. Al liberarlo, el portal rojo lleva a Continuará. Verificación: typecheck, 303 tests del juego, 132 del taller, build y e2e completo (escritorio y tablet) 147 pasaron, 2 se saltan a propósito y 1 falló por tiempo real al final de la suite (las piedras del minotauro): pasó dos veces sola y se le dio más margen.
 - F8b hecha (lo que Rick pidió después de jugar, PLAN.md F8b): la heroína ya no se queda sorda a los toques tras reiniciar el HUD (era lo que se veía después del jefe), soltar y acomodar en la mochila arrastrando, maná que se nota (1 por segundo en pelea, 4 en calma), Don Cachivache el mercader en cada fogata con compra, venta y recompra, el ataque básico sale del arma (tajo, pesado, estocada, flechas, magia) y el equipo puesto se ve con capas de PixelForja. Capturas en `docs/capturas/f8b/`. El kit pasa de 36.6 a 54 MB por las capas (17 MB): todo se guarda para jugar sin red. Verificación: typecheck, 325 tests del juego, 140 del taller, build y e2e completo (escritorio, tablet y postales) 171 pasaron y 2 se saltan a propósito, sin fallos. En el camino apareció y se arregló un atasco viejo: el atajo del camino podía rozar una esquina y la heroína se quedaba quieta al primer paso.
 - F9 diseñada, sin hacer (PLAN.md F9): mundos más amplios con minimapa primero, ramas, atajos, minijefe por mundo y secretos de Thor.
+- F10a hecha (PLAN.md F10, lo que hace el juego sin arte nuevo):
+  - Cámara: en la compu el mundo se ve más cerca (`zoomCamara`, x2 a 720 p) y el HUD no cambia. La heroína camina a 105 y corre a 140.
+  - Luz y profundidad: sombras largas con el mismo cuadro de cada objeto, reflejos en el agua y un farol más fuerte alrededor de la heroína.
+  - Reacciones: arbustos que se sacuden, hongos que rebotan, agua que salpica.
+  - Listo para el taller: el juego entiende la capa frente, el fondo de abismo, las sombras horneadas y los jefes de 128.
+  - Minimapa: con niebla, se agranda al tocarlo y se guarda por mundo.
+- F11 en reglas (`logic/abismo.ts`, con tests):
+  - Siete pisos, con oscuridad por piso y tope de 0.60 en modo peque. Thor brilla desde el piso 3.
+  - Mundo 3: cristales que se prenden, la sombra que solo se ve en la luz, la polilla que los apaga y la Polilla Reina.
+  - La figura de los ojos rojos.
+  - La bajada muestra el piso y la columna de los siete.
+- Intro al estilo Diablo: sale una vez por aparato después del primer toque del título. Se salta tocando y el título tiene un botón "Intro". Las ilustraciones de cine están pedidas al taller (encargo, parte 4).
+- Verificación de F10a, F11 e intro:
+  - Typecheck limpio y 380 tests unitarios.
+  - e2e completo (escritorio, tablet y postales): 188 pasaron, 5 se saltan a propósito y 3 fallaron en la compu por la cámara nueva. La flecha guía medía sus márgenes con el zoom del mundo y una ayuda de las pruebas no lo tomaba en cuenta.
+  - Arreglados y corridos otra vez guia y mundo en los dos proyectos: 36 pasaron y 1 se salta.
 - Verificación final tras F5: typecheck limpio, 236 tests unitarios, build (sw.js con 628 archivos) y e2e completo 112 pasaron y 2 se saltan a propósito (teclado y resize en tablet). Postales de F5 en `docs/capturas/f5/` y `docs/capturas/comparar.html`.
 - F1b hecha en código: Titulo (logo, Toca para empezar, botón Créditos), SeleccionJugador (tarjetas del manifest, aura y Thor), guardado con migración, Presentacion (paneo la primera vez), Entidades (cofres, carteles, fogatas, Abuelo), HUD (contadores, oro, pausa, panel de cartel), Pausa (Noche, Música, Efectos, calidad, modo peque, otra jugadora, créditos, seguir), Creditos (CREDITOS.txt con scroll)
 - F1a hecha: grilla, A*, movimiento, zonas, descubrimiento; MundoVista, Decos (pool por celdas, viento, hechizados, copas, pasto), Heroina, ThorSprite (sigue el rastro), Criaturas, Camara, Entrada (toque, mantener, teclado), Sonido; fx: Luces (RenderTexture con pozos), Bruma, Nubes, Particulas, AtmosferaFX (postFX soft light y viñeta), Atmosfera; escenas Mundo y HUD; postales en docs/capturas/f1a y comparar.html

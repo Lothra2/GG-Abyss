@@ -78,8 +78,10 @@ export async function mundoAPagina(page: Page, wx: number, wy: number): Promise<
       const a = window.__ABYSS__ as unknown as Record<string, () => Record<string, number>>
       const cam = a.camara!()
       const esc = a.escala!()
-      const sx = x! - (cam.x! - cam.ancho! / 2)
-      const sy = y! - (cam.y! - cam.alto! / 2)
+      // la cámara del mundo puede ir agrandada (zoomCamara): un pixel del mundo mide k pixeles de la vista lógica
+      const k = esc.ancho! / cam.ancho!
+      const sx = (x! - (cam.x! - cam.ancho! / 2)) * k
+      const sy = (y! - (cam.y! - cam.alto! / 2)) * k
       return { x: sx * esc.cssZoom!, y: sy * esc.cssZoom! }
     },
     [wx, wy] as const,

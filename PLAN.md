@@ -844,7 +844,7 @@ Lo que pide Rick: mundos menos fáciles de explorar. Hoy la Catedral se cruza co
 
 **Cuidado.** Agrandar el mapa sube el tiempo de `npm run kit` y la memoria en la tablet: el suelo va en trozos y los enemigos se despiertan por cercanía, eso ya escala. Hay que medir con `?medir=1` en la tablet real antes de dar por hecho el rendimiento.
 
-### F10. Mundos 1 y 2 premium (diseño, todavía sin hacer)
+### F10. Mundos 1 y 2 premium (F10a hecha, F10b y F10c esperan al taller)
 
 Lo que dice Rick: "los siento muy planos", "no se siente como Stardew Valley", "está muy rápido".
 
@@ -898,7 +898,7 @@ Lo que dice Rick: "los siento muy planos", "no se siente como Stardew Valley", "
 
 **Cuidado.** El relieve cambia la grilla: los acantilados son sólidos y las rampas son paso. Los tests del mapa leen todo del mapa, pero hay que revisar los caminos del tutorial y del jefe. La capa `frente` y los reflejos suman dibujo: se apagan en calidad baja y se mide en la tablet con `?medir=1`.
 
-### F11. Mundo 3 y el camino al fondo (diseño, todavía sin hacer)
+### F11. Mundo 3 y el camino al fondo (reglas hechas en `logic/abismo.ts`, el mundo espera al taller)
 
 Lo que pide Rick: seguir bajando, mucha más oscuridad, el misterio que vaya subiendo, y que el piso 7 sea el Diablo.
 
