@@ -3,7 +3,7 @@ import { esperarEscena, gancho, sinErrores, vigilarErrores } from './util'
 
 // El intro al estilo Diablo: sale después del primer toque del título, avanza por sus momentos y se salta tocando.
 
-interface InfoIntro { t: number; momento: string; texto: string; duracion: number }
+interface InfoIntro { t: number; momento: string; texto: string; duracion: number; cortes: number; franjas: number; latidos: number }
 const intro = (p: Page) => gancho<InfoIntro>(p, 'intro')
 
 async function abrirIntro(page: Page, extra = '&intro=1'): Promise<void> {
@@ -18,8 +18,14 @@ test.describe('Intro', () => {
     await abrirIntro(page)
     await esperarEscena(page, 'Intro')
     await expect.poll(async () => (await intro(page)).momento, { timeout: 15_000 }).toBe('cueva')
-    expect((await intro(page)).texto.length).toBeGreaterThan(0)
+    // el subtítulo se escribe letra por letra
+    await expect.poll(async () => (await intro(page)).texto.length, { timeout: 10_000 }).toBeGreaterThan(0)
     await expect.poll(async () => (await intro(page)).momento, { timeout: 20_000 }).toBe('ojos')
+    // como en el cine: franjas negras y un corte seco antes de los ojos, que laten
+    const i = await intro(page)
+    expect(i.franjas).toBeGreaterThan(0)
+    expect(i.cortes).toBeGreaterThanOrEqual(1)
+    await expect.poll(async () => (await intro(page)).latidos, { timeout: 10_000 }).toBeGreaterThanOrEqual(1)
     await gancho(page, 'saltarIntro')
     await esperarEscena(page, 'SeleccionJugador')
     await sinErrores(errores)

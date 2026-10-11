@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { alfaTexto, avanceBeat, beatEn, DURACION_INTRO, GUION_INTRO, mostrarIntro } from '../intro'
+import { alfaTexto, avanceBeat, beatEn, DURACION_INTRO, enSilencio, GUION_INTRO, latidosHasta, letrasVisibles, mostrarIntro } from '../intro'
 
 describe('el guion del intro', () => {
   it('dura menos de 30 s y los momentos van seguidos, sin huecos', () => {
@@ -32,5 +32,30 @@ describe('el guion del intro', () => {
     expect(mostrarIntro(true, false, false)).toBe(false)
     expect(mostrarIntro(false, true, false)).toBe(false)
     expect(mostrarIntro(true, true, true)).toBe(true)
+  })
+
+  it('el texto se escribe de a poco y termina completo', () => {
+    const b = GUION_INTRO[0]!
+    expect(letrasVisibles(b.t0, b)).toBe(0)
+    expect(letrasVisibles(b.t0 + 1, b)).toBeGreaterThan(0)
+    expect(letrasVisibles(b.t1, b)).toBe(b.texto.length)
+  })
+
+  it('hay medio segundo de silencio justo antes del título', () => {
+    const ti = GUION_INTRO.find((b) => b.momento === 'titulo')!
+    expect(enSilencio(ti.t0 - 0.2)).toBe(true)
+    expect(enSilencio(ti.t0 + 0.1)).toBe(false)
+    expect(enSilencio(2)).toBe(false)
+  })
+
+  it('los ojos laten mientras miran, y solo ellos', () => {
+    const ojos = GUION_INTRO.find((b) => b.momento === 'ojos')!
+    expect(latidosHasta(ojos.t0 + 0.3, ojos)).toBe(0)
+    expect(latidosHasta(ojos.t1, ojos)).toBeGreaterThanOrEqual(3)
+    expect(latidosHasta(5, GUION_INTRO[1]!)).toBe(0)
+  })
+
+  it('los planos fuertes entran con corte seco', () => {
+    for (const m of ['ojos', 'guardianes', 'familia']) expect(GUION_INTRO.find((b) => b.momento === m)!.corte).toBe(true)
   })
 })
