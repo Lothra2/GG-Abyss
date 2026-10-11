@@ -2,8 +2,9 @@ import Phaser from 'phaser'
 import type { Manifest, ObjetoMundo } from '../kit/tipos'
 import type { Deco } from '../kit/mapa'
 import { K } from '../kit/claves'
-import { COLOR, DECOS, PROF } from '../config/juego'
+import { COLOR, DECOS, PROF, REFLEJO } from '../config/juego'
 import { hash2 } from '../logic/azar'
+import { aguaDebajo, meneoReflejo, tiraSombra, type CfgSombra, type MapaAgua } from '../logic/luzMundo'
 
 /** Una luz del mundo: pozo que borra la oscuridad y resplandor de color encima */
 export interface Luz {
@@ -34,6 +35,10 @@ export interface DefDeco {
   /** el kit trae tronco y copa por separado: la copa se dibuja aparte y es la que se vuelve transparente */
   separado: boolean
   capaSuelo: boolean
+  /** tira sombra larga (F10) */
+  sombra: boolean
+  /** está a la orilla del agua: se refleja */
+  refleja: boolean
   /** rectángulo del sprite en el mundo */
   x0: number
   y0: number
@@ -64,6 +69,17 @@ export interface Activo {
   sonrisaT: number
   /** una animación que se toca una vez encima de la de fondo (el portal que se abre) */
   forzada?: { anim: string; t0: number }
+  /** sombras largas del objeto (y de su copa), con el mismo cuadro */
+  sh: Phaser.GameObjects.Sprite[]
+  /** reflejos en el agua, con el mismo cuadro */
+  rf: Phaser.GameObjects.Sprite[]
+}
+
+export interface OpcionesDecos {
+  /** sombras largas del mundo, o null si no hay */
+  sombra?: CfgSombra | null
+  /** el agua del mapa, para los reflejos */
+  agua?: MapaAgua | null
 }
 
 /** Árboles y objetos que se vuelven transparentes cuando la heroína pasa detrás */
@@ -85,11 +101,48 @@ export class Decos {
   /** se llama cuando un árbol hechizado despierta (para el sonido) */
   alDespertar?: (x: number, y: number) => void
 
+  private conSombras = true
+  private conReflejos = true
+
+  /** Se apagan en calidad baja: las que ya están en pantalla se van al momento, las que entran después ya no las traen */
+  set sombrasLargas(v: boolean) {
+    if (v === this.conSombras) return
+    this.conSombras = v
+    if (!v) this.activos.forEach((a) => this.quitarExtras(a.sh))
+  }
+
+  get sombrasLargas(): boolean {
+    return this.conSombras
+  }
+
+  set reflejos(v: boolean) {
+    if (v === this.conReflejos) return
+    this.conReflejos = v
+    if (!v) this.activos.forEach((a) => this.quitarExtras(a.rf))
+  }
+
+  get reflejos(): boolean {
+    return this.conReflejos
+  }
+
+  private quitarExtras(lista: Phaser.GameObjects.Sprite[]): void {
+    for (const k of lista) {
+      k.setVisible(false).setActive(false)
+      this.libres.push(k)
+    }
+    lista.length = 0
+  }
+  private cfgSombra: CfgSombra | null
+
   constructor(
     private escena: Phaser.Scene,
     m: Manifest,
     decos: readonly Deco[],
+    op: OpcionesDecos = {},
   ) {
+    this.cfgSombra = op.sombra ?? null
+    const cfgS = this.cfgSombra
+    const agua = op.agua ?? null
     decos.forEach((d, i) => {
       const def = m.mundo.objetos[d.sprite]
       if (!def) return
@@ -110,6 +163,8 @@ export class Decos {
         pasto: d.sprite === 'pasto_alto' && !!def.anims.apartar_izq && !!def.anims.apartar_der,
         separado: !!def.anims.copa && !!(def.anims.tronco || def.anims.tronco_dormido),
         capaSuelo: def.capa === 'suelo',
+        sombra: !!cfgS && tiraSombra(d.sprite, def, cfgS),
+        refleja: !!agua && def.capa !== 'suelo' && aguaDebajo(agua, d.x, d.y, REFLEJO.cerca),
         x0,
         y0,
         x1: x0 + def.w,
@@ -143,6 +198,16 @@ export class Decos {
     this.activos.forEach(fn)
   }
 
+  /** Cuántas sombras largas y reflejos hay en pantalla (para las pruebas) */
+  contarEfectos(): { sombras: number; reflejos: number } {
+    let sombras = 0, reflejos = 0
+    this.activos.forEach((a) => {
+      sombras += a.sh.length
+      reflejos += a.rf.length
+    })
+    return { sombras, reflejos }
+  }
+
   /** Un activo por nombre de objeto, para las pruebas */
   activosDe(nombre: string): Activo[] {
     const out: Activo[] = []
@@ -156,7 +221,7 @@ export class Decos {
 
   private sprite(tex: string): Phaser.GameObjects.Sprite {
     const sp = this.libres.pop() ?? this.escena.add.sprite(0, 0, tex, 0)
-    sp.setTexture(tex, 0).setAlpha(1).setAngle(0).setScale(1).setVisible(true).setActive(true)
+    sp.setTexture(tex, 0).setAlpha(1).setAngle(0).setScale(1).clearTint().setVisible(true).setActive(true)
     return sp
   }
 
@@ -178,10 +243,29 @@ export class Decos {
       c = this.sprite(K.obj(d.nombre, 'copa'))
       c.setOrigin(d.def.apoyo[0] / d.def.w, d.def.apoyo[1] / d.def.h).setPosition(d.x, d.y).setDepth(prof + 0.5)
     }
+    // sombras y reflejos: el mismo cuadro, sin dibujar nada nuevo
+    const sh: Phaser.GameObjects.Sprite[] = []
+    const rf: Phaser.GameObjects.Sprite[] = []
+    const cs = this.cfgSombra
+    for (const fuente of [s, c]) {
+      if (!fuente) continue
+      if (d.sombra && cs && this.sombrasLargas) {
+        const k = this.sprite(fuente.texture.key)
+        k.setOrigin(fuente.originX, fuente.originY).setPosition(d.x, d.y).setTint(0x000000).setAlpha(cs.alfa).setScale(1, -cs.largo).setAngle(cs.angulo).setDepth(PROF.SOMBRAS)
+        sh.push(k)
+      }
+      if (d.refleja && this.reflejos) {
+        const k = this.sprite(fuente.texture.key)
+        k.setOrigin(fuente.originX, fuente.originY).setPosition(d.x, d.y).setTint(REFLEJO.tinte).setAlpha(REFLEJO.alfa).setScale(1, -1).setDepth(PROF.REFLEJO)
+        rf.push(k)
+      }
+    }
     this.activos.set(d.i, {
       d,
       s,
       c,
+      sh,
+      rf,
       anim,
       fr: -1,
       alfa: 1,
@@ -197,7 +281,7 @@ export class Decos {
 
   private soltar(a: Activo): void {
     this.activos.delete(a.d.i)
-    for (const sp of [a.s, a.c]) {
+    for (const sp of [a.s, a.c, ...a.sh, ...a.rf]) {
       if (!sp) continue
       sp.setVisible(false).setActive(false)
       this.libres.push(sp)
@@ -339,6 +423,19 @@ export class Decos {
         const fc = frCopa ?? f
         if (a.c.frame.name !== String(fc)) a.c.setFrame(fc)
       }
+      // sombras y reflejos copian el cuadro (el primero es del objeto o del tronco, el segundo de la copa)
+      if (a.sh.length || a.rf.length) {
+        const copiar = (k: Phaser.GameObjects.Sprite, i: number) => {
+          const src = i === 0 ? a.s : (a.c ?? a.s)
+          if (k.texture !== src.texture) k.setTexture(src.texture.key, src.frame.name)
+          else if (k.frame !== src.frame) k.setFrame(src.frame.name)
+        }
+        a.sh.forEach(copiar)
+        a.rf.forEach((k, i) => {
+          copiar(k, i)
+          k.x = d.x + meneoReflejo(t, d.ph)
+        })
+      }
 
       // luz propia del objeto
       if (def.luz) luces.push({ x: d.x, y: d.y - (def.luz.dy ?? 0), r: def.luz.radius, color: def.luz.color, flicker: def.luz.flicker, pulse: def.luz.pulse, ph: d.ph })
@@ -405,6 +502,7 @@ export class Decos {
     for (const a of this.activos.values()) {
       a.s.destroy()
       a.c?.destroy()
+      for (const k of [...a.sh, ...a.rf]) k.destroy()
     }
     for (const s of this.libres) s.destroy()
     this.activos.clear()

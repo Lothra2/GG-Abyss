@@ -14,7 +14,7 @@ import { familiaDeArma, NOMBRE_FAMILIA } from '../logic/armas'
 import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
-import { PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S } from '../config/juego'
+import { CALIDAD, PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S, SOMBRA_LARGA } from '../config/juego'
 import { AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, JEFE_CAMPANA, MUSICA_ESTADOS, OLFATO } from '../config/balance'
 import { enAnillo } from '../logic/jefe'
 import { Grilla } from '../logic/grilla'
@@ -28,6 +28,7 @@ import { equipar as equiparInv, desequipar as desequiparInv, moverEnBolsa, norma
 import { nivelArmaduraThor } from '../logic/equipo'
 import { almacenDelNavegador, borrarPartida, cambiarDeMundo, cargarOCrear, guardarPartida, type Almacen, type Partida } from '../logic/guardado'
 import { MundoVista } from '../game/MundoVista'
+import { Reflejos } from '../game/Reflejos'
 import { Decos, type Luz } from '../game/Decos'
 import { Heroina } from '../game/Heroina'
 import { ThorSprite } from '../game/ThorSprite'
@@ -80,6 +81,7 @@ const NOMBRES_GANCHOS = [
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
   'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual', 'mecanismos', 'darBrasas', 'mercader', 'aspecto',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
+  'luzMundo',
 ]
 
 /**
@@ -102,6 +104,7 @@ export class Mundo extends Phaser.Scene {
   descub!: EstadoDescubrimiento
   private vista!: MundoVista
   decos!: Decos
+  private reflejos!: Reflejos
   heroina!: Heroina
   private thor!: ThorSprite
   private criaturas!: Criaturas
@@ -333,7 +336,10 @@ export class Mundo extends Phaser.Scene {
     // decorados del mapa más el portal de llegada, que es una entidad
     const decos: Deco[] = [...this.mapa.decos]
     for (const p of entidadesDeTipo(this.mapa, 'portal_llegada')) decos.push({ sprite: p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul', x: p.x, y: p.y })
-    this.decos = new Decos(this, m, decos)
+    const calidadIni = CALIDAD[this.partida.ajustes.calidad]
+    this.decos = new Decos(this, m, decos, { sombra: this.mapa.bioma === 'bosque' ? SOMBRA_LARGA.afuera : SOMBRA_LARGA.adentro, agua: this.mapa })
+    this.decos.sombrasLargas = calidadIni.sombrasLargas
+    this.decos.reflejos = calidadIni.reflejos
     this.decos.alDespertar = () => this.sonido.efecto('magia', { volumen: 0.3, detune: -200 })
 
     const inicio = entidadesDeTipo(this.mapa, 'jugador_inicio')[0]!
@@ -344,6 +350,7 @@ export class Mundo extends Phaser.Scene {
     this.thor = new ThorSprite(this, m, this.grilla, thorIni?.x ?? pos.x + 30, thorIni?.y ?? pos.y + 10)
     this.criaturas = new Criaturas(this, m, this.mapa.entidades)
 
+    this.reflejos = new Reflejos(this, this.mapa, [this.heroina.sprite, this.thor.sprite])
     this.camara = new Camara(this, ancho, alto)
     this.camara.centrarEn(pos.x, pos.y)
 
@@ -1047,6 +1054,7 @@ export class Mundo extends Phaser.Scene {
     this.mecanismos = null
     this.sonido.detener()
     this.decos.destruir()
+    this.reflejos?.destruir()
     this.atmosfera.destruir()
     if (this.scene.isActive('HUD')) this.scene.stop('HUD')
   }
@@ -1600,6 +1608,11 @@ export class Mundo extends Phaser.Scene {
     this.mecanismos?.update(this.t, luces)
     this.criaturas.update(this.t, dtVisual, heroe, vista, this.atmosfera.oscuridadFinal)
     this.atmosfera.update(this.t, dtVisual, vista, heroe, luces, (fn) => this.decos.forEachActivo(fn), rafaga)
+    const cal = CALIDAD[this.partida.ajustes.calidad]
+    this.decos.sombrasLargas = cal.sombrasLargas
+    this.decos.reflejos = cal.reflejos
+    this.reflejos.activo = cal.reflejos
+    this.reflejos.update(this.t)
     this.sonido.update(dtVisual)
 
     // la marca de destino se va cuando llega
@@ -1673,6 +1686,7 @@ export class Mundo extends Phaser.Scene {
       tocar: ((x: number, y: number) => this.entrada.tocar(x, y)) as never,
       estado: () => JSON.parse(JSON.stringify(this.partida)),
       atmosfera: () => this.atmosfera.info(),
+      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom }),
       camara: () => ({ x: this.camara.cx, y: this.camara.cy, ancho: this.camara.ancho, alto: this.camara.alto, manual: this.camara.manual }),
       mapa: () => ({
         ancho: this.mapa.ancho * this.mapa.cuadro,

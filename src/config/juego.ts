@@ -9,6 +9,8 @@ export const VERSION_KIT_ESPERADA = 1
 /** Profundidades (PLAN.md 2.3). Los objetos y personajes usan OBJETOS + y. */
 export const PROF = {
   AGUA: 0,
+  /** entre el agua y el suelo: el suelo tapa el reflejo donde no hay agua */
+  REFLEJO: 0.5,
   SUELO: 1,
   SUELO_OBJ: 2,
   SOMBRAS: 3,
@@ -44,8 +46,8 @@ export const ORDEN_HEROES = ['sophie', 'alana', 'rick', 'steph']
 export type Calidad = 'alta' | 'baja'
 
 export const CALIDAD = {
-  alta: { particulas: 120, luces: 40, bruma: 2, nubes: true, postFx: true, decos: 450 },
-  baja: { particulas: 50, luces: 20, bruma: 1, nubes: false, postFx: false, decos: 450 },
+  alta: { particulas: 120, luces: 40, bruma: 2, nubes: true, postFx: true, decos: 450, sombrasLargas: true, reflejos: true },
+  baja: { particulas: 50, luces: 20, bruma: 1, nubes: false, postFx: false, decos: 450, sombrasLargas: false, reflejos: false },
 } as const
 
 /** Si el promedio de fps de los primeros 10 s baja de esto, pasa sola a calidad baja */
@@ -57,7 +59,10 @@ export const COLOR = {
   OSCURIDAD: 0x030612,
   LUZ_DEFECTO: '#ffe2b0',
   FAROL: '#ffe2a8',
-  FAROL_RADIO: 92,
+  /** el farol de la heroína: alumbra lo que tiene cerca (F10) */
+  FAROL_RADIO: 118,
+  FAROL_EXTRA_PEQUE: 32,
+  FAROL_ALFA: 0.95,
   OJOS_HECHIZADO: '#ffd25a',
   OJOS_HECHIZADO_1: '#7affc8',
   FUEGO_FATUO: '#8af8ff',
@@ -92,3 +97,15 @@ export const DECOS = { celda: 128, entra: 48, sale: 96, topeActivos: 450 } as co
 export const CLAVE_GUARDADO = 'ggabyss:v1:perfil:'
 export const CLAVE_PERFILES = 'ggabyss:v1:perfiles'
 export const CLAVE_ROTO = 'ggabyss:v1:roto:'
+
+/**
+ * Sombras largas (PLAN.md F10): la luz del kit viene de arriba a la izquierda, así que caen abajo a la derecha.
+ * Adentro (la Catedral) la luz es de velas y vitrales: sombras más cortas y suaves.
+ */
+export const SOMBRA_LARGA = {
+  afuera: { alfa: 0.4, largo: 0.5, angulo: -34, altoMin: 30 },
+  adentro: { alfa: 0.26, largo: 0.32, angulo: -14, altoMin: 40 },
+} as const
+
+/** Reflejos en el agua quieta: el mismo cuadro dado vuelta, frío y transparente */
+export const REFLEJO = { alfa: 0.32, tinte: 0x9cc4e8, cerca: 26 } as const

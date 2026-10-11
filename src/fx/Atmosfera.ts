@@ -6,6 +6,7 @@ import { atmosferaDe, mezclar, nocheEfectiva, oscuridadFinal, zonaEn, type Atmos
 import type { Ajustes } from '../logic/guardado'
 import type { Activo, Luz } from '../game/Decos'
 import { Luces } from './Luces'
+import { radioFarol } from '../logic/luzMundo'
 import { Bruma } from './Bruma'
 import { Nubes } from './Nubes'
 import { Particulas } from './Particulas'
@@ -182,7 +183,7 @@ export class Atmosfera {
     this.particulas.update(t, dt, vista, { emisores: this.emisores, noche, luces, rafaga, decos, ...(this.sobreMuro ? { sobreMuro: this.sobreMuro } : {}) })
 
     // el farol de la heroína siempre está encendido
-    luces.unshift({ x: heroe.x, y: heroe.y, r: COLOR.FAROL_RADIO, color: COLOR.FAROL, ph: 0, heroina: true })
+    luces.unshift({ x: heroe.x, y: heroe.y - 8, r: radioFarol(t, COLOR.FAROL_RADIO, aj.modoPeque, COLOR.FAROL_EXTRA_PEQUE), color: COLOR.FAROL, ph: 0, heroina: true })
     this.luces.update(t, vista, luces, this.oscFinal, CALIDAD[this.calidad].luces)
     this.ultimasLuces = this.luces.ultimas
 

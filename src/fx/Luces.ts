@@ -79,23 +79,24 @@ export class Luces {
       for (const l of todas) {
         const k = l.flicker ? 0.86 + 0.14 * Math.sin(t * 11 + l.ph * 20) * Math.sin(t * 7.3 + l.ph * 9) : l.pulse ? 0.82 + 0.18 * Math.sin(t * 2 + l.ph * 6) : 1
         const R = l.r * k
-        this.sello.setScale((R * 2) / LADO_LUZ).setAlpha(l.heroina ? 0.75 : 1)
+        this.sello.setScale((R * 2) / LADO_LUZ).setAlpha(l.heroina ? COLOR.FAROL_ALFA : 1)
         this.rt.batchDraw(this.sello, l.x - vista.x, l.y - vista.y)
       }
       this.rt.endDraw(true)
     }
 
-    // resplandor de color de cada luz (la de la heroína no)
+    // resplandor de color de cada luz. El del farol de la heroína es chico y tibio: solo se nota en lo oscuro
     let n = 0
     for (const l of todas) {
-      if (l.heroina) continue
       const k = l.flicker ? 0.85 + 0.15 * Math.sin(t * 9 + l.ph * 13) : l.pulse ? 0.8 + 0.2 * Math.sin(t * 2 + l.ph * 6) : 1
-      const R = l.r * 0.7 * k
+      const R = l.r * (l.heroina ? 0.5 : 0.7) * k
+      const alfa = l.heroina ? oscuridad * 0.22 : 0.22 + oscuridad * 0.25
+      if (alfa < 0.01) continue
       this.brillo(n++)
         .setVisible(true)
         .setPosition(Math.round(l.x), Math.round(l.y))
         .setScale((R * 2) / LADO_LUZ)
-        .setAlpha(0.22 + oscuridad * 0.25)
+        .setAlpha(alfa)
         .setTint(hexNum(l.color))
     }
     for (let i = n; i < this.usados; i++) this.brillos[i]?.setVisible(false)
