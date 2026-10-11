@@ -151,6 +151,27 @@ export class Particulas {
     }
   }
 
+  /**
+   * Un puñado de partículas que salta de un objeto al tocarlo (F10): hojas de un arbusto, esporas de un hongo, gotas
+   * de un charco. Las gotas suben y caen, el resto se va flotando hacia arriba.
+   */
+  rocio(llave: string, x: number, y: number, n: number, ancho: number): void {
+    const cae = llave === 'gota'
+    const hoja = llave.startsWith('hoja')
+    for (let i = 0; i < n; i++) {
+      const ox = x + (fx().next() - 0.5) * ancho * 0.7
+      if (hoja) this.crear('hoja', llave, ox, y - 6 - fx().next() * 10, { vx: (fx().next() - 0.5) * 24, vy: 10 + fx().next() * 10, vida: 1.6 + fx().next(), local: true, sinEntrada: true })
+      else this.crear('mota', llave, ox, y - 2 - (cae ? 0 : fx().next() * 10), {
+        vx: (fx().next() - 0.5) * (cae ? 40 : 10),
+        vy: cae ? -40 - fx().next() * 30 : -6 - fx().next() * 8,
+        gravedad: cae ? 220 : 0,
+        vida: cae ? 0.45 + fx().next() * 0.2 : 1.4 + fx().next(),
+        local: true,
+        sinEntrada: true,
+      })
+    }
+  }
+
   /** Hojas de una ráfaga de viento */
   hojasDeRafaga(vista: Phaser.Geom.Rectangle): void {
     const n = Math.round(6 * this.factor())

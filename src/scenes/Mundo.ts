@@ -29,6 +29,7 @@ import { nivelArmaduraThor } from '../logic/equipo'
 import { almacenDelNavegador, borrarPartida, cambiarDeMundo, cargarOCrear, guardarPartida, type Almacen, type Partida } from '../logic/guardado'
 import { MundoVista } from '../game/MundoVista'
 import { Reflejos } from '../game/Reflejos'
+import type { Reaccion } from '../logic/reaccion'
 import { Decos, type Luz } from '../game/Decos'
 import { Heroina } from '../game/Heroina'
 import { ThorSprite } from '../game/ThorSprite'
@@ -341,6 +342,7 @@ export class Mundo extends Phaser.Scene {
     this.decos.sombrasLargas = calidadIni.sombrasLargas
     this.decos.reflejos = calidadIni.reflejos
     this.decos.alDespertar = () => this.sonido.efecto('magia', { volumen: 0.3, detune: -200 })
+    this.decos.alReaccionar = (r, x, y, w, h) => this.alReaccionar(r, x, y, w, h)
 
     const inicio = entidadesDeTipo(this.mapa, 'jugador_inicio')[0]!
     const thorIni = entidadesDeTipo(this.mapa, 'thor_inicio')[0]
@@ -1415,8 +1417,17 @@ export class Mundo extends Phaser.Scene {
   private alPaso(x: number, y: number, corriendo: boolean): void {
     const sup = superficieEn(this.mapa, x, y)
     this.sonido.paso(sup, corriendo)
-    // tierra y piedra levantan polvito
+    // tierra y piedra levantan polvito, el agua salpica
     if (sup === 'tierra' || sup === 'piedra') this.atmosfera.particulas.polvo(x, y)
+    else if (sup === 'agua') this.atmosfera.particulas.rocio('gota', x, y, corriendo ? 4 : 3, 10)
+  }
+
+  /** Un arbusto que se sacude, un hongo que rebota o un charco que salpica: sus partículas y un sonido suave */
+  private alReaccionar(r: Reaccion, x: number, y: number, w: number, h: number): void {
+    if (r.particula) this.atmosfera.particulas.rocio(r.particula, x, r.tipo === 'salpicar' ? y : y - Math.min(h, 40) * 0.6, r.cuantas, w)
+    if (r.tipo === 'sacudir') this.sonido.efecto('paso_pasto_1', { volumen: 0.35, detune: 300 })
+    else if (r.tipo === 'rebotar') this.sonido.efecto('esquiva', { volumen: 0.25, detune: 600 })
+    else this.sonido.efecto('paso_agua_1', { volumen: 0.4 })
   }
 
   private alCambiarZona(z: Zona | null): void {
@@ -1604,6 +1615,7 @@ export class Mundo extends Phaser.Scene {
     this.mercader.update(this.t, heroe)
     this.autoguardadoEn -= dtVisual
     if (this.autoguardadoEn <= 0) this.guardar()
+    this.decos.otros[0] = { x: this.thor.sprite.x, y: this.thor.sprite.y }
     this.decos.actualizar(this.tViento, dtVisual, vista, heroe, luces)
     this.mecanismos?.update(this.t, luces)
     this.criaturas.update(this.t, dtVisual, heroe, vista, this.atmosfera.oscuridadFinal)
@@ -1686,7 +1698,7 @@ export class Mundo extends Phaser.Scene {
       tocar: ((x: number, y: number) => this.entrada.tocar(x, y)) as never,
       estado: () => JSON.parse(JSON.stringify(this.partida)),
       atmosfera: () => this.atmosfera.info(),
-      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom }),
+      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones }),
       camara: () => ({ x: this.camara.cx, y: this.camara.cy, ancho: this.camara.ancho, alto: this.camara.alto, manual: this.camara.manual }),
       mapa: () => ({
         ancho: this.mapa.ancho * this.mapa.cuadro,

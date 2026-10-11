@@ -3,7 +3,7 @@ import { abrirMundo, gancho, sinErrores, vigilarErrores } from './util'
 
 // F10: la cámara del mundo más cerca en la compu, sombras largas con el mismo cuadro de cada objeto y reflejos en el agua.
 
-interface LuzMundo { sombras: number; reflejos: number; reflejoPersonajes: number; zoomCamara: number }
+interface LuzMundo { sombras: number; reflejos: number; reflejoPersonajes: number; zoomCamara: number; reacciones: number }
 const luz = (p: Page) => gancho<LuzMundo>(p, 'luzMundo')
 
 /** Un punto caminable con agua justo debajo: se busca en el mapa, no se adivina */
@@ -61,5 +61,27 @@ test.describe('Luz del mundo', () => {
     const v = await gancho<{ vista: { w: number; h: number } }>(page, 'hudLayout')
     // la cámara agranda el mundo, el HUD sigue en la vista lógica
     expect(Math.round(v.vista.w / c.ancho)).toBe(z)
+  })
+
+  test('pasar pegado a un arbusto lo sacude y suelta hojas', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    // un arbusto del mapa con lugar libre al lado (se lee del mapa, no se adivina)
+    const lugar = await page.evaluate(() => {
+      const s = (window as unknown as { __JUEGO__: { scene: { getScene: (k: string) => unknown } } }).__JUEGO__.scene.getScene('Mundo') as { mapa: { ancho: number; cuadro: number; colision: Uint8Array; decos: { sprite: string; x: number; y: number }[] } }
+      const m = s.mapa
+      const libre = (x: number, y: number) => !m.colision[Math.floor(y / m.cuadro) * m.ancho + Math.floor(x / m.cuadro)]
+      for (const d of m.decos) {
+        if (!/^arbusto/.test(d.sprite)) continue
+        for (const dx of [-22, 22]) if (libre(d.x + dx, d.y + 2)) return { x: d.x + dx, y: d.y + 2 }
+      }
+      return null
+    })
+    expect(lugar).not.toBeNull()
+    const antes = (await luz(page)).reacciones
+    await gancho(page, 'teleport', lugar!.x, lugar!.y)
+    await gancho(page, 'avanzar', 0.3)
+    await expect.poll(async () => (await luz(page)).reacciones, { timeout: 10_000 }).toBeGreaterThan(antes)
+    await sinErrores(errores)
   })
 })

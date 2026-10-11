@@ -5,6 +5,7 @@ import { K } from '../kit/claves'
 import { COLOR, DECOS, PROF, REFLEJO } from '../config/juego'
 import { hash2 } from '../logic/azar'
 import { aguaDebajo, meneoReflejo, tiraSombra, type CfgSombra, type MapaAgua } from '../logic/luzMundo'
+import { meneo, reaccionDe, tocaReaccion, type Reaccion } from '../logic/reaccion'
 
 /** Una luz del mundo: pozo que borra la oscuridad y resplandor de color encima */
 export interface Luz {
@@ -39,6 +40,8 @@ export interface DefDeco {
   sombra: boolean
   /** está a la orilla del agua: se refleja */
   refleja: boolean
+  /** se sacude, rebota o salpica al pasar (F10) */
+  reac: Reaccion | null
   /** rectángulo del sprite en el mundo */
   x0: number
   y0: number
@@ -73,6 +76,11 @@ export interface Activo {
   sh: Phaser.GameObjects.Sprite[]
   /** reflejos en el agua, con el mismo cuadro */
   rf: Phaser.GameObjects.Sprite[]
+  /** reloj en que empezó a reaccionar (-1 quieto) y hacia qué lado lo empujaron */
+  reacT: number
+  reacLado: number
+  /** estaba tocado el cuadro anterior: reacciona al entrar, no todo el rato */
+  tocado: boolean
 }
 
 export interface OpcionesDecos {
@@ -100,6 +108,13 @@ export class Decos {
   private despertarSonado = -100
   /** se llama cuando un árbol hechizado despierta (para el sonido) */
   alDespertar?: (x: number, y: number) => void
+  /** algo reaccionó al paso: el juego suelta las partículas y el sonido */
+  alReaccionar?: (r: Reaccion, x: number, y: number, ancho: number, alto: number) => void
+  /** además de la heroína, quién más mueve los arbustos (Thor) */
+  otros: { x: number; y: number }[] = []
+  /** reloj propio de las reacciones: el del viento se acelera en las ráfagas */
+  private reloj = 0
+  private reacciones = 0
 
   private conSombras = true
   private conReflejos = true
@@ -165,6 +180,7 @@ export class Decos {
         capaSuelo: def.capa === 'suelo',
         sombra: !!cfgS && tiraSombra(d.sprite, def, cfgS),
         refleja: !!agua && def.capa !== 'suelo' && aguaDebajo(agua, d.x, d.y, REFLEJO.cerca),
+        reac: reaccionDe(d.sprite),
         x0,
         y0,
         x1: x0 + def.w,
@@ -266,6 +282,9 @@ export class Decos {
       c,
       sh,
       rf,
+      reacT: -1,
+      reacLado: 1,
+      tocado: false,
       anim,
       fr: -1,
       alfa: 1,
@@ -321,6 +340,8 @@ export class Decos {
    */
   actualizar(t: number, dt: number, vista: Phaser.Geom.Rectangle, heroe: { x: number; y: number }, luces: Luz[], forzar = false): void {
     this.reconciliar(vista, forzar)
+    this.reloj += dt
+    const quienes = [heroe, ...this.otros]
 
     for (const a of this.activos.values()) {
       const d = a.d
@@ -437,6 +458,8 @@ export class Decos {
         })
       }
 
+      if (d.reac) this.reaccionar(a, d.reac, quienes, t)
+
       // luz propia del objeto
       if (def.luz) luces.push({ x: d.x, y: d.y - (def.luz.dy ?? 0), r: def.luz.radius, color: def.luz.color, flicker: def.luz.flicker, pulse: def.luz.pulse, ph: d.ph })
       // luz de los ojos de un árbol despierto
@@ -453,6 +476,32 @@ export class Decos {
         }
       }
     }
+  }
+
+  /** Arbustos que se sacuden, hongos que rebotan, charcos que salpican. Con la animación del taller si la trae. */
+  private reaccionar(a: Activo, r: Reaccion, quienes: { x: number; y: number }[], t: number): void {
+    const d = a.d
+    let quien: { x: number; y: number } | null = null
+    for (const q of quienes) if (tocaReaccion(r, d.def.w, d.x, d.y, q.x, q.y)) quien = q
+    const entra = !!quien && !a.tocado
+    a.tocado = !!quien
+    const el = this.reloj - a.reacT
+    if (entra && (a.reacT < 0 || el > r.espera)) {
+      a.reacT = this.reloj
+      a.reacLado = quien!.x < d.x ? 1 : -1
+      this.reacciones++
+      if (d.def.anims[r.tipo]) a.forzada = { anim: r.tipo, t0: t }
+      this.alReaccionar?.(r, d.x, d.y, d.def.w, d.def.h)
+    }
+    if (a.reacT < 0 || d.def.anims[r.tipo]) return
+    const m = meneo(r, this.reloj - a.reacT, a.reacLado)
+    for (const sp of [a.s, a.c]) sp?.setAngle(m.angulo).setScale(m.sx, m.sy).setX(d.x + m.dx)
+    if (m.angulo === 0 && m.sy === 1 && m.sx === 1) a.reacT = -1
+  }
+
+  /** Cuántas veces reaccionó algo desde que empezó el mundo (para las pruebas) */
+  get totalReacciones(): number {
+    return this.reacciones
   }
 
   /** Posiciones de todos los decorados con ese nombre (las piedras de la arena) */
