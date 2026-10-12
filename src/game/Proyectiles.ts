@@ -8,6 +8,10 @@ import { PROYECTIL } from '../config/balance'
 import { PROF } from '../config/juego'
 
 /** Algo que un proyectil puede golpear */
+
+/** Los fx que son un anillo en el piso: la fila del dibujo (de 0 a 1) donde está su centro */
+const ANILLOS_DE_PISO: Record<string, number> = { nova: 30 / 48, onda_pisoton: 58 / 96 }
+
 export interface Blanco {
   x: number
   y: number
@@ -115,6 +119,12 @@ export class Proyectiles {
 
   /** Un fx de una sola pasada en un punto del mundo (impactos, novas, el tajo) */
   fxEn(nombre: string, x: number, y: number, escala = 1, profundidad?: number): Phaser.GameObjects.Sprite | null {
+    // los anillos del piso (el pisotón, las novas) rodean a quien los hace: mitad detrás y mitad delante
+    const anillo = ANILLOS_DE_PISO[nombre] ?? (nombre.startsWith('nova_') ? ANILLOS_DE_PISO.nova! : undefined)
+    if (anillo !== undefined && profundidad === undefined) {
+      this.anilloEnPiso(nombre, x, y, escala, anillo)
+      return null
+    }
     const tex = K.fx(nombre)
     if (!this.escena.textures.exists(tex)) return null
     const key = crearAnimFx(this.escena, this.m, nombre)
@@ -124,6 +134,28 @@ export class Proyectiles {
       s.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => s.destroy())
     } else this.escena.time.delayedCall(300, () => s.destroy())
     return s
+  }
+
+  /**
+   * Un anillo que se abre en el piso alrededor de alguien (la nova): la mitad de atrás va detrás de su cuerpo y la de
+   * adelante delante, así se ve que la rodea. `centro` es la fila del dibujo donde está el centro del anillo.
+   */
+  anilloEnPiso(nombre: string, x: number, y: number, escala = 1, centro = ANILLOS_DE_PISO.nova!): void {
+    const tex = K.fx(nombre)
+    if (!this.escena.textures.exists(tex)) return
+    const key = crearAnimFx(this.escena, this.m, nombre)
+    const celda = this.m.fx[nombre]?.celda ?? 48
+    const corte = Math.round(celda * centro)
+    for (const [arriba, prof] of [[true, PROF.OBJETOS + y - 0.5], [false, PROF.OBJETOS + y + 0.5]] as const) {
+      const s = this.escena.add.sprite(Math.round(x), Math.round(y), tex, 0).setOrigin(0.5, corte / celda).setScale(escala).setDepth(prof)
+      // el recorte se mide en el cuadro sin agrandar y se mantiene al cambiar de cuadro
+      if (arriba) s.setCrop(0, 0, celda, corte)
+      else s.setCrop(0, corte, celda, celda - corte)
+      if (key) {
+        s.play(key)
+        s.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => s.destroy())
+      } else this.escena.time.delayedCall(300, () => s.destroy())
+    }
   }
 
   limpiar(): void {

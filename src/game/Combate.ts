@@ -59,7 +59,9 @@ export interface DepsCombate {
 }
 
 interface Aura {
+  /** la mitad de atrás (detrás del cuerpo) y la de adelante */
   s: Phaser.GameObjects.Sprite
+  frente: Phaser.GameObjects.Sprite
   resta: number
   dx: number
   dy: number
@@ -335,14 +337,25 @@ export class Combate {
     return fraccionXp(this.partida.nivel, this.partida.xp)
   }
 
-  private aura(nombre: string, seg: number, dy = -2): void {
+  /**
+   * Un aura en el piso alrededor de la heroína (subir de nivel): el anillo está centrado en sus pies y se parte en dos,
+   * la mitad de atrás detrás del cuerpo y la de adelante delante, así la rodea en vez de taparla.
+   */
+  private aura(nombre: string, seg: number, dy = 0, centro = 37 / 48): void {
     const tex = K.fx(nombre)
     if (!this.d.escena.textures.exists(tex)) return
     const key = crearAnimFx(this.d.escena, this.d.m, nombre)
     const h = this.d.heroina
-    const s = this.d.escena.add.sprite(h.x, h.y + dy, tex, 0).setDepth(PROF.OBJETOS + h.y + 2).setOrigin(0.5, 0.9)
-    if (key) s.play(key)
-    this.auras.push({ s, resta: seg, dx: 0, dy })
+    const celda = this.d.m.fx[nombre]?.celda ?? 48
+    const corte = Math.round(celda * centro)
+    const mitad = (arriba: boolean) => {
+      const sp = this.d.escena.add.sprite(h.x, h.y + dy, tex, 0).setOrigin(0.5, corte / celda)
+      if (arriba) sp.setCrop(0, 0, celda, corte)
+      else sp.setCrop(0, corte, celda, celda - corte)
+      if (key) sp.play(key)
+      return sp
+    }
+    this.auras.push({ s: mitad(true), frente: mitad(false), resta: seg, dx: 0, dy })
   }
 
   /* ---------- recibir daño ---------- */
@@ -486,7 +499,7 @@ export class Combate {
     if (!this.d.escena.textures.exists(tex)) return
     const key = crearAnimFx(this.d.escena, this.d.m, 'escudo_de_thor')
     const h = this.d.heroina
-    this.fxEscudo = this.d.escena.add.sprite(h.x, h.y, tex, 0).setOrigin(0.5, 0.85).setDepth(PROF.OBJETOS + h.y + 3).setAlpha(0.85)
+    this.fxEscudo = this.d.escena.add.sprite(h.x, h.y, tex, 0).setOrigin(0.5, 0.85).setDepth(PROF.OBJETOS + h.y + 3).setAlpha(0.7)
     if (key) this.fxEscudo.play(key)
   }
 
@@ -625,7 +638,8 @@ export class Combate {
           fraccion: 0.5,
           enGolpe: () => {
             this.d.sonido.efecto('magia', { volumen: 0.8, rate: 0.8 })
-            ;[1, 2, 3].forEach((esc, k) => this.d.escena.time.delayedCall(k * 120, () => this.d.proyectiles.fxEn('nova_fuego', h.x, h.y - 6, esc, PROF.OBJETOS + h.y + 800)))
+            // tres anillos que se abren en el piso alrededor de ella: la mitad de atrás pasa detrás de su cuerpo
+            ;[1, 2, 3].forEach((esc, k) => this.d.escena.time.delayedCall(k * 120, () => this.d.proyectiles.anilloEnPiso('nova_fuego', h.x, h.y, esc)))
             for (const e of this.d.enemigos.enRadio(h.x, h.y, prm.radio!)) this.golpear(e, prm.danoPct! / 100)
           },
         })
@@ -691,9 +705,11 @@ export class Combate {
     for (let i = this.auras.length - 1; i >= 0; i--) {
       const a = this.auras[i]!
       a.resta -= dt
-      a.s.setPosition(Math.round(h.x), Math.round(h.y + a.dy)).setDepth(PROF.OBJETOS + h.y + 2)
+      a.s.setPosition(Math.round(h.x), Math.round(h.y + a.dy)).setDepth(PROF.OBJETOS + h.y - 0.5)
+      a.frente.setPosition(Math.round(h.x), Math.round(h.y + a.dy)).setDepth(PROF.OBJETOS + h.y + 0.5)
       if (a.resta <= 0) {
         a.s.destroy()
+        a.frente.destroy()
         this.auras.splice(i, 1)
       }
     }
@@ -836,7 +852,10 @@ export class Combate {
   }
 
   destruir(): void {
-    for (const a of this.auras) a.s.destroy()
+    for (const a of this.auras) {
+      a.s.destroy()
+      a.frente.destroy()
+    }
     this.auras = []
     this.fxEscudo?.destroy()
     this.marcar(null)

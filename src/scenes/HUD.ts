@@ -232,16 +232,19 @@ export class HUD extends Phaser.Scene {
     const esc = pantallaChica(e) ? 1 : 2
     this.tarjeta?.acomodar()
     for (const t of [this.txtZonas, this.txtSecretos, this.txtOro]) t.setScale(esc)
-    const fila = Math.max(26, this.txtZonas.displayHeight + 8)
-    const ancho = 24 + 6 + Math.max(this.txtZonas.displayWidth, this.txtSecretos.displayWidth, this.txtOro.displayWidth, 30 * esc) + 16
-    this.panel.setPosition(mg, mg).setSize(ancho, fila * 3 + 8)
-    const fy = (i: number) => mg + 4 + fila * (i + 0.5)
-    this.iconoZonas.setPosition(mg + 8, fy(0))
-    this.iconoSecretos.setPosition(mg + 8, fy(1))
-    this.iconoOro.setPosition(mg + 8, fy(2))
-    this.txtZonas.setPosition(mg + 8 + 24 + 6, fy(0))
-    this.txtSecretos.setPosition(mg + 8 + 24 + 6, fy(1))
-    this.txtOro.setPosition(mg + 8 + 24 + 6, fy(2))
+    // los tres contadores en una franja (zonas, secretos, oro), con el objetivo debajo del mismo ancho: ocupa menos
+    // pantalla que la columna y se lee de un vistazo
+    const fila = Math.max(28, this.txtZonas.displayHeight + 10)
+    const grupos: [Phaser.GameObjects.Image, Phaser.GameObjects.BitmapText][] = [[this.iconoZonas, this.txtZonas], [this.iconoSecretos, this.txtSecretos], [this.iconoOro, this.txtOro]]
+    const yc = mg + Math.round(fila / 2)
+    let x = mg + 8
+    grupos.forEach(([ic, tx], i) => {
+      ic.setPosition(x, yc)
+      tx.setPosition(x + 24 + 4, yc)
+      // el oro crece: se le guarda lugar para cuatro cifras
+      x += 24 + 4 + Math.max(tx.displayWidth, (i === 2 ? 28 : 22) * esc) + 12
+    })
+    this.panel.setPosition(mg, mg).setSize(Math.ceil(x - mg - 4), fila)
 
     // banner centrado arriba
     const nombre = this.bannerInfo.nombre
@@ -280,8 +283,10 @@ export class HUD extends Phaser.Scene {
     this.chipTexto.setScale(esc)
     const alto = Math.max(26, this.chipTexto.displayHeight + 8)
     const ancho = Math.max(this.panel.width, 8 + 24 + 6 + this.chipTexto.displayWidth + 10)
-    const y = mg + this.panel.height + 4
+    const y = mg + this.panel.height + 3
     this.chip.setPosition(mg, y).setSize(Math.ceil(ancho), alto)
+    // los dos del mismo ancho: se leen como una sola pieza
+    if (this.panel.width < ancho) this.panel.setSize(Math.ceil(ancho), this.panel.height)
     this.chipIcono.setPosition(mg + 8, Math.round(y + alto / 2))
     this.chipTexto.setPosition(mg + 8 + 24 + 6, Math.round(y + alto / 2))
   }
