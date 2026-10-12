@@ -1,3 +1,4 @@
+import { ENEMIGOS } from '../src/config/balance'
 import { expect, test, type Page, type TestInfo } from '@playwright/test'
 import { abrirMundo, gancho, sinErrores, vigilarErrores, type MapaInfo } from './util'
 
@@ -52,8 +53,8 @@ test.describe('Combate', () => {
     })
     expect(lista.length).toBe(delMapa)
     expect(lista.length).toBeGreaterThanOrEqual(29)
-    const vidas: Record<string, number> = { rata: 12, calabaza: 30, goblin_arquero: 22, trol: 140 }
-    for (const e of lista) expect(e.vida).toBe(vidas[e.tipo])
+    // el Bosque es el piso 1: la vida es la de la tabla tal cual (más abajo la escala logic/dureza.ts)
+    for (const e of lista) expect(e.vida).toBe(ENEMIGOS[e.tipo]!.vida)
     const trol = lista.find((e) => e.elite)!
     expect(trol.nombre).toBe('Trol del Puente')
     await sinErrores(errores)
