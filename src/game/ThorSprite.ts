@@ -33,6 +33,9 @@ export class ThorSprite {
   estado: EstadoThor = 'idle'
   private personaje: Personaje
   private idPers = 'thor'
+  private animNombre = ''
+  /** segundos desde que se movió por última vez */
+  private movioHaceS = 0
   private rastro: Punto[] = []
   private animActual = ''
   private quietoS = 0
@@ -279,7 +282,12 @@ export class ThorSprite {
     // trabado más de 2 s: aparece al lado de ella
     if (this.trabadoS > 2) this.aparecerCerca(h)
 
-    if (mueve) {
+    // la sigue a saltitos (la alcanza, frena un instante y arranca): mientras ella camina no se cuenta como quieto,
+    // si no cada frenada reinicia la animación y se ve deslizándose congelado
+    if (mueve) this.movioHaceS = 0
+    else this.movioHaceS += dt
+    const sigueCaminando = !mueve && h.moviendo && this.movioHaceS < 0.35 && (this.estado === 'walk' || this.estado === 'run')
+    if (mueve || sigueCaminando) {
       this.quietoS = 0
     } else {
       this.quietoS += dt
@@ -329,8 +337,12 @@ export class ThorSprite {
     if (!this.personaje.anims[anim]) anim = this.personaje.anims.idle ? 'idle' : Object.keys(this.personaje.anims)[0]!
     const key = K.anim(this.idPers, anim, DIRECCIONES[this.dir]!)
     if (key === this.animActual && !forzar) return
+    // si solo cambió hacia dónde mira, sigue en el mismo cuadro del paso (no vuelve a empezar)
+    const mismaAnim = !forzar && this.animNombre === anim && this.sprite.anims.isPlaying
+    const cuadro = mismaAnim ? Math.max(0, (this.sprite.anims.currentFrame?.index ?? 1) - 1) : 0
     this.animActual = key
-    if (this.escena.anims.exists(key)) this.sprite.play(key)
+    this.animNombre = anim
+    if (this.escena.anims.exists(key)) this.sprite.play({ key, startFrame: cuadro })
     // premium: el paso al ritmo de lo que avanza, así las patas no patinan
     const def = this.personaje.anims[anim]
     this.sprite.anims.timeScale = def && (anim === 'walk' || anim === 'run') ? ritmoAnim(anim === 'run' ? THOR.correr : THOR.velocidad, def) : 1

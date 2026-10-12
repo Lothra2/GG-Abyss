@@ -18,6 +18,11 @@ const MANTENER_MS = 420
 const ARRASTRE_PX = 10
 const FILAS_NUMERO = { blanco: 0, amarillo: 1, rojo: 2, verde: 3, azul: 4 } as const
 const CARACTERES = '0123456789+-!'
+/** Si no cabe a lo alto (el teléfono acostado) el panel se parte aquí: arriba el equipo, abajo el oro y la bolsa */
+const CORTE = 222
+const SEPARACION = 10
+/** alto de la tira de borde del dibujo que cierra cada mitad */
+const BORDE = 6
 
 type Origen = { tipo: 'bolsa'; i: number } | { tipo: 'equipo'; ranura: Ranura } | { tipo: 'cinturon'; i: number }
 
@@ -40,6 +45,15 @@ export class Inventario extends Phaser.Scene {
   private layout!: LayoutInventario
   private velo!: Phaser.GameObjects.Rectangle
   private panel!: Phaser.GameObjects.Container
+  /** la mitad de abajo (oro y bolsa) cuando el panel va partido en dos columnas */
+  private panelB!: Phaser.GameObjects.Container
+  private fondoA!: Phaser.GameObjects.Image
+  private fondoB!: Phaser.GameObjects.Image
+  /** los bordes de la línea del corte: el de abajo del panel cierra la mitad de arriba y el de arriba la de abajo */
+  private bordeA!: Phaser.GameObjects.Image
+  private bordeB!: Phaser.GameObjects.Image
+  private partido = false
+  private origenB = { x: 0, y: 0 }
   private dinamico: Phaser.GameObjects.GameObject[] = []
   private casillas: Casilla[] = []
   private tooltip: Phaser.GameObjects.Container | null = null
@@ -71,7 +85,15 @@ export class Inventario extends Phaser.Scene {
       if (!this.arrastre && !this.dentroDelPanel(p.x, p.y)) this.salir()
     })
     this.panel = this.add.container(0, 0)
-    this.panel.add(this.add.image(0, 0, K.ui('inventario')).setOrigin(0, 0))
+    this.fondoA = this.add.image(0, 0, K.ui('inventario')).setOrigin(0, 0)
+    this.panel.add(this.fondoA)
+    this.panelB = this.add.container(0, 0)
+    this.fondoB = this.add.image(0, 0, K.ui('inventario')).setOrigin(0, 0)
+    this.panelB.add(this.fondoB)
+    this.bordeA = this.add.image(0, 0, K.ui('inventario')).setOrigin(0, 0).setVisible(false)
+    this.bordeB = this.add.image(0, 0, K.ui('inventario')).setOrigin(0, 0).setVisible(false)
+    this.panel.add(this.bordeA)
+    this.panelB.add(this.bordeB)
     this.cerrar = crearBoton(this, { x: 0, y: 0, icono: 'icono_cerrar', alToque: () => this.salir(), origen: [1, 0] })
     this.input.keyboard?.on('keydown-ESC', () => this.salir())
     this.input.keyboard?.on('keydown-I', () => this.salir())
@@ -85,7 +107,8 @@ export class Inventario extends Phaser.Scene {
       inventarioUI: () => ({
         abierto: true,
         escala: this.escala,
-        panel: { x: this.origen.x, y: this.origen.y, w: this.layout.w * this.escala, h: this.layout.h * this.escala },
+        panel: this.cajaPanel(),
+        partido: this.partido,
         casillas: this.casillas.map((c) => ({ tipo: c.origen.tipo, i: 'i' in c.origen ? c.origen.i : -1, ranura: 'ranura' in c.origen ? c.origen.ranura : '', x: c.x, y: c.y, w: c.w, h: c.h, id: c.id })),
         tooltip: this.tooltipInfo ? { visible: !!this.tooltip, ...this.tooltipInfo } : null,
         cerrar: this.cerrar.getBounds(),
@@ -113,8 +136,33 @@ export class Inventario extends Phaser.Scene {
     this.sound.play(K.aud('abrir_inventario'), { volume: 0.6 })
   }
 
+  /** Las partes del panel en la vista: una entera, o dos (equipo y bolsa) lado a lado */
+  private partes(): { x: number; y: number; w: number; h: number }[] {
+    const e = this.escala
+    const L = this.layout
+    if (!this.partido) return [{ x: this.origen.x, y: this.origen.y, w: L.w * e, h: L.h * e }]
+    return [
+      { x: this.origen.x, y: this.origen.y, w: L.w * e, h: CORTE * e },
+      { x: this.origenB.x, y: this.origenB.y, w: L.w * e, h: (L.h - CORTE) * e },
+    ]
+  }
+
+  private cajaPanel(): { x: number; y: number; w: number; h: number } {
+    const ps = this.partes()
+    const x0 = Math.min(...ps.map((p) => p.x))
+    const y0 = Math.min(...ps.map((p) => p.y))
+    return { x: x0, y: y0, w: Math.max(...ps.map((p) => p.x + p.w)) - x0, h: Math.max(...ps.map((p) => p.y + p.h)) - y0 }
+  }
+
+  /** De un punto del dibujo del panel (280 x 410) a la vista */
+  private aVista(px: number, py: number): { x: number; y: number } {
+    const e = this.escala
+    if (this.partido && py >= CORTE) return { x: this.origenB.x + px * e, y: this.origenB.y + (py - CORTE) * e }
+    return { x: this.origen.x + px * e, y: this.origen.y + py * e }
+  }
+
   private dentroDelPanel(px: number, py: number): boolean {
-    return px >= this.origen.x && py >= this.origen.y && px <= this.origen.x + this.layout.w * this.escala && py <= this.origen.y + this.layout.h * this.escala
+    return this.partes().some((r) => px >= r.x && py >= r.y && px <= r.x + r.w && py <= r.y + r.h)
   }
 
   /** Todo se dibuja a escala entera: x1 si la vista es chica, x2 o más si sobra lugar */
@@ -122,13 +170,37 @@ export class Inventario extends Phaser.Scene {
     if (!this.velo || !this.panel.active) return
     const w = this.scale.width
     const h = this.scale.height
-    this.escala = Math.max(1, Math.min(3, Math.floor(Math.min(w / (this.layout.w + 12), h / this.layout.h))))
+    const L = this.layout
+    // no cabe a lo alto pero sobra a lo ancho (el teléfono acostado): equipo a la izquierda, bolsa a la derecha
+    this.partido = h < L.h && w >= L.w * 2 + SEPARACION + 12
+    const altoParte = Math.max(CORTE, L.h - CORTE)
+    this.escala = this.partido
+      ? Math.max(1, Math.min(3, Math.floor(Math.min(w / (L.w * 2 + SEPARACION + 12), h / (altoParte + 8)))))
+      : Math.max(1, Math.min(3, Math.floor(Math.min(w / (L.w + 12), h / L.h))))
+    const e = this.escala
     this.velo.setSize(w, h)
-    const pw = this.layout.w * this.escala
-    const ph = this.layout.h * this.escala
-    this.origen = { x: Math.round((w - pw) / 2), y: Math.max(0, Math.round((h - ph) / 2)) }
-    this.panel.setPosition(this.origen.x, this.origen.y).setScale(this.escala)
-    this.cerrar.setPosition(this.origen.x + pw - 4, this.origen.y + 4)
+    const pw = L.w * e
+    if (this.partido) {
+      const total = pw * 2 + SEPARACION * e
+      const y = Math.max(0, Math.round((h - altoParte * e) / 2))
+      this.origen = { x: Math.round((w - total) / 2), y }
+      this.origenB = { x: this.origen.x + pw + SEPARACION * e, y }
+      this.fondoA.setCrop(0, 0, L.w, CORTE)
+      this.fondoB.setCrop(0, CORTE, L.w, L.h - CORTE)
+      // las tiras de borde del mismo dibujo: así cada mitad se ve como un panel entero
+      this.bordeA.setVisible(true).setPosition(0, CORTE - L.h).setCrop(0, L.h - BORDE, L.w, BORDE)
+      this.bordeB.setVisible(true).setPosition(0, CORTE).setCrop(0, 0, L.w, BORDE)
+      this.panelB.setVisible(true).setPosition(this.origenB.x, this.origenB.y - CORTE * e).setScale(e)
+      this.cerrar.setPosition(this.origenB.x + pw - 4, this.origenB.y + 4)
+    } else {
+      const ph = L.h * e
+      this.origen = { x: Math.round((w - pw) / 2), y: Math.max(0, Math.round((h - ph) / 2)) }
+      this.fondoA.setCrop()
+      this.bordeA.setVisible(false)
+      this.panelB.setVisible(false)
+      this.cerrar.setPosition(this.origen.x + pw - 4, this.origen.y + 4)
+    }
+    this.panel.setPosition(this.origen.x, this.origen.y).setScale(e)
     this.redibujar()
   }
 
@@ -144,7 +216,8 @@ export class Inventario extends Phaser.Scene {
     const L = this.layout
     const poner = (o: GameObject, hijo = true) => {
       this.dinamico.push(o)
-      if (hijo) this.panel.add(o)
+      // partido: lo que va de la línea del corte para abajo (oro, bolsa) va en la mitad de la derecha
+      if (hijo) (this.partido && ((o as unknown as { y?: number }).y ?? 0) >= CORTE ? this.panelB : this.panel).add(o)
       return o
     }
     type GameObject = Phaser.GameObjects.GameObject
@@ -163,7 +236,8 @@ export class Inventario extends Phaser.Scene {
       const id = p.equipo[clave] ?? null
       const it = itemDe(cat, id)
       if (it) this.iconoEn(poner, it, rx + rw / 2, ry + rh / 2)
-      this.casillas.push({ origen: { tipo: 'equipo', ranura: clave as Ranura }, x: this.origen.x + rx * e, y: this.origen.y + ry * e, w: rw * e, h: rh * e, id })
+      const v = this.aVista(rx, ry)
+      this.casillas.push({ origen: { tipo: 'equipo', ranura: clave as Ranura }, x: v.x, y: v.y, w: rw * e, h: rh * e, id })
     }
 
     // bolsa
@@ -174,7 +248,8 @@ export class Inventario extends Phaser.Scene {
       const id = p.bolsa[i] ?? null
       const it = itemDe(cat, id)
       if (it) this.iconoEn(poner, it, cx + g.celda / 2, cy + g.celda / 2)
-      this.casillas.push({ origen: { tipo: 'bolsa', i }, x: this.origen.x + cx * e, y: this.origen.y + cy * e, w: g.celda * e, h: g.celda * e, id })
+      const v = this.aVista(cx, cy)
+      this.casillas.push({ origen: { tipo: 'bolsa', i }, x: v.x, y: v.y, w: g.celda * e, h: g.celda * e, id })
     }
 
     // oro
