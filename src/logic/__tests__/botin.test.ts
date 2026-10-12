@@ -105,7 +105,7 @@ describe('tablas de botín', () => {
       expect(p.oro).toBeGreaterThanOrEqual(20)
     }
   })
-  it('las ratas sueltan objeto cerca del 25 % de las veces y oro cerca del 60 %', () => {
+  it('las ratas sueltan objeto y oro cerca de lo que dice el balance', () => {
     const r = new Azar(99)
     let obj = 0
     let oro = 0
@@ -115,10 +115,8 @@ describe('tablas de botín', () => {
       if (p.objetos.length > 0) obj++
       if (p.oro > 0) oro++
     }
-    expect(obj / n).toBeGreaterThan(0.21)
-    expect(obj / n).toBeLessThan(0.29)
-    expect(oro / n).toBeGreaterThan(0.55)
-    expect(oro / n).toBeLessThan(0.65)
+    expect(Math.abs(obj / n - BOTIN.rata.objeto)).toBeLessThan(0.04)
+    expect(Math.abs(oro / n - BOTIN.rata.oro)).toBeLessThan(0.05)
   })
   it('los rompibles a veces sueltan pociones', () => {
     const r = new Azar(7)

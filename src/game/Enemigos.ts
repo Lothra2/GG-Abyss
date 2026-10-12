@@ -7,6 +7,7 @@ import { DIRECCIONES, indiceDireccion } from '../logic/direccion'
 import type { Grilla } from '../logic/grilla'
 import { moverCuerpo } from '../logic/movimiento'
 import { ordenPolilla, sombraVisible, type Cristal } from '../logic/abismo'
+import { enemigoDelPiso } from '../logic/dureza'
 import { aturdir, matar, nuevoEnemigoIA, pensar, type ConfigIA, type EnemigoIA } from '../logic/ia'
 import { juego } from '../logic/azar'
 import { ABISMO, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, MODO_PEQUE, TROL_ELITE, type EnemigoBalance } from '../config/balance'
@@ -116,10 +117,12 @@ export class Enemigo implements Atacable {
     private grilla: Grilla,
     readonly ent: Entidad,
     private ev: EventosEnemigos,
+    piso = 1,
   ) {
     this.tipo = String(ent.props.enemigo ?? 'rata')
     this.id = ent.id
-    this.cfg = ENEMIGOS[this.tipo] ?? ENEMIGOS.rata!
+    // más abajo, más duros (logic/dureza.ts)
+    this.cfg = enemigoDelPiso(ENEMIGOS[this.tipo] ?? ENEMIGOS.rata!, piso)
     this.elite = ent.props.elite === true
     this.nombre = String(ent.props.nombre ?? (this.elite ? 'Trol del Puente' : this.tipo))
     this.cuerpo = CUERPO[this.tipo] ?? CUERPO_DEFECTO
@@ -536,13 +539,13 @@ export class Enemigos {
     return [...this.lista.filter((e) => !e.oculta), ...this.adicionales]
   }
 
-  constructor(escena: Phaser.Scene, m: Manifest, grilla: Grilla, entidades: readonly Entidad[], ev: EventosEnemigos) {
+  constructor(escena: Phaser.Scene, m: Manifest, grilla: Grilla, entidades: readonly Entidad[], ev: EventosEnemigos, private piso = 1) {
     for (const e of entidades) {
       if (e.tipo !== 'enemigo') continue
       if (e.props.tras_jefe === true) continue
       const tipo = String(e.props.enemigo ?? '')
       if (!m.personajes[tipo]) continue
-      this.lista.push(new Enemigo(escena, m, grilla, e, ev))
+      this.lista.push(new Enemigo(escena, m, grilla, e, ev, piso))
     }
   }
 
@@ -596,7 +599,7 @@ export class Enemigos {
     if (!m.personajes[tipo]) return null
     const id = 900000 + this.lista.length
     const ent: Entidad = { id, tipo: 'enemigo', x, y, props: { enemigo: tipo, invocada: true } }
-    const e = new Enemigo(escena, m, grilla, ent, ev)
+    const e = new Enemigo(escena, m, grilla, ent, ev, this.piso)
     // salen persiguiendo, no paseando
     e.ia.cd = 0.6
     this.lista.push(e)

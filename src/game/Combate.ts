@@ -293,7 +293,9 @@ export class Combate {
       e.recibir(0)
       return
     }
-    const g = golpePrevio ?? this.tirar(mult)
+    let g = golpePrevio ?? this.tirar(mult)
+    // modo peque: los enemigos comunes caen igual de rápido que antes del rebalance (el jefe no cambia)
+    if (!golpePrevio && this.modoPeque && !e.esJefe) g = { ...g, dano: Math.round(g.dano * MODO_PEQUE.danoHeroina) }
     const murio = e.recibir(g.dano, this.d.heroina.x, this.d.heroina.y)
     this.d.numeros.mostrar(e.x, e.y - e.cuerpo.alto - 4, String(g.dano) + (g.critico ? '!' : ''), g.critico ? 'amarillo' : 'blanco', g.critico)
     this.d.sonido.efecto(g.critico ? 'critico' : 'golpe', { volumen: 0.5 })

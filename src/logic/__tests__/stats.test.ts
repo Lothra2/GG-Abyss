@@ -81,9 +81,10 @@ describe('regeneración', () => {
       expect(statsDe(clase, PROGRESION.nivelMax).manaMax / PROGRESION.manaRegenCalmaPorSeg, clase).toBeLessThanOrEqual(30)
     }
   })
-  it('la vida espera 4 s sin daño y luego sube 5 por segundo', () => {
-    expect(regenerar({ ...base, sinDanoS: 3.9 }).vida).toBe(10)
-    expect(regenerar({ ...base, sinDanoS: 4 }).vida).toBeCloseTo(15)
+  it('la vida espera un rato sin daño y luego sube lo que dice el balance por segundo', () => {
+    const espera = PROGRESION.vidaRegenTrasDanoS
+    expect(regenerar({ ...base, sinDanoS: espera - 0.1 }).vida).toBe(10)
+    expect(regenerar({ ...base, sinDanoS: espera }).vida).toBeCloseTo(10 + PROGRESION.vidaRegenPorSeg)
   })
   it('canalizando no regenera maná', () => {
     expect(regenerar({ ...base, sinDanoS: 9, canalizando: true }).mana).toBe(5)

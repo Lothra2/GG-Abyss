@@ -166,21 +166,21 @@ export class Album extends Phaser.Scene {
     const n = this.casillas.length
     const sep = 6
     const cabeza = 12 + this.titulo.displayHeight + 4 + this.cuenta.displayHeight + 8
-    // la escala de las fotos: la más grande (1/4, 1/6 o 1/8 de la postal) con la que entra la grilla
-    let cols = 4
-    let k = 0.125
-    for (const kk of [0.25, 1 / 6, 0.125]) {
-      for (const c of [5, 4, 3]) {
+    // la escala de las fotos: la más grande (1/4, 1/6, 1/8 o 1/10 de la postal) con la que entra la grilla
+    // el teléfono acostado es bajo: ahí entra a 1/10 y en más columnas. Si nada entra, lo más chico
+    let cols = 6
+    let k = 0.1
+    busqueda: for (const kk of [0.25, 1 / 6, 0.125, 0.1]) {
+      for (const c of [5, 4, 3, 6, 7]) {
         const filas = Math.ceil(n / c)
         const gw = c * (960 * kk + 8) + (c - 1) * sep + 24
         const gh = cabeza + filas * (540 * kk + 8) + (filas - 1) * sep + 16
         if (gw <= w - 12 && gh <= h - 12) {
           cols = c
           k = kk
-          break
+          break busqueda
         }
       }
-      if (k === kk) break
     }
     this.escalaFoto = k
     const fw = Math.round(960 * k)

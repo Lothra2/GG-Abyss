@@ -484,7 +484,7 @@ export class Mundo extends Phaser.Scene {
       alOro: (n, x, y) => this.alOro(n, x, y),
       juicio: (id) => veredicto(this.cat, this.partida.equipo, id, this.combate.clase)?.juicio ?? null,
     })
-    this.enemigos = new Enemigos(this, m, this.grilla, this.mapa.entidades, evEnemigos)
+    this.enemigos = new Enemigos(this, m, this.grilla, this.mapa.entidades, evEnemigos, this.piso)
     this.combate = new Combate({
       escena: this,
       m,

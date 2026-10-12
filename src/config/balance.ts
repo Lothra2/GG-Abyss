@@ -71,8 +71,9 @@ export const PROGRESION = {
   /** en calma (sin recibir golpes ni usar habilidades un rato) vuelve rápido, para no esperar explorando */
   manaRegenCalmaPorSeg: 4,
   calmaTrasS: 4,
-  vidaRegenPorSeg: 5,
-  vidaRegenTrasDanoS: 4,
+  // se cura sola, pero despacio y después de un rato sin golpes: las pociones importan
+  vidaRegenPorSeg: 2,
+  vidaRegenTrasDanoS: 6,
   nivelMax: 10,
   xpBase: 40,
   xpExp: 1.5,
@@ -164,29 +165,38 @@ export interface EnemigoBalance {
 }
 
 export const ENEMIGOS: Record<string, EnemigoBalance> = {
-  rata: { vida: 12, dano: [2, 3], anim: 'attack_thrust', ataquesPorSeg: 1, alcance: 26, velocidad: 70, ve: 140, xp: 5, oro: [1, 3] },
-  calabaza: { vida: 30, dano: [3, 5], anim: 'attack', ataquesPorSeg: 0.8, alcance: 28, velocidad: 50, ve: 160, xp: 12, oro: [2, 5] },
-  goblin_arquero: { vida: 22, dano: [3, 5], anim: 'shoot_bow', ataquesPorSeg: 0.7, alcance: 200, velocidad: 60, ve: 220, xp: 15, oro: [3, 6], proyectil: 'proyectil_flecha', impacto: 'impacto_flecha', huyeSi: 120 },
-  trol: { vida: 140, dano: [7, 10], anim: 'attack', ataquesPorSeg: 0.6, alcance: 34, velocidad: 55, ve: 200, xp: 90, oro: [20, 35] },
+  rata: { vida: 18, dano: [3, 4], anim: 'attack_thrust', ataquesPorSeg: 1, alcance: 26, velocidad: 70, ve: 140, xp: 5, oro: [1, 3] },
+  calabaza: { vida: 45, dano: [4, 7], anim: 'attack', ataquesPorSeg: 0.8, alcance: 28, velocidad: 50, ve: 160, xp: 12, oro: [2, 5] },
+  goblin_arquero: { vida: 34, dano: [4, 7], anim: 'shoot_bow', ataquesPorSeg: 0.7, alcance: 200, velocidad: 60, ve: 220, xp: 15, oro: [3, 6], proyectil: 'proyectil_flecha', impacto: 'impacto_flecha', huyeSi: 120 },
+  trol: { vida: 210, dano: [9, 13], anim: 'attack', ataquesPorSeg: 0.6, alcance: 34, velocidad: 55, ve: 200, xp: 90, oro: [20, 35] },
   // F8, la Catedral: lento y pesado. Su golpe común casi no duele: lo que enseña es el golpe grande, que avisa mucho
   // antes (el anillo se llena) y se esquiva saliéndose. Después del golpe queda un rato quieto: ahí se le pega.
   // chiquita y rápida: salta de un lado a otro. Lo que enseña: Thor la distrae (lo persigue a él) y ahí se le pega
-  raicita: { vida: 14, dano: [2, 3], anim: 'attack', ataquesPorSeg: 1, alcance: 24, velocidad: 95, ve: 180, xp: 8, oro: [1, 4], distraeThor: { radio: 170 } },
+  raicita: { vida: 21, dano: [3, 4], anim: 'attack', ataquesPorSeg: 1, alcance: 24, velocidad: 95, ve: 180, xp: 8, oro: [1, 4], distraeThor: { radio: 170 } },
   // se queda en su lugar y tira una bola violeta lenta que se ve venir: se esquiva de costado o se lo busca de cerca
-  vigia_raices: { vida: 26, dano: [3, 5], anim: 'cast', ataquesPorSeg: 0.45, alcance: 230, velocidad: 25, ve: 260, xp: 20, oro: [4, 8], proyectil: 'proyectil_arcano', impacto: 'impacto_arcano' },
-  guardian_cobre: { vida: 120, dano: [4, 6], anim: 'attack', ataquesPorSeg: 0.4, alcance: 34, velocidad: 38, ve: 190, xp: 80, oro: [15, 25], pesado: { cadaS: 4.5, radio: 48, avisoS: 1.5, dano: [10, 14] } },
+  vigia_raices: { vida: 40, dano: [4, 7], anim: 'cast', ataquesPorSeg: 0.45, alcance: 230, velocidad: 25, ve: 260, xp: 20, oro: [4, 8], proyectil: 'proyectil_arcano', impacto: 'impacto_arcano' },
+  guardian_cobre: { vida: 180, dano: [5, 8], anim: 'attack', ataquesPorSeg: 0.4, alcance: 34, velocidad: 38, ve: 190, xp: 80, oro: [15, 25], pesado: { cadaS: 4.5, radio: 48, avisoS: 1.5, dano: [13, 18] } },
   // F11, las Galerías. Rápida y frágil: si ve un cristal prendido va a apagarlo. Lo que enseña: cuidar la luz
-  polilla_ceniza: { vida: 10, dano: [1, 3], anim: 'attack', ataquesPorSeg: 0.9, alcance: 24, velocidad: 80, ve: 200, xp: 7, oro: [1, 3], buscaLuz: true },
+  polilla_ceniza: { vida: 15, dano: [2, 4], anim: 'attack', ataquesPorSeg: 0.9, alcance: 24, velocidad: 80, ve: 200, xp: 7, oro: [1, 3], buscaLuz: true },
   // el gólem minero: lento y duro como el guardián de cobre, con su golpe de pico que avisa
-  minero_piedra: { vida: 95, dano: [3, 5], anim: 'attack', ataquesPorSeg: 0.45, alcance: 32, velocidad: 34, ve: 180, xp: 60, oro: [10, 18], pesado: { cadaS: 5, radio: 44, avisoS: 1.4, dano: [8, 12] } },
+  minero_piedra: { vida: 140, dano: [4, 7], anim: 'attack', ataquesPorSeg: 0.45, alcance: 32, velocidad: 34, ve: 180, xp: 60, oro: [10, 18], pesado: { cadaS: 5, radio: 44, avisoS: 1.4, dano: [11, 16] } },
   // vive en lo oscuro: hay que traerla a la luz (un cristal prendido o el brillo de Thor) para pelearle
-  sombra: { vida: 26, dano: [3, 4], anim: 'attack', ataquesPorSeg: 0.7, alcance: 26, velocidad: 58, ve: 200, xp: 20, oro: [3, 6], soloEnLuz: true },
+  sombra: { vida: 40, dano: [4, 6], anim: 'attack', ataquesPorSeg: 0.7, alcance: 26, velocidad: 58, ve: 200, xp: 20, oro: [3, 6], soloEnLuz: true },
+}
+
+/**
+ * La dureza de cada piso (pedido de Rick: "mato todo muy fácil"). La heroína sube de nivel y de equipo al bajar: los
+ * enemigos también. Se multiplica la vida y el daño del enemigo según el piso (1 en el Bosque).
+ */
+export const DUREZA = {
+  vidaPorPiso: 0.3,
+  danoPorPiso: 0.2,
 }
 
 export const TROL_ELITE = {
   golpePesadoCadaS: 6,
   golpePesadoRadio: 48,
-  golpePesadoDano: [12, 16] as [number, number],
+  golpePesadoDano: [15, 20] as [number, number],
   golpePesadoAvisoS: 1.2,
   gritoVidaPct: 50,
   gritoVelocidadPct: 20,
@@ -201,6 +211,8 @@ export const ENEMIGO_COMUN = {
 
 export const MODO_PEQUE = {
   danoEnemigos: 0.5,
+  /** en modo peque la heroína pega más fuerte: los enemigos más duros siguen cayendo rápido para Alana */
+  danoHeroina: 1.5,
   velocidadEnemigos: 0.8,
   avisos: 1.5,
   botones: 1.25,
@@ -236,17 +248,17 @@ export interface BotinFuente {
 }
 
 export const BOTIN = {
-  rata: { objeto: 0.25, oro: 0.6, cantidad: 1 } satisfies BotinFuente,
-  calabaza: { objeto: 0.35, oro: 0.6, cantidad: 1 } satisfies BotinFuente,
-  goblin_arquero: { objeto: 0.35, oro: 0.7, cantidad: 1 } satisfies BotinFuente,
+  rata: { objeto: 0.08, oro: 0.45, cantidad: 1 } satisfies BotinFuente,
+  calabaza: { objeto: 0.12, oro: 0.5, cantidad: 1 } satisfies BotinFuente,
+  goblin_arquero: { objeto: 0.12, oro: 0.55, cantidad: 1 } satisfies BotinFuente,
   trol: { objeto: 1, oro: 1, cantidad: 2, garantiza: 'rare' } as BotinFuente,
-  guardian_cobre: { objeto: 1, oro: 1, cantidad: 1, garantiza: 'rare' } as BotinFuente,
-  raicita: { objeto: 0.2, oro: 0.6, cantidad: 1 } as BotinFuente,
-  vigia_raices: { objeto: 0.4, oro: 0.8, cantidad: 1 } as BotinFuente,
-  polilla_ceniza: { objeto: 0.15, oro: 0.5, cantidad: 1 } as BotinFuente,
-  minero_piedra: { objeto: 1, oro: 1, cantidad: 1 } as BotinFuente,
-  sombra: { objeto: 0.4, oro: 0.8, cantidad: 1 } as BotinFuente,
-  rompible: { objeto: 0.2, oro: 0.5, cantidad: 1, pocionProb: 0.5 },
+  guardian_cobre: { objeto: 0.6, oro: 1, cantidad: 1 } as BotinFuente,
+  raicita: { objeto: 0.06, oro: 0.45, cantidad: 1 } as BotinFuente,
+  vigia_raices: { objeto: 0.15, oro: 0.6, cantidad: 1 } as BotinFuente,
+  polilla_ceniza: { objeto: 0.05, oro: 0.4, cantidad: 1 } as BotinFuente,
+  minero_piedra: { objeto: 0.5, oro: 1, cantidad: 1 } as BotinFuente,
+  sombra: { objeto: 0.15, oro: 0.6, cantidad: 1 } as BotinFuente,
+  rompible: { objeto: 0.1, oro: 0.4, cantidad: 1, pocionProb: 0.6 },
   cofres: {
     madera: { objetos: 1, oro: [5, 10] as [number, number], raroProb: 0, raroGarantizado: 0, legendarioProb: 0 },
     reforzado: { objetos: 2, oro: [15, 25] as [number, number], raroProb: 0.15, raroGarantizado: 0, legendarioProb: 0 },
