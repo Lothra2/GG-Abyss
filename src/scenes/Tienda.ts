@@ -103,8 +103,9 @@ export class Tienda extends Phaser.Scene {
       vender: crearBoton(this, { x: 0, y: 0, icono: 'icono_oro', etiqueta: 'Vender', escalaTexto: esc, alToque: () => this.cambiarPestana('vender') }),
     }
     this.flechas = {
-      antes: crearBoton(this, { x: 0, y: 0, etiqueta: '<', escalaTexto: esc, alToque: () => this.irAPagina(this.pagina - 1) }),
-      despues: crearBoton(this, { x: 0, y: 0, etiqueta: '>', escalaTexto: esc, alToque: () => this.irAPagina(this.pagina + 1) }),
+      // grandes para el dedo: en el teléfono el botón mínimo mide 16 px y no se le atina
+      antes: crearBoton(this, { x: 0, y: 0, etiqueta: '<', escalaTexto: esc + 1, w: 44, h: 28, alToque: () => this.irAPagina(this.pagina - 1) }),
+      despues: crearBoton(this, { x: 0, y: 0, etiqueta: '>', escalaTexto: esc + 1, w: 44, h: 28, alToque: () => this.irAPagina(this.pagina + 1) }),
     }
     this.input.keyboard?.on('keydown-ESC', () => this.salir())
     this.mundo.sonido.efecto('abrir_inventario', { volumen: 0.6 })
@@ -196,7 +197,8 @@ export class Tienda extends Phaser.Scene {
     this.pagina = nueva
     this.confirmar = null
     this.mundo.sonido.efecto('click', { volumen: 0.5 })
-    this.rehacer()
+    // se queda en la página nueva (sin esto volvía siempre a la primera y las flechas no hacían nada)
+    this.rehacer(true)
   }
 
   /* ---------- comprar y vender ---------- */

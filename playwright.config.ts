@@ -23,8 +23,8 @@ export default defineConfig({
     { name: 'escritorio', testIgnore: /postales|tablet|telefono/, use: { viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1 } },
     { name: 'tablet', testMatch: /(humo|flujo|mundo|tutorial|catedral|entrada|ataque|minimapa|intro)\.spec\.ts|\.tablet\.spec\.ts/, use: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
     // teléfonos acostados: el iPhone a pantalla completa y el Galaxy S23 con la barra de Chrome (el caso más justo)
-    { name: 'iphone', testMatch: /(humo|flujo|entrada|ataque|minimapa|intro|telefono)\.spec\.ts/, use: { viewport: { width: 844, height: 390 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true } },
-    { name: 'galaxy', testMatch: /(humo|flujo|entrada|ataque|minimapa|intro|telefono)\.spec\.ts/, use: { viewport: { width: 780, height: 304 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true } },
+    { name: 'iphone', testMatch: /(humo|flujo|entrada|ataque|minimapa|intro|telefono|thor)\.spec\.ts/, use: { viewport: { width: 844, height: 390 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true } },
+    { name: 'galaxy', testMatch: /(humo|flujo|entrada|ataque|minimapa|intro|telefono|thor)\.spec\.ts/, use: { viewport: { width: 780, height: 304 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true } },
     { name: 'postales', testMatch: /postales\.spec\.ts/, use: { viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 } },
   ],
   webServer: { command: 'npm run build && npm run preview -- --port 4173 --strictPort', url: 'http://localhost:4173', reuseExistingServer: true, timeout: 180_000 },

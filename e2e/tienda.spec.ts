@@ -154,6 +154,28 @@ test.describe('El mercader', () => {
     await sinErrores(errores)
   })
 
+  test('con la bolsa llena, las flechas pasan de página tocándolas (y la página no vuelve a la primera)', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'rick')
+    await gancho(page, 'llenarBolsa', 'sword_1')
+    await abrirConMercader(page)
+    await gancho(page, 'tiendaPestana', 'vender')
+    await expect.poll(async () => (await tienda(page)).paginas, { timeout: 5_000 }).toBeGreaterThan(1)
+    // el toque de verdad sobre la flecha (mouse en la compu), como lo hace la heroína con el dedo
+    const f = await page.evaluate(() => {
+      const t = (window as unknown as { __JUEGO__: { scene: { getScene(k: string): unknown } } }).__JUEGO__.scene.getScene('Tienda') as { flechas: { despues: { x: number; y: number } } }
+      return { x: t.flechas.despues.x, y: t.flechas.despues.y }
+    })
+    const z = await gancho<{ cssZoom: number }>(page, 'escala')
+    // la pestaña recién cambiada se arma en el cuadro siguiente
+    await page.waitForTimeout(400)
+    await page.mouse.click(f.x * z.cssZoom, f.y * z.cssZoom)
+    await expect.poll(async () => (await tienda(page)).pagina, { timeout: 5_000 }).toBe(1)
+    await page.mouse.click(f.x * z.cssZoom, f.y * z.cssZoom)
+    await expect.poll(async () => (await tienda(page)).pagina, { timeout: 5_000 }).toBe(Math.min(2, (await tienda(page)).paginas - 1))
+    await sinErrores(errores)
+  })
+
   test('el arma de la familia no se vende', async ({ page }) => {
     await abrirMundo(page, 'sophie')
     await gancho(page, 'darObjeto', 'arco_de_sophie')

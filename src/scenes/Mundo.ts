@@ -298,7 +298,8 @@ export class Mundo extends Phaser.Scene {
     encolarObjetosMundo(this, this.m, new Set(mapa.entidades.filter((e) => e.tipo === 'rompible').map((e) => String(e.props.objeto ?? 'caja'))))
     // F11: los cristales (apagados y prendidos), el carrito y la figura de las Galerías
     if (mapa.cristales.length) encolarObjetosMundo(this, this.m, [...Object.keys(this.m.mundo.objetos).filter((n) => n.startsWith('cristal_')), 'carrito_mina', 'figura_ojos'])
-    for (const n of [1, 2, 3]) encolarPersonaje(this, this.m, `thor_armadura${n}`, ['idle', 'walk', 'run', 'sit', 'wag', 'bite', 'howl', 'bark', 'pickup', 'dig', 'hurt'])
+    // todas las armaduras de Thor que traiga el kit (antes solo 1 a 3: con la 4 o la 5 puesta quedaba congelado)
+    for (const id of Object.keys(this.m.personajes).filter((k) => /^thor_armadura\d+$/.test(k))) encolarPersonaje(this, this.m, id, ['idle', 'walk', 'run', 'sit', 'wag', 'bite', 'howl', 'bark', 'pickup', 'dig', 'hurt'])
     for (const t of new Set(mapa.entidades.filter((e) => e.tipo === 'enemigo' || e.tipo === 'jefe').map((e) => String(e.props.enemigo ?? '')))) encolarPersonaje(this, this.m, t)
     // el mercader de las fogatas (si el kit lo trae)
     if (this.m.personajes[ID_MERCADER]) encolarPersonaje(this, this.m, ID_MERCADER)
@@ -1907,7 +1908,7 @@ export class Mundo extends Phaser.Scene {
       cuervos: () => this.criaturas.cuervos.map((c) => ({ x: c.hx, y: c.hy, st: c.st })),
       decoInfo: ((nombre: string) => this.decos.activosDe(nombre).map((a) => ({ x: a.d.x, y: a.d.y, anim: a.anim, alfa: Math.round(a.alfa * 100) / 100, pasto: a.pasto, copa: !!a.c, despierto: a.despierto, frame: a.fr }))) as never,
       aguaFrame: () => this.vista.frameAgua,
-      thorInfo: () => ({ x: this.thor.x, y: this.thor.y, estado: this.thor.estado }),
+      thorInfo: () => ({ x: this.thor.x, y: this.thor.y, estado: this.thor.estado, ...this.thor.infoAnim }),
       hudLayout: () => (this.scene.isActive('HUD') ? (this.scene.get('HUD') as unknown as { layout(): unknown }).layout() : null),
       noEsperar: () => this.listo,
       combate: () => this.combate.info(),

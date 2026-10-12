@@ -71,12 +71,20 @@ export class ThorSprite {
 
   /** Cambia la armadura: `nivel` 0 es Thor sin armadura (F3) */
   ponerArmadura(nivel: number): void {
-    const id = idThor(nivel)
+    let id = idThor(nivel)
+    // si el dibujo de esa armadura no está cargado, Thor sigue con el suyo: nunca se queda sin animaciones
+    if (id !== 'thor' && !this.escena.textures.exists(K.pers(id, 'walk'))) id = 'thor'
     if (!this.m.personajes[id] || id === this.idPers) return
     crearAnimsPersonaje(this.escena, this.m, id)
     this.idPers = id
     this.personaje = this.m.personajes[id]!
     this.animActual = ''
+  }
+
+  /** Para las pruebas: qué dibujo y qué animación tiene y en qué cuadro va */
+  get infoAnim(): { personaje: string; anim: string | null; cuadro: number; tocando: boolean } {
+    const a = this.sprite.anims
+    return { personaje: this.idPers, anim: a.currentAnim?.key ?? null, cuadro: a.currentFrame?.index ?? 0, tocando: a.isPlaying }
   }
 
   get nivelArmadura(): number {
@@ -352,7 +360,9 @@ export class ThorSprite {
   private poner(estado: EstadoThor, forzar = false): void {
     let anim = estado as string
     if (!this.personaje.anims[anim]) anim = this.personaje.anims.idle ? 'idle' : Object.keys(this.personaje.anims)[0]!
-    const key = K.anim(this.idPers, anim, DIRECCIONES[this.dir]!)
+    let key = K.anim(this.idPers, anim, DIRECCIONES[this.dir]!)
+    // red de seguridad: si a la armadura le falta esa animación, la del Thor de siempre
+    if (!this.escena.anims.exists(key) && this.escena.anims.exists(K.anim('thor', anim, DIRECCIONES[this.dir]!))) key = K.anim('thor', anim, DIRECCIONES[this.dir]!)
     if (key === this.animActual && !forzar) return
     // si solo cambió hacia dónde mira, sigue en el mismo cuadro del paso (no vuelve a empezar)
     const st = this.sprite.anims
