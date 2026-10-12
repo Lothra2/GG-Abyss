@@ -53,6 +53,8 @@ export class HudCombate {
   private ataqueLado = 48
   /** el ícono del arma trae su marco cuadrado de la mochila: se ve solo un círculo, justo por dentro del aro */
   private ataqueMascara!: Phaser.GameObjects.Graphics
+  private iconoPropio = false
+  private mascaraGeo!: Phaser.Display.Masks.GeometryMask
   /** en una pantalla táctil sin teclado las letras Q y E no dicen nada */
   private readonly tactil = typeof window !== 'undefined' && !!window.matchMedia?.('(pointer: coarse)').matches
   private numVida: Phaser.GameObjects.BitmapText
@@ -137,7 +139,7 @@ export class HudCombate {
     this.ataqueAro = escena.add.graphics()
     this.ataqueIcono = escena.add.image(0, 0, k('icono_ajustes'))
     this.ataqueMascara = escena.make.graphics({}, false)
-    this.ataqueIcono.setMask(this.ataqueMascara.createGeometryMask())
+    this.mascaraGeo = this.ataqueMascara.createGeometryMask()
     this.ataqueZona = escena.add.zone(0, 0, 48, 48).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true })
     this.ataqueZona.on('pointerdown', (p: Phaser.Input.Pointer) => {
       Bloqueo.tomar(p.id)
@@ -159,7 +161,12 @@ export class HudCombate {
     const id = this.mundo.partida.equipo.arma ?? ej[c.ataque?.familia ?? 'tajo']
     const it = itemDe(this.mundo.cat, id)
     this.ataqueArma = `${id}|${c.ataque?.familia}`
-    if (it && this.escena.textures.exists(atlasDeIcono(it))) this.ataqueIcono.setTexture(atlasDeIcono(it), frameDeIcono(it))
+    // si el taller trae el ícono redondo del ataque (ASSETS_PENDIENTES #38) va ese, entero y sin recorte
+    const propio = K.ui(`hab_ataque_${c.ataque?.familia ?? 'tajo'}`)
+    this.iconoPropio = this.escena.textures.exists(propio)
+    if (this.iconoPropio) this.ataqueIcono.setTexture(propio).clearMask()
+    else if (it && this.escena.textures.exists(atlasDeIcono(it))) this.ataqueIcono.setTexture(atlasDeIcono(it), frameDeIcono(it)).setMask(this.mascaraGeo)
+    this.acomodarAtaque()
   }
 
   private alSinMana(): void {
@@ -253,7 +260,8 @@ export class HudCombate {
   /** El botón de ataque: el ícono del arma recortado en círculo por dentro del aro */
   private acomodarAtaque(): void {
     const l = this.ataqueLado
-    const k = Math.max(1, Math.floor((l - 6) / 32))
+    if (!this.ataqueMascara) return
+    const k = this.iconoPropio ? Math.max(1, Math.floor(l / 40)) : Math.max(1, Math.floor((l - 6) / 32))
     this.ataqueIcono.setPosition(this.ataqueX, this.ataqueY).setScale(k)
     // el marco de la mochila va en el borde del ícono (los 2 pixeles de afuera): el círculo lo deja afuera
     this.ataqueMascara.clear().fillStyle(0xffffff, 1).fillCircle(this.ataqueX, this.ataqueY, Math.min(l / 2 - 4, 14 * k))

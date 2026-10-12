@@ -80,6 +80,12 @@ Todo el pedido, con tamaños, cuadros, apoyos y prioridades, está en `docs/enca
 - **Pedido:** rehacerlo como un corte de hormiguero con siete mini escenas que se reconozcan: el bosque con raíces, la catedral con su campana, las galerías con cristales, el mar callado, la ciudad dormida, las fraguas rojas y el fondo con dos ojos. Mismo tamaño, mismas capas (`fondo` 0.8 y `frente` 1), la luz roja subiendo desde abajo.
 - **Mientras tanto:** el juego lo usa así, con la cámara bajando por él.
 
+### 38. Íconos redondos para el botón de ataque
+
+- **Qué pasa:** el botón de ataque usa el ícono del arma de la mochila (32 x 32), que trae su marco cuadrado y su fondo. El juego lo recorta en un círculo por dentro del aro, pero el arma queda chica y las puntas de las armas largas se cortan.
+- **Pedido:** cinco íconos en `ui.habilidades` con el mismo estilo de los de las habilidades (40 x 40, redondos, con su aro de color): `ataque_tajo` (espada), `ataque_pesado` (mandoble), `ataque_estocada` (lanza), `ataque_flecha` (arco) y `ataque_hechizo` (varita). Aro dorado para que se distinga de las habilidades.
+- **Mientras tanto:** el ícono del arma recortado en círculo.
+
 ### 37. La columna de primer plano de la Catedral no se usa
 
 - **Qué pasa:** `frente_columna` (64 x 256) sube del borde de abajo. Pegada a la pantalla queda cortada a media altura y se lee como una barra negra (Rick la vio al lado del mercader del atrio). Agrandada hasta arriba tapa justo donde se juega, sobre todo en el teléfono.
