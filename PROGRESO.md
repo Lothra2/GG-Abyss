@@ -34,6 +34,7 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - Mundo 3 jugable (PLAN.md F11, "Estado del Mundo 3"): cristales, polilla, sombra, minero, carrito, figura, mural y la Polilla Reina con su escudo de luz.
   - Intro con los cinco paneles pintados en capas, la pared de fuego, el humo, el logo en llamas, `musica_intro` y `latido`. Si el kit no trae los paneles sigue el intro con piezas prestadas.
   - El kit pesa 74.1 MB (antes 59.5): la tablet guarda todo para jugar sin red.
+- Teléfonos (pedido de Rick, con el iPhone y el Galaxy S23 de Stephanie): acostado se ve como la tablet, 1.5 veces más grande que antes. Textos e íconos según el alto lógico. Se sacó la columna de primer plano que parecía una barra negra (ASSETS_PENDIENTES #37). Proyectos `iphone` (844 x 390) y `galaxy` (780 x 304, con la barra de Chrome) en Playwright.
 - Intro al estilo Diablo: sale una vez por aparato después del primer toque del título. Se salta tocando y el título tiene un botón "Intro". Las ilustraciones de cine están pedidas al taller (encargo, parte 4).
 - Verificación de F10a, F11 e intro:
   - Typecheck limpio y 380 tests unitarios.

@@ -80,6 +80,12 @@ Todo el pedido, con tamaños, cuadros, apoyos y prioridades, está en `docs/enca
 - **Pedido:** rehacerlo como un corte de hormiguero con siete mini escenas que se reconozcan: el bosque con raíces, la catedral con su campana, las galerías con cristales, el mar callado, la ciudad dormida, las fraguas rojas y el fondo con dos ojos. Mismo tamaño, mismas capas (`fondo` 0.8 y `frente` 1), la luz roja subiendo desde abajo.
 - **Mientras tanto:** el juego lo usa así, con la cámara bajando por él.
 
+### 37. La columna de primer plano de la Catedral no se usa
+
+- **Qué pasa:** `frente_columna` (64 x 256) sube del borde de abajo. Pegada a la pantalla queda cortada a media altura y se lee como una barra negra (Rick la vio al lado del mercader del atrio). Agrandada hasta arriba tapa justo donde se juega, sobre todo en el teléfono.
+- **Hoy:** el juego no dibuja columnas que suben de abajo. Las raíces que cuelgan de arriba siguen.
+- **Si se quiere volver a tener:** una columna pensada para el borde de la pantalla, que se vea entera de arriba abajo en 300 a 720 px de alto (o en dos piezas, base y capitel, que se estiren con un tramo que repite), y bien clara para que no parezca un hueco.
+
 ### 36. Palancas, puertas, rejas y piedras sin poner en los mapas
 
 - **Qué pasa:** el kit trae `palanca`, `puerta`, `reja`, `piedra_empujable` y la campana chica con sus animaciones, pero ningún mapa los usa todavía.

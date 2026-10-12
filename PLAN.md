@@ -264,7 +264,7 @@ gg-abyss/
 - Escala entera, la misma regla del visor. Una función pura `calcularEscala(anchoCss, altoCss, dpr)` en `src/logic/escala.ts`, con tests:
   - `dpr = window.devicePixelRatio || 1`
   - `Wp = round(anchoCss * dpr)`, `Hp = round(altoCss * dpr)`: pixeles físicos
-  - `zoom = max(1, floor(Hp / 400))`
+  - `zoom = max(1, floor(Hp / 400))`. En un teléfono acostado (menos de 500 px CSS de alto) `floor(Hp / 300)`: el iPhone ve 844 x 390 y el Galaxy S23 780 x 360, como la tablet, en vez de 1266 x 585 a la mitad del tamaño
   - vista lógica = `Wp / zoom` x `Hp / zoom`. Siempre al menos 400 de alto si la pantalla lo permite, y cada pixel del arte es un cuadrado de `zoom` x `zoom` pixeles físicos
   - Ejemplos: iPad 1180 x 820 con dpr 2 da zoom 4 y vista 590 x 410. Escritorio 1280 x 720 con dpr 1 da zoom 1 y vista 1280 x 720. 960 x 540 con dpr 1 da zoom 1 y vista 960 x 540
 - Phaser con `Scale.RESIZE`, `pixelArt: true`, `roundPixels: true`, fondo `#070a12`. El canvas va en pixeles físicos (`Wp` x `Hp`) y por CSS ocupa la ventana. Las cámaras usan `setZoom(zoom)` entero. Se recalcula en cada `resize` y al girar la tablet. Si `Scale.RESIZE` no deja manejar el canvas en pixeles físicos, se usa `Scale.NONE` con el mismo cálculo a mano y se dice en el resumen.
