@@ -3,7 +3,7 @@ import type { Manifest, Personaje } from '../kit/tipos'
 import { K } from '../kit/claves'
 import type { Grilla, Punto } from '../logic/grilla'
 import { moverCuerpo, ritmoAnim } from '../logic/movimiento'
-import { DIRECCIONES, indiceDireccion } from '../logic/direccion'
+import { DIRECCIONES, direccionConMargen, indiceDireccion } from '../logic/direccion'
 import { THOR } from '../config/balance'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
@@ -36,6 +36,9 @@ export class ThorSprite {
   private animNombre = ''
   /** segundos desde que se movió por última vez */
   private movioHaceS = 0
+  /** velocidad suavizada (px/s): de ahí sale hacia dónde mira mientras la sigue */
+  private vx = 0
+  private vy = 0
   private rastro: Punto[] = []
   private animActual = ''
   private quietoS = 0
@@ -265,14 +268,24 @@ export class ThorSprite {
     const d = Math.hypot(dx, dy)
     let mueve = false
     if (d > 5) {
-      const corre = dh > THOR.distanciaReacomodar || d > 70
+      // corre si quedó lejos; una vez corriendo sigue hasta acercarse bien (sin margen salta entre caminar y correr
+      // en el borde y cada salto reinicia la animación)
+      const yaCorre = this.estado === 'run'
+      const corre = yaCorre ? dh > THOR.distanciaReacomodar - 25 || d > 50 : dh > THOR.distanciaReacomodar || d > 70
       const v = corre ? THOR.correr : THOR.velocidad
       const paso = Math.min(d, v * dt)
+      const x0 = this.x
+      const y0 = this.y
       const r = moverCuerpo(this.grilla, { x: this.x, y: this.y, radio: RADIO_THOR }, (dx / d) * paso, (dy / d) * paso)
       if (r.movido > 0.05) {
         this.x = r.x
         this.y = r.y
-        this.dir = indiceDireccion(dx, dy)
+        // hacia dónde mira sale de la velocidad suavizada y con margen: los pasitos de seguirla de cerca no lo hacen
+        // temblar entre dos direcciones (cada cambio reiniciaba el paso y se veía congelado, mirando de frente)
+        const k = Math.min(1, dt * 10)
+        this.vx += ((this.x - x0) / Math.max(dt, 1e-4) - this.vx) * k
+        this.vy += ((this.y - y0) / Math.max(dt, 1e-4) - this.vy) * k
+        if (Math.hypot(this.vx, this.vy) > 15) this.dir = direccionConMargen(this.dir, this.vx, this.vy)
         mueve = true
         this.estado = corre ? 'run' : 'walk'
         this.trabadoS = 0
@@ -297,7 +310,11 @@ export class ThorSprite {
       } else if (h.quietaS > THOR.sentarseTrasS && this.quietoS > 1) this.estado = 'sit'
       else if (this.estado !== 'sit') this.estado = 'idle'
       // mira a la heroína
-      if (this.estado === 'idle' || this.estado === 'wag') this.dir = indiceDireccion(h.x - this.x, h.y - this.y)
+      if (this.estado === 'idle' || this.estado === 'wag') this.dir = direccionConMargen(this.dir, h.x - this.x, h.y - this.y, 20)
+    }
+    if (!mueve && !sigueCaminando) {
+      this.vx *= 0.8
+      this.vy *= 0.8
     }
     // si estaba sentado y ella empieza a moverse: mueve la cola y se levanta
     if (this.estado === 'sit' && h.moviendo) {
@@ -338,11 +355,17 @@ export class ThorSprite {
     const key = K.anim(this.idPers, anim, DIRECCIONES[this.dir]!)
     if (key === this.animActual && !forzar) return
     // si solo cambió hacia dónde mira, sigue en el mismo cuadro del paso (no vuelve a empezar)
-    const mismaAnim = !forzar && this.animNombre === anim && this.sprite.anims.isPlaying
-    const cuadro = mismaAnim ? Math.max(0, (this.sprite.anims.currentFrame?.index ?? 1) - 1) : 0
+    const st = this.sprite.anims
+    const mismaAnim = !forzar && this.animNombre === anim && st.isPlaying
+    const cuadro = mismaAnim ? Math.max(0, (st.currentFrame?.index ?? 1) - 1) : 0
+    // y también el tiempo que lleva en ese cuadro: si gira seguido, las patas igual siguen avanzando
+    const acumulado = st.accumulator
     this.animActual = key
     this.animNombre = anim
-    if (this.escena.anims.exists(key)) this.sprite.play({ key, startFrame: cuadro })
+    if (this.escena.anims.exists(key)) {
+      this.sprite.play({ key, startFrame: cuadro })
+      if (mismaAnim) st.accumulator = acumulado
+    }
     // premium: el paso al ritmo de lo que avanza, así las patas no patinan
     const def = this.personaje.anims[anim]
     this.sprite.anims.timeScale = def && (anim === 'walk' || anim === 'run') ? ritmoAnim(anim === 'run' ? THOR.correr : THOR.velocidad, def) : 1

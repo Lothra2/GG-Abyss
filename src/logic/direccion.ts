@@ -25,3 +25,18 @@ export function vectorDe(dir: Direccion): { x: number; y: number } {
 export function opuesta(dir: Direccion): Direccion {
   return DIRECCIONES[(DIRECCIONES.indexOf(dir) + 4) % 8]!
 }
+
+/**
+ * Como `indiceDireccion`, pero se queda en `actual` mientras el vector no se salga de su sector por más de `margen`
+ * grados. Al seguir a alguien de cerca los pasitos tiemblan entre dos direcciones vecinas y cada cambio reinicia la
+ * animación: con el margen el perro sigue mirando para el mismo lado hasta que el giro es claro.
+ */
+export function direccionConMargen(actual: number, dx: number, dy: number, margen = 15): number {
+  if (dx === 0 && dy === 0) return actual
+  const nueva = indiceDireccion(dx, dy)
+  if (nueva === actual) return actual
+  const g = (((Math.atan2(dy, dx) * 180) / Math.PI + 360 - 90) % 360 + 360) % 360
+  const centro = (((actual % 8) + 8) % 8) * 45
+  const d = Math.abs(((g - centro + 540) % 360) - 180)
+  return d > 22.5 + margen ? nueva : actual
+}

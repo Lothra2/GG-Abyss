@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { DIRECCIONES, direccionDe, indiceDireccion, opuesta, vectorDe } from '../direccion'
+import { DIRECCIONES, direccionConMargen, direccionDe, indiceDireccion, opuesta, vectorDe } from '../direccion'
 import { leerJson } from '../../../scripts/lib/verificacion'
 import type { Manifest } from '../../kit/tipos'
 
@@ -34,5 +34,20 @@ describe('direccion', () => {
     expect(opuesta('up')).toBe('down')
     expect(opuesta('left')).toBe('right')
     expect(opuesta('up_left')).toBe('down_right')
+  })
+})
+
+describe('dirección con margen', () => {
+  const DER = DIRECCIONES.indexOf('right')
+  it('no cambia por un temblor chico hacia la dirección vecina', () => {
+    // 30 grados hacia abajo desde la derecha: indiceDireccion ya diría abajo-derecha, con margen sigue a la derecha
+    const a = (30 * Math.PI) / 180
+    expect(indiceDireccion(Math.cos(a), Math.sin(a))).toBe(DIRECCIONES.indexOf('down_right'))
+    expect(direccionConMargen(DER, Math.cos(a), Math.sin(a))).toBe(DER)
+  })
+  it('sí cambia cuando el giro es claro, y quieto se queda como estaba', () => {
+    expect(direccionConMargen(DER, 0, 1)).toBe(DIRECCIONES.indexOf('down'))
+    expect(direccionConMargen(DER, -1, 0)).toBe(DIRECCIONES.indexOf('left'))
+    expect(direccionConMargen(DER, 0, 0)).toBe(DER)
   })
 })

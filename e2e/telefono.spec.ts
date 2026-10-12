@@ -33,6 +33,17 @@ test.describe('En el teléfono', () => {
     await sinErrores(errores)
   })
 
+  test('si la barra del navegador se esconde y la pantalla crece, el juego la llena entera (sin franja negra)', async ({ page }) => {
+    await abrirMundo(page)
+    const v = page.viewportSize()!
+    await page.setViewportSize({ width: v.width, height: v.height + 56 })
+    await expect.poll(async () => page.evaluate(() => {
+      const c = document.querySelector('canvas')!.getBoundingClientRect()
+      return Math.round(window.innerHeight - c.height)
+    }), { timeout: 5_000 }).toBeLessThanOrEqual(1)
+    await page.setViewportSize(v)
+  })
+
   test('en la Catedral no queda ninguna columna de primer plano cortada a media pantalla', async ({ page }) => {
     const errores = vigilarErrores(page)
     await abrirMundo(page)

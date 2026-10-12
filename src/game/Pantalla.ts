@@ -45,9 +45,19 @@ export function instalarPantalla(game: Phaser.Game): void {
     game.events.emit(EVENTO_ESCALA, nueva)
   }
 
-  window.addEventListener('resize', aplicar)
-  window.addEventListener('orientationchange', () => setTimeout(aplicar, 120))
-  window.visualViewport?.addEventListener('resize', aplicar)
+  // en Android el aviso de tamaño llega antes de que la pantalla termine de cambiar (la barra de Chrome que se
+  // esconde, la pantalla completa): se mide otra vez un rato después, si no queda una franja negra abajo
+  const aplicarYRevisar = () => {
+    aplicar()
+    setTimeout(aplicar, 150)
+    setTimeout(aplicar, 600)
+  }
+  window.addEventListener('resize', aplicarYRevisar)
+  window.addEventListener('orientationchange', aplicarYRevisar)
+  window.visualViewport?.addEventListener('resize', aplicarYRevisar)
+  document.addEventListener('fullscreenchange', aplicarYRevisar)
+  // y por las dudas una mirada por segundo (si no cambió nada no hace nada)
+  setInterval(aplicar, 1000)
   // el dpr cambia al mover la ventana a otro monitor o al hacer zoom del navegador
   const vigilarDpr = () => {
     const mq = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`)
