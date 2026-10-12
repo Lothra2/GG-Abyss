@@ -28,7 +28,7 @@ test.describe('Luz del mundo', () => {
     const errores = vigilarErrores(page)
     await abrirMundo(page, 'sophie')
     await expect.poll(async () => (await luz(page)).sombras, { timeout: 10_000 }).toBeGreaterThan(0)
-    // al cambiar a calidad baja las que entran ya no traen sombra
+    // al cambiar a calidad baja las que entran ya no traen sombra calculada (las horneadas del taller son arte y quedan)
     await gancho(page, 'ajustes', { calidad: 'baja' })
     const ini = await gancho<{ x: number; y: number }>(page, 'pos')
     await gancho(page, 'teleport', ini.x + 2000, ini.y - 900)
@@ -82,6 +82,23 @@ test.describe('Luz del mundo', () => {
     await gancho(page, 'teleport', lugar!.x, lugar!.y)
     await gancho(page, 'avanzar', 0.3)
     await expect.poll(async () => (await luz(page)).reacciones, { timeout: 10_000 }).toBeGreaterThan(antes)
+    await sinErrores(errores)
+  })
+
+  test('afuera la heroína y Thor tiran sombra hacia el mismo lado que las del taller, y en calidad baja no', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'avanzar', 0.5)
+    const l = await gancho<{ sombrasPersonajes: number; sombraHeroina: { kx: number; ky: number; alfa: number } | null; sombraThor: unknown }>(page, 'luzMundo')
+    expect(l.sombrasPersonajes).toBeGreaterThanOrEqual(2)
+    expect(l.sombraThor).not.toBeNull()
+    // la luz del kit viene de arriba a la izquierda: la punta cae abajo a la derecha
+    expect(l.sombraHeroina!.kx).toBeGreaterThan(0.2)
+    expect(l.sombraHeroina!.ky).toBeGreaterThan(0.05)
+    expect(l.sombraHeroina!.alfa).toBeGreaterThan(0.2)
+    await gancho(page, 'ajustes', { calidad: 'baja' })
+    await gancho(page, 'avanzar', 0.3)
+    expect((await gancho<{ sombrasPersonajes: number }>(page, 'luzMundo')).sombrasPersonajes).toBe(0)
     await sinErrores(errores)
   })
 })

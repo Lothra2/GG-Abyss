@@ -90,8 +90,8 @@ test.describe('Atacar sin elegir enemigo', () => {
     const l = await gancho<{ ataque: { x: number; y: number; lado: number; arma: string }; botones: { x: number; y: number; lado: number }[] }>(page, 'hudCombate')
     expect(l.ataque.lado).toBeGreaterThanOrEqual(40)
     expect(l.ataque.arma.startsWith('sword_1|tajo')).toBe(true)
-    // no se encima con las habilidades
-    for (const b of l.botones) expect(Math.abs(b.y - l.ataque.y)).toBeGreaterThanOrEqual((b.lado + l.ataque.lado) / 2)
+    // no se encima con las habilidades (todos son redondos: la distancia entre centros alcanza)
+    for (const b of l.botones) expect(Math.hypot(b.x - l.ataque.x, b.y - l.ataque.y)).toBeGreaterThanOrEqual((b.lado + l.ataque.lado) / 2)
     const r = await frenteARata(page, 36)
     const z = await gancho<{ cssZoom: number }>(page, 'escala')
     const x = l.ataque.x * z.cssZoom

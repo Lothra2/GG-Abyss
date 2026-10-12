@@ -138,7 +138,7 @@ export class Mecanismos {
       const a = p.def.anims.idle
       if (a && a.cuadros > 1) p.s.setFrame(Math.floor(t * a.fps + p.ph * 3) % a.cuadros)
       const l = p.def.luz
-      if (l) luces.push({ x: p.x, y: p.y - (l.dy ?? 0), r: l.radius, color: l.color, flicker: l.flicker, pulse: l.pulse, ph: p.ph })
+      if (l) luces.push({ x: p.x, y: p.y - (l.dy ?? 0), r: l.radius, color: l.color, flicker: l.flicker, pulse: l.pulse, ph: p.ph, alto: l.dy ?? 0 })
     }
   }
 

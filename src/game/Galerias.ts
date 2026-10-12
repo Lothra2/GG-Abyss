@@ -227,7 +227,7 @@ export class Galerias {
     for (const c of this.cristales) {
       if (!c.prendido) continue
       const l = this.m.mundo.objetos[this.idObj(c)]?.luz
-      if (l) luces.push({ x: c.x, y: c.y - (l.dy ?? 0), r: l.radius, color: l.color, pulse: l.pulse, ph: (c.x * 0.013) % 1 })
+      if (l) luces.push({ x: c.x, y: c.y - (l.dy ?? 0), r: l.radius, color: l.color, pulse: l.pulse, ph: (c.x * 0.013) % 1, alto: l.dy ?? 0 })
     }
     const f = this.figura
     if (f && f.estado === 'mirando') {
@@ -237,7 +237,7 @@ export class Galerias {
         this.d.thorGrune()
       }
       const l = this.m.mundo.objetos.figura_ojos?.luz
-      if (l) luces.push({ x: f.x, y: f.y - (l.dy ?? 0), r: l.radius, color: l.color, pulse: true, ph: 0.4 })
+      if (l) luces.push({ x: f.x, y: f.y - (l.dy ?? 0), r: l.radius, color: l.color, pulse: true, ph: 0.4, alto: l.dy ?? 0 })
       if (r.estado === 'se_va') {
         f.estado = 'se_va'
         this.d.sonido('figura_irse', { volumen: 0.6 })

@@ -5,6 +5,7 @@ import { manifestDe } from '../kit/contexto'
 import { existeMundo, idMundo, manifestParaMundo, MUNDO_BOSQUE } from '../kit/mundos'
 import { Mecanismos, OBJETOS_MECANISMOS } from '../game/Mecanismos'
 import { Galerias } from '../game/Galerias'
+import { SombrasPersonajes } from '../game/SombrasPersonajes'
 import { perfilDe } from '../game/Jefe'
 import { ID_MERCADER, Mercader } from '../game/Mercader'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
@@ -155,6 +156,8 @@ export class Mundo extends Phaser.Scene {
   /** la heroína va en el carrito: hasta cuándo (segundos de juego) */
   private viaje: { resta: number } | null = null
   private tAvisoEscudo = 0
+  /** las sombras largas de la heroína, Thor, los enemigos y el jefe (la misma luz que los objetos) */
+  private sombrasPj: SombrasPersonajes | null = null
   mercader!: Mercader
   /** lo que se ve puesto ahora (para no rehacer las capas si no cambió) */
   private aspectoPuesto = ''
@@ -372,6 +375,8 @@ export class Mundo extends Phaser.Scene {
     const decos: Deco[] = [...this.mapa.decos]
     for (const p of entidadesDeTipo(this.mapa, 'portal_llegada')) decos.push({ sprite: p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul', x: p.x, y: p.y })
     const calidadIni = CALIDAD[this.partida.ajustes.calidad]
+    this.sombrasPj?.destruir()
+    this.sombrasPj = new SombrasPersonajes(this, this.mapa.bioma === 'bosque' ? SOMBRA_LARGA.afuera : SOMBRA_LARGA.adentro)
     this.decos = new Decos(this, m, decos, { sombra: this.mapa.bioma === 'bosque' ? SOMBRA_LARGA.afuera : SOMBRA_LARGA.adentro, agua: this.aguaQuieta, oscuridadEn: (x, y) => zonaEn(this.mapa.zonas, x, y)?.oscuridad ?? 0 })
     this.decos.sombrasLargas = calidadIni.sombrasLargas
     this.decos.reflejos = calidadIni.reflejos
@@ -1127,6 +1132,8 @@ export class Mundo extends Phaser.Scene {
     this.mecanismos = null
     this.galerias?.destruir()
     this.galerias = null
+    this.sombrasPj?.destruir()
+    this.sombrasPj = null
     this.sonido.detener()
     this.decos.destruir()
     this.reflejos?.destruir()
@@ -1755,7 +1762,7 @@ export class Mundo extends Phaser.Scene {
     const luces: Luz[] = []
     if (this.portalJefe) luces.push({ x: this.portalJefe.x, y: this.portalJefe.y - 40, r: 150, color: this.portalJefe.luz, pulse: true, ph: 0.3 })
     // F11: desde el piso 3 Thor brilla un poquito, así nunca se pierde en lo oscuro
-    if (thorBrilla(this.piso)) luces.push({ x: this.thor.sprite.x, y: this.thor.sprite.y - 10, r: ABISMO.thorBrilloRadio, color: '#ffe8b0', pulse: true, ph: 0.6 })
+    if (thorBrilla(this.piso)) luces.push({ x: this.thor.sprite.x, y: this.thor.sprite.y - 10, r: ABISMO.thorBrilloRadio, color: '#ffe8b0', pulse: true, ph: 0.6, alto: 10 })
     // en lo hondo el jefe lleva su propio brillo tenue: siempre se ve dónde está, aunque la arena esté a oscuras
     const jb = this.jefe
     if (jb && jb.vivo && thorBrilla(this.piso)) luces.push({ x: jb.x, y: jb.y - jb.cuerpo.alto / 2, r: ABISMO.jefeBrilloRadio, color: '#c58aff', pulse: true, ph: 0.2 })
@@ -1776,6 +1783,19 @@ export class Mundo extends Phaser.Scene {
     this.decos.sombrasLargas = cal.sombrasLargas
     this.decos.reflejos = cal.reflejos
     this.reflejos.activo = cal.reflejos
+    if (this.sombrasPj) {
+      this.sombrasPj.activo = cal.sombrasLargas
+      // solo lo que se ve (con un margen para que la sombra no aparezca de golpe en el borde)
+      const cerca = (x: number, y: number) => x > vista.x - 80 && x < vista.right + 80 && y > vista.y - 40 && y < vista.bottom + 140
+      const fuentes = [
+        { s: this.heroina.sprite, x: this.heroina.x, y: this.heroina.y },
+        { s: this.thor.sprite, x: this.thor.x, y: this.thor.y },
+        ...this.enemigos.lista.filter((e) => !e.destruido && cerca(e.x, e.y)).map((e) => ({ s: e.sprite, x: e.x, y: e.y })),
+        ...(this.jefe && cerca(this.jefe.x, this.jefe.y) ? [{ s: this.jefe.sprite, x: this.jefe.x, y: this.jefe.y }] : []),
+      ]
+      this.sombrasPj.update(fuentes, luces, dtVisual)
+    }
+    this.decos.iluminarSombras(luces, dtVisual)
     this.reflejos.update(this.t)
     this.fondo.update(vista)
     this.frente.update(vista, heroe)
@@ -1857,7 +1877,7 @@ export class Mundo extends Phaser.Scene {
       tocar: ((x: number, y: number) => this.entrada.tocar(x, y)) as never,
       estado: () => JSON.parse(JSON.stringify(this.partida)),
       atmosfera: () => this.atmosfera.info(),
-      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, criaturasChicas: this.criaturas.infoChicos, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible, frenteMedidas: this.frente.medidas, altoVista: this.frente.altoVista }),
+      luzMundo: () => ({ ...this.decos.contarEfectos(), sombrasPersonajes: this.sombrasPj?.cantidad ?? 0, sombraHeroina: this.sombrasPj?.infoDe(this.heroina.sprite) ?? null, sombraThor: this.sombrasPj?.infoDe(this.thor.sprite) ?? null, reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, criaturasChicas: this.criaturas.infoChicos, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible, frenteMedidas: this.frente.medidas, altoVista: this.frente.altoVista }),
       camara: () => ({ x: this.camara.cx, y: this.camara.cy, ancho: this.camara.ancho, alto: this.camara.alto, manual: this.camara.manual }),
       // F11: las Galerías
       galerias: () => (this.galerias ? { ...this.galerias.info, viajando: !!this.viaje, sombras: this.enemigos.lista.filter((e) => e.cfg.soloEnLuz && e.vivo).map((e) => ({ x: Math.round(e.x), y: Math.round(e.y), oculta: e.oculta })) } : null),

@@ -106,9 +106,23 @@ export const CLAVE_ROTO = 'ggabyss:v1:roto:'
  * Sombras largas (PLAN.md F10): la luz del kit viene de arriba a la izquierda, así que caen abajo a la derecha.
  * Adentro (la Catedral) la luz es de velas y vitrales: sombras más cortas y suaves.
  */
+/** Sombras largas de lo que no trae sombra horneada y de los personajes: la misma luz que las del taller */
 export const SOMBRA_LARGA = {
-  afuera: { alfa: 0.4, largo: 0.5, angulo: -34, altoMin: 30 },
-  adentro: { alfa: 0.26, largo: 0.32, angulo: -14, altoMin: 40 },
+  // afuera, el sol de las horneadas del taller (carpa del minero, pinos, robles): la punta cae 0.40 del alto a la
+  // derecha y 0.16 abajo, oscura al pie y clarita en la punta. Acá un toque más marcadas: con la viñeta y la noche
+  // las del taller se pierden en el pasto
+  afuera: { alfa: 0.58, alfaPunta: 0.26, tramos: 5, kx: 0.44, ky: 0.2, altoMin: 24 },
+  // adentro no hay sol: cada sombra cae lejos de la antorcha, el cristal o el farol que la alumbra (kx y ky son solo
+  // el arranque). Debajo de la luz casi no sale, a 70 px ya es larga, y a oscuras no se ve
+  adentro: {
+    alfa: 0.5,
+    alfaPunta: 0.14,
+    tramos: 4,
+    kx: 0.3,
+    ky: 0.14,
+    altoMin: 28,
+    luces: { largo: 0.62, lejos: 70, aplaste: 0.55, kyMin: 0.07, ganancia: 1 },
+  },
 } as const
 
 /** Reflejos en el agua quieta: el mismo cuadro dado vuelta, frío y transparente */

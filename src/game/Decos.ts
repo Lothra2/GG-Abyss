@@ -4,7 +4,8 @@ import type { Deco } from '../kit/mapa'
 import { K } from '../kit/claves'
 import { COLOR, DECOS, PROF, REFLEJO } from '../config/juego'
 import { hash2 } from '../logic/azar'
-import { aguaDebajo, meneoReflejo, tiraSombra, type CfgSombra, type MapaAgua } from '../logic/luzMundo'
+import { aguaDebajo, meneoReflejo, sombraDeLuces, tiraSombra, type CfgSombra, type LuzQueAlumbra, type MapaAgua } from '../logic/luzMundo'
+import { SombraLarga } from './SombraLarga'
 import { meneo, reaccionDe, tocaReaccion, type Reaccion } from '../logic/reaccion'
 import { capaDe, PARALAJE_FRENTE, posParalaje, tapa } from '../logic/capas'
 
@@ -20,6 +21,8 @@ export interface Luz {
   ph: number
   /** la luz de la heroína no suma resplandor de color */
   heroina?: boolean
+  /** qué tan arriba del piso está (la llama de una antorcha va alta): las sombras de adentro salen de su pie */
+  alto?: number
 }
 
 export interface DefDeco {
@@ -88,6 +91,8 @@ export interface Activo {
   forzada?: { anim: string; t0: number }
   /** sombras largas del objeto (y de su copa), con el mismo cuadro */
   sh: Phaser.GameObjects.Sprite[]
+  /** las sombras largas inclinadas hechas con el cuadro (cuando el taller no trae la horneada) */
+  lg: SombraLarga[]
   /** reflejos en el agua, con el mismo cuadro */
   rf: Phaser.GameObjects.Sprite[]
   /** reloj en que empezó a reaccionar (-1 quieto) y hacia qué lado lo empujaron */
@@ -143,7 +148,7 @@ export class Decos {
   set sombrasLargas(v: boolean) {
     if (v === this.conSombras) return
     this.conSombras = v
-    if (!v) this.activos.forEach((a) => this.quitarExtras(a.sh))
+    if (!v) this.activos.forEach((a) => this.quitarLargas(a))
   }
 
   get sombrasLargas(): boolean {
@@ -158,6 +163,11 @@ export class Decos {
 
   get reflejos(): boolean {
     return this.conReflejos
+  }
+
+  private quitarLargas(a: Activo): void {
+    for (const l of a.lg) l.destroy()
+    a.lg.length = 0
   }
 
   private quitarExtras(lista: Phaser.GameObjects.Sprite[]): void {
@@ -239,14 +249,29 @@ export class Decos {
     this.activos.forEach(fn)
   }
 
-  /** Cuántas sombras largas y reflejos hay en pantalla (para las pruebas) */
-  contarEfectos(): { sombras: number; reflejos: number } {
-    let sombras = 0, reflejos = 0
+  /**
+   * Adentro: cada sombra larga cae lejos de la luz que la alumbra (antorchas, cristales, el farol de la heroína),
+   * se alarga al alejarse y a oscuras no se ve. Afuera manda el sol y no se toca
+   */
+  iluminarSombras(luces: readonly LuzQueAlumbra[], dt: number): void {
+    const cl = this.cfgSombra?.luces
+    if (!cl) return
     this.activos.forEach((a) => {
-      sombras += a.sh.length
+      if (!a.lg.length) return
+      const z = sombraDeLuces(a.d.x, a.d.y, a.d.def.apoyo[1], luces, cl)
+      for (const l of a.lg) l.apuntar(z.kx, z.ky, z.fuerza, dt)
+    })
+  }
+
+  /** Cuántas sombras largas (las calculadas y las horneadas del taller) y reflejos hay en pantalla (para las pruebas) */
+  contarEfectos(): { sombras: number; horneadas: number; reflejos: number } {
+    let sombras = 0, horneadas = 0, reflejos = 0
+    this.activos.forEach((a) => {
+      sombras += a.lg.length
+      horneadas += a.sh.length
       reflejos += a.rf.length
     })
-    return { sombras, reflejos }
+    return { sombras, horneadas, reflejos }
   }
 
   /** Un activo por nombre de objeto, para las pruebas */
@@ -296,12 +321,14 @@ export class Decos {
       k.setOrigin(s.originX, s.originY).setPosition(d.x, d.y).setDepth(PROF.SOMBRAS)
       sh.push(k)
     }
+    const lg: SombraLarga[] = []
     for (const fuente of [s, c]) {
       if (!fuente) continue
+      // la sombra inclinada con la luz del mundo: la base pegada al pie, la punta abajo a la derecha
       if (d.sombra && cs && this.sombrasLargas && !horneada) {
-        const k = this.sprite(fuente.texture.key)
-        k.setOrigin(fuente.originX, fuente.originY).setPosition(d.x, d.y).setTint(0x000000).setAlpha(cs.alfa).setScale(1, -cs.largo).setAngle(cs.angulo).setDepth(PROF.SOMBRAS)
-        sh.push(k)
+        const l = new SombraLarga(this.escena, cs, fuente.texture.key, fuente.frame.name)
+        l.seguir(fuente, d.x, d.y)
+        lg.push(l)
       }
       if (d.refleja && this.reflejos) {
         const k = this.sprite(fuente.texture.key)
@@ -314,6 +341,7 @@ export class Decos {
       s,
       c,
       sh,
+      lg,
       rf,
       reacT: -1,
       reacLado: 1,
@@ -338,6 +366,7 @@ export class Decos {
       sp.setVisible(false).setActive(false)
       this.libres.push(sp)
     }
+    this.quitarLargas(a)
   }
 
   /** Activa y suelta decorados según lo que se ve */
@@ -479,6 +508,7 @@ export class Decos {
         if (a.c.frame.name !== String(fc)) a.c.setFrame(fc)
       }
       // sombras y reflejos copian el cuadro (el primero es del objeto o del tronco, el segundo de la copa)
+      a.lg.forEach((l, i) => l.seguir(i === 0 ? a.s : (a.c ?? a.s), d.x, d.y))
       const horneada = a.sh.length > 0 && a.sh[0]!.texture.key === K.objSombra(d.nombre)
       if ((a.sh.length && !horneada) || a.rf.length) {
         const copiar = (k: Phaser.GameObjects.Sprite, i: number) => {
@@ -511,7 +541,7 @@ export class Decos {
       }
 
       // luz propia del objeto
-      if (def.luz && !d.apagada) luces.push({ x: d.x, y: d.y - (def.luz.dy ?? 0), r: def.luz.radius, color: def.luz.color, flicker: def.luz.flicker, pulse: def.luz.pulse, ph: d.ph })
+      if (def.luz && !d.apagada) luces.push({ x: d.x, y: d.y - (def.luz.dy ?? 0), r: def.luz.radius, color: def.luz.color, flicker: def.luz.flicker, pulse: def.luz.pulse, ph: d.ph, alto: def.luz.dy ?? 0 })
       // luz de los ojos de un árbol despierto
       if (a.despierto && !an.endsWith('dormido')) luces.push({ x: d.x, y: d.y - 54, r: 46, color: d.tipo.endsWith('1') ? COLOR.OJOS_HECHIZADO_1 : COLOR.OJOS_HECHIZADO, pulse: true, ph: d.ph })
 
@@ -638,6 +668,7 @@ export class Decos {
       a.s.destroy()
       a.c?.destroy()
       for (const k of [...a.sh, ...a.rf]) k.destroy()
+      for (const l of a.lg) l.destroy()
     }
     for (const s of this.libres) s.destroy()
     this.activos.clear()

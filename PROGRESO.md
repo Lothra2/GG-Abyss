@@ -34,6 +34,13 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - Mundo 3 jugable (PLAN.md F11, "Estado del Mundo 3"): cristales, polilla, sombra, minero, carrito, figura, mural y la Polilla Reina con su escudo de luz.
   - Intro con los cinco paneles pintados en capas, la pared de fuego, el humo, el logo en llamas, `musica_intro` y `latido`. Si el kit no trae los paneles sigue el intro con piezas prestadas.
   - El kit pesa 74.1 MB (antes 59.5): la tablet guarda todo para jugar sin red.
+- Sombras con sentido (pedido de Rick, "mira las carpas"):
+  - Antes cada objeto sin sombra horneada tiraba su dibujo girado: la carpa quedaba con una cuña negra hacia abajo que no seguía ninguna luz.
+  - Ahora la sombra es el mismo cuadro inclinado (`SombraLarga.ts`): la base pegada al pie y la punta abajo a la derecha, con el largo medido en las sombras horneadas del taller (0.40 del alto a la derecha, 0.16 abajo). Va en tramos que se aclaran hacia la punta, como las del taller.
+  - La heroína, Thor, los enemigos y el jefe también tiran sombra larga, y se mueve con cada cuadro de la animación (`SombrasPersonajes.ts`).
+  - Adentro (Catedral y Galerías) no hay sol: cada sombra cae lejos de la luz que la alumbra, se alarga al alejarse y a oscuras no se ve (`logic/luzMundo.ts`, `sombraDeLuces`). La de Thor cae lejos del farol de la heroína y la de ella lejos del brillo de Thor.
+  - Calidad baja las apaga. Las del taller siguen mandando donde existen.
+- Nova de Steph y HUD: el anillo de la nova y el aura de nivel rodean a la heroína, mitad atrás y mitad adelante (igual el pisotón de los jefes). El botón de ataque es redondo con el arma adentro, las habilidades en arco alrededor y los contadores en una franja. El ícono redondo del ataque está pedido al taller (ASSETS_PENDIENTES #38).
 - Lo que Rick vio jugando en el teléfono:
   - Thor se deslizaba congelado: alcanzaba la huella de la heroína, frenaba un instante y la animación volvía al cuadro 1. Ahora mientras ella camina sigue caminando, y al cambiar de dirección conserva el cuadro del paso.
   - El inventario no entraba (410 de alto en una pantalla de 304 a 390). Acostado se parte en dos: equipo a la izquierda, oro y bolsa a la derecha, con los bordes del mismo dibujo. El álbum pasa a 1/10 en más columnas.

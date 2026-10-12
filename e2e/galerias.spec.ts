@@ -133,6 +133,26 @@ test.describe('Las Galerías del Eco', () => {
     await sinErrores(errores)
   })
 
+  test('a oscuras cada sombra cae lejos de la luz: la de Thor, lejos del farol de la heroína', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await bajarALasGalerias(page)
+    await gancho(page, 'matarEnemigos')
+    await avanzar(page, 1)
+    // Thor se acomoda al lado: se espera a que quede a un costado claro de ella
+    await expect.poll(async () => {
+      const l = await gancho<{ sombraThor: { kx: number; alfa: number } | null }>(page, 'luzMundo')
+      const h = await gancho<{ x: number; y: number }>(page, 'pos')
+      const t = await gancho<{ x: number; y: number }>(page, 'thor')
+      if (!l.sombraThor || Math.abs(t.x - h.x) < 14) {
+        await avanzar(page, 0.5)
+        return 'esperando'
+      }
+      if (l.sombraThor.alfa <= 0.05) return `apagada ${l.sombraThor.alfa}`
+      return Math.sign(l.sombraThor.kx) === Math.sign(t.x - h.x) ? 'ok' : `kx ${l.sombraThor.kx} con Thor a ${t.x - h.x}`
+    }, { timeout: 30_000 }).toBe('ok')
+    await sinErrores(errores)
+  })
+
   test('el carrito lleva a la heroína por la vía y Thor llega con ella', async ({ page }) => {
     const errores = vigilarErrores(page)
     await bajarALasGalerias(page, 'sophie')

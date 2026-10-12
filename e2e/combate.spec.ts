@@ -313,11 +313,17 @@ test.describe('Combate', () => {
     expect(l.orbeMana.x + l.orbeMana.width).toBeGreaterThanOrEqual(v.vista.w - 10)
     expect(l.orbeVida.y + l.orbeVida.height).toBeGreaterThanOrEqual(v.vista.h - 10)
     expect(Math.abs(l.cinturon.x + l.cinturon.width / 2 - v.vista.w / 2)).toBeLessThanOrEqual(2)
+    // las habilidades en arco: no se tocan entre ellas (son redondas), quedan a la izquierda del orbe de maná,
+    // a la derecha del cinturón y dentro de la pantalla
     const [b0, b1] = l.botones
-    expect(b0!.x + b0!.lado / 2).toBeLessThanOrEqual(b1!.x - b1!.lado / 2)
-    expect(b1!.x + b1!.lado / 2).toBeLessThanOrEqual(l.orbeMana.x)
-    expect(l.cinturon.x + l.cinturon.width).toBeLessThanOrEqual(b0!.x - b0!.lado / 2)
-    for (const b of l.botones) expect(b.lado).toBeGreaterThanOrEqual(40)
+    expect(Math.hypot(b0!.x - b1!.x, b0!.y - b1!.y)).toBeGreaterThanOrEqual((b0!.lado + b1!.lado) / 2)
+    for (const b of l.botones) {
+      expect(b.x + b.lado / 2).toBeLessThanOrEqual(l.orbeMana.x)
+      expect(l.cinturon.x + l.cinturon.width).toBeLessThanOrEqual(b.x - b.lado / 2)
+      expect(b.y - b.lado / 2).toBeGreaterThanOrEqual(0)
+      expect(b.y + b.lado / 2).toBeLessThanOrEqual(v.vista.h)
+      expect(b.lado).toBeGreaterThanOrEqual(40)
+    }
   })
 
   test('en modo peque los botones son más grandes y la heroína ataca sola al que tenga al alcance', async ({ page }) => {
