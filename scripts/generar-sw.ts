@@ -31,15 +31,19 @@ const archivos = listar(dist)
   .filter((u) => !NO_GUARDAR.some((re) => re.test('/' + u)))
   .sort()
 
+// la huella de cada archivo es su contenido: al actualizar, el service worker copia de lo ya guardado lo que no cambió
+const huella = (u: string) => createHash('sha1').update(readFileSync(join(dist, u))).digest('hex').slice(0, 12)
 const hash = createHash('sha1')
-for (const u of archivos) {
+const conHuella = archivos.map((u) => {
+  const h = huella(u)
   hash.update(u)
-  hash.update(String(statSync(join(dist, u)).size))
-}
+  hash.update(h)
+  return [`./${u}`, h] as const
+})
 const version = hash.digest('hex').slice(0, 10)
 
-// la página y la raíz siempre; los demás con ruta relativa al scope
-const lista = ['./', ...archivos.map((u) => `./${u}`)]
+// la página (la raíz) siempre, con la huella del index; los demás con ruta relativa al scope
+const lista = [['./', huella('index.html')] as const, ...conHuella]
 let sw = readFileSync(join(dist, 'sw.js'), 'utf8')
 sw = sw.replace("'__VERSION__'", JSON.stringify(version)).replace('/* __ARCHIVOS__ */ []', JSON.stringify(lista))
 writeFileSync(join(dist, 'sw.js'), sw)

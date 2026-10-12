@@ -4,7 +4,8 @@ import { params } from './config/params'
 export const estadoPwa = {
   registrado: false,
   controlado: false,
-  precache: null as null | { archivos: number; hechos: number },
+  /** `bajados`: los que hubo que bajar (al actualizar, lo que no cambió se copia de lo ya guardado) */
+  precache: null as null | { archivos: number; hechos: number; bajados: number },
   error: '' as string,
   /** ya estaba guardada una versión y llegó otra: hay que recargar para jugarla */
   nuevaVersion: false,
@@ -22,7 +23,7 @@ export function registrarServiceWorker(): void {
   if (!import.meta.env.PROD) return
   if (params.test && !params.sw) return
   navigator.serviceWorker.addEventListener('message', (e: MessageEvent) => {
-    if (e.data?.tipo === 'precache-listo') estadoPwa.precache = { archivos: e.data.archivos, hechos: e.data.hechos }
+    if (e.data?.tipo === 'precache-listo') estadoPwa.precache = { archivos: e.data.archivos, hechos: e.data.hechos, bajados: e.data.bajados ?? e.data.hechos }
   })
   // si ya había un service worker, el cambio es una versión nueva: la página sigue con la vieja hasta recargar
   const habia = !!navigator.serviceWorker.controller
@@ -31,6 +32,10 @@ export function registrarServiceWorker(): void {
     if (!habia) return
     estadoPwa.nuevaVersion = true
     window.dispatchEvent(new Event(EVENTO_VERSION_NUEVA))
+  })
+  // la app vuelve del fondo con una versión nueva ya guardada: recarga para jugarla (Mundo guardó al irse al fondo)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && estadoPwa.nuevaVersion) window.location.reload()
   })
   const registrar = () =>
     navigator.serviceWorker

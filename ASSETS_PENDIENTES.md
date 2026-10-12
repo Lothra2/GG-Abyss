@@ -80,11 +80,12 @@ Todo el pedido, con tamaños, cuadros, apoyos y prioridades, está en `docs/enca
 - **Pedido:** rehacerlo como un corte de hormiguero con siete mini escenas que se reconozcan: el bosque con raíces, la catedral con su campana, las galerías con cristales, el mar callado, la ciudad dormida, las fraguas rojas y el fondo con dos ojos. Mismo tamaño, mismas capas (`fondo` 0.8 y `frente` 1), la luz roja subiendo desde abajo.
 - **Mientras tanto:** el juego lo usa así, con la cámara bajando por él.
 
-### 38. Íconos redondos para el botón de ataque
+### 38. Ícono genérico redondo para el botón de ataque (urgente, lo pidió Rick)
 
-- **Qué pasa:** el botón de ataque usa el ícono del arma de la mochila (32 x 32), que trae su marco cuadrado y su fondo. El juego lo recorta en un círculo por dentro del aro, pero el arma queda chica y las puntas de las armas largas se cortan.
-- **Pedido:** cinco íconos en `ui.habilidades` con el mismo estilo de los de las habilidades (40 x 40, redondos, con su aro de color): `ataque_tajo` (espada), `ataque_pesado` (mandoble), `ataque_estocada` (lanza), `ataque_flecha` (arco) y `ataque_hechizo` (varita). Aro dorado para que se distinga de las habilidades.
-- **Mientras tanto:** el ícono del arma recortado en círculo.
+- **Qué pasa:** el botón de ataque usa el ícono del arma de la mochila (32 x 32), que trae su fondo y su marco cuadrado pintados. El juego lo recorta en círculo, pero se sigue leyendo como "un objeto en un cuadro" y no se puede teñir. Rick no quiere el arma: quiere un símbolo genérico de ataque, dentro del círculo.
+- **Pedido:** `ataque` en `ui.habilidades` (el juego lo carga como `hab_ataque`), 40 x 40, redondo y con el mismo estilo de los de las habilidades (`nova_fuego`, `rayo_canalizado`): dos espadas cruzadas claras sobre el fondo oscuro, con aro dorado (`#e8b850` a `#ffd27a`) para que se distinga de las habilidades. Que se lea a 40 y a 80 px y que no dependa de la clase: es el mismo para las cinco heroínas.
+- **Opcional, después:** uno por familia (`ataque_tajo`, `ataque_pesado`, `ataque_estocada`, `ataque_flecha`, `ataque_hechizo`). Si llegan, el genérico sigue mandando.
+- **Mientras tanto:** el ícono del arma recortado en círculo dentro del aro dorado.
 
 ### 37. La columna de primer plano de la Catedral no se usa
 

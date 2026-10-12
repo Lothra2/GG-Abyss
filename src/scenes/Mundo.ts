@@ -625,6 +625,8 @@ export class Mundo extends Phaser.Scene {
     this.instalarGanchos()
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.cerrar())
+    // la app se va al fondo (otra app, la pantalla se apaga): se guarda ya. Si al volver hay versión nueva, recarga
+    this.game.events.on(Phaser.Core.Events.HIDDEN, this.guardar, this)
     this.cameras.main.fadeIn(350, 7, 10, 18)
     this.listo = true
     if (hacerPresentacion) this.guardar()
@@ -1119,6 +1121,7 @@ export class Mundo extends Phaser.Scene {
     this.game.events.off('pausa-cerrada', this.alCerrarPausa, this)
     this.game.events.off('inventario-cerrado', this.alCerrarPausa, this)
     this.game.events.off('heroina-cae', this.alCaerEnArena, this)
+    this.game.events.off(Phaser.Core.Events.HIDDEN, this.guardar, this)
     quitarGanchos(...NOMBRES_GANCHOS)
     this.entrada.destroy()
     this.soltarAnillo()

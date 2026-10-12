@@ -161,11 +161,13 @@ export class HudCombate {
     const id = this.mundo.partida.equipo.arma ?? ej[c.ataque?.familia ?? 'tajo']
     const it = itemDe(this.mundo.cat, id)
     this.ataqueArma = `${id}|${c.ataque?.familia}`
-    // si el taller trae el ícono redondo del ataque (ASSETS_PENDIENTES #38) va ese, entero y sin recorte
-    const propio = K.ui(`hab_ataque_${c.ataque?.familia ?? 'tajo'}`)
-    this.iconoPropio = this.escena.textures.exists(propio)
-    if (this.iconoPropio) this.ataqueIcono.setTexture(propio).clearMask()
-    else if (it && this.escena.textures.exists(atlasDeIcono(it))) this.ataqueIcono.setTexture(atlasDeIcono(it), frameDeIcono(it)).setMask(this.mascaraGeo)
+    // si el taller trae el ícono redondo del ataque (ASSETS_PENDIENTES #38) va ese, entero y sin recorte: el genérico
+    // primero (lo que pidió Rick), si no el de la familia del arma
+    const propio = [K.ui('hab_ataque'), K.ui(`hab_ataque_${c.ataque?.familia ?? 'tajo'}`)].find((t) => this.escena.textures.exists(t))
+    this.iconoPropio = !!propio
+    if (propio) this.ataqueIcono.setTexture(propio).clearTint().clearMask()
+    // mientras tanto, el ícono del arma recortado en círculo por dentro del aro (trae su fondo pintado: no se puede teñir)
+    else if (it && this.escena.textures.exists(atlasDeIcono(it))) this.ataqueIcono.setTexture(atlasDeIcono(it), frameDeIcono(it)).clearTint().setMask(this.mascaraGeo)
     this.acomodarAtaque()
   }
 

@@ -34,6 +34,11 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - Mundo 3 jugable (PLAN.md F11, "Estado del Mundo 3"): cristales, polilla, sombra, minero, carrito, figura, mural y la Polilla Reina con su escudo de luz.
   - Intro con los cinco paneles pintados en capas, la pared de fuego, el humo, el logo en llamas, `musica_intro` y `latido`. Si el kit no trae los paneles sigue el intro con piezas prestadas.
   - El kit pesa 74.1 MB (antes 59.5): la tablet guarda todo para jugar sin red.
+- Las versiones nuevas no le llegaban al teléfono de Rick (seguía viendo el HUD y las sombras viejas):
+  - Cada publicación hacía que el service worker bajara otra vez el juego entero (1380 archivos, unos 74 MB) antes de cambiar de versión. En el teléfono eso tarda o se corta al cerrar la app.
+  - Ahora cada archivo lleva su huella. Al actualizar se copia de lo ya guardado todo lo que no cambió y solo se baja lo nuevo (medido en local: 1 archivo en 2.5 s). La primera vez desde una versión vieja, sin huellas, pregunta por el ETag de cada archivo y reusa lo que siga igual.
+  - Mundo guarda al irse la app al fondo. Si al volver ya llegó la versión nueva, recarga y sigue la partida.
+- Botón de ataque: Rick quiere un ícono genérico de ataque, no el arma. Va pedido al taller (ASSETS_PENDIENTES #38, `hab_ataque`) y el juego lo usa apenas llegue. Mientras tanto, el arma recortada en círculo.
 - Sombras con sentido (pedido de Rick, "mira las carpas"):
   - Antes cada objeto sin sombra horneada tiraba su dibujo girado: la carpa quedaba con una cuña negra hacia abajo que no seguía ninguna luz.
   - Ahora la sombra es el mismo cuadro inclinado (`SombraLarga.ts`): la base pegada al pie y la punta abajo a la derecha, con el largo medido en las sombras horneadas del taller (0.40 del alto a la derecha, 0.16 abajo). Va en tramos que se aclaran hacia la punta, como las del taller.
