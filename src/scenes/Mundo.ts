@@ -1856,7 +1856,7 @@ export class Mundo extends Phaser.Scene {
       tocar: ((x: number, y: number) => this.entrada.tocar(x, y)) as never,
       estado: () => JSON.parse(JSON.stringify(this.partida)),
       atmosfera: () => this.atmosfera.info(),
-      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, criaturasChicas: this.criaturas.infoChicos, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible }),
+      luzMundo: () => ({ ...this.decos.contarEfectos(), reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, criaturasChicas: this.criaturas.infoChicos, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible, frenteMedidas: this.frente.medidas, altoVista: this.frente.altoVista }),
       camara: () => ({ x: this.camara.cx, y: this.camara.cy, ancho: this.camara.ancho, alto: this.camara.alto, manual: this.camara.manual }),
       // F11: las Galerías
       galerias: () => (this.galerias ? { ...this.galerias.info, viajando: !!this.viaje, sombras: this.enemigos.lista.filter((e) => e.cfg.soloEnLuz && e.vivo).map((e) => ({ x: Math.round(e.x), y: Math.round(e.y), oculta: e.oculta })) } : null),

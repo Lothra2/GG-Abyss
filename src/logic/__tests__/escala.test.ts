@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ALTO_MUNDO_MIN, calcularEscala, zoomCamara } from '../escala'
+import { ALTO_CSS_TELEFONO, ALTO_LOGICO_GRANDE, ALTO_LOGICO_MIN_TELEFONO, ALTO_MUNDO_MIN, calcularEscala, pantallaChica, zoomCamara } from '../escala'
 
 describe('calcularEscala', () => {
   it('iPad 1180 x 820 con dpr 2: zoom 4 y vista 590 x 410', () => {
@@ -46,9 +46,24 @@ describe('calcularEscala', () => {
     for (const dpr of [1, 1.25, 1.5, 2, 2.625, 3]) {
       for (const h of [400, 410, 540, 600, 720, 820, 1080, 1440]) {
         const e = calcularEscala(1000, h / dpr, dpr)
-        if (e.Hp >= 400) expect(e.alto).toBeGreaterThanOrEqual(400)
+        // los teléfonos acostados buscan menos alto (ver el test de abajo)
+        if (e.Hp >= 400 && h / dpr >= ALTO_CSS_TELEFONO) expect(e.alto).toBeGreaterThanOrEqual(400)
       }
     }
+  })
+
+  it('en un teléfono acostado se ve lo mismo que en la tablet, no el doble de mundo a la mitad', () => {
+    // iPhone 14 a pantalla completa, Galaxy S23 a pantalla completa y con la barra de Chrome, iPhone SE en Safari
+    for (const [w, h, dpr] of [[844, 390, 3], [780, 360, 3], [780, 304, 3], [667, 325, 2], [932, 430, 3]] as const) {
+      const e = calcularEscala(w, h, dpr)
+      expect(e.alto).toBeGreaterThanOrEqual(ALTO_LOGICO_MIN_TELEFONO)
+      expect(e.alto).toBeLessThan(ALTO_LOGICO_GRANDE)
+      expect(pantallaChica(e)).toBe(true)
+    }
+    // la tablet y la compu no cambian
+    expect(calcularEscala(1180, 820, 2).zoom).toBe(4)
+    expect(calcularEscala(1280, 720, 1).zoom).toBe(1)
+    expect(pantallaChica(calcularEscala(1280, 720, 1))).toBe(false)
   })
 
   it('la vista lógica cubre toda la ventana física', () => {

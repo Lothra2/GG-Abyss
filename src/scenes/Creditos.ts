@@ -5,6 +5,7 @@ import { texto } from '../game/Texto'
 import { crearBoton } from '../game/ui/Boton'
 import { Bloqueo } from '../game/ui/Bloqueo'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
+import { pantallaChica } from '../logic/escala'
 
 /** Prepara el texto del kit para mostrarlo: sin direcciones web (no caben) y sin renglones repetidos */
 export function limpiarCreditos(crudo: string): string {
@@ -95,10 +96,10 @@ export class Creditos extends Phaser.Scene {
     const mg = 8
     this.velo.setSize(w, h)
     this.panel.setPosition(mg, mg).setSize(w - mg * 2, h - mg * 2)
-    this.titulo.setScale(e.zoom >= 3 ? 1 : 2).setPosition(Math.round(w / 2), mg + 8)
+    this.titulo.setScale(pantallaChica(e) ? 1 : 2).setPosition(Math.round(w / 2), mg + 8)
     this.cerrar.setPosition(w - mg - 4, mg + 4)
     const top = mg + 8 + this.titulo.displayHeight + 10
-    const esc = e.zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(e) ? 1 : 2
     this.contenido.setScale(esc)
     this.contenido.setMaxWidth(Math.floor((w - mg * 2 - 28) / esc))
     this.ventana = { x: mg + 14, y: top, w: w - mg * 2 - 28, h: h - top - mg - 10 }

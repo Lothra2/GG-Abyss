@@ -8,6 +8,7 @@ import { Bloqueo } from './Bloqueo'
 import { itemDe } from '../../logic/catalogo'
 import { atlasDeIcono, frameDeIcono } from '../Botin'
 import type { Mundo } from '../../scenes/Mundo'
+import { pantallaChica } from '../../logic/escala'
 
 interface BotonHab {
   i: 0 | 1
@@ -187,10 +188,10 @@ export class HudCombate {
     this.xpAncho = ANCHO_CINTURON
     this.marcoXp.setPosition(cx, yXp).setSize(ANCHO_CINTURON, 12)
     this.rellenoXp.setPosition(cx + 3, yXp - 6)
-    this.txtNivel.setScale(e.zoom >= 3 ? 1 : 2).setPosition(cx - 6, yXp - 6)
+    this.txtNivel.setScale(pantallaChica(e) ? 1 : 2).setPosition(cx - 6, yXp - 6)
 
     this.anchoJefe = Math.min(320, Math.max(120, w - 2 * 150))
-    const esc = e.zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(e) ? 1 : 2
     this.nombreJefe.setScale(esc)
     const yBarra = mg + 6 + this.nombreJefe.displayHeight
     this.marcoJefe.setPosition(Math.round(w / 2), yBarra).setSize(this.anchoJefe, 18)

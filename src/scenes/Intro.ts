@@ -11,6 +11,7 @@ import { crearBoton, type Boton } from '../game/ui/Boton'
 import { Bloqueo } from '../game/ui/Bloqueo'
 import { avanceBeat, beatEn, DURACION_INTRO, enSilencio, latidosHasta, letrasVisibles, LLAVE_INTRO, type Beat, type Momento } from '../logic/intro'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
+import { pantallaChica } from '../logic/escala'
 
 /** La cueva del abismo: la misma postal del título, ahora con fuego */
 const POSTAL = 'arena_del_minotauro'
@@ -137,7 +138,7 @@ export class Intro extends Phaser.Scene {
     }
 
     Bloqueo.instalar(this)
-    const escB = escalaDe(this.game).zoom >= 3 ? 1 : 2
+    const escB = pantallaChica(escalaDe(this.game)) ? 1 : 2
     this.saltar = crearBoton(this, { x: 0, y: 0, etiqueta: 'Saltar', escalaTexto: escB, icono: 'icono_jugar', origen: [1, 0.5], sonido: 'click', alToque: () => this.terminar() })
     this.saltar.setDepth(300).setAlpha(0.75)
     // medio segundo de gracia para que el toque que lo abrió no lo salte
@@ -170,7 +171,7 @@ export class Intro extends Phaser.Scene {
     const w = this.scale.width
     const h = this.scale.height
     const e = escalaDe(this.game)
-    this.esc = e.zoom >= 3 ? 1 : 2
+    this.esc = pantallaChica(e) ? 1 : 2
     const esc = this.esc
     for (const c of Object.values(this.planos)) c.removeAll(true)
     this.fuego.removeAll(true)

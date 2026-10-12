@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { bordeFrente, capaDe, corrimientoTira, cuerpoJefe, frenteDeZona, posParalaje, tapa } from '../capas'
+import { bordeFrente, capaDe, corrimientoTira, cuerpoJefe, esColumnaFrente, frenteDeZona, posParalaje, tapa } from '../capas'
 
 describe('capas del taller', () => {
   it('lee la capa del manifest y lo demás va con los objetos', () => {
@@ -52,5 +52,14 @@ describe('primer plano por zona', () => {
       expect(Number.isInteger(d)).toBe(true)
     }
     expect(corrimientoTira(0, 256)).toBe(0)
+  })
+})
+
+describe('el primer plano no tapa el juego', () => {
+  it('una columna que sube de abajo no va; las raíces que cuelgan y las hojas sí', () => {
+    expect(esColumnaFrente({ w: 64, h: 256, apoyo: [32, 256] })).toBe(true)
+    expect(esColumnaFrente({ w: 128, h: 160, apoyo: [64, 0] })).toBe(false)
+    expect(esColumnaFrente({ w: 40, h: 200, apoyo: [20, 0] })).toBe(false)
+    expect(esColumnaFrente({ w: 96, h: 64, apoyo: [48, 64] })).toBe(false)
   })
 })

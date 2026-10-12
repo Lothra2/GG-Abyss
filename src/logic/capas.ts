@@ -50,6 +50,14 @@ export function bordeFrente(def: { h: number; apoyo: [number, number] }): 'arrib
 }
 
 /**
+ * ¿Es una columna que sube del borde de abajo (alta y angosta)? Pegada a la pantalla queda cortada a media altura y se
+ * lee como una barra negra; agrandada hasta arriba tapa justo donde se juega, sobre todo en el teléfono. No va.
+ */
+export function esColumnaFrente(def: { w: number; h: number; apoyo: [number, number] }): boolean {
+  return def.h > def.w * 1.5 && bordeFrente(def) === 'abajo'
+}
+
+/**
  * Corrimiento horizontal de una tira del primer plano pegada a la pantalla. La tira se repite cada `periodo` px;
  * con paralaje 1.15 se corre un 15 % más rápido que el mundo. Devuelve un valor entre -periodo y 0, entero.
  */

@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { esperarEscena, gancho, manifest, sinErrores, vigilarErrores } from './util'
 
-// Humo de F0: corre en escritorio (1280x720 dpr 1) y en tablet (1180x820 dpr 2)
+// Humo de F0: corre en escritorio (1280x720 dpr 1), en tablet (1180x820 dpr 2) y en los teléfonos (dpr 3)
 
 test('carga el juego, la escena Boot termina y no hay errores', async ({ page }, info) => {
   const errores = vigilarErrores(page)
@@ -12,6 +12,11 @@ test('carga el juego, la escena Boot termina y no hay errores', async ({ page },
   const esc = await gancho<{ zoom: number; ancho: number; alto: number; dpr: number }>(page, 'escala')
   if (info.project.name === 'tablet') {
     expect(esc).toMatchObject({ zoom: 4, ancho: 590, alto: 410, dpr: 2 })
+  } else if (info.project.name === 'iphone') {
+    // el teléfono acostado ve lo mismo que la tablet: 3 pixeles físicos por pixel del arte
+    expect(esc).toMatchObject({ zoom: 3, ancho: 844, alto: 390, dpr: 3 })
+  } else if (info.project.name === 'galaxy') {
+    expect(esc).toMatchObject({ zoom: 3, ancho: 780, alto: 304, dpr: 3 })
   } else {
     expect(esc).toMatchObject({ zoom: 1, ancho: 1280, alto: 720, dpr: 1 })
   }
@@ -34,7 +39,7 @@ test('el canvas mide exactamente zoom pixeles físicos por pixel lógico', async
 })
 
 test('al cambiar el tamaño de la ventana el zoom se recalcula y sigue entero', async ({ page }, info) => {
-  test.skip(info.project.name === 'tablet', 'el cambio de tamaño se prueba en escritorio')
+  test.skip(info.project.name !== 'escritorio', 'el cambio de tamaño se prueba en escritorio')
   await page.goto('/?test=1')
   await esperarEscena(page, 'Titulo')
   const casos: [number, number, number, number, number][] = [

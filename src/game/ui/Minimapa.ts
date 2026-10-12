@@ -6,6 +6,7 @@ import { texto } from '../Texto'
 import { Bloqueo } from './Bloqueo'
 import { aMinimapa, type Niebla } from '../../logic/niebla'
 import { COLOR_MAPA, HUD as MARGENES } from '../../config/juego'
+import { pantallaChica } from '../../logic/escala'
 
 export type MarcaMapa = { tipo: 'fogata' | 'mercader' | 'jefe' | 'portal'; x: number; y: number }
 
@@ -69,7 +70,7 @@ export class Minimapa {
   /** `derecha` es el borde derecho donde termina (a la izquierda de los botones) */
   acomodar(derecha: number, arriba: number): void {
     // pixeles lógicos por cuadro del mapa: en la tablet (zoom alto) 2, en la compu 3
-    this.esc = escalaDe(this.escena.game).zoom >= 3 ? 2 : 3
+    this.esc = pantallaChica(escalaDe(this.escena.game)) ? 2 : 3
     const { w, h } = this.tamano
     this.x = Math.round(derecha - w)
     this.y = Math.round(arriba)
@@ -172,7 +173,7 @@ export class Minimapa {
     const marco = e.add.nineslice(x0 - 8, y0 - 8, K.ui('panel'), undefined, mw + 16, mh + 16, 12, 12, 12, 12).setOrigin(0, 0)
     const img = e.add.image(x0, y0, this.tex.key).setOrigin(0, 0).setScale(k)
     c.add([velo, marco, img])
-    const esc = escalaDe(e.game).zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(escalaDe(e.game)) ? 1 : 2
     const titulo = texto(e, W / 2, Math.max(MARGENES.MARGEN, y0 - 12 - 10 * esc), 'Mapa', 'fuente_titulo', esc, { origen: [0.5, 1] })
     c.add(titulo)
     const vista = { x: 0, y: 0, w: m.ancho * m.cuadro, h: m.alto * m.cuadro }

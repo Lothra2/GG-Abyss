@@ -7,6 +7,7 @@ import { alCambiarEscala, escalaDe } from '../game/Pantalla'
 import { escalaQueEntra, texto } from '../game/Texto'
 import { crearBoton } from '../game/ui/Boton'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
+import { pantallaChica } from '../logic/escala'
 
 /** "1 h 12 min", "35 min" o "menos de 1 min" */
 export function tiempoLegible(seg: number): string {
@@ -96,7 +97,7 @@ export class Continuara extends Phaser.Scene {
     this.titulo.setScale(escalaQueEntra(base, w - 24, 2))
     this.titulo.setPosition(Math.round(w / 2), Math.round(h * 0.17))
     // el resumen en una fila (o dos si la vista es angosta)
-    const esc = e.zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(e) ? 1 : 2
     const anchos = this.filas.map((f) => 24 + 4 + (f.texto.setScale(esc), f.texto.displayWidth))
     const sep = 14
     const total = anchos.reduce((a, b) => a + b, 0) + sep * (anchos.length - 1)

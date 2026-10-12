@@ -7,6 +7,7 @@ import { Bloqueo } from '../game/ui/Bloqueo'
 import { album, type FiguritaAlbum } from '../logic/descubrimiento'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import type { Mundo } from './Mundo'
+import { pantallaChica } from '../logic/escala'
 
 interface Casilla {
   f: FiguritaAlbum
@@ -144,7 +145,7 @@ export class Album extends Phaser.Scene {
     if (!g) return
     const w = this.scale.width
     const h = this.scale.height
-    const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(escalaDe(this.game)) ? 1 : 2
     g.nombre.setScale(esc)
     // la postal mide 960 x 540: se achica a la mitad o al cuarto para entrar (siempre una fracción exacta)
     const libreH = h - 24 - g.nombre.displayHeight - 16
@@ -158,7 +159,7 @@ export class Album extends Phaser.Scene {
     if (!this.velo?.active) return
     const w = this.scale.width
     const h = this.scale.height
-    const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(escalaDe(this.game)) ? 1 : 2
     this.velo.setSize(w, h)
     this.titulo.setScale(esc)
     this.cuenta.setScale(esc)

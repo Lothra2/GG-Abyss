@@ -6,6 +6,7 @@ import { atlasDeIcono, frameDeIcono } from '../Botin'
 import { escalaDe } from '../Pantalla'
 import { hexANumero, texto } from '../Texto'
 import { crearBoton, type Boton } from './Boton'
+import { pantallaChica } from '../../logic/escala'
 
 const VERDE = 0x8aff7a
 const ROJO = 0xff7a6a
@@ -106,7 +107,7 @@ export class TarjetaBotin {
   acomodar(): void {
     if (!this.datos) return
     const w = this.escena.scale.width
-    const esc = escalaDe(this.escena.game).zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(escalaDe(this.escena.game)) ? 1 : 2
     for (const t of [this.nombre, this.juicio, ...this.lineas]) t.setScale(esc)
     this.icono.setScale(esc === 1 ? 1 : 2)
     this.flecha.setScale(esc === 1 ? 0.5 : 1)

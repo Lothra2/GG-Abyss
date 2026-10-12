@@ -8,7 +8,7 @@ const pos = (p: Page) => gancho<{ x: number; y: number }>(p, 'pos')
 const avanzar = (p: Page, s: number) => gancho(p, 'avanzar', s)
 
 async function toque(page: Page, info: TestInfo, x: number, y: number): Promise<void> {
-  if (info.project.name === 'tablet') await page.touchscreen.tap(x, y)
+  if (info.project.use.hasTouch) await page.touchscreen.tap(x, y)
   else await page.mouse.click(x, y)
 }
 

@@ -12,6 +12,7 @@ import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import { introVista } from './Intro'
 import { mostrarIntro } from '../logic/intro'
 import { params } from '../config/params'
+import { pantallaChica } from '../logic/escala'
 
 /**
  * Pantalla de título (PLAN.md F1b, tarea 1): la entrada al abismo con su luz, el logo de GG Abyss y "Toca para empezar".
@@ -99,7 +100,7 @@ export class Titulo extends Phaser.Scene {
       const s = escalaQueEntra(288, w * 0.8, 4)
       this.logo.setScale(s).setPosition(Math.round(w / 2), Math.round(h * 0.32))
     } else this.logoTexto?.setPosition(Math.round(w / 2), Math.round(h * 0.32))
-    const esc = e.zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(e) ? 1 : 2
     this.toca.setScale(esc)
     const total = 24 + 8 + this.toca.displayWidth
     const y = Math.round(h * 0.78)

@@ -11,6 +11,7 @@ import { colorDeRareza, itemDe, lineasDeStats, ranuraDe, type ItemCat, type Ranu
 import { comparar } from '../logic/equipo'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import type { Mundo } from './Mundo'
+import { pantallaChica } from '../logic/escala'
 
 const MANTENER_MS = 420
 /** lo que hay que mover el dedo para que el toque pase a ser un arrastre */
@@ -221,7 +222,7 @@ export class Inventario extends Phaser.Scene {
       pu.timer.remove()
       this.cerrarTooltip()
       const icono = this.add.image(p.x, p.y, atlasDeIcono(it), frameDeIcono(it)).setScale(this.escala).setDepth(1100).setAlpha(0.9)
-      const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+      const esc = pantallaChica(escalaDe(this.game)) ? 1 : 2
       const aviso = texto(this, Math.round(this.scale.width / 2), Math.max(10, Math.round(this.origen.y - 12 * esc)), 'Suéltalo afuera para dejarlo en el piso', 'fuente_ui', esc, { origen: [0.5, 0.5], tinte: 0xd8d2c4, profundidad: 1100 })
       this.arrastre = { c: pu.c, icono, aviso }
       this.sound.play(K.aud('click'), { volume: 0.4 })
@@ -289,7 +290,7 @@ export class Inventario extends Phaser.Scene {
   private avisar(t: string, tinte = 0xff8a8a): void {
     this.mensaje?.destroy()
     const e = escalaDe(this.game)
-    const esc = e.zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(e) ? 1 : 2
     this.mensaje = texto(this, Math.round(this.scale.width / 2), Math.round(this.origen.y + 24 * this.escala), t, 'fuente_ui', esc, { origen: [0.5, 0.5], tinte, profundidad: 900 })
     this.tweens.add({ targets: this.mensaje, alpha: 0, delay: 900, duration: 500, onComplete: () => this.mensaje?.destroy() })
   }
@@ -321,7 +322,7 @@ export class Inventario extends Phaser.Scene {
     this.tooltipInfo = { nombre: it.name.es, lineas, dif }
 
     const e = escalaDe(this.game)
-    const esc = e.zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(e) ? 1 : 2
     const ancho = Math.min(this.scale.width - 8, 170 * (esc === 1 ? 1 : 1.4))
     const cont = this.add.container(0, 0).setDepth(1000)
     let y = 8

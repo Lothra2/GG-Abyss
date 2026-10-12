@@ -5,6 +5,7 @@ import { escalaQueEntra, texto } from '../game/Texto'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import { columnaAbismo } from '../logic/abismo'
 import { ABISMO } from '../config/balance'
+import { pantallaChica } from '../logic/escala'
 
 /** Lo que muestra la bajada: el nombre del mundo y si se baja o se sube */
 export interface DatosBajada {
@@ -39,7 +40,7 @@ export class Bajada extends Phaser.Scene {
     const acomodar = () => {
       const w = this.scale.width
       const h = this.scale.height
-      const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+      const esc = pantallaChica(escalaDe(this.game)) ? 1 : 2
       this.titulo.setScale(1)
       this.titulo.setScale(escalaQueEntra(this.titulo.displayWidth, w - 24, esc + 1))
       this.sub.setScale(esc).setPosition(Math.round(w / 2), Math.round(h / 2 - this.titulo.displayHeight / 2 - 14))

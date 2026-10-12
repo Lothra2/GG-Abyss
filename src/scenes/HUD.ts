@@ -16,6 +16,7 @@ import { HudCombate } from '../game/ui/HudCombate'
 import { Minimapa } from '../game/ui/Minimapa'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import type { Mundo, EventoDescubrimiento } from './Mundo'
+import { pantallaChica } from '../logic/escala'
 
 /**
  * Interfaz encima del mundo. Todo se ancla a los bordes de la vista lógica, nada flota en coordenadas fijas.
@@ -228,7 +229,7 @@ export class HUD extends Phaser.Scene {
     const w = this.scale.width
     const h = this.scale.height
     const mg = MARGENES.MARGEN
-    const esc = e.zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(e) ? 1 : 2
     this.tarjeta?.acomodar()
     for (const t of [this.txtZonas, this.txtSecretos, this.txtOro]) t.setScale(esc)
     const fila = Math.max(26, this.txtZonas.displayHeight + 8)
@@ -274,7 +275,7 @@ export class HUD extends Phaser.Scene {
   /** El chip va pegado debajo de los contadores, del mismo ancho mínimo */
   private acomodarChip(): void {
     if (!this.chip) return
-    const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(escalaDe(this.game)) ? 1 : 2
     const mg = MARGENES.MARGEN
     this.chipTexto.setScale(esc)
     const alto = Math.max(26, this.chipTexto.displayHeight + 8)
@@ -371,7 +372,7 @@ export class HUD extends Phaser.Scene {
       this.tituloCine.setText(String(t[0])).setTint(Number(t[2]))
       this.subCine.setText(String(t[1]))
     }
-    const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(escalaDe(this.game)) ? 1 : 2
     this.tituloCine.setScale(esc + 1)
     if (this.tituloCine.displayWidth > w - 24) this.tituloCine.setScale(esc)
     this.subCine.setScale(esc)
@@ -418,9 +419,9 @@ export class HUD extends Phaser.Scene {
     const e = escalaDe(this.game)
     const w = this.scale.width
     const h = this.scale.height
-    const esc = e.zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(e) ? 1 : 2
     const key = this.textures.exists(K.ui(`cartel_${icono}`)) ? K.ui(`cartel_${icono}`) : K.ui('icono_mapa')
-    const escIcono = e.zoom >= 3 ? 2 : 3
+    const escIcono = pantallaChica(e) ? 2 : 3
     const lado = 24 * escIcono
     const anchoPanel = Math.min(w - 24, 460)
     const txt = texto(this, 0, 0, textoCartel, 'fuente_ui', esc, { origen: [0, 0.5], ancho: anchoPanel - lado - 40, alinear: 'izq' })
@@ -490,7 +491,7 @@ export class HUD extends Phaser.Scene {
       if (fl.alpha <= 0) fl.setVisible(false)
       return
     }
-    const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(escalaDe(this.game)) ? 1 : 2
     const v = vectorDe(DIRECCIONES[f.dir]!)
     const meneo = Math.round(Math.sin(this.tFlecha * 5) * 2 * esc)
     fl.setVisible(true).setFrame(f.dir).setScale(esc)
@@ -511,7 +512,7 @@ export class HUD extends Phaser.Scene {
     }
     this.tMano += dt
     const e = escalaDe(this.game)
-    const esc = e.zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(e) ? 1 : 2
     const v = this.mundo.cameras.main.worldView
     const kx = this.scale.width / v.width
     const ky = this.scale.height / v.height

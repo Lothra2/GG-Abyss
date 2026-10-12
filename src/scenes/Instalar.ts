@@ -7,6 +7,7 @@ import { texto } from '../game/Texto'
 import { crearBoton } from '../game/ui/Boton'
 import { Bloqueo } from '../game/ui/Bloqueo'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
+import { pantallaChica } from '../logic/escala'
 
 /**
  * Cómo instalar el juego en el iPad (PLAN.md F5): en iPad no hay pantalla completa de verdad, hay que agregarlo a la pantalla de inicio
@@ -55,7 +56,7 @@ export class Instalar extends Phaser.Scene {
     const w = this.scale.width
     const h = this.scale.height
     const e = escalaDe(this.game)
-    const esc = e.zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(e) ? 1 : 2
     this.velo.setSize(w, h)
     const pw = Math.min(w - 16, 360)
     const ph = Math.min(h - 16, 190 + (esc - 1) * 50)

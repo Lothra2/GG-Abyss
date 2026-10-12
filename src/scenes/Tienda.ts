@@ -10,6 +10,7 @@ import { comprar, ofertas, precioVenta, semillaSurtido, sePuedeVender, surtido, 
 import { TIENDA } from '../config/balance'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import type { Mundo } from './Mundo'
+import { pantallaChica } from '../logic/escala'
 
 type Pestana = 'comprar' | 'vender'
 type Origen = 'fija' | 'surtido' | 'recompra' | 'bolsa'
@@ -96,7 +97,7 @@ export class Tienda extends Phaser.Scene {
     this.oroTexto = texto(this, 0, 0, '0', 'fuente_ui', 1, { origen: [0, 0.5], tinte: 0xffd27a })
     this.vacio = texto(this, 0, 0, 'La bolsa está vacía', 'fuente_ui', 1, { origen: [0.5, 0.5], tinte: 0xb8b4c4 }).setVisible(false)
     this.cerrar = crearBoton(this, { x: 0, y: 0, icono: 'icono_cerrar', alToque: () => this.salir(), origen: [1, 0] })
-    const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(escalaDe(this.game)) ? 1 : 2
     this.tabs = {
       comprar: crearBoton(this, { x: 0, y: 0, icono: 'icono_bolsa', etiqueta: 'Comprar', escalaTexto: esc, alToque: () => this.cambiarPestana('comprar') }),
       vender: crearBoton(this, { x: 0, y: 0, icono: 'icono_oro', etiqueta: 'Vender', escalaTexto: esc, alToque: () => this.cambiarPestana('vender') }),
@@ -259,7 +260,7 @@ export class Tienda extends Phaser.Scene {
   }
 
   private flotar(t: Tarjeta, s: string, tinte: number): void {
-    const f = texto(this, t.x + t.w / 2, t.y + 6, s, 'fuente_ui', escalaDe(this.game).zoom >= 3 ? 1 : 2, { origen: [0.5, 1], tinte }).setDepth(50)
+    const f = texto(this, t.x + t.w / 2, t.y + 6, s, 'fuente_ui', pantallaChica(escalaDe(this.game)) ? 1 : 2, { origen: [0.5, 1], tinte }).setDepth(50)
     this.tweens.add({ targets: f, y: f.y - 16, alpha: 0, duration: 900, ease: 'Sine.easeOut', onComplete: () => f.destroy() })
   }
 
@@ -320,7 +321,7 @@ export class Tienda extends Phaser.Scene {
     if (!this.velo?.active) return
     const w = this.scale.width
     const h = this.scale.height
-    const esc = escalaDe(this.game).zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(escalaDe(this.game)) ? 1 : 2
     this.escalaTexto = esc
     this.velo.setSize(w, h)
     this.oroTexto.setScale(esc)

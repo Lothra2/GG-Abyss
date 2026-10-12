@@ -20,11 +20,22 @@ export interface Escala {
 /** Alto lógico mínimo que se busca (si la pantalla lo permite) */
 export const ALTO_LOGICO_MIN = 400
 
+/**
+ * En un teléfono acostado (menos de 500 px CSS de alto) se busca menos alto lógico: así el iPhone y el Galaxy ven el
+ * mismo encuadre que la tablet (unos 360 a 410 px de alto) en vez del doble de mundo a la mitad del tamaño.
+ */
+export const ALTO_CSS_TELEFONO = 500
+export const ALTO_LOGICO_MIN_TELEFONO = 300
+
+/** Desde este alto lógico la pantalla es grande (la compu): los textos y los íconos van x2 */
+export const ALTO_LOGICO_GRANDE = 500
+
 export function calcularEscala(anchoCss: number, altoCss: number, dpr: number): Escala {
   const d = Number.isFinite(dpr) && dpr > 0 ? dpr : 1
   const Wp = Math.max(1, Math.round(anchoCss * d))
   const Hp = Math.max(1, Math.round(altoCss * d))
-  const zoom = Math.max(1, Math.floor(Hp / ALTO_LOGICO_MIN))
+  const min = altoCss < ALTO_CSS_TELEFONO ? ALTO_LOGICO_MIN_TELEFONO : ALTO_LOGICO_MIN
+  const zoom = Math.max(1, Math.floor(Hp / min))
   return {
     dpr: d,
     Wp,
@@ -46,4 +57,9 @@ export const ALTO_MUNDO_MIN = 340
 /** Aumento entero de la cámara del mundo sobre la vista lógica */
 export function zoomCamara(altoLogico: number): number {
   return Math.max(1, Math.floor(altoLogico / ALTO_MUNDO_MIN))
+}
+
+/** ¿La vista lógica es chica (tablet, teléfono)? Entonces textos e íconos van x1; en la compu, x2 */
+export function pantallaChica(e: Pick<Escala, 'alto'>): boolean {
+  return e.alto < ALTO_LOGICO_GRANDE
 }

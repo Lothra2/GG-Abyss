@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import type { Manifest } from '../kit/tipos'
 import { K } from '../kit/claves'
 import { PROF } from '../config/juego'
-import { bordeFrente, corrimientoTira } from '../logic/capas'
+import { bordeFrente, corrimientoTira, esColumnaFrente } from '../logic/capas'
 
 /**
  * El primer plano del taller (PLAN.md F10, encargo 2.5): ramas que cuelgan del borde de arriba y hojas que suben
@@ -40,7 +40,8 @@ export class Frente {
 
   /** Cambia a los ids que pide la zona nueva (lista vacía: se va el primer plano) */
   zona(ids: string[]): void {
-    const validos = ids.filter((id) => this.m.mundo.objetos[id] && this.escena.textures.exists(this.textura(id)))
+    // las columnas que suben del borde de abajo no van (ver esColumnaFrente): las ramas y raíces de arriba sí
+    const validos = ids.filter((id) => this.m.mundo.objetos[id] && !esColumnaFrente(this.m.mundo.objetos[id]!) && this.escena.textures.exists(this.textura(id)))
     if (validos.join(',') === this.ids.join(',')) return
     this.ids = validos
     // la capa vieja se funde hacia afuera y la nueva hacia adentro
@@ -109,6 +110,15 @@ export class Frente {
 
   get piezas(): string[] {
     return [...this.ids]
+  }
+
+  /** Para las pruebas: arriba y alto de una pieza de cada tira, en pixeles de lo que se ve del mundo */
+  get medidas(): { y: number; alto: number }[] {
+    return this.tiras.flatMap((t) => (t.c.list as Phaser.GameObjects.Sprite[]).slice(0, 1).map((o) => ({ y: Math.round(o.getBounds().y - this.oy), alto: Math.round(o.displayHeight) })))
+  }
+
+  get altoVista(): number {
+    return this.alto
   }
 
   /** `heroe` en coordenadas del mundo: lo del frente que le pasa por encima se aclara para no taparla */

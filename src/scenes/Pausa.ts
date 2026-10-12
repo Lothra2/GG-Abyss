@@ -9,6 +9,7 @@ import { nocheMaxima } from '../logic/zonas'
 import { alternarPantallaCompleta, esIOS, instaladaComoApp, puedePantallaCompleta } from '../pwa'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import type { Mundo } from './Mundo'
+import { pantallaChica } from '../logic/escala'
 
 interface Deslizador {
   rotulo: string
@@ -193,7 +194,7 @@ export class Pausa extends Phaser.Scene {
     const w = this.scale.width
     const h = this.scale.height
     const e = escalaDe(this.game)
-    const esc = e.zoom >= 3 ? 1 : 2
+    const esc = pantallaChica(e) ? 1 : 2
     this.nombresVisibles = esc === 1
     this.refrescar()
     this.velo.setSize(w, h)
