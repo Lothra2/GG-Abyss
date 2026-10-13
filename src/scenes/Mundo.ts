@@ -5,6 +5,7 @@ import { manifestDe } from '../kit/contexto'
 import { idMundo, manifestParaMundo, mundoJugable, MUNDO_BOSQUE } from '../kit/mundos'
 import { Mecanismos, OBJETOS_MECANISMOS } from '../game/Mecanismos'
 import { Galerias } from '../game/Galerias'
+import { Puerto } from '../game/Puerto'
 import { SombrasPersonajes } from '../game/SombrasPersonajes'
 import { PortalFx } from '../game/PortalFx'
 import { perfilDe } from '../game/Jefe'
@@ -16,7 +17,7 @@ import { frenteDeZona } from '../logic/capas'
 import { FondoParalaje } from '../fx/FondoParalaje'
 import { Niebla } from '../logic/niebla'
 import { pisoDe, thorBrilla, topeOscuridad } from '../logic/abismo'
-import { ABISMO } from '../config/balance'
+import { ABISMO, PUERTO } from '../config/balance'
 import { aspectoDe, claveAspecto } from '../logic/aspecto'
 import { puntosDeCaida, regionCaminable } from '../logic/lugar'
 import { RADIO_HEROINA } from '../logic/camino'
@@ -24,7 +25,7 @@ import { familiaDeArma, NOMBRE_FAMILIA } from '../logic/armas'
 import { crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
-import { CALIDAD, PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S, SOMBRA_LARGA } from '../config/juego'
+import { CALIDAD, COLOR, PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S, SOMBRA_LARGA } from '../config/juego'
 import { REACCIONES, AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, MUSICA_ESTADOS, OLFATO } from '../config/balance'
 import { enAnillo } from '../logic/jefe'
 import { Grilla } from '../logic/grilla'
@@ -92,7 +93,7 @@ const NOMBRES_GANCHOS = [
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
   'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual', 'mecanismos', 'darBrasas', 'mercader', 'aspecto',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
-  'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable',
+  'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable', 'puerto', 'adelantarMarea', 'alzarFarol', 'apagarFarol',
 ]
 
 /**
@@ -152,6 +153,8 @@ export class Mundo extends Phaser.Scene {
   mecanismos: Mecanismos | null = null
   /** F11: las Galerías (cristales, carrito, figura, mural): solo en el mundo que trae cristales */
   galerias: Galerias | null = null
+  /** F12: el Puerto Ahogado (farol de Thor, faroles del muelle y marea) */
+  puerto: Puerto | null = null
   /** las luces del último cuadro (la sombra solo se ve dentro de una) */
   private lucesUltimas: Luz[] = []
   /** la heroína va en el carrito: hasta cuándo (segundos de juego) */
@@ -306,6 +309,11 @@ export class Mundo extends Phaser.Scene {
     encolarObjetosMundo(this, this.m, new Set(mapa.entidades.filter((e) => e.tipo === 'rompible').map((e) => String(e.props.objeto ?? 'caja'))))
     // F11: los cristales (apagados y prendidos), el carrito y la figura de las Galerías
     if (mapa.cristales.length) encolarObjetosMundo(this, this.m, [...Object.keys(this.m.mundo.objetos).filter((n) => n.startsWith('cristal_')), 'carrito_mina', 'figura_ojos'])
+    // F12: los faroles del muelle, el agua de la marea, los muelles flotantes y el farol de Thor del Puerto Ahogado
+    if (entidadesDeTipo(mapa, 'farol_muelle').length || mapa.marea.some((v) => v)) {
+      encolarObjetosMundo(this, this.m, ['farol_muelle_apagado', 'farol_muelle_prendido', 'farol_muelle_prenderse', 'agua_marea', 'muelle_flotante'])
+      for (const id of ['thor_farol', 'thor_farol_apagado']) if (this.m.personajes[id]) encolarPersonaje(this, this.m, id, ['idle', 'walk', 'run', 'sit', 'wag', 'bite', 'howl', 'bark', 'pickup', 'dig', 'hurt'])
+    }
     // todas las armaduras de Thor que traiga el kit (antes solo 1 a 3: con la 4 o la 5 puesta quedaba congelado)
     for (const id of Object.keys(this.m.personajes).filter((k) => /^thor_armadura\d+$/.test(k))) encolarPersonaje(this, this.m, id, ['idle', 'walk', 'run', 'sit', 'wag', 'bite', 'howl', 'bark', 'pickup', 'dig', 'hurt'])
     for (const t of new Set(mapa.entidades.filter((e) => e.tipo === 'enemigo' || e.tipo === 'jefe').map((e) => String(e.props.enemigo ?? '')))) encolarPersonaje(this, this.m, t)
@@ -559,6 +567,21 @@ export class Mundo extends Phaser.Scene {
           alMural: (pieza) => this.alSecretoDeCofre(`mural:${pieza}`, 'El mural de los mineros'),
         })
       : null
+    this.puerto?.destruir()
+    this.puerto =
+      entidadesDeTipo(this.mapa, 'farol_muelle').length || this.mapa.marea.some((v) => v)
+        ? new Puerto(this, m, this.mapa, this.grilla, this.partida.faroles, {
+            sonido: (n, op) => this.sonido.efecto(n, op),
+            alCambiar: (ids) => {
+              this.partida.faroles = ids
+              this.guardar()
+            },
+            alRescatar: (x, y) => this.rescatarDeLaMarea(x, y),
+            modoPeque: () => this.combate.modoPeque,
+          })
+        : null
+    // en el Puerto la luz grande es la de Thor: el farol de la heroína se achica
+    this.atmosfera.radioHalo = this.puerto ? PUERTO.haloHeroina : COLOR.FAROL_RADIO
     this.alCambioInventario(false)
 
     this.entrada = new Entrada(this, {
@@ -1125,6 +1148,8 @@ export class Mundo extends Phaser.Scene {
     kb.on('keydown-I', () => !this.entrada.estaPausada && this.abrirInventario())
     kb.on('keydown-T', () => !this.entrada.estaPausada && this.olfatear())
     ;(['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'] as const).forEach((k, i) => kb.on(`keydown-${k}`, () => !this.entrada.estaPausada && this.combate.pocion(i)))
+    // F12: F alza el farol de Thor en el Puerto
+    kb.on('keydown-F', () => !this.entrada.estaPausada && this.alzarFarol())
   }
 
   private cerrar(): void {
@@ -1148,6 +1173,8 @@ export class Mundo extends Phaser.Scene {
     this.mecanismos = null
     this.galerias?.destruir()
     this.galerias = null
+    this.puerto?.destruir()
+    this.puerto = null
     this.sombrasPj?.destruir()
     this.sombrasPj = null
     for (const f of this.portalesFx) f.destroy()
@@ -1164,6 +1191,26 @@ export class Mundo extends Phaser.Scene {
   /* ---------- usar cosas del mundo ---------- */
 
   /** Un toque: un cuervo, algo que se usa (cofre, cartel, fogata, Abuelo Roble) o el piso */
+  /** F12: Thor alza el farol (aúlla). false si no está en el Puerto o lo tiene en recarga */
+  private alzarFarol(): boolean {
+    if (!this.puerto?.alzar()) return false
+    this.thor.hacer('howl', 1.1)
+    return true
+  }
+
+  /** F12: la marea alcanzó a alguien: se lo lleva suave al seco más cercano, sin daño (nadie pierde) */
+  private rescatarDeLaMarea(x: number, y: number): void {
+    const h = this.heroina
+    const { tx, ty } = this.grilla.cuadroDe(h.x, h.y)
+    if (!this.grilla.caminable(tx, ty)) {
+      h.parar()
+      h.teleport(x, y)
+      this.atmosfera.particulas.estallido(x, y, 'luciernaga_turquesa', 6)
+    }
+    const t = this.grilla.cuadroDe(this.thor.x, this.thor.y)
+    if (!this.grilla.caminable(t.tx, t.ty)) this.thor.teleport(x - 18, y + 6)
+  }
+
   private tocarMundo(x: number, y: number): boolean {
     if (this.combate.tocarEnemigo(x, y)) {
       this.pendiente = null
@@ -1177,8 +1224,9 @@ export class Mundo extends Phaser.Scene {
       if (this.heroina.irA(suelo.x, suelo.y)) this.ponerMarca(suelo.x, suelo.y)
       return true
     }
-    // tocar a Thor: olfatea
+    // tocar a Thor: olfatea. En el Puerto primero alza el farol (si lo tiene en recarga, olfatea como siempre)
     if (this.tocaThor(x, y)) {
+      if (this.alzarFarol()) return true
       this.olfatear()
       return true
     }
@@ -1780,7 +1828,8 @@ export class Mundo extends Phaser.Scene {
     const luces: Luz[] = []
     if (this.portalJefe) luces.push({ x: this.portalJefe.x, y: this.portalJefe.y - 40, r: 150, color: this.portalJefe.luz, pulse: true, ph: 0.3 })
     // F11: desde el piso 3 Thor brilla un poquito, así nunca se pierde en lo oscuro
-    if (thorBrilla(this.piso)) luces.push({ x: this.thor.sprite.x, y: this.thor.sprite.y - 10, r: ABISMO.thorBrilloRadio, color: '#ffe8b0', pulse: true, ph: 0.6, alto: 10 })
+    // en el Puerto la luz de Thor es su farol (la pone el Puerto, más grande y cálida)
+    if (thorBrilla(this.piso) && !this.puerto) luces.push({ x: this.thor.sprite.x, y: this.thor.sprite.y - 10, r: ABISMO.thorBrilloRadio, color: '#ffe8b0', pulse: true, ph: 0.6, alto: 10 })
     // en lo hondo el jefe lleva su propio brillo tenue: siempre se ve dónde está, aunque la arena esté a oscuras
     const jb = this.jefe
     if (jb && jb.vivo && thorBrilla(this.piso)) luces.push({ x: jb.x, y: jb.y - jb.cuerpo.alto / 2, r: ABISMO.jefeBrilloRadio, color: '#c58aff', pulse: true, ph: 0.2 })
@@ -1792,6 +1841,7 @@ export class Mundo extends Phaser.Scene {
     this.decos.otros[0] = { x: this.thor.sprite.x, y: this.thor.sprite.y }
     this.decos.enemigos = this.enemigos.vivos.map((e) => ({ x: e.x, y: e.y }))
     this.galerias?.update(heroe, luces)
+    this.puerto?.update(dtVisual, this.thor, [this.heroina, this.thor], luces)
     this.decos.actualizar(this.tViento, dtVisual, vista, heroe, luces)
     this.mecanismos?.update(this.t, luces)
     this.lucesUltimas = luces
@@ -1907,6 +1957,10 @@ export class Mundo extends Phaser.Scene {
       }) as never,
       apagarCristal: ((id: string) => this.galerias?.apagar(id)) as never,
       jefeVulnerable: () => this.galerias?.reinaVulnerable ?? null,
+      puerto: () => (this.puerto ? { ...this.puerto.info, halo: this.atmosfera.radioHalo } : null),
+      adelantarMarea: ((s: number) => this.puerto?.adelantar(s)) as never,
+      alzarFarol: () => this.alzarFarol(),
+      apagarFarol: () => this.puerto?.apagar(),
       mapa: () => ({
         ancho: this.mapa.ancho * this.mapa.cuadro,
         alto: this.mapa.alto * this.mapa.cuadro,

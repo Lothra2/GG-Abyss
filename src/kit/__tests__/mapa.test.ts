@@ -116,3 +116,61 @@ describe('traducción de partículas de zona', () => {
     expect(nombresParticulasConocidas()).toContain('mariposas')
   })
 })
+
+describe('F12: el mapa del Puerto Ahogado', () => {
+  const m4 = (manifest.mundos ?? []).find((x) => x.id === 'mundo4')
+  const mapa = m4 ? parsearMapa(leerJson(KIT + m4.mapa)) : null
+
+  it('trae la marea: caminos que se tapan con la alta y muelles que se pisan con la alta', () => {
+    if (!mapa) return
+    expect(mapa.marea.filter((v) => v === 1).length).toBeGreaterThanOrEqual(1)
+    expect(mapa.marea.filter((v) => v === 2).length).toBeGreaterThanOrEqual(1)
+  })
+
+  it('con las dos mareas, desde cualquier cuadro que se camina se llega a un farol del muelle', () => {
+    if (!mapa) return
+    const faroles = mapa.entidades.filter((e) => e.tipo === 'farol_muelle')
+    expect(faroles.length).toBeGreaterThanOrEqual(1)
+    for (const alta of [false, true]) {
+      const pasa = (i: number) => mapa.colision[i] === 0 && (mapa.marea[i] === 0 || (mapa.marea[i] === 1 ? !alta : alta))
+      // a lo ancho desde todos los faroles a la vez (cada uno desde el cuadro libre más cercano a su pie)
+      const visto = new Uint8Array(mapa.ancho * mapa.alto)
+      let borde: number[] = []
+      for (const f of faroles) {
+        const tx = Math.floor(f.x / mapa.cuadro)
+        const ty = Math.floor(f.y / mapa.cuadro)
+        let puesto = false
+        for (let r = 0; r <= 3 && !puesto; r++)
+          for (let dy = -r; dy <= r && !puesto; dy++)
+            for (let dx = -r; dx <= r && !puesto; dx++) {
+              const i = (ty + dy) * mapa.ancho + tx + dx
+              if (!pasa(i)) continue
+              puesto = true
+              if (!visto[i]) {
+                visto[i] = 1
+                borde.push(i)
+              }
+            }
+        expect(puesto, `farol en ${f.x},${f.y}`).toBe(true)
+      }
+      while (borde.length) {
+        const sig: number[] = []
+        for (const i of borde) {
+          const x = i % mapa.ancho
+          for (const j of [i - 1, i + 1, i - mapa.ancho, i + mapa.ancho]) {
+            if (j < 0 || j >= visto.length || visto[j] || !pasa(j)) continue
+            if ((j === i - 1 && x === 0) || (j === i + 1 && x === mapa.ancho - 1)) continue
+            visto[j] = 1
+            sig.push(j)
+          }
+        }
+        borde = sig
+      }
+      let sueltos = 0
+      for (let i = 0; i < visto.length; i++) if (pasa(i) && !visto[i]) sueltos++
+      // islitas de 1 o 2 cuadros sueltos entre objetos no cuentan: lo grande tiene que estar conectado
+      const caminables = Array.from(visto.keys()).filter((i) => pasa(i)).length
+      expect(sueltos / caminables, `marea ${alta ? 'alta' : 'baja'}`).toBeLessThan(0.02)
+    }
+  })
+})

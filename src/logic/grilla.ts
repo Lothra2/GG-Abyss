@@ -83,6 +83,21 @@ export class Grilla {
     }
   }
 
+  /** Bloquea cuadros sueltos por un rato (la marea alta tapa los caminos bajos). Devuelve una función que los libera */
+  bloquearIndices(ids: readonly number[]): () => void {
+    for (const i of ids) this.extra.set(i, (this.extra.get(i) ?? 0) + 1)
+    let liberado = false
+    return () => {
+      if (liberado) return
+      liberado = true
+      for (const i of ids) {
+        const n = (this.extra.get(i) ?? 1) - 1
+        if (n <= 0) this.extra.delete(i)
+        else this.extra.set(i, n)
+      }
+    }
+  }
+
   centroDe(tx: number, ty: number): Punto {
     return { x: tx * this.cuadro + this.cuadro / 2, y: ty * this.cuadro + this.cuadro / 2 }
   }

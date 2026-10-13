@@ -31,6 +31,8 @@ export interface InfoAtmosfera {
  * oscuridad y tinte, luces, partículas y nubes. Aplica la calidad alta o baja.
  */
 export class Atmosfera {
+  /** el radio del farol de la heroína (en el Puerto Ahogado se achica: la luz grande es la de Thor) */
+  radioHalo: number = COLOR.FAROL_RADIO
   zona: Zona | null = null
   atm: EstadoAtm = atmosferaDe(null)
   private emisores: EmisorZona[] = []
@@ -185,7 +187,7 @@ export class Atmosfera {
     this.particulas.update(t, dt, vista, { emisores: this.emisores, noche, luces, rafaga, decos, ...(this.sobreMuro ? { sobreMuro: this.sobreMuro } : {}) })
 
     // el farol de la heroína siempre está encendido
-    luces.unshift({ x: heroe.x, y: heroe.y - 8, r: radioFarol(t, COLOR.FAROL_RADIO, aj.modoPeque, COLOR.FAROL_EXTRA_PEQUE), color: COLOR.FAROL, ph: 0, heroina: true, alto: 8 })
+    luces.unshift({ x: heroe.x, y: heroe.y - 8, r: radioFarol(t, this.radioHalo, aj.modoPeque, COLOR.FAROL_EXTRA_PEQUE), color: COLOR.FAROL, ph: 0, heroina: true, alto: 8 })
     this.luces.update(t, vista, luces, this.oscFinal, CALIDAD[this.calidad].luces)
     this.ultimasLuces = this.luces.ultimas
 

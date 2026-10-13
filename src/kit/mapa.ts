@@ -63,6 +63,8 @@ export interface MapaJuego {
   reflejo: Uint8Array
   /** F11: los cristales del Mundo 3 (capa `cristales`): el pie de cada uno, su forma (0 cian, 1 violeta, 2 ámbar) y si es grande */
   cristales: { id: string; x: number; y: number; forma: number; grande: boolean }[]
+  /** F12: la marea del Mundo 4 por cuadro: 0 siempre igual, 1 solo se camina con la marea baja, 2 solo con la alta */
+  marea: Uint8Array
   decos: Deco[]
   entidades: Entidad[]
   zonas: Zona[]
@@ -118,6 +120,12 @@ export function parsearMapa(json: MapaTiled): MapaJuego {
   const espuma = new Uint16Array(ancho * alto)
   if (espCapa?.data && espCapa.data.length === ancho * alto) espCapa.data.forEach((v, i) => (espuma[i] = Math.min(65535, v)))
   const espumaFilas = Number(leerProps(espCapa as unknown as { properties?: { name: string; value: string | number | boolean }[] } ?? {}).filas ?? 1) || 1
+  // F12: las capas de la marea (opcionales: solo el Puerto Ahogado las trae)
+  const marea = new Uint8Array(ancho * alto)
+  for (const [nombre, v] of [['marea_baja', 1], ['marea_alta', 2]] as const) {
+    const c = capas.find((l) => l.name === nombre && l.type === 'tilelayer')
+    if (c?.data && c.data.length === ancho * alto) c.data.forEach((d, i) => d && (marea[i] = v))
+  }
   const refCapa = capas.find((l) => l.name === 'reflejo' && l.type === 'tilelayer')
   const reflejo = new Uint8Array(ancho * alto)
   if (refCapa?.data && refCapa.data.length === ancho * alto) refCapa.data.forEach((v, i) => (reflejo[i] = v ? 1 : 0))
@@ -176,7 +184,7 @@ export function parsearMapa(json: MapaTiled): MapaJuego {
   const postales: Postal[] = objetosDe(json.layers, 'postales').map((o) => ({ nombre: o.name, x: o.x, y: o.y }))
 
   const bioma = String(leerProps(json as unknown as { properties?: { name: string; value: string | number | boolean }[] }).bioma ?? 'bosque')
-  return { ancho, alto, cuadro: json.tilewidth, colision, superficie, agua, aguaCuadros, aguaMs, espuma, espumaFilas, reflejo, cristales, decos, entidades, zonas, postales, bioma }
+  return { ancho, alto, cuadro: json.tilewidth, colision, superficie, agua, aguaCuadros, aguaMs, espuma, espumaFilas, reflejo, cristales, marea, decos, entidades, zonas, postales, bioma }
 }
 
 export type Superficie = 'pasto' | 'tierra' | 'piedra' | 'madera' | 'agua'
