@@ -242,6 +242,13 @@ test.describe('El Puerto Ahogado', () => {
     // vencido: la luz robada vuela al faro y el faro se prende con todo el muelle
     await gancho(page, 'danarJefe', 9999)
     await expect.poll(async () => (await gancho<Jefe>(page, 'jefe')).vencido, { timeout: 10_000 }).toBe(true)
+    // la lluvia de oro cae en el anillo de muelle, nunca en la poza (antes caía en el agua y la heroína se quedaba pegada)
+    const arena = (await gancho<{ arena: { x: number; y: number; radio: number; poza?: number } }>(page, 'jefe')).arena
+    await expect.poll(async () => (await gancho<{ monedas: { x: number; y: number }[] }>(page, 'botin')).monedas.filter((m) => Math.hypot(m.x - arena.x, m.y - arena.y) < arena.radio + 40).length, { timeout: 10_000 }).toBeGreaterThan(0)
+    const poza = arena.poza ?? 0
+    for (const m of (await gancho<{ monedas: { x: number; y: number }[] }>(page, 'botin')).monedas.filter((q) => Math.hypot(q.x - arena.x, q.y - arena.y) < arena.radio + 40)) {
+      expect(Math.hypot(m.x - arena.x, m.y - arena.y)).toBeGreaterThan(poza)
+    }
     await expect.poll(async () => (await pto(page)).faro, { timeout: 60_000 }).toBe(true)
     await expect.poll(async () => (await pto(page)).faroles.every((f) => f.prendido), { timeout: 20_000 }).toBe(true)
     for (let i = 0; i < 10; i++) await avanzar(page, 1)

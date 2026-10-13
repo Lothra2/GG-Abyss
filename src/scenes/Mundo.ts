@@ -519,6 +519,7 @@ export class Mundo extends Phaser.Scene {
       },
       alOro: (n, x, y) => this.alOro(n, x, y),
       juicio: (id) => veredicto(this.cat, this.partida.equipo, id, this.combate.clase)?.juicio ?? null,
+      aPiso: (x, y) => this.grilla.puntoLibreCerca(x, y, 8, 240) ?? { x, y },
     })
     this.enemigos = new Enemigos(this, m, this.grilla, this.mapa.entidades, evEnemigos, this.piso)
     this.combate = new Combate({
@@ -952,7 +953,10 @@ export class Mundo extends Phaser.Scene {
         }
         BOTIN.lluviaDeOro.forEach((oro, i) => {
           const ang = (Math.PI * 2 * i) / BOTIN.lluviaDeOro.length
-          this.time.delayedCall(250 + i * 140, () => this.botin.soltarOro(oro, a.x + Math.cos(ang) * 70, a.y + 30 + Math.sin(ang) * 40))
+          // con poza (el Pez Farol) la lluvia cae en el anillo de muelle, donde la heroína camina
+          const rx = a.poza ? a.poza + 36 : 70
+          const ry = a.poza ? (a.poza + 36) * 0.8 : 40
+          this.time.delayedCall(250 + i * 140, () => this.botin.soltarOro(oro, a.x + Math.cos(ang) * rx, a.y + (a.poza ? 0 : 30) + Math.sin(ang) * ry))
         })
       }
       this.time.delayedCall(2600, () => this.abrirPortalJefe(true))

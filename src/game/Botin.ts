@@ -49,6 +49,8 @@ export interface DepsBotin {
   alOro: (n: number, x: number, y: number) => void
   /** ¿conviene ponérselo? (para la flechita verde sobre el objeto en el piso) */
   juicio?: (id: string) => Juicio | null
+  /** el piso caminable más cercano: nada cae en el agua ni adentro de una pared (la poza del Pez Farol, la medusa) */
+  aPiso?: (x: number, y: number) => { x: number; y: number }
 }
 
 const RADIO_RECOGER = 26
@@ -99,7 +101,8 @@ export class Botin {
     })
   }
 
-  soltar(id: string, x: number, y: number): void {
+  soltar(id: string, x0: number, y0: number): void {
+    const { x, y } = this.d.aPiso?.(x0, y0) ?? { x: x0, y: y0 }
     const e = this.d.escena
     const item = itemDe(this.d.cat, id)
     if (!item) return
@@ -139,7 +142,8 @@ export class Botin {
     else if (item.rarity === 'set' || item.rarity === 'legendary' || item.rarity === 'unique') this.d.sonido.efecto('legendario', { volumen: 0.6 })
   }
 
-  soltarOro(oro: number, x: number, y: number): void {
+  soltarOro(oro: number, x0: number, y0: number): void {
+    const { x, y } = this.d.aPiso?.(x0, y0) ?? { x: x0, y: y0 }
     const e = this.d.escena
     if (oro <= 0) return
     const nombre = `oro_${tamanoOro(oro)}`
