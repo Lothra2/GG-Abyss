@@ -29992,6 +29992,640 @@
    "perfil_movimiento": "premium",
    "vuela": true
   },
+  "marinero_niebla": {
+   "tipo": "enemigo",
+   "nombre": "Marinero de Niebla",
+   "celda": 48,
+   "pivote": [
+    24,
+    41
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/marinero_niebla_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/marinero_niebla_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true,
+     "eventos": [
+      {
+       "tipo": "paso",
+       "cuadro": 0,
+       "fase": 0,
+       "pie": "cerca"
+      },
+      {
+       "tipo": "paso",
+       "cuadro": 4,
+       "fase": 0.5,
+       "pie": "lejos"
+      }
+     ],
+     "avance": 14.7,
+     "velocidad_natural": 18.38
+    },
+    "attack": {
+     "archivo": "enemigos/marinero_niebla_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impacto",
+       "cuadro": 3,
+       "fase": 0.5,
+       "punto": [
+        [
+         1,
+         3
+        ],
+        [
+         -8,
+         2
+        ],
+        [
+         -11,
+         -1
+        ],
+        [
+         -8,
+         -4
+        ],
+        [
+         -1,
+         -6
+        ],
+        [
+         8,
+         -5
+        ],
+        [
+         11,
+         -2
+        ],
+        [
+         8,
+         2
+        ]
+       ]
+      }
+     ]
+    },
+    "hit": {
+     "archivo": "enemigos/marinero_niebla_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/marinero_niebla_die.png",
+     "cuadros": 16,
+     "fps": 8,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "suelta",
+       "cuadro": 5,
+       "fase": 0.31
+      }
+     ]
+    }
+   },
+   "perfil_movimiento": "premium"
+  },
+  "cangrejo_ceniza": {
+   "tipo": "enemigo",
+   "nombre": "Cangrejo de Ceniza",
+   "celda": 48,
+   "pivote": [
+    24,
+    30
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/cangrejo_ceniza_idle.png",
+     "cuadros": 6,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/cangrejo_ceniza_walk.png",
+     "cuadros": 8,
+     "fps": 14,
+     "loop": true,
+     "avance": 9,
+     "velocidad_natural": 15.75
+    },
+    "attack": {
+     "archivo": "enemigos/cangrejo_ceniza_attack.png",
+     "cuadros": 7,
+     "fps": 14,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impacto",
+       "cuadro": 4,
+       "fase": 0.57
+      }
+     ]
+    },
+    "hit": {
+     "archivo": "enemigos/cangrejo_ceniza_hit.png",
+     "cuadros": 4,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/cangrejo_ceniza_die.png",
+     "cuadros": 10,
+     "fps": 10,
+     "loop": false
+    }
+   },
+   "perfil_movimiento": "premium"
+  },
+  "medusa_negra": {
+   "tipo": "enemigo",
+   "nombre": "Medusa Negra",
+   "celda": 48,
+   "pivote": [
+    24,
+    34
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/medusa_negra_idle.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/medusa_negra_walk.png",
+     "cuadros": 8,
+     "fps": 8,
+     "loop": true,
+     "avance": 4.5,
+     "velocidad_natural": 4.5
+    },
+    "hit": {
+     "archivo": "enemigos/medusa_negra_hit.png",
+     "cuadros": 4,
+     "fps": 12,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/medusa_negra_die.png",
+     "cuadros": 10,
+     "fps": 8,
+     "loop": false
+    }
+   },
+   "perfil_movimiento": "premium",
+   "vuela": true
+  },
+  "capitan_ahogado": {
+   "tipo": "enemigo",
+   "nombre": "El Capitán Ahogado",
+   "celda": 64,
+   "pivote": [
+    32,
+    53
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/capitan_ahogado_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "walk": {
+     "archivo": "enemigos/capitan_ahogado_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true,
+     "eventos": [
+      {
+       "tipo": "paso",
+       "cuadro": 0,
+       "fase": 0,
+       "pie": "cerca"
+      },
+      {
+       "tipo": "paso",
+       "cuadro": 4,
+       "fase": 0.5,
+       "pie": "lejos"
+      }
+     ],
+     "avance": 18.8,
+     "velocidad_natural": 23.5
+    },
+    "attack": {
+     "archivo": "enemigos/capitan_ahogado_attack.png",
+     "cuadros": 6,
+     "fps": 14,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impacto",
+       "cuadro": 3,
+       "fase": 0.5,
+       "punto": [
+        [
+         4,
+         4
+        ],
+        [
+         -11,
+         3
+        ],
+        [
+         -19,
+         -2
+        ],
+        [
+         -17,
+         -9
+        ],
+        [
+         -4,
+         -12
+        ],
+        [
+         11,
+         -11
+        ],
+        [
+         19,
+         -6
+        ],
+        [
+         17,
+         0
+        ]
+       ]
+      }
+     ]
+    },
+    "hit": {
+     "archivo": "enemigos/capitan_ahogado_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "warcry": {
+     "archivo": "enemigos/capitan_ahogado_warcry.png",
+     "cuadros": 10,
+     "fps": 10,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "grito",
+       "cuadro": 3,
+       "fase": 0.3
+      },
+      {
+       "tipo": "paso",
+       "cuadro": 8,
+       "fase": 0.8,
+       "pie": "cerca"
+      }
+     ],
+     "aviso": [
+      3,
+      6
+     ]
+    },
+    "attack_heavy": {
+     "archivo": "enemigos/capitan_ahogado_attack_heavy.png",
+     "cuadros": 14,
+     "fps": 12,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impacto",
+       "cuadro": 9,
+       "fase": 0.64,
+       "punto": [
+        [
+         -10,
+         4
+        ],
+        [
+         -21,
+         -2
+        ],
+        [
+         -19,
+         -8
+        ],
+        [
+         -6,
+         -12
+        ],
+        [
+         10,
+         -12
+        ],
+        [
+         21,
+         -7
+        ],
+        [
+         19,
+         0
+        ],
+        [
+         6,
+         4
+        ]
+       ]
+      }
+     ],
+     "aviso": [
+      1,
+      7
+     ]
+    },
+    "die": {
+     "archivo": "enemigos/capitan_ahogado_die.png",
+     "cuadros": 22,
+     "fps": 8,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "suelta",
+       "cuadro": 5,
+       "fase": 0.23
+      }
+     ]
+    }
+   },
+   "perfil_movimiento": "premium",
+   "elite": true
+  },
+  "pez_farol": {
+   "tipo": "jefe",
+   "nombre": "El Pez Farol",
+   "celda": 128,
+   "pivote": [
+    64,
+    69
+   ],
+   "anims": {
+    "idle": {
+     "archivo": "enemigos/pez_farol_idle.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    },
+    "emerger": {
+     "archivo": "enemigos/pez_farol_emerger.png",
+     "cuadros": 10,
+     "fps": 10,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "grito",
+       "cuadro": 6,
+       "fase": 0.6
+      }
+     ]
+    },
+    "walk": {
+     "archivo": "enemigos/pez_farol_walk.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true,
+     "avance": 34,
+     "velocidad_natural": 42.5
+    },
+    "attack": {
+     "archivo": "enemigos/pez_farol_attack.png",
+     "cuadros": 12,
+     "fps": 12,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "impacto",
+       "cuadro": 8,
+       "fase": 0.67,
+       "punto": [
+        [
+         0,
+         17
+        ],
+        [
+         -27,
+         12
+        ],
+        [
+         -38,
+         0
+        ],
+        [
+         -27,
+         -12
+        ],
+        [
+         0,
+         -17
+        ],
+        [
+         27,
+         -12
+        ],
+        [
+         38,
+         0
+        ],
+        [
+         27,
+         12
+        ]
+       ]
+      }
+     ],
+     "aviso": [
+      1,
+      6
+     ]
+    },
+    "attack_heavy": {
+     "archivo": "enemigos/pez_farol_attack_heavy.png",
+     "cuadros": 16,
+     "fps": 12,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "despegue",
+       "cuadro": 8,
+       "fase": 0.5
+      },
+      {
+       "tipo": "aterriza",
+       "cuadro": 12,
+       "fase": 0.75,
+       "punto": [
+        [
+         0,
+         17
+        ],
+        [
+         -27,
+         12
+        ],
+        [
+         -38,
+         0
+        ],
+        [
+         -27,
+         -12
+        ],
+        [
+         0,
+         -17
+        ],
+        [
+         27,
+         -12
+        ],
+        [
+         38,
+         0
+        ],
+        [
+         27,
+         12
+        ]
+       ]
+      },
+      {
+       "tipo": "impacto",
+       "cuadro": 12,
+       "fase": 0.75,
+       "punto": [
+        [
+         0,
+         17
+        ],
+        [
+         -27,
+         12
+        ],
+        [
+         -38,
+         0
+        ],
+        [
+         -27,
+         -12
+        ],
+        [
+         0,
+         -17
+        ],
+        [
+         27,
+         -12
+        ],
+        [
+         38,
+         0
+        ],
+        [
+         27,
+         12
+        ]
+       ]
+      }
+     ],
+     "elevacion": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      14,
+      34,
+      42,
+      30,
+      10,
+      0,
+      0,
+      0,
+      0
+     ],
+     "aviso": [
+      1,
+      6
+     ]
+    },
+    "warcry": {
+     "archivo": "enemigos/pez_farol_warcry.png",
+     "cuadros": 10,
+     "fps": 10,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "grito",
+       "cuadro": 4,
+       "fase": 0.4
+      }
+     ],
+     "aviso": [
+      1,
+      4
+     ]
+    },
+    "hit": {
+     "archivo": "enemigos/pez_farol_hit.png",
+     "cuadros": 5,
+     "fps": 12,
+     "loop": false
+    },
+    "hundirse": {
+     "archivo": "enemigos/pez_farol_hundirse.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": false
+    },
+    "die": {
+     "archivo": "enemigos/pez_farol_die.png",
+     "cuadros": 20,
+     "fps": 8,
+     "loop": false,
+     "eventos": [
+      {
+       "tipo": "suelta",
+       "cuadro": 6,
+       "fase": 0.3
+      }
+     ]
+    },
+    "aturdido": {
+     "archivo": "enemigos/pez_farol_aturdido.png",
+     "cuadros": 8,
+     "fps": 6,
+     "loop": true
+    }
+   },
+   "perfil_movimiento": "premium",
+   "en_agua": true,
+   "luz_antena": {
+    "color": "#fff0c0",
+    "radius": 220,
+    "notas": "La luz robada del faro, en la punta de la antena: lo más brillante de la pantalla. Se apaga en die (cuadro 9 en adelante)."
+   }
+  },
   "mercader": {
    "tipo": "npc",
    "nombre": "Don Cachivache",
@@ -30639,6 +31273,31 @@
    "fps": 12,
    "loop": false,
    "celda": 96
+  },
+  "aviso_mordida": {
+   "archivo": "fx/aviso_mordida.png",
+   "cuadros": 8,
+   "fps": 10,
+   "loop": false,
+   "celda": 128,
+   "w": 128,
+   "h": 64
+  },
+  "aviso_ola": {
+   "archivo": "fx/aviso_ola.png",
+   "cuadros": 6,
+   "fps": 10,
+   "loop": true,
+   "celda": 32
+  },
+  "ola": {
+   "archivo": "fx/ola.png",
+   "cuadros": 8,
+   "fps": 12,
+   "loop": false,
+   "celda": 128,
+   "w": 128,
+   "h": 64
   }
  },
  "botin": {
@@ -47846,6 +48505,20 @@
   "carrito_rodar": "audio/carrito_rodar.wav",
   "figura_irse": "audio/figura_irse.wav",
   "latido": "audio/latido.wav",
+  "campana_lejos": "audio/campana_lejos.wav",
+  "campana_cerca": "audio/campana_cerca.wav",
+  "marea_sube": "audio/marea_sube.wav",
+  "farol_prender": "audio/farol_prender.wav",
+  "farol_apagar": "audio/farol_apagar.wav",
+  "thor_alza_farol": "audio/thor_alza_farol.wav",
+  "marinero_se_deshace": "audio/marinero_se_deshace.wav",
+  "cangrejo_tenaza": "audio/cangrejo_tenaza.wav",
+  "medusa_toca": "audio/medusa_toca.wav",
+  "ancla_golpe": "audio/ancla_golpe.wav",
+  "pez_emerge": "audio/pez_emerge.wav",
+  "pez_mordida": "audio/pez_mordida.wav",
+  "ola": "audio/ola.wav",
+  "faro_prende": "audio/faro_prende.wav",
   "paso_pasto_0": "audio/paso_pasto_0.wav",
   "paso_pasto_1": "audio/paso_pasto_1.wav",
   "paso_pasto_2": "audio/paso_pasto_2.wav",
@@ -47872,6 +48545,9 @@
   "musica_galerias": "audio/musica_galerias.wav",
   "musica_jefe_polilla": "audio/musica_jefe_polilla.wav",
   "musica_intro": "audio/musica_intro.wav",
+  "musica_jefe_pez": "audio/musica_jefe_pez.wav",
+  "musica_capitan": "audio/musica_capitan.wav",
+  "musica_faro": "audio/musica_faro.wav",
   "ambiente_bosque": "audio/ambiente_bosque.wav",
   "ambiente_agua": "audio/ambiente_agua.wav",
   "ambiente_noche": "audio/ambiente_noche.wav",
@@ -47880,7 +48556,9 @@
   "ambiente_magia": "audio/ambiente_magia.wav",
   "ambiente_catedral": "audio/ambiente_catedral.wav",
   "ambiente_galerias": "audio/ambiente_galerias.wav",
-  "ambiente_eco": "audio/ambiente_eco.wav"
+  "ambiente_eco": "audio/ambiente_eco.wav",
+  "ambiente_puerto": "audio/ambiente_puerto.wav",
+  "ambiente_campana": "audio/ambiente_campana.wav"
  },
  "creditos": "CREDITOS.txt"
 }

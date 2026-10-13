@@ -63,7 +63,8 @@ export function verificarKit(carpeta: string): Resultado {
       if (t && (t.w !== 40 || t.h !== 40)) avisos.push(`retrato de ${id} mide ${t.w}x${t.h} (se esperaba 40x40)`)
     }
   }
-  for (const [n, fx] of Object.entries(m.fx)) hoja(`fx ${n}`, fx.archivo, fx.cuadros * fx.celda, fx.celda)
+  // los que no son cuadrados (la ola, el aviso de la mordida) traen su ancho y su alto
+  for (const [n, fx] of Object.entries(m.fx)) hoja(`fx ${n}`, fx.archivo, fx.cuadros * (fx.w ?? fx.celda), fx.h ?? fx.celda)
   for (const [n, o] of Object.entries(m.mundo.objetos)) for (const [an, a] of Object.entries(o.anims)) hoja(`objeto ${n}.${an}`, a.archivo, a.cuadros * o.w, o.h)
   for (const [n, c] of Object.entries(m.mundo.criaturas)) for (const [an, a] of Object.entries(c.anims)) hoja(`criatura ${n}.${an}`, a.archivo, a.cuadros * c.w, c.h)
   for (const [n, p] of Object.entries(m.mundo.particulas)) hoja(`partícula ${n}`, p.archivo, p.cuadros * p.w, p.h)
