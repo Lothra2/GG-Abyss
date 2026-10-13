@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { DirectorJefe, type Plano } from '../escenaJefe'
+import { DirectorJefe, vencisteA, type Plano } from '../escenaJefe'
 import { ESCENA_JEFE } from '../../config/balance'
 
 const correr = (d: DirectorJefe, seg: number, paso = 0.05): Plano[] => {
@@ -52,5 +52,14 @@ describe('director de la pelea con el jefe', () => {
     correr(d, 0.5)
     d.cortar()
     expect(d.tick(0.1)).toMatchObject({ momento: null, foco: 'heroe', bloquear: false })
+  })
+})
+
+describe('el título de la victoria', () => {
+  it('pone el artículo bien con cualquier nombre del mapa', () => {
+    expect(vencisteA('El Pez Farol')).toBe('Venciste al Pez Farol')
+    expect(vencisteA('Minotauro del Bosque')).toBe('Venciste al Minotauro del Bosque')
+    expect(vencisteA('La Polilla Reina')).toBe('Venciste a la Polilla Reina')
+    expect(vencisteA('Los Tres Gigantes')).toBe('Venciste a los Tres Gigantes')
   })
 })

@@ -2214,7 +2214,7 @@ export class Mundo extends Phaser.Scene {
       jefe: () => {
         const j = this.jefe
         return j
-          ? { existe: true, estado: j.estado, fase: j.fase, blindado: !!j.blindado, vida: j.vida, vidaMax: j.vidaMax, peleando: j.peleando, vivo: j.vivo, x: Math.round(j.x), y: Math.round(j.y), ratas: this.enemigos.invocadasVivas, anillo: this.anillo.length > 0, avisos: j.avisos(), vencido: this.partida.jefeVencido, portal: !!this.portalJefe, cofreJefe: this.entidades.cofres.some((c) => c.e.props.tras_jefe === true), piedras: this.piedrasEncendidas, arena: this.arena }
+          ? { existe: true, estado: j.estado, fase: j.fase, blindado: !!j.blindado, anim: j.sprite.anims.currentAnim?.key ?? null, cuadro: j.sprite.anims.currentFrame?.index ?? 0, alfa: Math.round(j.sprite.alpha * 100) / 100, visible: j.sprite.visible, vida: j.vida, vidaMax: j.vidaMax, peleando: j.peleando, vivo: j.vivo, x: Math.round(j.x), y: Math.round(j.y), ratas: this.enemigos.invocadasVivas, anillo: this.anillo.length > 0, avisos: j.avisos(), vencido: this.partida.jefeVencido, portal: !!this.portalJefe, cofreJefe: this.entidades.cofres.some((c) => c.e.props.tras_jefe === true), piedras: this.piedrasEncendidas, arena: this.arena }
           : { existe: false }
       },
       danarJefe: ((n: number) => (this.jefe && this.jefe.peleando ? this.combate.golpear(this.jefe, 0, { dano: n, critico: false }) : undefined)) as never,

@@ -78,3 +78,15 @@ export class DirectorJefe {
     return { momento: m, foco, franjas, titulo: TITULO[m], tituloAlfa: ventana(this.t, c.titulo, this.cfg.fundidoS), bloquear: m === 'intro' }
   }
 }
+
+/**
+ * "Venciste al ..." con el artículo bien puesto: el nombre del mapa puede traer el suyo ("El Pez Farol", "La Reina").
+ * "El" se junta en "al", "La" queda "a la" y sin artículo va "al".
+ */
+export function vencisteA(nombre: string): string {
+  const n = nombre.trim()
+  if (/^el\s/i.test(n)) return `Venciste al ${n.replace(/^el\s+/i, '')}`
+  if (/^la\s/i.test(n)) return `Venciste a la ${n.replace(/^la\s+/i, '')}`
+  if (/^(los|las)\s/i.test(n)) return `Venciste a ${n.charAt(0).toLowerCase()}${n.slice(1)}`
+  return `Venciste al ${n}`
+}

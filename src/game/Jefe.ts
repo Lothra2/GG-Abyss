@@ -299,6 +299,18 @@ export class JefeSprite implements Atacable {
    * y la sombra se va con él. En tiempo real, para que la cámara lenta lo haga más solemne.
    */
   desvanecer(alPolvo: (x: number, y: number) => void): void {
+    // el Pez Farol se libera: se achica, se pone azul y dorado y se va nadando. Se espera al último cuadro de `die`
+    // (con la cámara lenta tarda más), se lo deja ver un momento y se va suave, sin polvo
+    if (this.enAgua) {
+      const irse = () =>
+        this.escena.time.delayedCall(900, () => {
+          if (!this.sprite.active) return
+          this.escena.tweens.add({ targets: [this.sprite], alpha: 0, duration: 1600, ease: 'Sine.easeIn' })
+        })
+      if (this.sprite.anims.isPlaying && this.sprite.anims.currentAnim?.key.includes('_die_')) this.sprite.once(Phaser.Animations.Events.ANIMATION_COMPLETE, irse)
+      else irse()
+      return
+    }
     const def = this.cuadros.die
     const espera = def ? (def.cuadros / def.fps) * 1000 : 600
     this.escena.time.delayedCall(espera + 250, () => {

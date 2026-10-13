@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import { DIRECCIONES, vectorDe } from '../logic/direccion'
 import { objetivoActual, type Objetivo } from '../logic/guia'
 import { Medidor } from '../logic/medidor'
+import { vencisteA } from '../logic/escenaJefe'
 import { TarjetaBotin, type DatosTarjeta } from '../game/ui/TarjetaBotin'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
@@ -372,8 +373,10 @@ export class HUD extends Phaser.Scene {
       const nombre = this.mundo.jefe?.nombre ?? 'Minotauro del Bosque'
       // el Guardián de la Campana no se vence: se libera (F8)
       const campana = this.mundo.jefe?.tipo === 'guardian_campana'
+      // el Pez Farol tampoco muere: se libera y la luz vuelve al faro (F12)
+      const pez = this.mundo.jefe?.tipo === 'pez_farol'
       const titulo = this.mundo.jefe?.titulo ?? 'Guardián de Las Alturas'
-      const t = pl.titulo === 'nombre' ? [nombre, titulo, 0xffffff] : pl.titulo === 'enojo' ? (campana ? ['¡Suena la campana!', 'Cerca de la campana estás a salvo', 0xc58aff] : ['¡Se enojó!', 'Mira bien sus avisos rojos', 0xff9a7a]) : pl.titulo === 'victoria' ? (campana ? ['¡Libre!', 'El guardián vuelve a cuidar la catedral', 0x8affe8] : ['¡Victoria!', `Venciste al ${nombre}`, 0xffffff]) : ['', '', 0xffffff]
+      const t = pl.titulo === 'nombre' ? [nombre, titulo, 0xffffff] : pl.titulo === 'enojo' ? (campana ? ['¡Suena la campana!', 'Cerca de la campana estás a salvo', 0xc58aff] : ['¡Se enojó!', 'Mira bien sus avisos rojos', 0xff9a7a]) : pl.titulo === 'victoria' ? (campana ? ['¡Libre!', 'El guardián vuelve a cuidar la catedral', 0x8affe8] : pez ? ['¡La luz vuelve!', 'El pez es libre y el faro se prende', 0xffe8b0] : ['¡Victoria!', vencisteA(nombre), 0xffffff]) : ['', '', 0xffffff]
       this.tituloCine.setText(String(t[0])).setTint(Number(t[2]))
       this.subCine.setText(String(t[1]))
     }

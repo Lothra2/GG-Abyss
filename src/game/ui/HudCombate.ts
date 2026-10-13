@@ -491,6 +491,7 @@ export class HudCombate {
     for (const s of this.slots) objs.push(s.marco, s.num, ...(s.icono ? [s.icono] : []))
     for (const b of this.botones) objs.push(b.icono, b.arco, b.tecla, b.fondo)
     objs.push(this.ataqueIcono, this.ataqueAro)
+    if (this.farol) objs.push(this.farol.icono, this.farol.arco)
     for (const o of objs) o.setAlpha(a)
   }
 
