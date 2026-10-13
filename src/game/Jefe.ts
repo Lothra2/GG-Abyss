@@ -105,6 +105,8 @@ export class JefeSprite implements Atacable {
   private animNombre = ''
   /** la luz robada del faro en la punta de la antena (el Pez Farol) */
   readonly luzAntena?: { color: string; radio: number }
+  /** vive en el agua (el Pez Farol): la hoja trae el agua pintada, así que no lleva sombra en el piso */
+  readonly enAgua: boolean
   /** la pelea está en marcha (despertó y no murió ni se reposó) */
   peleando = false
 
@@ -132,6 +134,7 @@ export class JefeSprite implements Atacable {
     const p = m.personajes[this.tipo]!
     this.celda = p.celda
     if (p.luz_antena) this.luzAntena = { color: p.luz_antena.color, radio: p.luz_antena.radius }
+    this.enAgua = p.en_agua === true || ent.props.en_agua === true
     for (const [n, a] of Object.entries(p.anims)) this.cuadros[n] = { cuadros: a.cuadros, fps: a.fps }
     crearAnimsPersonaje(escena, m, this.tipo)
     this.sprite = escena.add.sprite(arena.x, arena.y, K.pers(this.tipo, 'idle'), 0).setOrigin(p.pivote[0] / p.celda, p.pivote[1] / p.celda)
@@ -691,6 +694,7 @@ export class JefeSprite implements Atacable {
     const sube = this.elevacion()
     this.sprite.setPosition(x, y - sube).setDepth(PROF.OBJETOS + this.y)
     this.sombra.poner(this.x, this.y)
+    if (this.enAgua) this.sombra.setVisible(false)
     this.pintarTono()
     // el estandarte con el nombre, arriba de la cabeza (crece con la celda del jefe)
     if (this.estandarte) this.estandarte.setPosition(x, y - this.cuerpo.alto - 30).setDepth(PROF.OBJETOS + 9300)

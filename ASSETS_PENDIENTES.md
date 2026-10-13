@@ -80,6 +80,18 @@ Todo el pedido, con tamaños, cuadros, apoyos y prioridades, está en `docs/enca
 - **Pedido:** rehacerlo como un corte de hormiguero con siete mini escenas que se reconozcan: el bosque con raíces, la catedral con su campana, las galerías con cristales, el mar callado, la ciudad dormida, las fraguas rojas y el fondo con dos ojos. Mismo tamaño, mismas capas (`fondo` 0.8 y `frente` 1), la luz roja subiendo desde abajo.
 - **Mientras tanto:** el juego lo usa así, con la cámara bajando por él.
 
+### 42. Dónde está la lucecita del Pez Farol en cada cuadro
+
+- **Qué pasa:** `pez_farol` trae `luz_antena` (color y radio) pero no dónde está la antena. El juego pone la luz robada a 48 px sobre el pie (`JEFE_PEZ.antenaAlto`), igual en las 8 direcciones y en todos los cuadros: cuando el pez se hunde, salta o muerde, la luz no sigue a la antena.
+- **Pedido:** en cada animación de `pez_farol`, `antena`: una lista de `[x, y]` por dirección y por cuadro, desde el pivote (como `punto` en los eventos). Si la antena está fuera de cuadro (sumergida del todo), `null`.
+- **Mientras tanto:** la luz va fija arriba del pez y titila.
+
+### 41. Botón redondo de "alzar el farol" para el Puerto (para Alana)
+
+- **Qué pasa:** en el Mundo 4 se alza el farol tocando a Thor (o con la F). Funciona y en la pelea del Pez Farol Thor ladra, sale "¡Alza el farol!" y un aro de luz lo rodea, pero Alana no lee y un botón con su ícono se entiende mejor.
+- **Pedido:** `farol` en `ui.habilidades` (el juego lo cargaría como `hab_farol`), 40 x 40, redondo con el estilo de los otros: el farol de Thor alzado con rayos de luz ámbar (`#ffc070` a `#fff0c0`) sobre el fondo oscuro, aro dorado. Que se lea a 40 y a 80 px. Y si se puede, `ui.habilidades.farol_recarga`: el mismo apagado (gris) para cuando está en recarga.
+- **Mientras tanto:** tocar a Thor, con la pista de luz en la pelea.
+
 ### 40. Portales premium (lo pidió Rick: "están muy chimbos")
 
 - **Qué pasa:** `portal_azul` y `portal_rojo` (64 x 96) son un óvalo plano con un remolino de pocos cuadros. El juego ya les pone luz alrededor (núcleo que late, halo, el círculo mágico en el piso y motas que se traga, `game/PortalFx.ts`), pero el dibujo sigue siendo el punto débil.

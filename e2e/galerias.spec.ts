@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { abrirMundo, esperarEscena, gancho, sinErrores, vigilarErrores } from './util'
+import { abrirMundo, esperarEscena, gancho, manifest, sinErrores, vigilarErrores } from './util'
 
 // F11, el Mundo 3: Las Galerías del Eco. La luz es el progreso: los cristales se prenden al pegarles y quedan
 // prendidos, la polilla de ceniza los apaga, la sombra solo se ve en la luz y la Polilla Reina solo cae con los
@@ -195,12 +195,18 @@ test.describe('Las Galerías del Eco', () => {
     expect((await gancho<{ estado: string }>(page, 'jefe')).estado).toBe('aturdido')
     await gancho(page, 'danarJefe', 50)
     expect((await gancho<{ vida: number }>(page, 'jefe')).vida).toBe(j0.vida - 50)
-    // vencida, su portal baja más hondo: el kit todavía no trae el Mundo 4, así que Continuará
+    // vencida, su portal baja más hondo: al Puerto Ahogado si el kit lo trae con su jefe, si no Continuará
     await gancho(page, 'danarJefe', 9999)
     await expect.poll(async () => (await gancho<{ vencido: boolean }>(page, 'jefe')).vencido, { timeout: 10_000 }).toBe(true)
     await expect.poll(async () => (await gancho<{ portal: boolean }>(page, 'jefe')).portal, { timeout: 60_000 }).toBe(true)
+    const kit = await manifest(page)
+    const hayMundo4 = kit.mundos?.some((x) => x.mapa.includes('mundo4')) && !!kit.personajes.pez_farol
     await gancho(page, 'irAlPortal')
-    await esperarEscena(page, 'Continuara')
+    if (hayMundo4) {
+      await esperarEscena(page, 'Bajada')
+      await listo(page)
+      await expect.poll(async () => (await gancho<{ id: string }>(page, 'mundoActual')).id, { timeout: 30_000 }).toBe('mundo4')
+    } else await esperarEscena(page, 'Continuara')
     await sinErrores(errores)
   })
 })

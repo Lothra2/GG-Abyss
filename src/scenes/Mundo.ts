@@ -92,7 +92,7 @@ const EXTRAS_MUNDO = ['portal_azul', 'portal_rojo', 'aviso_jefe', ...OBJETOS_MEC
 const NOMBRES_GANCHOS = [
   'pos', 'teleport', 'irAPostal', 'postales', 'conteos', 'zona', 'tocar', 'estado', 'atmosfera', 'camara', 'mapa', 'ajustes', 'soltarCamara',
   'cuervosVolando', 'hud', 'objetivos', 'usarObjetivo', 'abrirCofre', 'guardarAhora', 'presentacion', 'saltarPresentacion', 'cartelAbierto', 'vaciarGuardado', 'forzarGuardar', 'puntoCerca', 'thor', 'sonido', 'ultimoPaso', 'superficieEn', 'avanzar', 'tecla', 'marca', 'cuervos', 'decoInfo', 'aguaFrame', 'thorInfo', 'hudLayout', 'noEsperar',
-  'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
+  'combate', 'danar', 'enemigos', 'danarEnemigo', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
   'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual', 'mecanismos', 'darBrasas', 'mercader', 'aspecto',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
   'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable', 'puerto', 'adelantarMarea', 'alzarFarol', 'apagarFarol', 'misterio',
@@ -754,6 +754,8 @@ export class Mundo extends Phaser.Scene {
         if (tipoJefe === 'pez_farol') {
           this.atmosfera.particulas.estallido(x, y + 20, 'polvo', 4)
           this.textoFlotante(this.thor.x, this.thor.y - 44, '¡Alza el farol!', 0xffd890)
+          // el aro de luz alrededor de Thor: a quién hay que tocar (Alana lo ve sin leer)
+          this.proyectiles.fxEn('aura_nivel', this.thor.x, this.thor.y)
           this.sonido.efecto('ladrido', { volumen: 0.45, rate: 1.1 })
           this.game.events.emit('farol-pista')
         } else this.textoFlotante(x, y, '¡Prende los cristales!', 0x5ae8ff)
@@ -2022,7 +2024,8 @@ export class Mundo extends Phaser.Scene {
         { s: this.heroina.sprite, x: this.heroina.x, y: this.heroina.y },
         { s: this.thor.sprite, x: this.thor.x, y: this.thor.y },
         ...this.enemigos.lista.filter((e) => !e.destruido && cerca(e.x, e.y)).map((e) => ({ s: e.sprite, x: e.x, y: e.y })),
-        ...(this.jefe && cerca(this.jefe.x, this.jefe.y) ? [{ s: this.jefe.sprite, x: this.jefe.x, y: this.jefe.y }] : []),
+        // el Pez Farol está en el agua: no tira sombra larga sobre el piso
+        ...(this.jefe && !this.jefe.enAgua && cerca(this.jefe.x, this.jefe.y) ? [{ s: this.jefe.sprite, x: this.jefe.x, y: this.jefe.y }] : []),
       ]
       this.sombrasPj.update(fuentes, luces, dtVisual)
     }
@@ -2200,7 +2203,7 @@ export class Mundo extends Phaser.Scene {
       jefe: () => {
         const j = this.jefe
         return j
-          ? { existe: true, estado: j.estado, fase: j.fase, vida: j.vida, vidaMax: j.vidaMax, peleando: j.peleando, vivo: j.vivo, x: Math.round(j.x), y: Math.round(j.y), ratas: this.enemigos.invocadasVivas, anillo: this.anillo.length > 0, avisos: j.avisos(), vencido: this.partida.jefeVencido, portal: !!this.portalJefe, cofreJefe: this.entidades.cofres.some((c) => c.e.props.tras_jefe === true), piedras: this.piedrasEncendidas, arena: this.arena }
+          ? { existe: true, estado: j.estado, fase: j.fase, blindado: !!j.blindado, vida: j.vida, vidaMax: j.vidaMax, peleando: j.peleando, vivo: j.vivo, x: Math.round(j.x), y: Math.round(j.y), ratas: this.enemigos.invocadasVivas, anillo: this.anillo.length > 0, avisos: j.avisos(), vencido: this.partida.jefeVencido, portal: !!this.portalJefe, cofreJefe: this.entidades.cofres.some((c) => c.e.props.tras_jefe === true), piedras: this.piedrasEncendidas, arena: this.arena }
           : { existe: false }
       },
       danarJefe: ((n: number) => (this.jefe && this.jefe.peleando ? this.combate.golpear(this.jefe, 0, { dano: n, critico: false }) : undefined)) as never,
@@ -2233,7 +2236,12 @@ export class Mundo extends Phaser.Scene {
       premioDe: ((f: Fuente) => tirarBotin(juego(), this.cat, { nivelHeroe: this.partida.nivel, clase: this.combate.clase, idHeroe: this.heroina.id }, f)) as never,
       romper: ((llave: string) => this.entidades.romper(llave)) as never,
       danar: ((n: number) => this.combate.danar(n)) as never,
-      enemigos: () => this.enemigos.lista.map((e) => ({ id: e.id, tipo: e.tipo, x: Math.round(e.x), y: Math.round(e.y), vida: e.vida, vidaMax: e.vidaMax, vivo: e.vivo, estado: e.estado, elite: e.elite, nombre: e.nombre, casa: { x: e.ia.casaX, y: e.ia.casaY }, anticipa: e.anticipando, distraida: e.distraida })),
+      enemigos: () => this.enemigos.lista.map((e) => ({ id: e.id, tipo: e.tipo, x: Math.round(e.x), y: Math.round(e.y), vida: e.vida, vidaMax: e.vidaMax, vivo: e.vivo, estado: e.estado, elite: e.elite, nombre: e.nombre, casa: { x: e.ia.casaX, y: e.ia.casaY }, anticipa: e.anticipando, distraida: e.distraida, enLuz: e.enLuz, alfa: Math.round(e.sprite.alpha * 100) / 100 })),
+      // un golpe directo a un enemigo (pasa por el combate de verdad: el marinero en la luz recibe más)
+      danarEnemigo: ((id: number, n: number) => {
+        const e = this.enemigos.lista.find((q) => q.id === id)
+        return e ? this.combate.golpear(e, 0, { dano: n, critico: false }) : undefined
+      }) as never,
       tocarEnemigo: ((id: number) => {
         const e = this.enemigos.lista.find((q) => q.id === id)
         if (!e) return false

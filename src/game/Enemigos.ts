@@ -80,6 +80,8 @@ export interface Atacable extends Blanco {
   /** F11: no recibe daño ahora (la Polilla Reina con los cristales grandes apagados) */
   readonly blindado?: boolean
   golpe(x: number, y: number, margen?: number): boolean
+  /** F12: el daño que de verdad le llega (el marinero de niebla en la luz o a oscuras) */
+  ajustarDano?(dano: number): number
   marcar(v: boolean): void
   recibir(dano: number, desdeX?: number, desdeY?: number): boolean
 }
@@ -227,14 +229,15 @@ export class Enemigo implements Atacable {
     if (!v) this.sprite.clearTint()
   }
 
+  /** El marinero de niebla: en la luz se deshace rápido, a oscuras el golpe casi lo atraviesa */
+  ajustarDano(dano: number): number {
+    return this.cfg.deNiebla ? danoMarinero(dano, this.enLuz) : dano
+  }
+
   /** Daño recibido. Devuelve true si murió con este golpe. */
   recibir(dano: number, desdeX?: number, desdeY?: number): boolean {
     if (!this.vivo || this.oculta) return false
-    // el marinero de niebla: en la luz se deshace rápido, a oscuras el golpe casi lo atraviesa
-    if (this.cfg.deNiebla) {
-      dano = danoMarinero(dano, this.enLuz)
-      if (this.enLuz) this.ev.sonido('marinero_se_deshace', { volumen: 0.35, rate: 0.9 + juego().next() * 0.2 })
-    }
+    if (this.cfg.deNiebla && this.enLuz) this.ev.sonido('marinero_se_deshace', { volumen: 0.35, rate: 0.9 + juego().next() * 0.2 })
     this.ia.vida = Math.max(0, this.ia.vida - dano)
     this.barraS = 4
     this.destellar()

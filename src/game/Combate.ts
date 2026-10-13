@@ -299,6 +299,8 @@ export class Combate {
     let g = golpePrevio ?? this.tirar(mult)
     // modo peque: los enemigos comunes caen igual de rápido que antes del rebalance (el jefe no cambia)
     if (!golpePrevio && this.modoPeque && !e.esJefe) g = { ...g, dano: Math.round(g.dano * MODO_PEQUE.danoHeroina) }
+    // F12: el marinero de niebla recibe más en la luz y menos a oscuras (el número dice lo que de verdad pegó)
+    if (e.ajustarDano) g = { ...g, dano: e.ajustarDano(g.dano) }
     const murio = e.recibir(g.dano, this.d.heroina.x, this.d.heroina.y)
     this.d.numeros.mostrar(e.x, e.y - e.cuerpo.alto - 4, String(g.dano) + (g.critico ? '!' : ''), g.critico ? 'amarillo' : 'blanco', g.critico)
     this.d.sonido.efecto(g.critico ? 'critico' : 'golpe', { volumen: 0.5 })
@@ -464,7 +466,8 @@ export class Combate {
   }
 
   private golpearConThor(e: Atacable, g: Golpe, mult = 1): void {
-    const dano = Math.max(1, Math.round(g.dano * mult))
+    const base = Math.max(1, Math.round(g.dano * mult))
+    const dano = e.ajustarDano ? e.ajustarDano(base) : base
     const murio = e.recibir(dano, this.d.thor.x, this.d.thor.y)
     this.d.numeros.mostrar(e.x, e.y - e.cuerpo.alto - 4, String(dano), 'blanco')
     this.d.sonido.efecto('mordida', { volumen: 0.6 })

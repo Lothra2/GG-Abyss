@@ -266,7 +266,16 @@ export class Puerto {
       cerrados: this.bajas.filter(() => !caminableConMarea('baja', ma.fase)).length + this.altas.filter(() => !caminableConMarea('alta', ma.fase)).length,
       faroles: this.faroles.map((f) => ({ id: f.id, x: f.x, y: f.y, prendido: f.prendido })),
       farol: { radio: this.radioThor, apagado: this.farolApagado, alzado: this.farolAlzado, capa: !!this.capa?.visible },
+      // un cuadro de cada marea (el centro), para las pruebas
+      celdaBaja: this.centro(this.bajas[Math.floor(this.bajas.length / 2)]),
+      celdaAlta: this.centro(this.altas[Math.floor(this.altas.length / 2)]),
     }
+  }
+
+  private centro(i: number | undefined): { x: number; y: number } | null {
+    if (i === undefined) return null
+    const c = this.mapa.cuadro
+    return { x: (i % this.mapa.ancho) * c + c / 2, y: Math.floor(i / this.mapa.ancho) * c + c / 2 }
   }
 
   /** Para las pruebas: adelanta el reloj de la marea */
