@@ -150,7 +150,7 @@ Terror de cuento para Sophie: inquietante de verdad (una ciudad entera congelada
   - `reloj_campanada` y `aguja_barre`.
   - `rey_puno`, `rey_pisoton`, `rey_canta` (un murmullo grave, no voz) y `corona_rompe`.
   - `ciudad_despierta` (campanas, gente que se estira y ríe bajito, sin palabras).
-- **Reglas:** todo bajito, con pico de 0.5. Nada de gritos ni de sustos de golpe.
+- **Reglas:** todo bajito, con pico de 0.5. Nada de gritos ni de sustos de golpe. Las zonas con `musica: ninguna` como en el Puerto, el Palacio con `musica: jefe_rey` y `musica_victoria: despertar`, la Torre del Reloj con `musica_pelea: relojero`.
 
 ## Parte 6. Íconos para Alana
 
