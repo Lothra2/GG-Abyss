@@ -995,6 +995,28 @@ Lo que pide Rick: "vamos a mejorar mucho más cada vez que bajamos de mundo, hac
 3. Llega el arte y se conecta: postales en `docs/capturas/f12`, suite completa y publicar.
 4. Después el piso 5, con la misma receta.
 
+**Mundo 5: La Ciudad Dormida.** Debajo del puerto, una ciudad de piedra enorme y hermosa, con plazas, fuentes, una torre del reloj y un palacio. Toda la gente quedó dormida de piedra en medio de lo que estaba haciendo: el panadero con la pala, los niños jugando a la ronda, los músicos con sus instrumentos. Silencio total, solo un reloj lejano y, en un barrio, una cajita de música que toca una canción de cuna. Cae polvo de sueño fino y lila.
+
+- **La luz te la roban.** Cada barrio tiene un farol de plaza apagado. La heroína lo prende tocándolo y el barrio entero se aclara (la oscuridad baja de 0.85 a 0.45). El farol hace de fogata, con su mercader.
+  - **La Ladrona** (la figura de los ojos rojos, ahora con un farolito en la mano) aparece cada tanto en un barrio prendido y le chupa la luz. Se ve venir: un hilo de luz va del farol a ella durante unos segundos. Si la heroína llega antes, la figura se va en humo y la luz vuelve.
+  - Si no llega, el barrio vuelve a oscuras y la luz robada se rompe en tres chispas que caen en el barrio. **Thor las rastrea con el olfato** y la heroína las junta. Con las tres el farol se prende otra vez. Nadie pierde nada.
+- **Las estatuas despiertan a oscuras.** Los sonámbulos son estatuas de la ciudad que solo se mueven fuera de la luz. En un barrio prendido se quedan quietas y se les puede pegar. A oscuras caminan despacio y antes de pegar les brillan los ojos. Cuidar la luz es cuidarse.
+- **Enemigos.**
+  - **Sonámbulo de piedra:** lo de arriba. Lento y duro.
+  - **Gárgola dormida:** posada parece una estatua más. Despierta, vuela y se tira en picada, con su sombra que crece en el piso como aviso.
+  - **Duende del sueño:** chiquito, con gorro de dormir y una bolsa de arena. Tira arena que hace bostezar a la heroína (camina más lento 2 s). En modo peque la arena no la frena.
+- **Minijefe: El Relojero,** en la Torre del Reloj, una rama opcional. Un relojero de piedra con una llave gigante. Su golpe grande son las agujas del reloj: una línea que barre girando alrededor de él, con aviso, y se esquiva pasando por encima en el hueco. Cofre dorado y postal.
+- **Jefe: el Rey de Piedra.** Grande (celda 128), dormido de pie en el trono. En la corona lleva la luz que se robaron de la ciudad.
+  - **Fase 1:** puño que cae con aviso y pisotón en anillo.
+  - **Fase 2:** canta la canción de cuna. Las cuatro lámparas del salón se apagan y en lo oscuro su piedra no siente los golpes. Cada vez que golpea el piso se le caen chispas de la corona: Thor las trae y con ellas se vuelven a prender las lámparas. Con las cuatro prendidas se le abren grietas que brillan y ahí se le pega.
+  - **Fase 3:** llama dos sonámbulos y barre con el brazo en línea.
+  - **Al vencerlo** la corona se rompe y la luz vuelve a toda la ciudad. Todos los faroles se prenden, las ventanas se encienden y **la gente despierta**: las estatuas se estiran, bostezan y saludan, de colores otra vez. El Rey queda como un viejito bonachón. Es el gran momento del piso.
+- **Lugares.** La Puerta de la Ciudad (llegada y primer farol, se enseña a prenderlo), La Calle de los Panaderos, La Plaza de la Fuente, El Barrio de los Músicos (la cajita de música y el pedazo del mural), Los Jardines de Piedra (laberinto de setos, secreto de Thor), La Torre del Reloj (el minijefe), El Puente de los Faroles (sobre el abismo, con gárgolas) y El Palacio Dormido (el jefe).
+- **Misterio.** La Ladrona es la figura de los ojos rojos. Nunca pelea: roba y se va. `mural_5` la muestra bajando la luz de la ciudad por una escalera hacia una puerta grande con fuego, que es el piso 6.
+- **Sonido.** Casi silencio. Viento entre calles vacías, el tic tac del reloj y la cajita de música en un barrio. Música solo en las peleas y en el despertar: campanas alegres que abren.
+- **Tamaño.** 110 x 100 cuadros, 5 faroles de plaza, al menos 3 ramas opcionales, 2 secretos de Thor y 6 cofres o más.
+- **Modo peque.** La Ladrona roba la mitad de seguido y nunca el barrio donde está la heroína. Las chispas caen más cerca de Thor.
+
 **Estado del Mundo 4 (jugable).** Con el taller `243c319` (rama `claude/abyss-mundo4`): el farol de Thor (capa por cuadro, alzar con botón propio o tocando a Thor, apagado por medusa), los faroles del muelle guardados, la marea con su rescate suave, el marinero de niebla, los cangrejos que rodean, la medusa, el Capitán Ahogado con su música de pelea, la figura mojada que se lleva la luz de un farol, el mural 4 y el Pez Farol en su poza: sumergido no recibe daño, muerde con aviso, la ola en franja desde la fase 2, la llamada en la 3, el farol alzado lo encandila y al liberarse la luz vuela al faro, el piso se aclara y suena la música del faro. La luz del pez sigue la antena cuadro por cuadro. Pruebas en `e2e/puerto.spec.ts` y postales en `docs/capturas/f12/`.
 
 ## 6. Riesgos y mitigación

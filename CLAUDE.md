@@ -7,7 +7,7 @@ Juego tipo Diablo de la familia GG (Sophie 8, Alana 5). Cada jefe abre un portal
 - Nunca dibujar sprites en código, bajar assets ni editar public/assets/kit a mano. Solo se permiten texturas técnicas: degradados de luz, ruido y un pixel para partículas.
 - Lo que falte va a ASSETS_PENDIENTES.md con especificación exacta (nombre, tamaño, animaciones, apoyo, sólido, para qué).
 - Regenerar: `git submodule update --remote tools/pixel_forja && npm run kit`.
-- El taller trabaja en su propia rama de `pixel_forja` (hoy `claude/abyss-mundo4`, sale de `claude/perfeccionar-ejecucion-smh3ad`). Nunca `main` ni las ramas `claude/olimpico-*`: son de otro proyecto de Rick.
+- El taller trabaja en su propia rama de `pixel_forja` (hoy `claude/abyss-mundo5`, sale de `claude/abyss-mundo4`, que salió de `claude/perfeccionar-ejecucion-smh3ad`). Nunca `main` ni las ramas `claude/olimpico-*`: son de otro proyecto de Rick.
 - Personajes editados en el estudio: exportar la ficha a fichas/<id>.ficha.json y correr `npm run kit`.
 
 ## Reglas del juego
