@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import { K } from '../../kit/claves'
-import { JEFE, MODO_PEQUE } from '../../config/balance'
+import { BOTIN, JEFE, MODO_PEQUE } from '../../config/balance'
 import { HUD as MARGENES } from '../../config/juego'
 import { escalaDe, toqueMinimo } from '../Pantalla'
 import { texto } from '../Texto'
@@ -24,9 +24,33 @@ interface BotonHab {
 }
 
 const LADO_ORBE = 72
-const ANCHO_CINTURON = 154
 const ALTO_CINTURON = 44
-const SLOT = { x0: 23, paso: 36, y: 23 }
+/** el cinturón se arma con piezas del kit (el marco de las barras y los casilleros), así entra la casilla que haga falta */
+const SLOT = { pad: 5, paso: 36, y: 22 }
+const ANCHO_CINTURON = SLOT.pad * 2 + BOTIN.cinturonCasillas * SLOT.paso
+/** lo que hay que mover el dedo para que tocar una poción pase a ser arrastrarla */
+const ARRASTRE_PX = 8
+
+/** El color del brillo de cada poción (vida, maná, rejuvenecer y las demás) */
+function colorPocion(id: string): number {
+  if (id.includes('health')) return 0xff4040
+  if (id.includes('mana')) return 0x4a8cff
+  if (id.includes('rejuv')) return 0xc070ff
+  if (id.includes('stamina')) return 0xffc040
+  if (id.includes('antidote')) return 0x60e070
+  return 0x80e0ff
+}
+
+interface Casilla {
+  marco: Phaser.GameObjects.Image
+  num: Phaser.GameObjects.BitmapText
+  brillo: Phaser.GameObjects.Image
+  icono: Phaser.GameObjects.Image | null
+  zona: Phaser.GameObjects.Zone
+  id: string | null
+  x: number
+  y: number
+}
 
 /**
  * La parte de combate del HUD (PLAN.md F2, tarea 5): orbe de vida a la izquierda, orbe de maná a la derecha, barra de XP,
@@ -37,8 +61,14 @@ export class HudCombate {
   private orbeMana: Phaser.GameObjects.Image
   private olaVida: Phaser.GameObjects.Sprite
   private olaMana: Phaser.GameObjects.Sprite
-  private cinturon: Phaser.GameObjects.Image
-  private slots: { icono: Phaser.GameObjects.Image | null; zona: Phaser.GameObjects.Zone; id: string | null }[] = []
+  private cinturon: Phaser.GameObjects.NineSlice
+  private slots: Casilla[] = []
+  /** la poción apretada: si el dedo se mueve pasa a arrastrarse, si se suelta ahí mismo se toma */
+  private apretada: { i: number; dedo: number; x: number; y: number } | null = null
+  private arrastre: { de: number; icono: Phaser.GameObjects.Image } | null = null
+  /** íconos de 64 en las pantallas de zoom par: el doble de detalle sin romper los pixeles */
+  private atlasFino: string | null = null
+  private tBrillo = 0
   private marcoXp: Phaser.GameObjects.NineSlice
   private rellenoXp: Phaser.GameObjects.NineSlice
   private txtNivel: Phaser.GameObjects.BitmapText
@@ -97,15 +127,22 @@ export class HudCombate {
     }
     this.numVida = texto(escena, 0, 0, '', 'fuente_ui', 1, { origen: [0.5, 0.5], tinte: 0xffe9e9 })
     this.numMana = texto(escena, 0, 0, '', 'fuente_ui', 1, { origen: [0.5, 0.5], tinte: 0xe0ecff })
-    this.cinturon = escena.add.image(0, 0, k('cinturon')).setOrigin(0, 1)
-    for (let i = 0; i < 4; i++) {
-      const zona = escena.add.zone(0, 0, 34, 40).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true })
+    this.cinturon = escena.add.nineslice(0, 0, k('barra_marco'), undefined, ANCHO_CINTURON, ALTO_CINTURON, 6, 6, 6, 6).setOrigin(0, 1)
+    for (let i = 0; i < BOTIN.cinturonCasillas; i++) {
+      const marco = escena.add.image(0, 0, k('casillero'))
+      const num = texto(escena, 0, 0, String(i + 1), 'fuente_ui', 1, { origen: [0, 0], tinte: 0xffd27a })
+      const brillo = escena.add.image(0, 0, K.luz).setBlendMode(Phaser.BlendModes.ADD).setVisible(false)
+      const zona = escena.add.zone(0, 0, SLOT.paso, 40).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true })
       zona.on('pointerdown', (p: Phaser.Input.Pointer) => {
         Bloqueo.tomar(p.id)
-        this.mundo.combate.pocion(i)
+        this.apretada = { i, dedo: p.id, x: p.x, y: p.y }
       })
-      this.slots.push({ icono: null, zona, id: null })
+      this.slots.push({ marco, num, brillo, icono: null, zona, id: null, x: 0, y: 0 })
     }
+    escena.input.on('pointermove', this.alMoverDedo, this)
+    escena.input.on('pointerup', this.alSoltarDedo, this)
+    const fino = this.atlasIconos.replace(/_32$/, '_64')
+    this.atlasFino = fino !== this.atlasIconos && escena.textures.exists(fino) ? fino : null
     this.marcoXp = escena.add.nineslice(0, 0, k('barra_marco'), undefined, ANCHO_CINTURON, 12, 6, 6, 6, 6).setOrigin(0, 1)
     this.rellenoXp = escena.add.nineslice(0, 0, k('barra_xp'), undefined, 1, 4, 1, 1, 1, 1).setOrigin(0, 0.5).setTint(0xe8b850)
     this.txtNivel = texto(escena, 0, 0, 'Nv 1', 'fuente_ui', 1, { origen: [1, 0.5], tinte: 0xffd27a })
@@ -194,10 +231,13 @@ export class HudCombate {
     const cx = Math.round(w / 2 - ANCHO_CINTURON / 2)
     this.cinturon.setPosition(cx, base)
     this.slots.forEach((s, i) => {
-      const sx = cx + SLOT.x0 + i * SLOT.paso
-      const sy = base - ALTO_CINTURON + SLOT.y
-      s.zona.setPosition(sx, sy)
-      s.icono?.setPosition(sx, sy)
+      s.x = cx + SLOT.pad + SLOT.paso / 2 + i * SLOT.paso
+      s.y = base - ALTO_CINTURON + SLOT.y
+      s.marco.setPosition(s.x, s.y)
+      s.num.setPosition(s.x - SLOT.paso / 2 + 4, s.y - SLOT.paso / 2 + 3)
+      s.brillo.setPosition(s.x, s.y + 3)
+      s.zona.setPosition(s.x, s.y)
+      this.ponerIconoPocion(s)
     })
     const yXp = base - ALTO_CINTURON - 3
     this.xpAncho = ANCHO_CINTURON
@@ -280,6 +320,7 @@ export class HudCombate {
       jefe: { visible: this.marcoJefe.visible, marco: this.marcoJefe.getBounds(), relleno: this.rellenoJefe.getBounds(), rastro: this.rastroJefe.visible ? this.rastroJefe.getBounds() : null, llenado: Math.round(this.llenado * 100) / 100 },
       botones: this.botones.map((b) => ({ id: b.id, x: b.x, y: b.y, lado: b.lado })),
       ataque: { x: this.ataqueX, y: this.ataqueY, lado: this.ataqueLado, arma: this.ataqueArma },
+      pociones: this.slots.map((q) => ({ x: q.x, y: q.y, id: q.id, fina: !!q.icono && q.icono.texture.key === this.atlasFino })),
     }
   }
 
@@ -312,21 +353,27 @@ export class HudCombate {
     this.rellenoXp.setSize(ancho, 4)
     this.txtNivel.setText(`Nv ${p.nivel}`)
 
-    // cinturón: los íconos de las pociones que haya
-    for (let i = 0; i < 4; i++) {
+    // cinturón: los íconos de las pociones que haya, con el brillo de su color que respira
+    this.tBrillo += dt
+    this.slots.forEach((s, i) => {
       const id = p.cinturon[i] ?? null
-      const s = this.slots[i]!
-      if (s.id === id) continue
-      s.id = id
-      s.icono?.destroy()
-      s.icono = null
-      if (id && this.escena.textures.exists(this.atlasIconos)) {
-        const cx = Math.round(this.escena.scale.width / 2 - ANCHO_CINTURON / 2)
-        const sx = cx + SLOT.x0 + i * SLOT.paso
-        const sy = this.escena.scale.height - MARGENES.MARGEN - ALTO_CINTURON + SLOT.y
-        s.icono = this.escena.add.image(sx, sy, this.atlasIconos, id)
+      if (s.id !== id) {
+        const tomada = !!s.id && !id && !this.arrastre
+        s.id = id
+        if (tomada && s.icono) this.tomarAnimado(s)
+        else s.icono?.destroy()
+        s.icono = null
+        if (id) this.ponerIconoPocion(s)
       }
-    }
+      const ver = !!s.icono && (!this.arrastre || this.arrastre.de !== i)
+      s.brillo.setVisible(ver)
+      if (ver) s.brillo.setAlpha((0.22 + 0.1 * Math.sin(this.tBrillo * 2.4 + i * 1.3)) * this.atenuado)
+      s.icono?.setAlpha((this.arrastre?.de === i ? 0.35 : 1) * this.atenuado)
+      // la casilla sobre la que va a caer lo que se arrastra se marca en dorado
+      const destino = this.arrastre && this.casillaEn(this.arrastre.icono.x, this.arrastre.icono.y) === i
+      const tex = K.ui(destino ? 'casillero_activo' : 'casillero')
+      if (s.marco.texture.key !== tex) s.marco.setTexture(tex)
+    })
 
     // botones: el arco oscuro es lo que falta de recarga, y se apagan si no alcanza el maná
     for (const b of this.botones) {
@@ -374,7 +421,7 @@ export class HudCombate {
     if (a === this.atenuado) return
     this.atenuado = a
     const objs: { setAlpha(v: number): unknown }[] = [this.orbeVida, this.orbeMana, this.olaVida, this.olaMana, this.numVida, this.numMana, this.cinturon, this.marcoXp, this.rellenoXp, this.txtNivel]
-    for (const s of this.slots) if (s.icono) objs.push(s.icono)
+    for (const s of this.slots) objs.push(s.marco, s.num, ...(s.icono ? [s.icono] : []))
     for (const b of this.botones) objs.push(b.icono, b.arco, b.tecla, b.fondo)
     objs.push(this.ataqueIcono, this.ataqueAro)
     for (const o of objs) o.setAlpha(a)
@@ -440,7 +487,69 @@ export class HudCombate {
     this.nombreJefe.setTint(enojado ? 0xff8a6a : 0xffd27a)
   }
 
+  /** El ícono de la poción de una casilla: el de 64 a la mitad donde el zoom es par (más detalle), si no el de 32 */
+  private ponerIconoPocion(s: Casilla): void {
+    if (!s.id) return
+    const par = escalaDe(this.escena.game).zoom % 2 === 0
+    const atlas = par && this.atlasFino ? this.atlasFino : this.atlasIconos
+    if (!this.escena.textures.exists(atlas)) return
+    if (!s.icono) s.icono = this.escena.add.image(0, 0, atlas, s.id)
+    else if (s.icono.texture.key !== atlas) s.icono.setTexture(atlas, s.id)
+    s.icono.setPosition(s.x, s.y).setScale(atlas === this.atlasFino ? 0.5 : 1).setDepth(s.marco.depth + 1)
+    s.brillo.setTint(colorPocion(s.id)).setScale(30 / 128).setDepth(s.icono.depth + 1)
+    s.num.setDepth(s.icono.depth + 2)
+  }
+
+  /** Al tomarla la poción salta un poquito y se desvanece */
+  private tomarAnimado(s: Casilla): void {
+    const ic = s.icono!
+    this.escena.tweens.add({ targets: ic, scale: ic.scale * 1.35, alpha: 0, y: ic.y - 6, duration: 220, ease: 'Quad.easeOut', onComplete: () => ic.destroy() })
+  }
+
+  /** La casilla del cinturón que está en (x, y) de la vista, o -1 */
+  private casillaEn(x: number, y: number): number {
+    const i = this.slots.findIndex((q) => Math.abs(x - q.x) <= SLOT.paso / 2 && Math.abs(y - q.y) <= 26)
+    return i
+  }
+
+  private alMoverDedo(p: Phaser.Input.Pointer): void {
+    const a = this.apretada
+    if (!a || p.id !== a.dedo) return
+    if (!this.arrastre) {
+      const s = this.slots[a.i]
+      if (!s?.icono || Math.hypot(p.x - a.x, p.y - a.y) < ARRASTRE_PX) return
+      const ic = this.escena.add.image(p.x, p.y, s.icono.texture.key, s.id!).setScale(s.icono.scale * 1.25).setDepth(s.num.depth + 5)
+      this.arrastre = { de: a.i, icono: ic }
+    }
+    Bloqueo.tomar(p.id)
+    this.arrastre.icono.setPosition(Math.round(p.x), Math.round(p.y - 6))
+  }
+
+  private alSoltarDedo(p: Phaser.Input.Pointer): void {
+    const a = this.apretada
+    if (!a || p.id !== a.dedo) return
+    this.apretada = null
+    const arr = this.arrastre
+    if (arr) {
+      this.arrastre = null
+      arr.icono.destroy()
+      const a2 = this.casillaEn(p.x, p.y)
+      if (a2 >= 0 && a2 !== arr.de) this.mundo.combate.moverPocion(arr.de, a2)
+      // los íconos se rehacen en el próximo cuadro con el orden nuevo
+      for (const s of this.slots) {
+        s.icono?.destroy()
+        s.icono = null
+        s.id = null
+      }
+      return
+    }
+    // un toque sin arrastrar: se toma
+    if (this.casillaEn(p.x, p.y) === a.i) this.mundo.combate.pocion(a.i)
+  }
+
   destruir(): void {
+    this.escena.input.off('pointermove', this.alMoverDedo, this)
+    this.escena.input.off('pointerup', this.alSoltarDedo, this)
     this.escena.game.events.off('sin-mana', this.alSinMana, this)
   }
 }

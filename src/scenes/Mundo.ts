@@ -272,6 +272,8 @@ export class Mundo extends Phaser.Scene {
     encolarCriaturas(this, m)
     encolarParticulas(this, m)
     encolarBotin(this, m, { atlas: Object.keys(m.botin.atlas), tamanos: ['32'], mundo: true, catalogo: true })
+    // las pociones del cinturón en 64 (las pantallas de zoom par las muestran con el doble de detalle)
+    encolarBotin(this, m, { atlas: ['iconos'], tamanos: ['64'], mundo: false, catalogo: false })
     encolarPostales(this, m)
     encolarPersonaje(this, m, id)
     encolarPersonaje(this, m, 'thor')
@@ -1111,7 +1113,7 @@ export class Mundo extends Phaser.Scene {
     hab(1)
     kb.on('keydown-I', () => !this.entrada.estaPausada && this.abrirInventario())
     kb.on('keydown-T', () => !this.entrada.estaPausada && this.olfatear())
-    ;(['ONE', 'TWO', 'THREE', 'FOUR'] as const).forEach((k, i) => kb.on(`keydown-${k}`, () => !this.entrada.estaPausada && this.combate.pocion(i)))
+    ;(['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'] as const).forEach((k, i) => kb.on(`keydown-${k}`, () => !this.entrada.estaPausada && this.combate.pocion(i)))
   }
 
   private cerrar(): void {

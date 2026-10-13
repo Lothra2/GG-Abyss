@@ -9,7 +9,7 @@ import { BOTIN, CLASES, TIENDA } from '../../config/balance'
 const KIT = 'public/assets/kit/'
 const manifest = leerJson(KIT + 'manifest.json') as Manifest
 const cat = leerCatalogo(leerJson(KIT + manifest.botin.catalogo))
-const inv = (extra: Partial<Inv> = {}): Inv => ({ equipo: {}, bolsa: Array(28).fill(null), cinturon: [null, null, null, null], ...extra })
+const inv = (extra: Partial<Inv> = {}): Inv => ({ equipo: {}, bolsa: Array(28).fill(null), cinturon: [null, null, null, null, null], ...extra })
 
 describe('tienda de la fogata', () => {
   it('todo lo que vende existe en el catálogo del kit', () => {
@@ -21,7 +21,7 @@ describe('tienda de la fogata', () => {
     expect(ofertas(p.oro, i, cat).find((o) => o.id === 'potion_health_minor')!.estado).toBe('caro')
     expect(comprar(p, i, cat, 'potion_health_minor')).toEqual({ ok: false, motivo: 'caro' })
     expect(p.oro).toBe(3)
-    expect(i.cinturon).toEqual([null, null, null, null])
+    expect(i.cinturon).toEqual([null, null, null, null, null])
   })
   it('una poción va al cinturón y descuenta el precio', () => {
     const p = { oro: 25 }
@@ -32,7 +32,7 @@ describe('tienda de la fogata', () => {
   })
   it('con el cinturón lleno la poción va a la bolsa, y con todo lleno no se vende', () => {
     const p = { oro: 100 }
-    const i = inv({ cinturon: ['a', 'b', 'c', 'd'] })
+    const i = inv({ cinturon: ['a', 'b', 'c', 'd', 'e'] })
     expect(comprar(p, i, cat, 'potion_mana_minor')).toMatchObject({ ok: true, donde: 'bolsa' })
     const lleno = inv({ cinturon: ['a', 'b', 'c', 'd'], bolsa: Array(28).fill('x') })
     expect(comprar(p, lleno, cat, 'potion_mana_minor')).toEqual({ ok: false, motivo: 'lleno' })

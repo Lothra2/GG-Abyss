@@ -140,3 +140,12 @@ export function moverEnBolsa(inv: Inv, de: number, a: number): boolean {
   inv.bolsa[de] = x
   return true
 }
+
+/** Arrastrar una poción del cinturón sobre otra casilla: cambian de lugar (así cada una queda en la tecla que se quiere) */
+export function moverEnCinturon(inv: Inv, de: number, a: number): boolean {
+  if (de === a || de < 0 || a < 0 || de >= inv.cinturon.length || a >= inv.cinturon.length || !inv.cinturon[de]) return false
+  const x = inv.cinturon[a] ?? null
+  inv.cinturon[a] = inv.cinturon[de]!
+  inv.cinturon[de] = x
+  return true
+}

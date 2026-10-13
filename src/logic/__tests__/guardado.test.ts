@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { BOTIN } from '../../config/balance'
 import { AlmacenMemoria, borrarPartida, cargarOCrear, claveDe, guardarPartida, leerPartida, listaPerfiles, migrar, partidaNueva, cambiarDeMundo } from '../guardado'
 
 describe('guardado', () => {
@@ -8,7 +9,7 @@ describe('guardado', () => {
     expect(p.nivel).toBe(1)
     expect(p.oro).toBe(0)
     expect(p.bolsa).toHaveLength(28)
-    expect(p.cinturon).toHaveLength(4)
+    expect(p.cinturon).toHaveLength(BOTIN.cinturonCasillas)
     expect(p.ajustes.noche).toBeCloseTo(0.15)
     expect(p.ajustes.modoPeque).toBe(false)
     expect(partidaNueva('alana').ajustes.modoPeque).toBe(true)
@@ -62,7 +63,12 @@ describe('guardado', () => {
     expect(p.ajustes.noche).toBeCloseTo(0.55)
     expect(p.bolsa).toHaveLength(28)
     expect(p.bolsa[0]).toBe('sword_1')
-    expect(p.cinturon).toHaveLength(4)
+    expect(p.cinturon).toHaveLength(BOTIN.cinturonCasillas)
+  })
+
+  it('una partida guardada con el cinturón de 4 llega con 5 y sus pociones en el mismo lugar', () => {
+    const p = migrar({ version: 1, id: 'sophie', cinturon: ['potion_health_minor', null, 'potion_mana_minor', 'potion_health_minor'] })!
+    expect(p.cinturon).toEqual(['potion_health_minor', null, 'potion_mana_minor', 'potion_health_minor', null])
   })
 
   it('migrar arregla tipos raros y recorta rangos', () => {

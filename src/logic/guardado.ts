@@ -267,8 +267,8 @@ export function migrar(json: unknown, idEsperado?: string): Partida | null {
   const pos = (j.posicion && typeof j.posicion === 'object' ? j.posicion : {}) as Record<string, unknown>
   const bolsa = esLista(j.bolsa) ? j.bolsa.slice(0, 28).map((x) => (typeof x === 'string' ? x : null)) : []
   while (bolsa.length < 28) bolsa.push(null)
-  const cinto = esLista(j.cinturon) ? j.cinturon.slice(0, 4).map((x) => (typeof x === 'string' ? x : null)) : []
-  while (cinto.length < 4) cinto.push(null)
+  const cinto = esLista(j.cinturon) ? j.cinturon.slice(0, BOTIN.cinturonCasillas).map((x) => (typeof x === 'string' ? x : null)) : []
+  while (cinto.length < BOTIN.cinturonCasillas) cinto.push(null)
   const equipo: Record<string, string> = {}
   if (j.equipo && typeof j.equipo === 'object') for (const [k, v] of Object.entries(j.equipo as Record<string, unknown>)) if (typeof v === 'string') equipo[k] = v
 

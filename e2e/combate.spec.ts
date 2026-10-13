@@ -191,11 +191,16 @@ test.describe('Combate', () => {
     let tAviso = 0
     let vio = false
     let pesado = false
-    const vida0 = (await combate(page)).vida
+    // la vida se mide desde que empieza el aviso: antes el trol pega golpes normales (y desde el rebalance pegan más)
+    let vida0 = 0
     for (let i = 0; i < 400; i++) {
       await avanzar(page, 0.05)
       const e = await enemigo(page, t.id)
       if (e.estado === 'aviso') {
+        if (!vio) {
+          await gancho(page, 'curarTodo')
+          vida0 = (await combate(page)).vida
+        }
         vio = true
         tAviso += 0.05
         if (tAviso >= 0.4 && !pesado) {
@@ -354,6 +359,33 @@ test.describe('Combate', () => {
     await expect.poll(async () => (await combate(page)).cinturon[0], { timeout: 10_000 }).toBeNull()
     await avanzar(page, 1.2)
     expect((await combate(page)).vida).toBeGreaterThan(v0 + 15)
+  })
+
+  test('el cinturón tiene 5 casillas: arrastrar una poción sobre otra las cambia de lugar y tocarla la toma', async ({ page }, info) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    const l = await gancho<{ pociones: { x: number; y: number; id: string | null }[] }>(page, 'hudCombate')
+    expect(l.pociones).toHaveLength(5)
+    const z = (await gancho<{ cssZoom: number }>(page, 'escala')).cssZoom
+    const vida = l.pociones.findIndex((q) => q.id?.includes('health'))
+    expect(vida).toBeGreaterThanOrEqual(0)
+    expect(l.pociones[4]!.id).toBeNull()
+    const de = l.pociones[vida]!, a = l.pociones[4]!
+    // arrastrar con el dedo (o el mouse) de la casilla de la poción de vida a la 5
+    await page.mouse.move(de.x * z, de.y * z)
+    await page.mouse.down()
+    await page.mouse.move((de.x + 14) * z, de.y * z, { steps: 3 })
+    await page.mouse.move(a.x * z, a.y * z, { steps: 6 })
+    await page.mouse.up()
+    await expect.poll(async () => (await combate(page)).cinturon[4], { timeout: 5_000 }).toContain('health')
+    expect((await combate(page)).cinturon[vida]).toBeNull()
+    // arrastrar no la tomó; un toque sí (con vida que curar, si no no se gasta)
+    await gancho(page, 'danar', 30)
+    const p5 = (await gancho<{ pociones: { x: number; y: number }[] }>(page, 'hudCombate')).pociones[4]!
+    if (info.project.name === 'tablet') await page.touchscreen.tap(p5.x * z, p5.y * z)
+    else await page.mouse.click(p5.x * z, p5.y * z)
+    await expect.poll(async () => (await combate(page)).cinturon[4], { timeout: 5_000 }).toBeNull()
+    await sinErrores(errores)
   })
 })
 

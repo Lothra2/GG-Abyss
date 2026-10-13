@@ -3,7 +3,7 @@ import { Azar } from '../azar'
 import { leerJson } from '../../../scripts/lib/verificacion'
 import { esEquipable, itemDe, leerCatalogo, ranuraDe } from '../catalogo'
 import { aporteDe, bonosDeEquipo, bonosDeSets, comparar, nivelArmaduraThor, piezasDeSet } from '../equipo'
-import { bolsaLlena, desequipar, equipar, moverEnBolsa, normalizar, recoger, sacar, sacarDelCinturon, beber, type Inv } from '../inventario'
+import { bolsaLlena, desequipar, equipar, moverEnBolsa, moverEnCinturon, normalizar, recoger, sacar, sacarDelCinturon, beber, type Inv } from '../inventario'
 import { legendarioDe, tablaLegendarios, tablaMagicos, tablaNormal, tablaRaros, tamanoOro, tirarBotin } from '../botin'
 import { statsDe } from '../stats'
 import { BOTIN } from '../../config/balance'
@@ -141,7 +141,7 @@ describe('inventario', () => {
   })
   it('con el cinturón lleno la poción va a la bolsa', () => {
     const inv = invVacio()
-    for (let i = 0; i < 5; i++) recoger(inv, cat, 'potion_health_minor')
+    for (let i = 0; i < BOTIN.cinturonCasillas + 1; i++) recoger(inv, cat, 'potion_health_minor')
     expect(inv.cinturon.every((x) => x === 'potion_health_minor')).toBe(true)
     expect(inv.bolsa[0]).toBe('potion_health_minor')
   })
@@ -204,7 +204,24 @@ describe('inventario', () => {
   it('normalizar completa una bolsa de otro tamaño', () => {
     const inv = normalizar({ equipo: {}, bolsa: ['sword_1'], cinturon: [] })
     expect(inv.bolsa).toHaveLength(28)
-    expect(inv.cinturon).toHaveLength(4)
+    expect(inv.cinturon).toHaveLength(BOTIN.cinturonCasillas)
+  })
+  it('el cinturón tiene 5 casillas y una poción arrastrada sobre otra cambian de lugar', () => {
+    expect(BOTIN.cinturonCasillas).toBe(5)
+    const inv = invVacio()
+    inv.cinturon[0] = 'potion_health_minor'
+    inv.cinturon[4] = 'potion_mana_minor'
+    expect(moverEnCinturon(inv, 4, 0)).toBe(true)
+    expect(inv.cinturon[0]).toBe('potion_mana_minor')
+    expect(inv.cinturon[4]).toBe('potion_health_minor')
+    // a una casilla vacía se muda
+    expect(moverEnCinturon(inv, 0, 2)).toBe(true)
+    expect(inv.cinturon[0]).toBeNull()
+    expect(inv.cinturon[2]).toBe('potion_mana_minor')
+    // de una vacía, a la misma o fuera del cinturón no
+    expect(moverEnCinturon(inv, 1, 3)).toBe(false)
+    expect(moverEnCinturon(inv, 2, 2)).toBe(false)
+    expect(moverEnCinturon(inv, 2, 5)).toBe(false)
   })
 })
 

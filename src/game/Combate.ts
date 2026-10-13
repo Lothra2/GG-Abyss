@@ -26,6 +26,7 @@ import type { Atacable, Enemigos } from './Enemigos'
 import type { Proyectiles, Blanco } from './Proyectiles'
 import type { Numeros } from './Numeros'
 import type { Sonido } from './Sonido'
+import { moverEnCinturon } from '../logic/inventario'
 
 export interface DepsCombate {
   escena: Phaser.Scene
@@ -670,6 +671,11 @@ export class Combate {
   }
 
   /* ---------- pociones ---------- */
+
+  /** Arrastrar una poción del cinturón sobre otra casilla: cambian de lugar */
+  moverPocion(de: number, a: number): boolean {
+    return moverEnCinturon(this.partida, de, a)
+  }
 
   pocion(i: number): boolean {
     if (this.caido) return false

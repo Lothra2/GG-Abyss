@@ -288,7 +288,7 @@ export const BOTIN = {
   armaPersonalDefecto: 'collar_de_thor',
   cofreLegendarioExtra: 'pet_armor_3',
   pociones: { vidaPct: 40, manaPct: 50, duracionS: 1 },
-  cinturonInicial: ['potion_health_minor', 'potion_health_minor', 'potion_mana_minor', null] as (string | null)[],
+  cinturonInicial: ['potion_health_minor', 'potion_health_minor', 'potion_mana_minor', null, null] as (string | null)[],
   /** probabilidad de que un objeto normal sorteado sea un mágico `m_*` (si hay uno que le toque a su nivel) */
   magicoProb: 0.25,
   /** el legendario del Claro Escondido por clase de heroína */
@@ -300,7 +300,8 @@ export const BOTIN = {
   /** la lluvia de oro al vencer al jefe: una moneda por número */
   lluviaDeOro: [40, 30, 25, 20, 15, 10, 8, 5],
   bolsaCasillas: 28,
-  cinturonCasillas: 4,
+  /** casillas del cinturón (teclas 1 a 5); se ordenan arrastrando una poción sobre otra */
+  cinturonCasillas: 5,
 }
 
 /** Stats del catálogo que el Mundo 1 sí usa. El resto se muestra en el tooltip pero no hace nada. */
