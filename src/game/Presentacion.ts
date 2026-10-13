@@ -90,7 +90,8 @@ export class Presentacion {
         p = l
         this.fase = 'portal'
         this.t = 0
-        this.decos.reproducir(this.reloj(), 'portal_azul', 'abrir')
+        // el portal del mundo (el verde del Bosque, o el azul de antes)
+        for (const n of ['portal_azul', 'portal_rojo', 'portal_verde', 'portal_violeta', 'portal_ambar']) this.decos.reproducir(this.reloj(), n, 'abrir')
         this.alAbrirPortal()
       }
       this.camara.centrarEn(p.x, p.y)

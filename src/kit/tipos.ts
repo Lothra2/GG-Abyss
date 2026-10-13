@@ -144,6 +144,8 @@ export interface SueloTrozo {
 export interface MundoManifest {
   /** F8: mundo1 el Bosque, mundo2 la Catedral. El `mundo` de siempre no lo trae (es el Bosque). */
   id?: string
+  /** F12: el portal de este mundo (`portal_verde`, `portal_violeta`...): el de llegada y el del jefe */
+  portal?: string
   mapa: string
   nombre: string
   ancho: number

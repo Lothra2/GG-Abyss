@@ -312,7 +312,7 @@ export class Mundo extends Phaser.Scene {
 
   create(): void {
     const mapa = this.mapaDelMundo()
-    encolarObjetosMundo(this, this.m, new Set([...mapa.decos.map((d) => d.sprite), ...EXTRAS_MUNDO, ...objetosDeFondo(this.m), ...objetosDeFrente(this.m)]))
+    encolarObjetosMundo(this, this.m, new Set([...mapa.decos.map((d) => d.sprite), ...EXTRAS_MUNDO, ...(this.m.mundo.portal ? [this.m.mundo.portal] : []), ...objetosDeFondo(this.m), ...objetosDeFrente(this.m)]))
     // enemigos del mapa y los efectos de combate
     // lo que se rompe y las armaduras de Thor que se pueden conseguir en el Mundo 1
     encolarObjetosMundo(this, this.m, new Set(mapa.entidades.filter((e) => e.tipo === 'rompible').map((e) => String(e.props.objeto ?? 'caja'))))
@@ -397,9 +397,9 @@ export class Mundo extends Phaser.Scene {
 
     // decorados del mapa más el portal de llegada, que es una entidad
     const decos: Deco[] = [...this.mapa.decos]
-    for (const p of entidadesDeTipo(this.mapa, 'portal_llegada')) decos.push({ sprite: p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul', x: p.x, y: p.y })
+    for (const p of entidadesDeTipo(this.mapa, 'portal_llegada')) decos.push({ sprite: this.portalDe(p.props.color), x: p.x, y: p.y })
     for (const f of this.portalesFx) f.destroy()
-    this.portalesFx = entidadesDeTipo(this.mapa, 'portal_llegada').map((p) => new PortalFx(this, p.x, p.y, this.colorDePortal(p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul'), this.m.mundo.objetos[p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul']))
+    this.portalesFx = entidadesDeTipo(this.mapa, 'portal_llegada').map((p) => new PortalFx(this, p.x, p.y, this.colorDePortal(this.portalDe(p.props.color)), this.m.mundo.objetos[this.portalDe(p.props.color)]))
     const calidadIni = CALIDAD[this.partida.ajustes.calidad]
     this.sombrasPj?.destruir()
     this.sombrasPj = new SombrasPersonajes(this, this.mapa.bioma === 'bosque' ? SOMBRA_LARGA.afuera : SOMBRA_LARGA.adentro)
@@ -1062,6 +1062,13 @@ export class Mundo extends Phaser.Scene {
     this.game.events.emit('farol-apagado')
   }
 
+  /** F12: el portal de este mundo si el kit lo trae (`mundos[i].portal`); si no, el azul o el rojo que diga el mapa */
+  private portalDe(color: unknown): string {
+    const propio = this.m.mundo.portal
+    if (propio && this.m.mundo.objetos[propio] && this.textures.exists(K.obj(propio, 'girar'))) return propio
+    return color === 'rojo' ? 'portal_rojo' : 'portal_azul'
+  }
+
   /** El color de la luz del portal según el kit (azul o rojo) */
   private colorDePortal(nombre: string): number {
     return parseInt((this.m.mundo.objetos[nombre]?.luz?.color ?? '#6cb4ff').replace('#', ''), 16)
@@ -1071,7 +1078,7 @@ export class Mundo extends Phaser.Scene {
     if (this.portalJefe) return
     const ent = entidadesDeTipo(this.mapa, 'portal_jefe')[0]
     if (!ent) return
-    const color = ent.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul'
+    const color = this.portalDe(ent.props.color)
     const def = this.m.mundo.objetos[color]
     if (!def || !this.textures.exists(K.obj(color, 'girar'))) return
     for (const an of ['abrir', 'girar'] as const) {
