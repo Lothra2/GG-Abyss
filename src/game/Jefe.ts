@@ -704,6 +704,29 @@ export class JefeSprite implements Atacable {
     if (this.estandarte) this.estandarte.setPosition(x, y - this.cuerpo.alto - 30).setDepth(PROF.OBJETOS + 9300)
   }
 
+  /** El último lugar donde se vio la lucecita (para la luz que vuela al faro cuando se apaga en `die`) */
+  ultimaAntena: { x: number; y: number } | null = null
+
+  /**
+   * F12: dónde está la lucecita de la antena en este cuadro (el kit trae el punto por dirección y cuadro), o null si está
+   * bajo el agua. Sin datos del kit, fija arriba del pez.
+   */
+  antena(): { x: number; y: number } | null {
+    if (!this.luzAntena) return null
+    const def = this.m.personajes[this.tipo]?.anims[this.animNombre]
+    if (!def?.antena) {
+      const p = { x: this.x, y: this.y - JEFE_PEZ.antenaAlto }
+      this.ultimaAntena = p
+      return p
+    }
+    const f = Math.max(0, (this.sprite.anims.currentFrame?.index ?? 1) - 1)
+    const pt = def.antena[this.dir]?.[f]
+    if (!pt) return null
+    const p = { x: this.sprite.x + pt[0], y: this.sprite.y + pt[1] }
+    this.ultimaAntena = p
+    return p
+  }
+
   /** Cuánto sube el sprite en este cuadro (el `leap` del minotauro o el salto del Pez Farol traen `elevacion`), o 0 */
   private elevacion(): number {
     const a = this.sprite.anims.currentAnim

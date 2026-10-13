@@ -20,6 +20,8 @@ export interface AnimHoja {
   aviso?: [number, number]
   /** jefes: cuánto sube el sprite sobre su sombra en cada cuadro (el salto del minotauro) */
   elevacion?: number[]
+  /** F12: la antena del Pez Farol: por dirección (fila de la hoja) y por cuadro, [x, y] desde el pivote o null bajo el agua */
+  antena?: ([number, number] | null)[][]
 }
 
 export interface EventoAnim {

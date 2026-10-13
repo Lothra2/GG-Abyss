@@ -79,7 +79,12 @@ test.describe('El Puerto Ahogado', () => {
     await bajarAlPuerto(page)
     await gancho(page, 'matarEnemigos')
     const r0 = (await pto(page)).farol.radio
-    expect(await gancho<boolean>(page, 'alzarFarol')).toBe(true)
+    // el botón redondo del farol (para Alana): tocarlo alza el farol
+    const hud = await gancho<{ farol: { x: number; y: number; lado: number } | null }>(page, 'hudCombate')
+    expect(hud.farol).not.toBeNull()
+    const z = (await gancho<{ cssZoom: number }>(page, 'escala')).cssZoom
+    await page.mouse.click(hud.farol!.x * z, hud.farol!.y * z)
+    await expect.poll(async () => (await pto(page)).farol.alzado, { timeout: 5_000 }).toBe(true)
     let p = await pto(page)
     expect(p.farol.alzado).toBe(true)
     expect(p.farol.radio).toBeGreaterThan(r0)

@@ -4,6 +4,7 @@ import type { MapaJuego } from '../kit/mapa'
 import { entidadesDeTipo } from '../kit/mapa'
 import { K } from '../kit/claves'
 import { PROF } from '../config/juego'
+import { PUERTO } from '../config/balance'
 import type { Grilla } from '../logic/grilla'
 import { alzarFarol, apagarFarol, caminableConMarea, farolNuevo, mareaEn, pasoFarol, radioFarolThor, secoMasCercano, type EstadoFarol, type FaseMarea } from '../logic/puerto'
 import type { Luz } from './Decos'
@@ -139,6 +140,11 @@ export class Puerto {
 
   get farolAlzado(): boolean {
     return this.farol.alzadoS > 0
+  }
+
+  /** Lo que falta para poder alzarlo otra vez (1 recién alzado, 0 listo): el arco del botón */
+  get recargaFraccion(): number {
+    return Math.max(0, Math.min(1, this.farol.recargaS / PUERTO.farol.recargaAlzarS))
   }
 
   /** El farol encima de Thor: el mismo cuadro de la misma animación en la capa del taller */

@@ -17,7 +17,7 @@ import { frenteDeZona } from '../logic/capas'
 import { FondoParalaje } from '../fx/FondoParalaje'
 import { Niebla } from '../logic/niebla'
 import { pisoDe, thorBrilla, topeOscuridad } from '../logic/abismo'
-import { ABISMO, JEFE_PEZ, PUERTO } from '../config/balance'
+import { ABISMO, PUERTO } from '../config/balance'
 import { aspectoDe, claveAspecto } from '../logic/aspecto'
 import { puntosDeCaida, regionCaminable } from '../logic/lugar'
 import { RADIO_HEROINA } from '../logic/camino'
@@ -925,7 +925,8 @@ export class Mundo extends Phaser.Scene {
     // F12: el Pez Farol se libera y la luz robada vuelve al faro
     if (this.jefe?.tipo === 'pez_farol') {
       if (yaVencido) this.prenderFaro(false)
-      else this.luzAlFaro = this.faroDelMapa() ? { x0: this.jefe.x, y0: this.jefe.y - 50, ...this.puntaDelFaro()!, t: -1.1, dur: 2.4 } : null
+      // la luz arranca de donde se vio la antena por última vez (en `die` se apaga y se va)
+      else this.luzAlFaro = this.faroDelMapa() ? { x0: this.jefe.ultimaAntena?.x ?? this.jefe.x, y0: this.jefe.ultimaAntena?.y ?? this.jefe.y - 50, ...this.puntaDelFaro()!, t: -1.1, dur: 2.4 } : null
     }
     if (a && yaVencido) {
       this.encenderPiedras(true)
@@ -1354,8 +1355,8 @@ export class Mundo extends Phaser.Scene {
   /* ---------- usar cosas del mundo ---------- */
 
   /** Un toque: un cuervo, algo que se usa (cofre, cartel, fogata, Abuelo Roble) o el piso */
-  /** F12: Thor alza el farol (aúlla). false si no está en el Puerto o lo tiene en recarga */
-  private alzarFarol(): boolean {
+  /** F12: Thor alza el farol (aúlla). false si no está en el Puerto o lo tiene en recarga. También lo usa el botón del HUD */
+  alzarFarol(): boolean {
     if (!this.puerto?.alzar()) return false
     this.thor.hacer('howl', 1.1)
     return true
@@ -2001,8 +2002,11 @@ export class Mundo extends Phaser.Scene {
     // en lo hondo el jefe lleva su propio brillo tenue: siempre se ve dónde está, aunque la arena esté a oscuras
     const jb = this.jefe
     // el Pez Farol: la luz robada del faro en la punta de su antena (baila sobre el agua para atraer)
-    if (jb && jb.vivo && jb.luzAntena && !this.partida.jefeVencido) luces.push({ x: jb.x, y: jb.y - JEFE_PEZ.antenaAlto, r: Math.round(jb.luzAntena.radio * 0.7), color: jb.luzAntena.color, flicker: true, pulse: true, ph: 0.4, alto: JEFE_PEZ.antenaAlto })
-    else if (jb && jb.vivo && thorBrilla(this.piso)) luces.push({ x: jb.x, y: jb.y - jb.cuerpo.alto / 2, r: ABISMO.jefeBrilloRadio, color: '#c58aff', pulse: true, ph: 0.2 })
+    const ant = jb && jb.vivo && jb.luzAntena && !this.partida.jefeVencido ? jb.antena() : null
+    if (jb && ant) luces.push({ x: ant.x, y: ant.y, r: Math.round(jb.luzAntena!.radio * 0.7), color: jb.luzAntena!.color, flicker: true, pulse: true, ph: 0.4, alto: Math.max(0, jb.y - ant.y) })
+    else if (jb?.luzAntena) {
+      // bajo el agua no alumbra (el kit lo dice cuadro por cuadro)
+    } else if (jb && jb.vivo && thorBrilla(this.piso)) luces.push({ x: jb.x, y: jb.y - jb.cuerpo.alto / 2, r: ABISMO.jefeBrilloRadio, color: '#c58aff', pulse: true, ph: 0.2 })
     this.moverLuzAlFaro(dtVisual, luces)
     const heroe = { x: this.heroina.x, y: this.heroina.y }
     this.entidades.update(this.t, heroe, !this.presentacion?.activa)

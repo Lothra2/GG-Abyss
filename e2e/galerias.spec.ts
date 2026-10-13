@@ -56,6 +56,8 @@ test.describe('Las Galerías del Eco', () => {
     expect(g.prendidos).toBe(0)
     expect(g.grandes.length).toBeGreaterThanOrEqual(4)
     expect(g.reinaVulnerable).toBe(false)
+    // el botón del farol de Thor es solo del Puerto
+    expect((await gancho<{ farol: unknown }>(page, 'hudCombate')).farol).toBeNull()
     // piso 3: más oscuro que lo de arriba y Thor brilla
     expect((await gancho<{ oscuridad: number }>(page, 'atmosfera')).oscuridad).toBeGreaterThan(0.6)
     await avanzar(page, 3)

@@ -83,6 +83,8 @@ export class HudCombate {
   private ataqueX = 0
   private ataqueY = 0
   private ataqueLado = 48
+  /** F12: el botón del farol de Thor (solo en el Puerto, si el taller trae su ícono) */
+  private farol: { icono: Phaser.GameObjects.Image; arco: Phaser.GameObjects.Graphics; zona: Phaser.GameObjects.Zone; x: number; y: number; lado: number; late: number } | null = null
   /** el ícono del arma trae su marco cuadrado de la mochila: se ve solo un círculo, justo por dentro del aro */
   private ataqueMascara!: Phaser.GameObjects.Graphics
   private iconoPropio = false
@@ -194,6 +196,19 @@ export class HudCombate {
     this.ataqueZona.on('pointerup', soltarAtaque)
     this.ataqueZona.on('pointerout', soltarAtaque)
     this.ponerIconoAtaque()
+    if (escena.textures.exists(k('hab_farol'))) {
+      const icono = escena.add.image(0, 0, k('hab_farol')).setVisible(false)
+      const arco = escena.add.graphics()
+      const zona = escena.add.zone(0, 0, 40, 40).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true })
+      zona.on('pointerdown', (p: Phaser.Input.Pointer) => {
+        if (!this.mundo.puerto) return
+        Bloqueo.tomar(p.id)
+        this.mundo.alzarFarol()
+      })
+      this.farol = { icono, arco, zona, x: 0, y: 0, lado: 40, late: 0 }
+      escena.game.events.on('farol-pista', this.alPistaFarol, this)
+      escena.events.once(Phaser.Scenes.Events.SHUTDOWN, () => escena.game.events.off('farol-pista', this.alPistaFarol, this))
+    }
     escena.game.events.on('sin-mana', this.alSinMana, this)
     escena.events.once(Phaser.Scenes.Events.SHUTDOWN, () => escena.game.events.off('sin-mana', this.alSinMana, this))
   }
@@ -217,6 +232,11 @@ export class HudCombate {
 
   private alSinMana(): void {
     this.flashMana = 0.5
+  }
+
+  /** El pez está bajo el agua: el botón del farol late para que Alana sepa qué tocar */
+  private alPistaFarol(): void {
+    if (this.farol) this.farol.late = 2.4
   }
 
   /** Todo pegado al borde de abajo. Los botones crecen un cuarto en modo peque. */
@@ -285,6 +305,15 @@ export class HudCombate {
       // la letra del teclado chiquita afuera del botón, abajo a la derecha; en la tablet y el teléfono no va
       b.tecla.setScale(1).setOrigin(0.5, 0.5).setPosition(b.x + lado / 2 - 3, b.y + lado / 2 - 3).setVisible(!this.tactil)
     })
+    // el farol de Thor, arriba del ataque (sigue el arco de las habilidades)
+    if (this.farol) {
+      const a = Phaser.Math.DegToRad(62)
+      this.farol.lado = lado
+      this.farol.x = Math.round(this.ataqueX + Math.cos(a) * radio)
+      this.farol.y = Math.round(this.ataqueY - Math.sin(a) * radio)
+      this.farol.icono.setPosition(this.farol.x, this.farol.y).setScale(Math.max(1, Math.floor(lado / 40)))
+      this.farol.zona.setPosition(this.farol.x, this.farol.y).setSize(lado, lado)
+    }
     this.acomodarAtaque()
   }
 
@@ -317,6 +346,34 @@ export class HudCombate {
     this.ataqueZona.setPosition(this.ataqueX, this.ataqueY).setSize(l, l)
   }
 
+  /** F12: el botón del farol: solo en el Puerto, gris y con el arco oscuro mientras recarga, y late con la pista */
+  private actualizarFarol(dt: number): void {
+    const f = this.farol
+    if (!f) return
+    const p = this.mundo.puerto
+    f.icono.setVisible(!!p)
+    f.zona.setVisible(!!p)
+    if (f.zona.input) f.zona.input.enabled = !!p
+    f.arco.clear()
+    if (!p) return
+    const fr = p.recargaFraccion
+    const gris = K.ui('hab_farol_recarga')
+    const tex = fr > 0 && this.escena.textures.exists(gris) ? gris : K.ui('hab_farol')
+    if (f.icono.texture.key !== tex) f.icono.setTexture(tex)
+    const r = f.lado / 2
+    if (fr > 0) {
+      f.arco.fillStyle(0x000000, 0.62)
+      f.arco.slice(f.x, f.y, r, Phaser.Math.DegToRad(-90), Phaser.Math.DegToRad(-90 + 360 * fr), false)
+      f.arco.fillPath()
+    }
+    f.late = Math.max(0, f.late - dt)
+    if (f.late > 0 && fr <= 0) {
+      const k = 0.5 + 0.5 * Math.sin(f.late * 12)
+      f.arco.lineStyle(2, 0xffd890, 0.5 + 0.5 * k).strokeCircle(f.x, f.y, r + 2 + k * 3)
+    }
+    f.arco.setDepth(f.icono.depth + 1)
+  }
+
   /** Áreas táctiles y posiciones para las pruebas */
   layout() {
     return {
@@ -326,12 +383,14 @@ export class HudCombate {
       xp: this.marcoXp.getBounds(),
       jefe: { visible: this.marcoJefe.visible, marco: this.marcoJefe.getBounds(), relleno: this.rellenoJefe.getBounds(), rastro: this.rastroJefe.visible ? this.rastroJefe.getBounds() : null, llenado: Math.round(this.llenado * 100) / 100 },
       botones: this.botones.map((b) => ({ id: b.id, x: b.x, y: b.y, lado: b.lado })),
+      farol: this.farol && this.farol.icono.visible ? { x: this.farol.x, y: this.farol.y, lado: this.farol.lado } : null,
       ataque: { x: this.ataqueX, y: this.ataqueY, lado: this.ataqueLado, arma: this.ataqueArma },
       pociones: this.slots.map((q) => ({ x: q.x, y: q.y, id: q.id, fina: !!q.icono && q.icono.texture.key === this.atlasFino })),
     }
   }
 
   update(dt: number): void {
+    this.actualizarFarol(dt)
     const c = this.mundo.combate
     // mantener el botón de ataque sigue pegando (el combate pone el ritmo); el ícono sigue al arma puesta
     if (this.ataqueApretado) c.atacarHacia()
