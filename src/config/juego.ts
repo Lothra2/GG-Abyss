@@ -135,3 +135,29 @@ export const COLOR_MAPA = {
   muro: 0x141c1a,
   borde: 0x2c3a34,
 } as const
+
+/** La selección de heroína: el color de la luz de cada clase y el elemento que estalla al elegirla */
+export const SELECCION = {
+  color: { amazona: 0x9ad8ff, druida: 0x6ee08a, paladin: 0xffd27a, hechicera: 0xc58aff } as Record<string, number>,
+  nova: { amazona: 'nova_rayo', druida: 'nova_naturaleza', paladin: 'nova_sagrado', hechicera: 'nova_arcano' } as Record<string, string>,
+  /** brasas que suben por tarjeta */
+  brasas: 7,
+  /** lo que se apagan las otras tarjetas al elegir una */
+  apagadas: 0.28,
+} as const
+
+/** La luz que rodea a los portales (game/PortalFx.ts): el centro del remolino, las motas que se traga y el círculo del piso */
+export const PORTAL_FX = {
+  /** el centro del óvalo, arriba del pie del portal */
+  alturaCentro: 46,
+  nucleo: [34, 56] as const,
+  halo: 130,
+  motas: 16,
+  /** tamaño de cada mota */
+  lado: 7,
+  /** el óvalo por donde entran las motas */
+  radio: [30, 44] as const,
+  escalaCirculo: 2,
+  /** desde esta distancia de la heroína se empieza a encender */
+  radioCerca: 160,
+} as const

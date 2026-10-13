@@ -80,6 +80,17 @@ Todo el pedido, con tamaños, cuadros, apoyos y prioridades, está en `docs/enca
 - **Pedido:** rehacerlo como un corte de hormiguero con siete mini escenas que se reconozcan: el bosque con raíces, la catedral con su campana, las galerías con cristales, el mar callado, la ciudad dormida, las fraguas rojas y el fondo con dos ojos. Mismo tamaño, mismas capas (`fondo` 0.8 y `frente` 1), la luz roja subiendo desde abajo.
 - **Mientras tanto:** el juego lo usa así, con la cámara bajando por él.
 
+### 40. Portales premium (lo pidió Rick: "están muy chimbos")
+
+- **Qué pasa:** `portal_azul` y `portal_rojo` (64 x 96) son un óvalo plano con un remolino de pocos cuadros. El juego ya les pone luz alrededor (núcleo que late, halo, el círculo mágico en el piso y motas que se traga, `game/PortalFx.ts`), pero el dibujo sigue siendo el punto débil.
+- **Pedido:** `portal_azul` y `portal_rojo` nuevos de 96 x 128 con apoyo abajo al centro: un arco de piedra con runas que brillan (el marco, quieto) y adentro el remolino animado (`girar`, 12 cuadros, en espiral hacia el centro, con chispas que salen del borde). `abrir` (8 cuadros: las runas se prenden una por una y el remolino nace en el centro) y `cerrar` (6). Luz en el manifest como hoy (`radius` 160). Si el arco va aparte del remolino (dos capas), el juego pone el remolino detrás del arco.
+- **Uno por mundo, si se puede:** verde y dorado para el Bosque, violeta para la Catedral, ámbar para las Galerías y rojo que gotea para el Mundo 4 en adelante (`portal_<color>`).
+
+### 39. Cinturón de 5 pociones
+
+- **Qué pasa:** el cinturón ahora tiene 5 casillas (lo pidió Rick). `ui/cinturon.png` trae 4 con los números 1 a 4 pintados, así que el juego arma el de 5 con el marco de las barras (`barra_marco`) y 5 `casillero`, con los números en la fuente del juego.
+- **Pedido:** `cinturon` nuevo de 190 x 44 (5 casillas de 36 con 5 px de borde) en el mismo estilo de acero con remaches dorados, sin números pintados (los pone el juego). Opcional: `casillero_pocion`, un casillero con un hueco redondo de vidrio para que la poción se vea dentro de un frasco.
+
 ### 38. Ícono genérico redondo para el botón de ataque (urgente, lo pidió Rick)
 
 - **Qué pasa:** el botón de ataque usa el ícono del arma de la mochila (32 x 32), que trae su fondo y su marco cuadrado pintados. El juego lo recorta en círculo, pero se sigue leyendo como "un objeto en un cuadro" y no se puede teñir. Rick no quiere el arma: quiere un símbolo genérico de ataque, dentro del círculo.

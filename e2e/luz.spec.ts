@@ -101,4 +101,12 @@ test.describe('Luz del mundo', () => {
     expect((await gancho<{ sombrasPersonajes: number }>(page, 'luzMundo')).sombrasPersonajes).toBe(0)
     await sinErrores(errores)
   })
+
+  test('el portal de llegada tiene su luz: núcleo, halo, círculo en el piso y motas', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    expect((await gancho<{ portalesConLuz: number }>(page, 'luzMundo')).portalesConLuz).toBeGreaterThanOrEqual(1)
+    await gancho(page, 'avanzar', 0.5)
+    await sinErrores(errores)
+  })
 })

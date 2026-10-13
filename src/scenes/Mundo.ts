@@ -6,6 +6,7 @@ import { existeMundo, idMundo, manifestParaMundo, MUNDO_BOSQUE } from '../kit/mu
 import { Mecanismos, OBJETOS_MECANISMOS } from '../game/Mecanismos'
 import { Galerias } from '../game/Galerias'
 import { SombrasPersonajes } from '../game/SombrasPersonajes'
+import { PortalFx } from '../game/PortalFx'
 import { perfilDe } from '../game/Jefe'
 import { ID_MERCADER, Mercader } from '../game/Mercader'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
@@ -183,6 +184,8 @@ export class Mundo extends Phaser.Scene {
   arena?: { x: number; y: number; radio: number }
   private anillo: (() => void)[] = []
   private portalJefe: { s: Phaser.GameObjects.Sprite; x: number; y: number; luz: string } | null = null
+  /** la luz y las motas alrededor de cada portal (el de llegada y el del jefe cuando se abre) */
+  private portalesFx: PortalFx[] = []
   private saliendoAContinuara = false
   /** Cruzando un portal: la partida ya puede estar en el otro mundo, el HUD no la lee */
   get saliendo(): boolean {
@@ -376,6 +379,8 @@ export class Mundo extends Phaser.Scene {
     // decorados del mapa más el portal de llegada, que es una entidad
     const decos: Deco[] = [...this.mapa.decos]
     for (const p of entidadesDeTipo(this.mapa, 'portal_llegada')) decos.push({ sprite: p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul', x: p.x, y: p.y })
+    for (const f of this.portalesFx) f.destroy()
+    this.portalesFx = entidadesDeTipo(this.mapa, 'portal_llegada').map((p) => new PortalFx(this, p.x, p.y, this.colorDePortal(p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul')))
     const calidadIni = CALIDAD[this.partida.ajustes.calidad]
     this.sombrasPj?.destruir()
     this.sombrasPj = new SombrasPersonajes(this, this.mapa.bioma === 'bosque' ? SOMBRA_LARGA.afuera : SOMBRA_LARGA.adentro)
@@ -880,6 +885,11 @@ export class Mundo extends Phaser.Scene {
     this.game.events.emit('destello', { color: 0x8affe8, alfa: this.suave ? 0.12 : 0.35, ms: 1200 })
   }
 
+  /** El color de la luz del portal según el kit (azul o rojo) */
+  private colorDePortal(nombre: string): number {
+    return parseInt((this.m.mundo.objetos[nombre]?.luz?.color ?? '#6cb4ff').replace('#', ''), 16)
+  }
+
   private abrirPortalJefe(animar: boolean): void {
     if (this.portalJefe) return
     const ent = entidadesDeTipo(this.mapa, 'portal_jefe')[0]
@@ -899,6 +909,7 @@ export class Mundo extends Phaser.Scene {
       this.sonido.efecto('portal', { volumen: 0.8 })
     } else s.play(`${color}_girar`)
     this.portalJefe = { s, x: ent.x, y: ent.y, luz: def.luz?.color ?? '#6cb4ff' }
+    this.portalesFx.push(new PortalFx(this, ent.x, ent.y, this.colorDePortal(color)))
   }
 
   /** El portal del jefe baja al mundo siguiente si el kit lo trae; si no, "Continuará" */
@@ -1139,6 +1150,8 @@ export class Mundo extends Phaser.Scene {
     this.galerias = null
     this.sombrasPj?.destruir()
     this.sombrasPj = null
+    for (const f of this.portalesFx) f.destroy()
+    this.portalesFx = []
     this.sonido.detener()
     this.decos.destruir()
     this.reflejos?.destruir()
@@ -1801,6 +1814,7 @@ export class Mundo extends Phaser.Scene {
       this.sombrasPj.update(fuentes, luces, dtVisual)
     }
     this.decos.iluminarSombras(luces, dtVisual)
+    for (const f of this.portalesFx) f.update(dtVisual, heroe)
     this.reflejos.update(this.t)
     this.fondo.update(vista)
     this.frente.update(vista, heroe)
@@ -1882,7 +1896,7 @@ export class Mundo extends Phaser.Scene {
       tocar: ((x: number, y: number) => this.entrada.tocar(x, y)) as never,
       estado: () => JSON.parse(JSON.stringify(this.partida)),
       atmosfera: () => this.atmosfera.info(),
-      luzMundo: () => ({ ...this.decos.contarEfectos(), sombrasPersonajes: this.sombrasPj?.cantidad ?? 0, sombraHeroina: this.sombrasPj?.infoDe(this.heroina.sprite) ?? null, sombraThor: this.sombrasPj?.infoDe(this.thor.sprite) ?? null, reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, criaturasChicas: this.criaturas.infoChicos, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible, frenteMedidas: this.frente.medidas, altoVista: this.frente.altoVista }),
+      luzMundo: () => ({ ...this.decos.contarEfectos(), sombrasPersonajes: this.sombrasPj?.cantidad ?? 0, portalesConLuz: this.portalesFx.length, sombraHeroina: this.sombrasPj?.infoDe(this.heroina.sprite) ?? null, sombraThor: this.sombrasPj?.infoDe(this.thor.sprite) ?? null, reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, criaturasChicas: this.criaturas.infoChicos, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible, frenteMedidas: this.frente.medidas, altoVista: this.frente.altoVista }),
       camara: () => ({ x: this.camara.cx, y: this.camara.cy, ancho: this.camara.ancho, alto: this.camara.alto, manual: this.camara.manual }),
       // F11: las Galerías
       galerias: () => (this.galerias ? { ...this.galerias.info, viajando: !!this.viaje, sombras: this.enemigos.lista.filter((e) => e.cfg.soloEnLuz && e.vivo).map((e) => ({ x: Math.round(e.x), y: Math.round(e.y), oculta: e.oculta })) } : null),

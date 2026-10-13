@@ -3,7 +3,7 @@
  * en una fila si caben y si no en dos, con la heroína a la escala entera más grande posible.
  */
 export interface DisposicionTarjetas {
-  /** escala entera de la heroína dentro de la tarjeta (1 a 3) */
+  /** escala entera de la heroína dentro de la tarjeta (1 a 4) */
   escalaHeroe: number
   cols: number
   filas: number
@@ -18,15 +18,15 @@ export interface DisposicionTarjetas {
 const GAP = 8
 const MARGEN = 8
 
-/** Ancho y alto de una tarjeta según la escala de la heroína (celda de 48 px) */
+/** Ancho y alto de una tarjeta según la escala de la heroína (celda de 48 px), con lugar para su círculo a los pies */
 export function medidasTarjeta(escalaHeroe: number): { w: number; h: number } {
-  return { w: 48 * escalaHeroe + 24, h: 48 * escalaHeroe + 96 }
+  return { w: 48 * escalaHeroe + 24, h: 48 * escalaHeroe + 120 }
 }
 
 export function disponerTarjetas(n: number, ancho: number, alto: number, margenSup = MARGEN, margenInf = MARGEN): DisposicionTarjetas {
   const util = { w: ancho - 2 * MARGEN, h: alto - margenSup - margenInf }
   let elegida: Omit<DisposicionTarjetas, 'posiciones'> | null = null
-  for (const s of [3, 2, 1]) {
+  for (const s of [4, 3, 2, 1]) {
     const { w, h } = medidasTarjeta(s)
     for (let cols = Math.max(1, n); cols >= 1; cols--) {
       const filas = Math.ceil(n / cols)

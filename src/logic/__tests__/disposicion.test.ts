@@ -9,16 +9,16 @@ describe('disponerTarjetas', () => {
     expect(d.filas).toBe(1)
   })
 
-  it('4 tarjetas en escritorio (1280 x 720) y en 960 x 540: una fila a escala 3', () => {
+  it('4 tarjetas en escritorio (1280 x 720) y en 960 x 540: una fila a escala 4, bien grandes', () => {
     for (const [w, h] of [[1280, 720], [960, 540]] as const) {
-      const d = disponerTarjetas(4, w, h)
-      expect(d.escalaHeroe, `${w}x${h}`).toBe(3)
+      const d = disponerTarjetas(4, w, h, 40)
+      expect(d.escalaHeroe, `${w}x${h}`).toBe(4)
       expect(d.filas).toBe(1)
     }
   })
 
-  it('una quinta heroína del estudio entra: en el iPad pasa a dos filas', () => {
-    const d = disponerTarjetas(5, 590, 410)
+  it('una quinta heroína del estudio entra: en una vista angosta pasa a dos filas', () => {
+    const d = disponerTarjetas(5, 590, 520)
     expect(d.posiciones).toHaveLength(5)
     expect(d.filas).toBe(2)
     expect(d.escalaHeroe).toBeGreaterThanOrEqual(1)
@@ -54,12 +54,16 @@ describe('disponerTarjetas', () => {
   })
 
   it('la última fila incompleta queda centrada', () => {
-    const d = disponerTarjetas(5, 590, 410)
+    const d = disponerTarjetas(5, 590, 520)
     const ultima = d.posiciones.filter((p) => p.y === d.posiciones[4]!.y)
     expect(ultima.length).toBeLessThan(d.cols)
     const izq = ultima[0]!.x
     const der = 590 - (ultima[ultima.length - 1]!.x + d.w)
     expect(Math.abs(izq - der)).toBeLessThanOrEqual(1)
+  })
+
+  it('en el teléfono acostado (780 x 360, con el título arriba) quedan a escala 3', () => {
+    expect(disponerTarjetas(4, 780, 360, 30).escalaHeroe).toBe(3)
   })
 
   it('una pantalla muy chica se deja en una fila a escala 1', () => {

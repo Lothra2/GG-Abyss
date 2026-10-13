@@ -95,7 +95,8 @@ export class Boot extends Phaser.Scene {
     encolarAtmosfera(this, m)
     encolarPostales(this, m, ['arena_del_minotauro'])
     encolarParticulas(this, m, ['brasa', 'luciernaga'])
-    encolarFx(this, m, ['aura_nivel', 'curar'])
+    // la selección: el círculo de cada heroína y el estallido de su elemento al elegirla
+    encolarFx(this, m, ['aura_nivel', 'curar', 'circulo_magico', 'nova_rayo', 'nova_naturaleza', 'nova_sagrado', 'nova_arcano'])
     encolarBotin(this, m, { atlas: ['iconos'], tamanos: ['32'], mundo: false, catalogo: false })
     encolarObjetosMundo(this, m, ['portal_azul'])
     encolarAudio(this, m, ['musica_titulo', 'musica_bosque', 'ambiente_magia', 'click', 'subir_nivel', 'elegir', 'ladrido'])
@@ -109,6 +110,7 @@ export class Boot extends Phaser.Scene {
     for (const id of [...heroes(m), 'thor']) crearAnimsPersonaje(this, m, id)
     crearAnimFx(this, m, 'aura_nivel')
     crearAnimFx(this, m, 'curar')
+    for (const n of ['circulo_magico', 'nova_rayo', 'nova_naturaleza', 'nova_sagrado', 'nova_arcano']) crearAnimFx(this, m, n)
     const logo = m.ui.logo as { cuadros: number; fps: number } | undefined
     if (logo && !this.anims.exists('logo')) {
       this.anims.create({ key: 'logo', frames: this.anims.generateFrameNumbers(K.ui('logo'), { start: 0, end: logo.cuadros - 1 }), frameRate: logo.fps ?? 8, repeat: -1 })
