@@ -11,6 +11,9 @@ export const estadoPwa = {
   nuevaVersion: false,
 }
 
+/** Cada cuánto se pregunta si hay versión nueva mientras la app sigue abierta */
+const BUSCAR_VERSION_MS = 20 * 60 * 1000
+
 /** Evento de la ventana cuando llega una versión nueva del juego */
 export const EVENTO_VERSION_NUEVA = 'gg-version-nueva'
 
@@ -33,17 +36,23 @@ export function registrarServiceWorker(): void {
     estadoPwa.nuevaVersion = true
     window.dispatchEvent(new Event(EVENTO_VERSION_NUEVA))
   })
-  // la app vuelve del fondo con una versión nueva ya guardada: recarga para jugarla (Mundo guardó al irse al fondo)
+  // el navegador solo busca versión nueva al abrir el juego desde cero. En la tablet la app casi nunca se cierra: se va
+  // al fondo y vuelve. Por eso se pregunta al volver y cada rato; si ya llegó una nueva, recarga (Mundo guardó al irse)
+  let registro: ServiceWorkerRegistration | null = null
+  const buscar = () => void registro?.update().catch(() => undefined)
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible' && estadoPwa.nuevaVersion) window.location.reload()
+    if (document.visibilityState !== 'visible') return
+    if (estadoPwa.nuevaVersion) window.location.reload()
+    else buscar()
   })
+  setInterval(buscar, BUSCAR_VERSION_MS)
   const registrar = () =>
     navigator.serviceWorker
       .register('./sw.js')
       .then((r) => {
+        registro = r
         estadoPwa.registrado = true
         estadoPwa.controlado = !!navigator.serviceWorker.controller
-        void r
       })
       .catch((err: unknown) => (estadoPwa.error = String(err)))
   if (document.readyState === 'complete') registrar()
