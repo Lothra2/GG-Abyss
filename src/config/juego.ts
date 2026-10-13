@@ -148,8 +148,8 @@ export const SELECCION = {
 
 /** La luz que rodea a los portales (game/PortalFx.ts): el centro del remolino, las motas que se traga y el círculo del piso */
 export const PORTAL_FX = {
-  /** el centro del óvalo, arriba del pie del portal */
-  alturaCentro: 46,
+  /** el centro del remolino a esta fracción del alto del dibujo del portal (desde arriba) */
+  centroRelativo: 0.5,
   nucleo: [34, 56] as const,
   halo: 130,
   motas: 16,

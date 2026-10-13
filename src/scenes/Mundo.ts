@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import type { Manifest } from '../kit/tipos'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
-import { existeMundo, idMundo, manifestParaMundo, MUNDO_BOSQUE } from '../kit/mundos'
+import { idMundo, manifestParaMundo, mundoJugable, MUNDO_BOSQUE } from '../kit/mundos'
 import { Mecanismos, OBJETOS_MECANISMOS } from '../game/Mecanismos'
 import { Galerias } from '../game/Galerias'
 import { SombrasPersonajes } from '../game/SombrasPersonajes'
@@ -246,7 +246,7 @@ export class Mundo extends Phaser.Scene {
     this.alm = (this.registry.get('almacen') as Almacen | undefined) ?? almacenDelNavegador()
     this.registry.set('almacen', this.alm)
     const partida = (this.registry.get('partida') as Partida | undefined) ?? cargarOCrear(this.alm, id).partida
-    if (!existeMundo(base, partida.mundo)) cambiarDeMundo(partida, MUNDO_BOSQUE)
+    if (!mundoJugable(base, partida.mundo)) cambiarDeMundo(partida, MUNDO_BOSQUE)
     this.registry.set('partida', partida)
     const m = manifestParaMundo(base, partida.mundo)
     this.registry.set('manifest', m)
@@ -380,7 +380,7 @@ export class Mundo extends Phaser.Scene {
     const decos: Deco[] = [...this.mapa.decos]
     for (const p of entidadesDeTipo(this.mapa, 'portal_llegada')) decos.push({ sprite: p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul', x: p.x, y: p.y })
     for (const f of this.portalesFx) f.destroy()
-    this.portalesFx = entidadesDeTipo(this.mapa, 'portal_llegada').map((p) => new PortalFx(this, p.x, p.y, this.colorDePortal(p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul')))
+    this.portalesFx = entidadesDeTipo(this.mapa, 'portal_llegada').map((p) => new PortalFx(this, p.x, p.y, this.colorDePortal(p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul'), this.m.mundo.objetos[p.props.color === 'rojo' ? 'portal_rojo' : 'portal_azul']))
     const calidadIni = CALIDAD[this.partida.ajustes.calidad]
     this.sombrasPj?.destruir()
     this.sombrasPj = new SombrasPersonajes(this, this.mapa.bioma === 'bosque' ? SOMBRA_LARGA.afuera : SOMBRA_LARGA.adentro)
@@ -909,7 +909,7 @@ export class Mundo extends Phaser.Scene {
       this.sonido.efecto('portal', { volumen: 0.8 })
     } else s.play(`${color}_girar`)
     this.portalJefe = { s, x: ent.x, y: ent.y, luz: def.luz?.color ?? '#6cb4ff' }
-    this.portalesFx.push(new PortalFx(this, ent.x, ent.y, this.colorDePortal(color)))
+    this.portalesFx.push(new PortalFx(this, ent.x, ent.y, this.colorDePortal(color), def))
   }
 
   /** El portal del jefe baja al mundo siguiente si el kit lo trae; si no, "Continuará" */
@@ -918,7 +918,7 @@ export class Mundo extends Phaser.Scene {
     if (!p || this.saliendoAContinuara) return
     const destino = String(entidadesDeTipo(this.mapa, 'portal_jefe')[0]?.props.destino ?? '')
     const base = (this.registry.get('manifestBase') as Manifest | undefined) ?? this.m
-    if (destino && existeMundo(base, destino)) return this.irAMundo(destino, { x: Math.round(p.x), y: Math.round(p.y + 110) }, false)
+    if (destino && mundoJugable(base, destino)) return this.irAMundo(destino, { x: Math.round(p.x), y: Math.round(p.y + 110) }, false)
     this.saliendoAContinuara = true
     this.entrada.pausada = true
     this.heroina.parar()
@@ -991,7 +991,7 @@ export class Mundo extends Phaser.Scene {
       if (Math.hypot(this.heroina.x - e.x, this.heroina.y - e.y) > 26) continue
       const destino = String(e.props.destino ?? MUNDO_BOSQUE)
       const base = (this.registry.get('manifestBase') as Manifest | undefined) ?? this.m
-      if (existeMundo(base, destino)) this.irAMundo(destino, { x: Math.round(e.x + 4 * this.mapa.cuadro), y: Math.round(e.y + this.mapa.cuadro) }, true)
+      if (mundoJugable(base, destino)) this.irAMundo(destino, { x: Math.round(e.x + 4 * this.mapa.cuadro), y: Math.round(e.y + this.mapa.cuadro) }, true)
       return
     }
   }

@@ -135,3 +135,16 @@ describe('F8: los mundos del kit', () => {
     expect(manifestParaMundo(viejo, 'mundo2').mundo).toBe(viejo.mundo)
   })
 })
+
+describe('mundos jugables', () => {
+  it('un piso del abismo se abre solo cuando el kit trae a su jefe (el taller lo entrega al final)', async () => {
+    const { mundoJugable } = await import('../mundos')
+    const base = { mundos: [{ id: 'mundo1' }, { id: 'mundo3' }, { id: 'mundo4' }], personajes: {} } as unknown as Parameters<typeof mundoJugable>[0]
+    expect(mundoJugable(base, 'mundo1')).toBe(true)
+    expect(mundoJugable(base, 'mundo3')).toBe(true)
+    expect(mundoJugable(base, 'mundo4')).toBe(false)
+    expect(mundoJugable(base, 'mundo5')).toBe(false)
+    const conJefe = { ...base, personajes: { pez_farol: {} } } as unknown as Parameters<typeof mundoJugable>[0]
+    expect(mundoJugable(conJefe, 'mundo4')).toBe(true)
+  })
+})

@@ -61,7 +61,9 @@ export class HudCombate {
   private orbeMana: Phaser.GameObjects.Image
   private olaVida: Phaser.GameObjects.Sprite
   private olaMana: Phaser.GameObjects.Sprite
-  private cinturon: Phaser.GameObjects.NineSlice
+  private cinturon: Phaser.GameObjects.NineSlice | Phaser.GameObjects.Image
+  /** el cinturón del taller trae las 5 casillas dibujadas: los casilleros sueltos solo marcan dónde cae lo arrastrado */
+  private cinturonPropio = false
   private slots: Casilla[] = []
   /** la poción apretada: si el dedo se mueve pasa a arrastrarse, si se suelta ahí mismo se toma */
   private apretada: { i: number; dedo: number; x: number; y: number } | null = null
@@ -127,9 +129,14 @@ export class HudCombate {
     }
     this.numVida = texto(escena, 0, 0, '', 'fuente_ui', 1, { origen: [0.5, 0.5], tinte: 0xffe9e9 })
     this.numMana = texto(escena, 0, 0, '', 'fuente_ui', 1, { origen: [0.5, 0.5], tinte: 0xe0ecff })
-    this.cinturon = escena.add.nineslice(0, 0, k('barra_marco'), undefined, ANCHO_CINTURON, ALTO_CINTURON, 6, 6, 6, 6).setOrigin(0, 1)
+    // el cinturón del taller si ya trae las casillas que hacen falta (ASSETS_PENDIENTES #39); si no, se arma con el
+    // marco de las barras y casilleros sueltos
+    this.cinturonPropio = escena.textures.exists(k('cinturon')) && escena.textures.get(k('cinturon')).getSourceImage().width === ANCHO_CINTURON
+    this.cinturon = this.cinturonPropio
+      ? escena.add.image(0, 0, k('cinturon')).setOrigin(0, 1)
+      : escena.add.nineslice(0, 0, k('barra_marco'), undefined, ANCHO_CINTURON, ALTO_CINTURON, 6, 6, 6, 6).setOrigin(0, 1)
     for (let i = 0; i < BOTIN.cinturonCasillas; i++) {
-      const marco = escena.add.image(0, 0, k('casillero'))
+      const marco = escena.add.image(0, 0, k('casillero')).setVisible(!this.cinturonPropio)
       const num = texto(escena, 0, 0, String(i + 1), 'fuente_ui', 1, { origen: [0, 0], tinte: 0xffd27a })
       const brillo = escena.add.image(0, 0, K.luz).setBlendMode(Phaser.BlendModes.ADD).setVisible(false)
       const zona = escena.add.zone(0, 0, SLOT.paso, 40).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true })
@@ -373,6 +380,7 @@ export class HudCombate {
       const destino = this.arrastre && this.casillaEn(this.arrastre.icono.x, this.arrastre.icono.y) === i
       const tex = K.ui(destino ? 'casillero_activo' : 'casillero')
       if (s.marco.texture.key !== tex) s.marco.setTexture(tex)
+      if (this.cinturonPropio) s.marco.setVisible(!!destino)
     })
 
     // botones: el arco oscuro es lo que falta de recarga, y se apagan si no alcanza el maná

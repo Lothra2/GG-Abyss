@@ -1,4 +1,5 @@
 import type { Manifest, MundoManifest } from './tipos'
+import { ABISMO } from '../config/balance'
 
 /**
  * F8: los mundos del kit. `manifest.mundos` los trae a todos en orden de bajada; un kit de antes solo trae `mundo`
@@ -18,6 +19,17 @@ export function mundosDe(m: Manifest): MundoManifest[] {
 
 export function existeMundo(m: Manifest, id: string): boolean {
   return mundosDe(m).some((mu) => idMundo(mu) === id)
+}
+
+/**
+ * ¿Se puede jugar? El mundo tiene que estar en el kit y, si es un piso del abismo, traer a su jefe: el taller lo entrega
+ * al final, con los enemigos. Mientras falte, el portal de arriba sigue llevando a Continuará (nadie cae a un mundo a medias)
+ */
+export function mundoJugable(m: Manifest, id: string): boolean {
+  if (!existeMundo(m, id)) return false
+  const piso = ABISMO.pisos.find((p) => p.mundo === id)
+  if (!piso || piso.piso <= 3) return true
+  return !!m.personajes?.[piso.jefe]
 }
 
 /** El manifest visto desde un mundo (si no existe, el Bosque) */

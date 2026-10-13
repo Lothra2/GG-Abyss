@@ -24,23 +24,28 @@ export class PortalFx {
   private t = Math.random() * 10
   private readonly cx: number
   private readonly cy: number
+  /** cuánto más grande es este portal que el de 96 de alto con el que se midió la luz */
+  private readonly k: number
 
   constructor(
     escena: Phaser.Scene,
     readonly x: number,
     readonly y: number,
     color: number,
+    /** el portal del kit: el centro del remolino y el tamaño de la luz salen de su dibujo */
+    medidas: { w: number; h: number; apoyo: readonly [number, number] } = { w: 64, h: 96, apoyo: [32, 92] },
   ) {
     const c = PORTAL_FX
     this.cx = x
-    this.cy = y - c.alturaCentro
+    this.cy = y - (medidas.apoyo[1] - medidas.h * c.centroRelativo)
+    this.k = medidas.h / 96
     const prof = PROF.OBJETOS + y
     if (escena.textures.exists(K.fx('circulo_magico'))) {
       this.suelo = escena.add.sprite(x, y - 2, K.fx('circulo_magico'), 0).setScale(c.escalaCirculo).setTint(color).setBlendMode(Phaser.BlendModes.ADD).setAlpha(0.6).setDepth(PROF.SUELO_OBJ + 0.5)
       if (escena.anims.exists(K.animFx('circulo_magico'))) this.suelo.play(K.animFx('circulo_magico'))
     }
-    this.halo = escena.add.image(this.cx, this.cy, K.luz).setTint(color).setBlendMode(Phaser.BlendModes.ADD).setDepth(prof + 0.2).setScale(c.halo / 128)
-    this.nucleo = escena.add.image(this.cx, this.cy, K.luz).setTint(color).setBlendMode(Phaser.BlendModes.ADD).setDepth(prof + 0.3).setScale(c.nucleo[0] / 128, c.nucleo[1] / 128)
+    this.halo = escena.add.image(this.cx, this.cy, K.luz).setTint(color).setBlendMode(Phaser.BlendModes.ADD).setDepth(prof + 0.2).setScale((c.halo * this.k) / 128)
+    this.nucleo = escena.add.image(this.cx, this.cy, K.luz).setTint(color).setBlendMode(Phaser.BlendModes.ADD).setDepth(prof + 0.3).setScale((c.nucleo[0] * this.k) / 128, (c.nucleo[1] * this.k) / 128)
     for (let i = 0; i < c.motas; i++) {
       const img = escena.add.image(0, 0, K.luz).setTint(i % 3 === 0 ? 0xffffff : color).setBlendMode(Phaser.BlendModes.ADD).setDepth(prof + 0.4).setScale(c.lado / 128)
       this.motas.push({ img, a: (i / c.motas) * Math.PI * 2, f: i / c.motas, v: 0.35 + Math.random() * 0.3 })
@@ -68,8 +73,8 @@ export class PortalFx {
         m.v = 0.35 + Math.random() * 0.3
       }
       m.a += dt * (1.6 + (1 - m.f) * 4) * k
-      const rx = c.radio[0] * m.f
-      const ry = c.radio[1] * m.f
+      const rx = c.radio[0] * this.k * m.f
+      const ry = c.radio[1] * this.k * m.f
       m.img.setPosition(Math.round(this.cx + Math.cos(m.a) * rx), Math.round(this.cy + Math.sin(m.a) * ry))
       m.img.setAlpha(Math.min(1, (1 - m.f) * 3) * Math.min(1, m.f * 4) * 0.9)
     }
