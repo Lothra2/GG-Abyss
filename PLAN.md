@@ -995,6 +995,8 @@ Lo que pide Rick: "vamos a mejorar mucho más cada vez que bajamos de mundo, hac
 3. Llega el arte y se conecta: postales en `docs/capturas/f12`, suite completa y publicar.
 4. Después el piso 5, con la misma receta.
 
+**Estado del Mundo 4 (jugable).** Con el taller `243c319` (rama `claude/abyss-mundo4`): el farol de Thor (capa por cuadro, alzar con botón propio o tocando a Thor, apagado por medusa), los faroles del muelle guardados, la marea con su rescate suave, el marinero de niebla, los cangrejos que rodean, la medusa, el Capitán Ahogado con su música de pelea, la figura mojada que se lleva la luz de un farol, el mural 4 y el Pez Farol en su poza: sumergido no recibe daño, muerde con aviso, la ola en franja desde la fase 2, la llamada en la 3, el farol alzado lo encandila y al liberarse la luz vuela al faro, el piso se aclara y suena la música del faro. La luz del pez sigue la antena cuadro por cuadro. Pruebas en `e2e/puerto.spec.ts` y postales en `docs/capturas/f12/`.
+
 ## 6. Riesgos y mitigación
 
 | Riesgo | Mitigación |

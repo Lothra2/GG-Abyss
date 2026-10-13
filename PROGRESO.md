@@ -64,7 +64,9 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - Enemigos: el marinero de niebla (en la luz se ve y se deshace rápido, afuera son dos linternitas y se ve antes de pegar), los cangrejos de ceniza que rodean en grupo, la medusa negra que no pega y va por el farol de Thor y el Capitán Ahogado en el Astillero, con el ancla que avisa en el piso, una ola corta que empuja y su música de pelea.
   - El Pez Farol: sumergido no recibe daño y solo se ve su lucecita. Sale a morder con aviso y queda afuera un rato. Desde la fase 2 salta y levanta una ola en franja. Desde la 3 llama cangrejos y una medusa. Thor alzando el farol cerca lo saca encandilado: es la ventana grande. Al vencerlo se libera chiquito y azul, la luz robada vuela al faro, el faro se prende, la oscuridad baja a 0.35, todos los faroles del muelle se prenden y suena la música del faro.
   - Casi sin música: las zonas traen `ninguna` y la música entra en las peleas. Cada mundo usa su portal (verde, violeta, ámbar y rojo que gotea).
-  - Pedidos nuevos al taller: botón de alzar el farol para Alana (#41) y la antena del pez por cuadro (#42).
+  - La arena del Faro era piso y el pez nadaba sobre piedra: el taller la rehízo como una poza negra con un anillo de tablas (`243c319`). El pez nada adentro sin salirse.
+  - Botón redondo del farol para Alana (#41, entregado): gris con el arco de recarga y late cuando el pez está bajo el agua. La luz del pez sigue su antena cuadro por cuadro (#42, entregado).
+  - Al liberarse, el pez termina su animación entera (chiquito y azul, se va nadando) antes de irse. El cartel dice "¡La luz vuelve!".
 - Verificación de F10a, F11 e intro:
   - Typecheck limpio y 380 tests unitarios.
   - e2e completo (escritorio, tablet y postales): 188 pasaron, 5 se saltan a propósito y 3 fallaron en la compu por la cámara nueva. La flecha guía medía sus márgenes con el zoom del mundo y una ayuda de las pruebas no lo tomaba en cuenta.
