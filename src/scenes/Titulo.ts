@@ -7,7 +7,7 @@ import { alCambiarEscala, escalaDe } from '../game/Pantalla'
 import { escalaQueEntra, texto } from '../game/Texto'
 import { crearBoton, type Boton } from '../game/ui/Boton'
 import { Bloqueo } from '../game/ui/Bloqueo'
-import { recargarSiHayVersionNueva } from '../pwa'
+import { estadoPwa, forzarActualizacion, recargarSiHayVersionNueva } from '../pwa'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import { introVista } from './Intro'
 import { mostrarIntro } from '../logic/intro'
@@ -27,6 +27,7 @@ export class Titulo extends Phaser.Scene {
   private placa!: Phaser.GameObjects.NineSlice
   private botonCreditos!: Boton
   private botonIntro!: Boton
+  private botonActualizar?: Boton
   private empezando = false
   private musica?: Phaser.Sound.BaseSound
   private version?: Phaser.GameObjects.BitmapText
@@ -76,6 +77,9 @@ export class Titulo extends Phaser.Scene {
     this.botonIntro.setDepth(110)
     // la versión, chiquita abajo a la izquierda: para saber qué se está jugando
     this.version = texto(this, 0, 0, `v ${__VERSION_JUEGO__}`, 'fuente_ui', 1, { origen: [0, 1], tinte: 0x8a8698, profundidad: 110 })
+    // si hay una versión nueva publicada y no llega sola, un botón para traerla (la partida no se toca)
+    this.botonActualizar = crearBoton(this, { x: 0, y: 0, etiqueta: 'Actualizar', origen: [0, 1], sonido: 'click', alToque: () => void forzarActualizacion() })
+    this.botonActualizar.setDepth(110).setVisible(false)
     recargarSiHayVersionNueva(this)
     alCambiarEscala(this, () => this.acomodar())
     this.input.on('pointerdown', (p: Phaser.Input.Pointer) => {
@@ -107,6 +111,7 @@ export class Titulo extends Phaser.Scene {
     this.botonCreditos.setPosition(w - 6, h - 6)
     this.botonIntro.setPosition(w - 6 - this.botonCreditos.ancho - 4, h - 6)
     this.version?.setPosition(6, h - 6)
+    this.botonActualizar?.setPosition(6, h - 6 - (this.version?.displayHeight ?? 8) - 4)
     this.placa.setPosition(Math.round(w / 2), y).setSize(total + 28, Math.max(36, this.toca.displayHeight + 16))
     this.icono.setPosition(Math.round(w / 2 - total / 2 + 12), y)
     this.toca.setPosition(Math.round(w / 2 - total / 2 + 24 + 8 + this.toca.displayWidth / 2), y)
@@ -124,5 +129,11 @@ export class Titulo extends Phaser.Scene {
 
   override update(_t: number, ms: number): void {
     this.fondo.update(Math.min(0.05, ms / 1000))
+    // abajo a la izquierda: qué versión se juega y, si hay otra publicada, cómo va la bajada
+    const pwa = estadoPwa
+    const av = pwa.avance
+    const txt = av ? `v ${__VERSION_JUEGO__}  bajando la nueva ${Math.round((av.hechos / Math.max(1, av.total)) * 100)}%` : pwa.publicada ? `v ${__VERSION_JUEGO__}  hay una nueva: v ${pwa.publicada}` : `v ${__VERSION_JUEGO__}`
+    if (this.version && this.version.text !== txt) this.version.setText(txt).setTint(pwa.publicada || av ? 0xffd27a : 0x8a8698)
+    this.botonActualizar?.setVisible(!!pwa.publicada && !av && performance.now() - pwa.vistaPublicadaEn > 15_000)
   }
 }

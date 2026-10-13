@@ -47,6 +47,10 @@ self.addEventListener('install', (e) => {
       let hechos = 0
       let bajados = 0
       const huellas = {}
+      const clientes0 = await self.clients.matchAll({ includeUncontrolled: true })
+      const avisar = () => {
+        if (hechos % 60 === 0) for (const c of clientes0) c.postMessage({ tipo: 'precache-avance', archivos: ARCHIVOS.length, hechos })
+      }
       await Promise.allSettled(
         ARCHIVOS.map(async ([url, huella]) => {
           try {
@@ -55,6 +59,7 @@ self.addEventListener('install', (e) => {
               await cache.put(url, igual)
               huellas[url] = huella
               hechos++
+              avisar()
               return
             }
             const r = await fetch(url, { cache: 'reload' })
@@ -67,6 +72,7 @@ self.addEventListener('install', (e) => {
             /* sin red para ese archivo: se pide después */
           }
           hechos++
+          avisar()
         }),
       )
       await cache.put(HUELLAS, new Response(JSON.stringify(huellas), { headers: { 'Content-Type': 'application/json' } }))
