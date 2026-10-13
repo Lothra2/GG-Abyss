@@ -573,5 +573,39 @@ export const ABISMO = {
   figura: { desdePiso: 3, distMin: 260, distMax: 340, seVaA: 180, thorGrunneA: 240, porPiso: [0, 0, 0, 1, 2, 3, 4, 1] },
 } as const
 
+/**
+ * F12: el Mundo 4, El Puerto Ahogado (PLAN.md F12). La luz la carga Thor en su farol, la marea cambia el mapa, los
+ * marineros de niebla se deshacen en la luz y el faro, al prenderse, ilumina el piso entero.
+ */
+export const PUERTO = {
+  farol: {
+    /** la luz grande del piso, en la boca de Thor */
+    radio: 150,
+    /** con el farol alzado (aullido) la luz crece, expone a los marineros y espanta medusas */
+    radioAlzado: 230,
+    /** apagado por una medusa: queda una brasa chiquita, nunca a oscuras del todo */
+    radioApagado: 46,
+    alzadoS: 4,
+    recargaAlzarS: 14,
+    /** cuánto dura apagado si una medusa lo toca (en modo peque menos) */
+    apagadoS: 6,
+    apagadoPequeS: 3,
+    /** en modo peque el farol alumbra un poco más */
+    extraPeque: 30,
+  },
+  /** el halo de la heroína se achica: la luz es de Thor */
+  haloHeroina: 70,
+  /** el ciclo de la marea en segundos: baja, sube (con aviso), alta, baja (con aviso) */
+  marea: { baja: 50, subiendo: 8, alta: 25, bajando: 8, pequeMult: 1.5 },
+  /** el empujón suave cuando la marea alcanza a la heroína: busca el seco más cercano hasta esta distancia en cuadros */
+  rescateMareaCuadros: 12,
+  /** el marinero de niebla en la luz del farol se deshace más rápido; a oscuras casi no se le hace nada */
+  marinero: { danoEnLuz: 1.6, danoOscuro: 0.4 },
+  /** los cangrejos rodean a esta distancia del objetivo */
+  cangrejo: { radioRodeo: 46 },
+  /** con el faro prendido la oscuridad del piso baja hasta acá */
+  oscuridadFaro: 0.35,
+} as const
+
 /** F10: el mundo que reacciona. Las moras de un arbusto curan un poquito, una vez por arbusto */
 export const REACCIONES = { morasCuran: 8 } as const
