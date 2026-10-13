@@ -658,4 +658,59 @@ export const PUERTO = {
 } as const
 
 /** F10: el mundo que reacciona. Las moras de un arbusto curan un poquito, una vez por arbusto */
+/**
+ * F12, el Rey de Piedra (la Ciudad Dormida). Fase 1: puño con aviso y pisotón. Fase 2: canta la canción de cuna y las
+ * cuatro lámparas del salón se apagan: en lo oscuro su piedra no siente los golpes. Cuando las cuatro vuelven a estar
+ * prendidas cae de rodillas con las grietas brillando (ahí se le pega). Cada golpe al piso suelta chispas de la corona
+ * (las pone el juego). Fase 3: barrido con el brazo y llamada de sonámbulos.
+ */
+export const JEFE_REY = {
+  vida: 820,
+  velocidad: 34,
+  fase3Pct: 30,
+  // radio 48: el aviso_puno del kit (96 x 48) a escala 1
+  puno: { dano: [13, 17] as [number, number], radio: 48, delante: 52, alcance: 120, avisoS: 1.4 },
+  pisoton: { dano: [12, 16] as [number, number], radio: 96, avisoS: 1.5 },
+  barrido: { dano: [12, 16] as [number, number], largo: 170, ancho: 48, avisoS: 1.5 },
+  cancion: { avisoS: 1.6, cadaS: 28 },
+  llamada: { sonambulos: 2, max: 3, avisoS: 1, cadaS: 16 },
+  /** de rodillas al prenderse la cuarta lámpara, y otra vez cada tanto mientras sigan prendidas */
+  rodillasS: 4.5,
+  rodillasCadaS: 10,
+  /** chispas que suelta la corona en cada golpe al piso (fase 2 en adelante) */
+  chispasPorGolpe: 1,
+}
+
+/**
+ * F12, el Mundo 5: La Ciudad Dormida. La luz te la roban: cada barrio tiene un farol de plaza que lo aclara, la Ladrona
+ * les chupa la luz y, si lo logra, la luz se rompe en chispas que Thor rastrea. Los sonámbulos solo se mueven a oscuras.
+ */
+export const CIUDAD = {
+  /** con el farol de plaza prendido el barrio baja a esta oscuridad */
+  oscuridadPrendido: 0.45,
+  ladrona: {
+    /** cada cuánto aparece a robar un barrio prendido (en modo peque la mitad de seguido) */
+    cadaS: [70, 110] as [number, number],
+    pequeMult: 2,
+    /** lo que tarda en chupar la luz: si la heroína llega antes, se va en humo y la luz vuelve */
+    roboS: 7,
+    roboPequeS: 10,
+    /** a esta distancia de la Ladrona la heroína la espanta */
+    espantaA: 90,
+    /** la primera vez espera esto desde que se prende el primer farol */
+    primeraS: 45,
+  },
+  chispas: {
+    cuantas: 3,
+    /** a esta distancia se junta una chispa (la heroína o Thor) */
+    juntarA: 24,
+    /** en modo peque caen a esta distancia de Thor como mucho, si hay puntos */
+    pequeCercaThor: 260,
+  },
+  /** el duende del sueño: la arena hace bostezar a la heroína (camina más lento) */
+  bostezo: { seg: 2, velocidad: 0.55 },
+  /** el Relojero: la aguja barre girando alrededor de él */
+  barrido: { largo: 150, ancho: 34, gradosPorS: 120, vueltaGrados: 360, avisoS: 1.6, dano: [12, 16] as [number, number] },
+}
+
 export const REACCIONES = { morasCuran: 8 } as const
