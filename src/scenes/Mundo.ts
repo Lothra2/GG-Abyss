@@ -188,7 +188,7 @@ export class Mundo extends Phaser.Scene {
   combate!: Combate
   botin!: Botin
   jefe?: JefeSprite
-  arena?: { x: number; y: number; radio: number }
+  arena?: { x: number; y: number; radio: number; poza?: number }
   private anillo: (() => void)[] = []
   private portalJefe: { s: Phaser.GameObjects.Sprite; x: number; y: number; luz: string } | null = null
   /** la luz y las motas alrededor de cada portal (el de llegada y el del jefe cuando se abre) */
@@ -702,7 +702,7 @@ export class Mundo extends Phaser.Scene {
     const are = entidadesDeTipo(this.mapa, 'arena_jefe')[0]
     const tipoJefe = String(ent?.props.enemigo ?? 'minotauro')
     if (!ent || !are || !this.m.personajes[tipoJefe] || !this.textures.exists(K.pers(tipoJefe, 'idle'))) return
-    this.arena = { x: are.x, y: are.y, radio: Number(are.props.radio ?? JEFE.arenaRadio) }
+    this.arena = { x: are.x, y: are.y, radio: Number(are.props.radio ?? JEFE.arenaRadio), ...(are.props.poza ? { poza: Number(are.props.poza) } : {}) }
     const ev: EventosJefe = {
       golpeCirculo: (x, y, radio, dano, elipse) => {
         if (this.combate.caido) return

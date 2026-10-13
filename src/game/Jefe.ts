@@ -88,6 +88,8 @@ export class JefeSprite implements Atacable {
   readonly titulo: string
   readonly logica: Jefe
   readonly radioArena: number
+  /** F12: el radio de la poza del Pez Farol (0 si no hay): nada adentro, sin chocar con el agua */
+  readonly radioPoza: number
   /** celda del sprite en el manifest: 96 hoy, 128 cuando el taller entregue los jefes nativos */
   private celda = 96
   readonly sprite: Phaser.GameObjects.Sprite
@@ -115,7 +117,7 @@ export class JefeSprite implements Atacable {
     private m: Manifest,
     private grilla: Grilla,
     ent: Entidad,
-    arena: { x: number; y: number; radio: number },
+    arena: { x: number; y: number; radio: number; poza?: number },
     vida: number,
     private ev: EventosJefe,
   ) {
@@ -123,6 +125,7 @@ export class JefeSprite implements Atacable {
     this.nombre = String(ent.props.nombre ?? 'Minotauro del Bosque')
     this.titulo = String(ent.props.titulo ?? 'Guardián de Las Alturas')
     this.radioArena = arena.radio
+    this.radioPoza = arena.poza ?? 0
     const { perfil, vida: vidaMax } = perfilDe(this.tipo)
     const campana = perfil === 'campana'
     this.logica = nuevoJefe(arena.x, arena.y, vidaMax, perfil)
@@ -330,11 +333,12 @@ export class JefeSprite implements Atacable {
     if (o.mirarA) this.dir = indiceDireccion(o.mirarA.x - j.x, o.mirarA.y - j.y)
     if (o.mover) {
       const paso = o.mover.vel * c.dt
-      const r = moverCuerpo(this.grilla, { x: j.x, y: j.y, radio: 14 }, o.mover.dx * paso, o.mover.dy * paso)
-      // no se sale de la arena
+      // en la poza nada libre (el agua es sólida para la heroína, no para él)
+      const r = this.radioPoza > 0 ? { x: j.x + o.mover.dx * paso, y: j.y + o.mover.dy * paso } : moverCuerpo(this.grilla, { x: j.x, y: j.y, radio: 14 }, o.mover.dx * paso, o.mover.dy * paso)
+      // no se sale de la arena (ni de la poza)
       const dx = r.x - j.cx
       const dy = r.y - j.cy
-      const tope = this.radioArena - JEFE.margenBorde
+      const tope = this.radioPoza > 0 ? Math.max(8, this.radioPoza - 20) : this.radioArena - JEFE.margenBorde
       const d = Math.hypot(dx, dy)
       j.x = d > tope ? j.cx + (dx / d) * tope : r.x
       j.y = d > tope ? j.cy + (dy / d) * tope : r.y

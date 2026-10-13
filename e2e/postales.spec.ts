@@ -428,3 +428,95 @@ test('captura al Guardián de la Campana y la Catedral liberada', async ({ brows
     await ctx.close()
   }
 })
+
+test('captura el Puerto Ahogado: las zonas, el farol de Thor, la marea, el Capitán, el Pez Farol y el faro prendido', async ({ browser }) => {
+  test.setTimeout(600_000)
+  const dir = join('docs', 'capturas', 'f12')
+  mkdirSync(dir, { recursive: true })
+  const vistas = [
+    { sufijo: '', ctx: { viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 } },
+    { sufijo: '_tablet', ctx: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
+  ]
+  type J = { x: number; y: number; vida: number; vidaMax: number; estado: string; avisos: { ataque: string; resta: number; total: number }[] }
+  for (const v of vistas) {
+    const ctx = await browser.newContext(v.ctx)
+    const page = await ctx.newPage()
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'irAMundo', 'mundo4')
+    await esperarEscena(page, 'Bajada')
+    await esperarEscena(page, 'Mundo')
+    await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true && typeof a.puerto === 'function' }, null, { timeout: 120_000 })
+    await gancho(page, 'ponerNivel', 14)
+    const foto = async (nombre: string, espera = 1500) => {
+      await page.waitForTimeout(espera)
+      await page.screenshot({ path: join(dir, `${nombre}${v.sufijo}.png`) })
+    }
+    // las zonas, solo en la compu (en la tablet basta con los momentos)
+    if (!v.sufijo) {
+      for (const p of (await gancho<string[]>(page, 'postales')).filter((n) => /muelle|redes|mercado|iglesia|botes|astillero|medusas|faro/.test(n))) {
+        await gancho(page, 'irAPostal', p)
+        await gancho(page, 'avanzar', 1)
+        await foto(`zona_${p}`, 2500)
+      }
+    }
+    // el farol de Thor: normal y alzado
+    const pto = await gancho<{ faroles: { x: number; y: number }[]; celdaBaja: { x: number; y: number } }>(page, 'puerto')
+    await gancho(page, 'teleport', pto.faroles[0]!.x + 40, pto.faroles[0]!.y + 40)
+    await gancho(page, 'avanzar', 2)
+    await foto('thor_farol')
+    await gancho(page, 'alzarFarol')
+    await gancho(page, 'avanzar', 0.6)
+    await foto('thor_farol_alzado', 600)
+    // la marea alta sobre el barro
+    await gancho(page, 'teleport', pto.celdaBaja.x, pto.celdaBaja.y - 60)
+    await gancho(page, 'adelantarMarea', 60)
+    for (let i = 0; i < 4; i++) await gancho(page, 'avanzar', 1)
+    await foto('marea_alta')
+    // el Capitán preparando el ancla
+    const cap = (await gancho<{ id: number; tipo: string; x: number; y: number; estado: string }[]>(page, 'enemigos')).find((e) => e.tipo === 'capitan_ahogado')
+    if (cap) {
+      await gancho(page, 'teleport', cap.x + 60, cap.y + 20)
+      for (let i = 0; i < 60; i++) {
+        await gancho(page, 'curarTodo')
+        await gancho(page, 'avanzar', 0.2)
+        if ((await gancho<{ id: number; estado: string }[]>(page, 'enemigos')).find((e) => e.id === cap.id)?.estado === 'aviso') break
+      }
+      await foto('capitan_ancla', 300)
+    }
+    // el Pez Farol: sumergido, la mordida, encandilado, la ola y el faro prendido
+    await gancho(page, 'matarEnemigos')
+    await gancho(page, 'curarTodo')
+    await gancho(page, 'entrarArena')
+    await gancho(page, 'avanzar', 3.5)
+    await foto('pez_sumergido')
+    const capturar = async (ataque: string, archivo: string) => {
+      for (let t = 0; t < 30; t += 0.1) {
+        await gancho(page, 'curarTodo')
+        await gancho(page, 'avanzar', 0.1)
+        const a = (await gancho<J>(page, 'jefe')).avisos.find((q) => q.ataque === ataque)
+        if (a && a.resta < a.total * 0.5) break
+      }
+      await foto(archivo, 300)
+    }
+    await capturar('mordida', 'pez_mordida')
+    const j = await gancho<J>(page, 'jefe')
+    await gancho(page, 'teleport', j.x - 70, j.y + 30)
+    for (let i = 0; i < 20 && !(await gancho<boolean>(page, 'alzarFarol')); i++) await gancho(page, 'avanzar', 1)
+    await gancho(page, 'avanzar', 0.8)
+    await foto('pez_encandilado', 400)
+    const j1 = await gancho<J>(page, 'jefe')
+    await gancho(page, 'danarJefe', j1.vida - j1.vidaMax * 0.5)
+    await capturar('ola', 'pez_ola')
+    await gancho(page, 'danarJefe', 9999)
+    for (let i = 0; i < 6; i++) await gancho(page, 'avanzar', 1)
+    await page.waitForFunction(() => (window.__ABYSS__ as unknown as { puerto: () => { faro: boolean } }).puerto().faro, null, { timeout: 60_000 })
+    for (let i = 0; i < 8; i++) await gancho(page, 'avanzar', 1)
+    await foto('faro_prendido', 3000)
+    await gancho(page, 'irAPostal', 'el_faro')
+    await gancho(page, 'avanzar', 1)
+    await foto('faro_prendido_lejos', 2500)
+    await sinErrores(errores)
+    await ctx.close()
+  }
+})

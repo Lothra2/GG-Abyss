@@ -623,9 +623,9 @@ export const ABISMO = {
 export const PUERTO = {
   farol: {
     /** la luz grande del piso, en la boca de Thor */
-    radio: 150,
+    radio: 210,
     /** con el farol alzado (aullido) la luz crece, expone a los marineros y espanta medusas */
-    radioAlzado: 230,
+    radioAlzado: 320,
     /** apagado por una medusa: queda una brasa chiquita, nunca a oscuras del todo */
     radioApagado: 46,
     alzadoS: 4,
