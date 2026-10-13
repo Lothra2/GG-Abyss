@@ -909,7 +909,7 @@ Lo que pide Rick: seguir bajando, mucha más oscuridad, el misterio que vaya sub
 | 1 | El Bosque | 0.15 a 0.55 | El Minotauro | Hay un portal hacia abajo |
 | 2 | La Catedral de las Raíces | 0.45 a 0.65 | El Guardián de la Campana | Las raíces suben desde abajo y encantan a los guardianes |
 | 3 | Las Galerías del Eco | 0.75 | La Polilla Reina | Los mineros huyeron de algo. Primera vez que se ve la figura de los ojos rojos |
-| 4 | El Mar Callado | 0.70, con luz de hongos y medusas | El Pez Farol | La figura se lleva la luz de los faroles |
+| 4 | El Puerto Ahogado | 0.80, la luz la lleva Thor en su farol | El Pez Farol | La figura se lleva la luz del faro |
 | 5 | La Ciudad Dormida | 0.80 | El Rey de Piedra | La gente está dormida de piedra, la luz se la robaron |
 | 6 | Las Fraguas Rojas | 0.60, luz roja | El Carcelero | La puerta del fondo y los diablillos |
 | 7 | El Corazón del Abismo | 0.85, baja con cada fase | El Diablo | Él juntaba la luz. Al vencerlo vuelve a los siete pisos |
@@ -951,6 +951,49 @@ El Mundo 3 se llama Las Galerías del Eco. Los nombres de los pisos 4 a 7 son de
 - La Polilla Reina brilla violeta para que siempre se vea. Con los cuatro cristales grandes apagados el golpe rebota y sale "¡Prende los cristales!". Al prender el cuarto cae aturdida, y vuelve a caer cada 9 s mientras sigan prendidos. Ataques: aletazo, lluvia de polvo con su aviso en el piso (apaga los cristales que tapa, en modo peque nunca los grandes) y llamada de polillas. Tiene su música.
 - El portal de la Catedral baja a las Galerías y el de la reina lleva a Continuará hasta que exista el Mundo 4.
 - Falta: el mural en el álbum (hoy cuenta como secreto) y las postales de `docs/capturas/f11`.
+
+### F12. El descenso: cada piso más terrorífico, y el Mundo 4
+
+Lo que pide Rick: "vamos a mejorar mucho más cada vez que bajamos de mundo, hacerlo más terrorífico hasta el Diablo", "mundos perfectos con sombras, buena experiencia inmersiva", "manteniendo las mejoras que ya hemos trabajado". Para Sophie, sin freno. Esta sección es la fuente: cualquier sesión que trabaje un piso nuevo la lee primero.
+
+**Reglas que valen para todos los pisos que faltan (4 a 7).**
+
+1. **Cada piso más pesado que el anterior.** Más oscuro, menos música y más silencio, la figura de los ojos rojos más cerca y más seguido, el clima más pesado (ceniza fina en el 4, brasas en el 6) y el jefe más grande (128 hasta el 6, 192 el Diablo).
+2. **Cada piso trae una mecánica de luz nueva**, no solo un color: el 3 la creas (cristales), el 4 la cargas (el farol de Thor), el 5 te la roban (la figura apaga zonas), el 6 quema (el fuego ilumina pero calienta el piso) y el 7 es pelear contra la oscuridad total.
+3. **Terror de cuento.** Tensión de verdad, sin sangre, sin caras de terror y sin sustos de golpe. Lo que ataca siempre se ve antes de pegar. En modo peque siguen los topes de Alana: oscuridad 0.60 como mucho, avisos más largos y enemigos más lentos.
+4. **Sombras con sentido.** Adentro la luz es puntual: cada sombra cae lejos de la luz que la alumbra (`sombraDeLuces`). Desde el piso 4 el taller no hornea sombras con dirección, solo la de contacto al pie, porque la luz se mueve.
+5. **Inmersión mínima por mundo.** El criterio premium de F10 (tres planos, punto focal, dos luces o luz y sombra, sin sellos repetidos, algo que se mueve) más reflejos donde haya agua, capa `frente` y `fondo`, partículas del clima, un minijefe en una rama, un pedazo del mural, dos secretos de Thor y postales de cada zona.
+6. **Se mantiene todo lo hecho.** Sombras largas que siguen la luz, HUD con botones redondos, cinturón de 5, portales con luz, selección con su luz, nova que rodea, Thor que camina con cualquier armadura, actualizaciones solas en la tablet. Un mundo nuevo no puede romper ni apagar nada de eso: la suite completa en verde antes de publicar.
+7. **El arte sale del taller.** El encargo de cada piso va a `docs/encargos/` y lo trabaja una sesión del taller en su propia rama de `pixel_forja` (nunca `main`, nunca las ramas de otros proyectos). El juego apunta el submódulo a esa rama cuando la entrega está probada.
+
+**Mundo 4: El Puerto Ahogado.** Un mar negro bajo tierra con un pueblo de pescadores medio hundido: casas vacías con las puertas abiertas, botes volteados, redes colgando, una campana que suena sola a lo lejos. En el centro, un faro gigante apagado. Ceniza fina que cae siempre.
+
+- **La luz la carga Thor.** Thor lleva un farol en la boca y es la luz grande del piso (radio 150). El halo de la heroína se achica (radio 70). Fuera del farol casi no se ve: hay que explorar y pelear pegada al perro. Su farol se mece al caminar y las sombras de todo se mecen con él.
+- **Thor protagonista.**
+  - **Alzar el farol:** un botón nuevo. Thor levanta el farol unos segundos, el radio crece, los marineros de niebla quedan expuestos y las medusas se alejan. Tiene recarga.
+  - **Los faroles del muelle** hacen de fogata (con su mercader). Thor los prende al llegar y quedan prendidos, así el camino de vuelta se ve.
+  - **Si una medusa le apaga el farol**, Thor aúlla para volver a prenderlo y la heroína tiene que cuidarlo unos segundos.
+- **La marea.** Cada tanto suena la campana y el agua sube. Unos caminos bajos se inundan y unos muelles flotantes suben y conectan otros. El mapa cambia mientras lo recorres. Si la marea alcanza a la heroína, la empuja suave al seco más cercano, sin daño (nadie pierde). Hay aviso: campana, el agua empieza a subir por los bordes y unos segundos después cierra.
+- **Enemigos.**
+  - **Marinero de niebla:** silueta de pescador hecha de niebla verde. En la luz del farol se deshace más rápido (recibe más daño). Fuera de ella son dos puntitos de linterna.
+  - **Cangrejo de ceniza:** chicos, en grupos de 3 a 5, rodean y se apartan de lado.
+  - **Medusa negra:** flota sobre el agua y la orilla, lenta, no pega. Si toca a Thor le apaga el farol un rato.
+- **Minijefe:** **El Capitán Ahogado**, en el astillero, una rama opcional. Un fantasma de capitán con un ancla: golpe de ancla con aviso grande en el piso y una ola corta que empuja. Cofre dorado y postal.
+- **Jefe: el Pez Farol.** Enorme (celda 128), escondido en el agua negra del pie del faro. Lo único que se ve es su lucecita, que es la luz robada del faro.
+  - **Fases:** en la primera la luz baila sobre el agua para atraer y él sale a morder, con aviso. En la segunda tira una ola que empuja, con su línea de aviso. En la tercera llama cangrejos y medusas.
+  - **Thor alzando el farol** lo saca a la superficie, y ahí se le pega.
+  - **Al vencerlo el faro se prende otra vez:** el piso entero se ilumina de golpe, la oscuridad baja a 0.35, todos los faroles del muelle se prenden y cambia la música. Es el gran momento de victoria.
+- **Lugares (zonas).** El Muelle de Llegada (portal y primer farol), La Calle de las Redes, El Mercado Hundido, La Iglesia de la Campana Ahogada (la campana que suena sola y el pedazo del mural), Los Botes Volteados (donde más se nota la marea), El Astillero (el minijefe), La Cueva de las Medusas y El Faro (el jefe).
+- **Misterio.** La figura de los ojos rojos aparece más seguido que en el 3. Una vez cruza a lo lejos y apaga un farol del muelle (Thor lo vuelve a prender). Antes de la pelea se la ve en lo alto del faro y se lleva su luz: así se explica el pez. `mural_4` la muestra con los faroles en las manos.
+- **Sonido.** Casi sin música: agua, viento, crujido de madera y la campana lejana. La música entra solo en las peleas y en lugares clave. Al prenderse el faro, un tema de victoria que abre.
+- **Tamaño.** 110 x 90 cuadros, 4 faroles de muelle, al menos 3 ramas opcionales, 2 secretos de Thor y 6 cofres o más.
+
+**Orden.**
+
+1. El encargo del taller: `docs/encargos/pixel_forja_F12_mundo4.md` (mapa, piezas, el farol de Thor, enemigos, minijefe, jefe, audio y los pendientes #38 a #40).
+2. Mientras el taller dibuja, el juego hace las reglas puras con tests: farol de Thor (radio, apagado por medusa, alzar), marea (ciclo, máscaras de paso, empujón suave), marinero en la luz, cangrejos que rodean, Capitán y Pez Farol, y el faro que ilumina todo.
+3. Llega el arte y se conecta: postales en `docs/capturas/f12`, suite completa y publicar.
+4. Después el piso 5, con la misma receta.
 
 ## 6. Riesgos y mitigación
 

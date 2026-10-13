@@ -551,7 +551,7 @@ export const ABISMO = {
     { piso: 1, mundo: 'mundo1', nombre: 'El Bosque', oscuridadMax: 0.6, jefe: 'minotauro' },
     { piso: 2, mundo: 'mundo2', nombre: 'La Catedral de las Raíces', oscuridadMax: 0.65, jefe: 'guardian_campana' },
     { piso: 3, mundo: 'mundo3', nombre: 'Las Galerías del Eco', oscuridadMax: 0.75, jefe: 'polilla_reina' },
-    { piso: 4, mundo: 'mundo4', nombre: 'El Mar Callado', oscuridadMax: 0.75, jefe: 'pez_farol' },
+    { piso: 4, mundo: 'mundo4', nombre: 'El Puerto Ahogado', oscuridadMax: 0.8, jefe: 'pez_farol' },
     { piso: 5, mundo: 'mundo5', nombre: 'La Ciudad Dormida', oscuridadMax: 0.8, jefe: 'rey_de_piedra' },
     { piso: 6, mundo: 'mundo6', nombre: 'Las Fraguas Rojas', oscuridadMax: 0.7, jefe: 'carcelero' },
     { piso: 7, mundo: 'mundo7', nombre: 'El Corazón del Abismo', oscuridadMax: 0.85, jefe: 'diablo' },

@@ -7,6 +7,7 @@ Juego tipo Diablo de la familia GG (Sophie 8, Alana 5). Cada jefe abre un portal
 - Nunca dibujar sprites en código, bajar assets ni editar public/assets/kit a mano. Solo se permiten texturas técnicas: degradados de luz, ruido y un pixel para partículas.
 - Lo que falte va a ASSETS_PENDIENTES.md con especificación exacta (nombre, tamaño, animaciones, apoyo, sólido, para qué).
 - Regenerar: `git submodule update --remote tools/pixel_forja && npm run kit`.
+- El taller trabaja en su propia rama de `pixel_forja` (hoy `claude/abyss-mundo4`, sale de `claude/perfeccionar-ejecucion-smh3ad`). Nunca `main` ni las ramas `claude/olimpico-*`: son de otro proyecto de Rick.
 - Personajes editados en el estudio: exportar la ficha a fichas/<id>.ficha.json y correr `npm run kit`.
 
 ## Reglas del juego
@@ -14,6 +15,7 @@ Juego tipo Diablo de la familia GG (Sophie 8, Alana 5). Cada jefe abre un portal
 - Sin IA y sin red. La partida vive en localStorage (ggabyss:v1:perfil:<id>).
 - Para Alana todo con ícono y sonido. Textos en español.
 - El mundo tiene que verse increíble: dirección de arte en PLAN.md, postales en docs/capturas/.
+- El descenso (pisos 4 a 7): PLAN.md F12 manda. Cada piso más terrorífico que el anterior hasta el Diablo (terror de cuento, sin sangre ni sustos de golpe), con una mecánica de luz nueva, sombras con sentido e inmersión completa, sin perder nada de lo ya hecho.
 - Créditos LPC visibles en el juego. Los repos gg-abyss y pixel_forja son públicos (Netlify clona el submódulo sin llaves). Ninguna foto de la familia entra a ningún repo: las fotos van solo en `private/`, que git ignora.
 
 ## Código
