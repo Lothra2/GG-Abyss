@@ -8,7 +8,7 @@ import type { Grilla } from '../logic/grilla'
 import { moverCuerpo } from '../logic/movimiento'
 import { fx, juego } from '../logic/azar'
 import { danarJefe, despertar, nuevoJefe, pensarJefe, reposar, type EstadoJefe, type Jefe, type OrdenJefe, type PerfilJefe } from '../logic/jefe'
-import { IMPACTO, JEFE, JEFE_CAMPANA, JEFE_POLILLA } from '../config/balance'
+import { IMPACTO, JEFE, JEFE_CAMPANA, JEFE_PEZ, JEFE_POLILLA } from '../config/balance'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
 import { texto } from './Texto'
@@ -30,8 +30,12 @@ export interface EventosJefe {
   raices?(puntos: { x: number; y: number }[], radio: number, seg: number): void
   /** F11: el polvo de la Polilla Reina cayó: apaga los cristales que tapa */
   polvo?(x: number, y: number, radio: number): void
-  /** F11: le pegó con el escudo puesto (los cristales grandes apagados) */
+  /** F11: le pegó con el escudo puesto (los cristales grandes apagados, o el Pez Farol bajo el agua) */
   escudo?(x: number, y: number): void
+  /** F12: la ola del Pez Farol pasa por la franja: pega y empuja a quien esté adentro */
+  ola?(x: number, y: number, dx: number, dy: number, largo: number, ancho: number, dano: readonly [number, number], empuje: number): void
+  /** F12: el farol de Thor encandiló al Pez Farol */
+  encandilado?(): void
   alFase2(): void
   alMorir(): void
 }
@@ -40,6 +44,7 @@ export interface EventosJefe {
 export function perfilDe(tipo: string): { perfil: PerfilJefe; vida: number } {
   if (tipo === 'guardian_campana') return { perfil: 'campana', vida: JEFE_CAMPANA.vida }
   if (tipo === 'polilla_reina') return { perfil: 'polilla', vida: JEFE_POLILLA.vida }
+  if (tipo === 'pez_farol') return { perfil: 'pez', vida: JEFE_PEZ.vida }
   return { perfil: 'minotauro', vida: JEFE.vida }
 }
 
@@ -52,6 +57,8 @@ export interface ContextoJefe {
   ratasVivas: number
   /** F11: los cuatro cristales grandes prendidos (la Polilla Reina) */
   vulnerable?: boolean
+  /** F12: Thor tiene el farol alzado aquí */
+  alzado?: { x: number; y: number }
 }
 
 interface Telegrafo {
@@ -94,6 +101,10 @@ export class JefeSprite implements Atacable {
   private cuadros: Record<string, { cuadros: number; fps: number }> = {}
   private estadoPrevio: EstadoJefe = 'dormido'
   private destelloFin = 0
+  /** la animación que corre (sin dirección): para leer su `elevacion` */
+  private animNombre = ''
+  /** la luz robada del faro en la punta de la antena (el Pez Farol) */
+  readonly luzAntena?: { color: string; radio: number }
   /** la pelea está en marcha (despertó y no murió ni se reposó) */
   peleando = false
 
@@ -115,10 +126,12 @@ export class JefeSprite implements Atacable {
     this.logica = nuevoJefe(arena.x, arena.y, vidaMax, perfil)
     this.logica.vida = Math.max(1, Math.min(vidaMax, vida))
     if ((this.logica.vida / this.logica.vidaMax) * 100 <= JEFE.fase2Pct) this.logica.fase = 2
+    if (perfil === 'pez' && (this.logica.vida / this.logica.vidaMax) * 100 <= JEFE_PEZ.fase3Pct) this.logica.fase = 3
     // un guardado que ya pasó de raicesPct no vuelve a enseñarlas
     if (campana && (this.logica.vida / this.logica.vidaMax) * 100 <= JEFE_CAMPANA.raicesPct) this.logica.raicesVistas = true
     const p = m.personajes[this.tipo]!
     this.celda = p.celda
+    if (p.luz_antena) this.luzAntena = { color: p.luz_antena.color, radio: p.luz_antena.radius }
     for (const [n, a] of Object.entries(p.anims)) this.cuadros[n] = { cuadros: a.cuadros, fps: a.fps }
     crearAnimsPersonaje(escena, m, this.tipo)
     this.sprite = escena.add.sprite(arena.x, arena.y, K.pers(this.tipo, 'idle'), 0).setOrigin(p.pivote[0] / p.celda, p.pivote[1] / p.celda)
@@ -196,7 +209,9 @@ export class JefeSprite implements Atacable {
     const r = this.logica.escudo ? { fase2: false, murio: false, escudo: true } : danarJefe(this.logica, dano)
     // la Polilla Reina con los cristales apagados: el golpe rebota, sin destello ni daño
     if (r.escudo) {
-      this.ev.sonido('bloqueo', { volumen: 0.5, rate: 1.3 })
+      // el Pez Farol bajo el agua: el golpe salpica y no le llega
+      if (this.logica.perfil === 'pez') this.ev.sonido('ola', { volumen: 0.35, rate: 1.6 })
+      else this.ev.sonido('bloqueo', { volumen: 0.5, rate: 1.3 })
       this.ev.escudo?.(this.x, this.y - this.cuerpo.alto)
       return false
     }
@@ -210,6 +225,14 @@ export class JefeSprite implements Atacable {
     if (r.murio) {
       this.morir()
       return true
+    }
+    if (r.fase3) {
+      // el Pez Farol en la tercera: asoma y la luz late fuerte (llama cangrejos y medusas)
+      this.limpiarTelegrafos()
+      this.voz({ volumen: 0.9, rate: 0.8 })
+      this.ev.sacudir(true)
+      this.poner('warcry', true)
+      this.bloqueoAnimS = JEFE.fase2RugidoS
     }
     if (r.fase2) {
       this.limpiarTelegrafos()
@@ -294,7 +317,7 @@ export class JefeSprite implements Atacable {
       return
     }
     const j = this.logica
-    const o = pensarJefe(j, { dt: c.dt, heroeX: c.heroeX, heroeY: c.heroeY, heroeVivo: c.heroeVivo, modoPeque: c.modoPeque, ratasVivas: c.ratasVivas, vulnerable: c.vulnerable }, juego())
+    const o = pensarJefe(j, { dt: c.dt, heroeX: c.heroeX, heroeY: c.heroeY, heroeVivo: c.heroeVivo, modoPeque: c.modoPeque, ratasVivas: c.ratasVivas, vulnerable: c.vulnerable, alzado: c.alzado }, juego())
     this.ejecutar(o, c)
     this.colocar()
   }
@@ -340,10 +363,21 @@ export class JefeSprite implements Atacable {
         this.poner('aturdida', true)
         this.ev.sonido('polilla_aleteo', { volumen: 0.7, rate: 0.6 })
         this.ev.efecto('nube_polvo', j.x, j.y, 1)
+      } else if (this.logica.perfil === 'pez') {
+        // el farol de Thor lo encandila: sale del agua de costado, boqueando
+        this.limpiarTelegrafos()
+        this.poner('aturdido', true)
+        this.ev.sonido('pez_emerge', { volumen: 0.9, rate: 0.9 })
+        if (o.encandilado) this.ev.encandilado?.()
       } else this.poner('hit', true)
       this.bloqueoAnimS = o.aturdido
       this.ev.sacudir(true)
       this.ev.sonido('jefe_pisoton', { volumen: 0.8, rate: 0.7 })
+    }
+    if (o.hundirse) {
+      this.poner('hundirse', true)
+      this.bloqueoAnimS = JEFE_PEZ.emergerS
+      this.ev.sonido('ola', { volumen: 0.4, rate: 1.3 })
     }
     if (o.golpe) this.soltarGolpe(o.golpe)
     if (o.raices) this.ev.raices?.(o.raices.puntos, o.raices.radio, o.raices.seg)
@@ -364,7 +398,7 @@ export class JefeSprite implements Atacable {
     else if (e === 'quieto' || e === 'intro') this.poner('idle')
     else if (e === 'aviso') this.poner(this.logica.ataque === 'grito' ? 'warcry' : 'idle')
     else if (e === 'cargando') this.poner('charge')
-    else if (e === 'aturdido') this.poner(this.logica.perfil === 'polilla' ? 'aturdida' : 'idle')
+    else if (e === 'aturdido') this.poner(this.logica.perfil === 'polilla' ? 'aturdida' : this.logica.perfil === 'pez' ? 'aturdido' : 'idle')
   }
 
   private soltarGolpe(g: NonNullable<OrdenJefe['golpe']>): void {
@@ -380,6 +414,26 @@ export class JefeSprite implements Atacable {
       this.ev.sonido('bloqueo', { volumen: 0.9, rate: 0.45 })
       this.ev.sonido('jefe_pisoton', { volumen: 0.6, rate: 0.8 })
       this.ev.sacudir(true)
+      this.limpiarTelegrafos(g.ataque)
+      return
+    }
+    if (g.ataque === 'ola') {
+      // salta afuera y cae de panza: el resto del salto a velocidad normal, y la ola corre por la franja
+      this.seguirAtaque('attack_heavy')
+      this.bloqueoAnimS = JEFE_PEZ.ola.fueraS + 0.4
+      this.ev.ola?.(g.x, g.y, g.dx, g.dy, g.largo, g.ancho, g.dano, g.empuje ?? 0)
+      this.ev.sonido('ola', { volumen: 0.9 })
+      this.ev.sonido('pez_emerge', { volumen: 0.6, rate: 0.8 })
+      this.ev.sacudir(true)
+      this.limpiarTelegrafos(g.ataque)
+      return
+    }
+    if (g.ataque === 'mordida') {
+      this.seguirAtaque('attack')
+      this.bloqueoAnimS = JEFE_PEZ.mordida.fueraS + 0.3
+      this.ev.golpeCirculo(g.x, g.y, g.radio, g.dano, true)
+      this.ev.sonido('pez_mordida', { volumen: 0.9 })
+      this.ev.sacudir(false)
       this.limpiarTelegrafos(g.ataque)
       return
     }
@@ -408,10 +462,34 @@ export class JefeSprite implements Atacable {
     void j
   }
 
+  /**
+   * F12: el golpe del Pez Farol cae: la animación del ataque, que venía estirada en la preparación, sigue desde el
+   * cuadro del golpe a su velocidad. Al terminar se queda con el último cuadro de `emerger` (afuera del agua) mientras
+   * dura la ventana para pegarle.
+   */
+  private seguirAtaque(anim: 'attack' | 'attack_heavy'): void {
+    const def = this.m.personajes[this.tipo]?.anims[anim]
+    const key = K.anim(this.tipo, anim, DIRECCIONES[this.dir]!)
+    if (!def || !this.escena.anims.exists(key)) return
+    this.animActual = key
+    this.animNombre = anim
+    this.sprite.play({ key, frameRate: def.fps, startFrame: Math.min(def.cuadros - 1, def.aviso?.[1] ?? 6) })
+    this.sprite.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+      if (!this.sprite.active || this.logica.escudo || this.logica.estado === 'aturdido' || !this.vivo) return
+      const em = this.m.personajes[this.tipo]?.anims.emerger
+      const k2 = K.anim(this.tipo, 'emerger', DIRECCIONES[this.dir]!)
+      if (!em || !this.escena.anims.exists(k2)) return
+      this.animActual = k2
+      this.animNombre = 'emerger'
+      this.sprite.play({ key: k2, startFrame: em.cuadros - 1 })
+    })
+  }
+
   /** La voz del jefe: el rugido, o el aleteo grave de la Polilla Reina */
   private voz(a: { volumen?: number; rate?: number } | number, rate?: number): void {
     const op = typeof a === 'number' ? { volumen: a, rate } : a
-    if (this.logica.perfil === 'polilla') this.ev.sonido('polilla_aleteo', { volumen: op.volumen, rate: (op.rate ?? 1) * 0.7 })
+    if (this.logica.perfil === 'pez') this.ev.sonido('pez_emerge', { volumen: (op.volumen ?? 1) * 0.8, rate: (op.rate ?? 1) * 0.8 })
+    else if (this.logica.perfil === 'polilla') this.ev.sonido('polilla_aleteo', { volumen: op.volumen, rate: (op.rate ?? 1) * 0.7 })
     else this.ev.sonido('jefe_rugido', op)
   }
 
@@ -440,6 +518,39 @@ export class JefeSprite implements Atacable {
       this.poner('warcry', true)
       this.bloqueoAnimS = a.seg
       this.voz({ volumen: 0.4, rate: 0.9 })
+    } else if (a.ataque === 'ola') {
+      // la franja de espuma por donde va a pasar la ola: el aviso_ola del kit repetido en línea (y el contorno de siempre)
+      t.linea = { x: a.x, y: a.y, dx: a.dx, dy: a.dy, largo: a.largo, ancho: a.ancho }
+      t.g = this.escena.add.graphics().setDepth(PROF.SOMBRAS + 2)
+      const k = crearAnimFx(this.escena, this.m, 'aviso_ola')
+      if (k && this.escena.textures.exists(K.fx('aviso_ola'))) {
+        const paso = 28
+        const ang = Math.atan2(a.dy, a.dx)
+        t.extra = []
+        for (let d = 24; d < a.largo; d += paso) {
+          const s2 = this.escena.add.sprite(Math.round(a.x + a.dx * d), Math.round(a.y + a.dy * d), K.fx('aviso_ola'), 0).setRotation(ang).setDepth(PROF.SOMBRAS + 3).setAlpha(0.92)
+          s2.play({ key: k, startFrame: Math.floor(d / paso) % 6 })
+          t.extra.push(s2)
+        }
+      }
+      this.estirarAtaque('attack_heavy', a.seg)
+      this.ev.sonido('pez_emerge', { volumen: 0.5, rate: 0.7 })
+    } else if (a.ataque === 'mordida') {
+      // la boca abierta en el piso: el aviso_mordida del kit se llena en lo que dura el aviso
+      const k = crearAnimFx(this.escena, this.m, 'aviso_mordida')
+      if (k && this.escena.textures.exists(K.fx('aviso_mordida'))) {
+        t.s = this.escena.add.sprite(Math.round(a.x), Math.round(a.y), K.fx('aviso_mordida'), 0).setDepth(PROF.SOMBRAS + 2).setAlpha(0.92)
+        const def = this.m.fx.aviso_mordida
+        t.s.play({ key: k, frameRate: (def?.cuadros ?? 8) / Math.max(0.2, a.seg) })
+      } else if (this.escena.textures.exists(tex)) {
+        if (!this.escena.anims.exists('aviso_jefe_llenar')) {
+          this.escena.anims.create({ key: 'aviso_jefe_llenar', frames: this.escena.anims.generateFrameNumbers(tex, { start: 0, end: 7 }), frameRate: 8, repeat: 0 })
+        }
+        t.s = this.escena.add.sprite(Math.round(a.x), Math.round(a.y), tex, 0).setDepth(PROF.SOMBRAS + 2).setAlpha(0.92)
+        t.s.play({ key: 'aviso_jefe_llenar', frameRate: 8 / Math.max(0.2, a.seg) })
+      }
+      this.estirarAtaque('attack', a.seg)
+      this.ev.sonido('pez_emerge', { volumen: 0.6 })
     } else if (a.forma === 'linea') {
       t.linea = { x: a.x, y: a.y, dx: a.dx, dy: a.dy, largo: a.largo, ancho: a.ancho }
       t.g = this.escena.add.graphics().setDepth(PROF.SOMBRAS + 2)
@@ -476,6 +587,15 @@ export class JefeSprite implements Atacable {
       }
     } else if (a.ataque === 'salto') this.poner('idle')
     this.telegrafos.push(t)
+  }
+
+  /** F12: la preparación del ataque del Pez Farol dura lo que el aviso: los cuadros de `aviso` se estiran hasta el golpe */
+  private estirarAtaque(anim: 'attack' | 'attack_heavy', seg: number): void {
+    const def = this.cuadros[anim]
+    const pre = this.m.personajes[this.tipo]?.anims[anim]?.aviso?.[1] ?? 6
+    if (!def) return
+    this.poner(anim, true, pre / Math.max(0.2, seg))
+    this.bloqueoAnimS = seg + 0.2
   }
 
   private actualizarTelegrafos(dt: number): void {
@@ -560,6 +680,7 @@ export class JefeSprite implements Atacable {
     const key = K.anim(this.tipo, a, DIRECCIONES[this.dir]!)
     if (key === this.animActual && !forzar) return
     this.animActual = key
+    this.animNombre = a
     if (this.escena.anims.exists(key)) this.sprite.play(fps ? { key, frameRate: fps } : key)
   }
 
@@ -575,11 +696,11 @@ export class JefeSprite implements Atacable {
     if (this.estandarte) this.estandarte.setPosition(x, y - this.cuerpo.alto - 30).setDepth(PROF.OBJETOS + 9300)
   }
 
-  /** Cuánto sube el sprite en este cuadro (el `leap` del manifest trae `elevacion`), o 0 */
+  /** Cuánto sube el sprite en este cuadro (el `leap` del minotauro o el salto del Pez Farol traen `elevacion`), o 0 */
   private elevacion(): number {
     const a = this.sprite.anims.currentAnim
-    if (!a || !a.key.includes('_leap_')) return 0
-    const el = this.m.personajes[this.tipo]?.anims.leap?.elevacion
+    if (!a || !this.animNombre || !a.key.includes(`_${this.animNombre}_`)) return 0
+    const el = this.m.personajes[this.tipo]?.anims[this.animNombre]?.elevacion
     const f = this.sprite.anims.currentFrame?.index ?? 1
     return el ? Math.round(el[Math.max(0, Math.min(el.length - 1, f - 1))] ?? 0) : 0
   }

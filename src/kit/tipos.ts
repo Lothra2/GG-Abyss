@@ -33,6 +33,9 @@ export interface EventoAnim {
 
 export interface AnimFx extends AnimHoja {
   celda: number
+  /** los que no son cuadrados (la ola, el aviso de la mordida) traen su ancho y su alto */
+  w?: number
+  h?: number
 }
 
 export interface Personaje {
@@ -46,6 +49,16 @@ export interface Personaje {
   anims: Record<string, AnimHoja>
   /** capas de equipo (heroínas): la hoja base va sin arma ni mano libre */
   capas?: CapasPersonaje
+  /** vuela (no pisa el agua ni la marea) */
+  vuela?: boolean
+  /** capa que va encima de otro personaje, cuadro por cuadro (el farol de Thor) */
+  capa_de?: string
+  /** minijefe (el Capitán Ahogado) */
+  elite?: boolean
+  /** vive en el agua: la hoja ya trae lo de abajo de la superficie teñido (el Pez Farol) */
+  en_agua?: boolean
+  /** la luz que lleva en la antena (la luz robada del faro) */
+  luz_antena?: { color: string; radius: number; notas?: string }
 }
 
 export type TipoCapa = 'pecho' | 'casco' | 'arma' | 'mano'

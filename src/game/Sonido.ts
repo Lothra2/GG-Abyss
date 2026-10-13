@@ -47,7 +47,8 @@ export class Sonido {
   /** Qué suena en una zona. La música `jefe` la controla la pelea (F4), no entrar a la arena. */
   fijarZona(zona: Zona | null): void {
     this.ambienteMeta = `ambiente_${zona?.ambiente ?? 'bosque'}`
-    const musica = zona?.musica && zona.musica !== 'jefe' ? zona.musica : 'bosque'
+    // la de un jefe con nombre (`jefe_pez`) también la pone la pelea: hasta entonces, silencio (`ninguna` no existe)
+    const musica = zona?.musica?.startsWith('jefe_') ? 'ninguna' : zona?.musica && zona.musica !== 'jefe' ? zona.musica : 'bosque'
     // la música de la pelea (o de la victoria) no se pisa al cambiar de zona
     this.ultimaMusicaZona = `musica_${musica}`
     this.musicaMeta = this.musicaFija ?? this.musicaEstado ?? this.ultimaMusicaZona

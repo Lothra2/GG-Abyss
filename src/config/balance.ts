@@ -157,11 +157,17 @@ export interface EnemigoBalance {
   /** F8: si Thor anda cerca, persigue a Thor en vez de a la heroína (y a Thor no le hace nada): la raicita */
   distraeThor?: { radio: number }
   /** F8: golpe pesado anunciado sin ser élite (el guardián de cobre): cada cuánto, radio, aviso y daño */
-  pesado?: { cadaS: number; radio: number; avisoS: number; dano: [number, number] }
+  pesado?: { cadaS: number; radio: number; avisoS: number; dano: [number, number]; empuje?: number }
   /** F11: la polilla de ceniza va a apagar los cristales prendidos antes que pelear */
   buscaLuz?: boolean
   /** F11: la sombra solo se ve (y solo pega y se le pega) dentro de una luz. Afuera son dos ojos */
   soloEnLuz?: boolean
+  /** F12: hecho de niebla: en la luz se ve y se deshace rápido (PUERTO.marinero), afuera casi no se ve y aguanta más */
+  deNiebla?: boolean
+  /** F12: va en grupo y rodea antes de pegar (el cangrejo de ceniza) */
+  rodea?: boolean
+  /** F12: no pega: va hacia Thor y si lo toca le apaga el farol (la medusa negra). Se aleja del farol alzado */
+  apagaFarol?: boolean
 }
 
 export const ENEMIGOS: Record<string, EnemigoBalance> = {
@@ -182,6 +188,14 @@ export const ENEMIGOS: Record<string, EnemigoBalance> = {
   minero_piedra: { vida: 140, dano: [4, 7], anim: 'attack', ataquesPorSeg: 0.45, alcance: 32, velocidad: 34, ve: 180, xp: 60, oro: [10, 18], pesado: { cadaS: 5, radio: 44, avisoS: 1.4, dano: [11, 16] } },
   // vive en lo oscuro: hay que traerla a la luz (un cristal prendido o el brillo de Thor) para pelearle
   sombra: { vida: 40, dano: [4, 6], anim: 'attack', ataquesPorSeg: 0.7, alcance: 26, velocidad: 58, ve: 200, xp: 20, oro: [3, 6], soloEnLuz: true },
+  // F12, el Puerto. El marinero de niebla: en la luz del farol se ve entero y se deshace rápido; afuera son dos linternitas
+  marinero_niebla: { vida: 40, dano: [4, 7], anim: 'attack', ataquesPorSeg: 0.7, alcance: 28, velocidad: 48, ve: 200, xp: 22, oro: [3, 7], deNiebla: true },
+  // chiquitos, en grupos: se reparten alrededor de la heroína y entran de a uno
+  cangrejo_ceniza: { vida: 14, dano: [2, 3], anim: 'attack', ataquesPorSeg: 1.1, alcance: 22, velocidad: 80, ve: 180, xp: 6, oro: [1, 3], rodea: true },
+  // flota lenta y no pega: si toca a Thor le apaga el farol. Lo que enseña: cuidar al perro y alzar el farol
+  medusa_negra: { vida: 22, dano: [0, 0], anim: 'idle', ataquesPorSeg: 0.5, alcance: 0, velocidad: 28, ve: 170, xp: 8, oro: [1, 2], apagaFarol: true },
+  // el minijefe del Astillero: el golpe de ancla avisa grande en el piso, levanta una ola corta que empuja y lo deja clavado
+  capitan_ahogado: { vida: 240, dano: [6, 9], anim: 'attack', ataquesPorSeg: 0.5, alcance: 40, velocidad: 40, ve: 230, xp: 140, oro: [30, 50], pesado: { cadaS: 5, radio: 56, avisoS: 1.6, dano: [14, 18], empuje: 56 } },
 }
 
 /**
@@ -258,6 +272,10 @@ export const BOTIN = {
   polilla_ceniza: { objeto: 0.05, oro: 0.4, cantidad: 1 } as BotinFuente,
   minero_piedra: { objeto: 0.5, oro: 1, cantidad: 1 } as BotinFuente,
   sombra: { objeto: 0.15, oro: 0.6, cantidad: 1 } as BotinFuente,
+  marinero_niebla: { objeto: 0.15, oro: 0.6, cantidad: 1 } as BotinFuente,
+  cangrejo_ceniza: { objeto: 0.05, oro: 0.4, cantidad: 1 } as BotinFuente,
+  medusa_negra: { objeto: 0.06, oro: 0.4, cantidad: 1 } as BotinFuente,
+  capitan_ahogado: { objeto: 1, oro: 1, cantidad: 2, garantiza: 'rare' } as BotinFuente,
   rompible: { objeto: 0.1, oro: 0.4, cantidad: 1, pocionProb: 0.6 },
   cofres: {
     madera: { objetos: 1, oro: [5, 10] as [number, number], raroProb: 0, raroGarantizado: 0, legendarioProb: 0 },
@@ -406,6 +424,31 @@ export const JEFE_POLILLA = {
   aturdidaCadaS: 9,
   /** con los cristales apagados un golpe le hace esto del daño (nada: hay que prenderlos) */
   danoSinLuz: 0,
+}
+
+/**
+ * F12, el Pez Farol (el Puerto Ahogado). Vive bajo el agua negra del pie del faro: sumergido no se le puede pegar, solo
+ * se ve su lucecita. Sale a morder (con aviso en el piso) y queda afuera un rato: ahí se le pega. Desde la fase 2 salta y
+ * levanta una ola en línea que empuja. Desde la 3 llama cangrejos y medusas. Si Thor alza el farol cerca, la luz lo
+ * encandila: sale a la superficie aturdido y es la ventana grande para pegarle.
+ */
+export const JEFE_PEZ = {
+  vida: 760,
+  velocidad: 48,
+  fase3Pct: 30,
+  // radio 44: el aviso_mordida del kit (128 x 64) a escala 1 es una elipse de 64 x 32 de semiejes, el golpe pega en su cuerpo
+  mordida: { dano: [11, 15] as [number, number], radio: 44, delante: 56, alcance: 104, avisoS: 1.3, fueraS: 1.8 },
+  ola: { dano: [12, 16] as [number, number], largo: 260, ancho: 52, avisoS: 1.5, empuje: 72, fueraS: 1.6 },
+  llamada: { cangrejos: 2, medusas: 1, max: 4, avisoS: 1, cadaS: 15 },
+  /** Thor alza el farol a esta distancia o menos: el pez sale aturdido */
+  alzarRadio: 230,
+  aturdidoS: 4.5,
+  /** después de encandilarlo no vuelve a caer por el farol hasta pasado esto */
+  alzarCadaS: 6,
+  /** el pez emerge y se hunde en esto (anim `emerger` y `hundirse`) */
+  emergerS: 0.8,
+  /** a qué altura sobre su pie va la lucecita de la antena (pivote [64, 69] en la celda de 128) */
+  antenaAlto: 48,
 }
 
 /**
@@ -603,6 +646,13 @@ export const PUERTO = {
   marinero: { danoEnLuz: 1.6, danoOscuro: 0.4 },
   /** los cangrejos rodean a esta distancia del objetivo */
   cangrejo: { radioRodeo: 46 },
+  /**
+   * La medusa negra: si llega a esto de Thor le apaga el farol y se aleja un rato. No se va más lejos que `correa` de su
+   * casa (flota sobre el agua y la orilla). Con el farol alzado cerca se espanta y se aleja.
+   */
+  medusa: { tocaA: 22, esperaS: 6, correa: 220, espantaA: 200, velHuye: 1.8 },
+  /** el marinero en la luz: cuánto se ve afuera (casi nada: los ojos hacen el trabajo) */
+  marineroAlfaOscuro: 0.12,
   /** con el faro prendido la oscuridad del piso baja hasta acá */
   oscuridadFaro: 0.35,
 } as const

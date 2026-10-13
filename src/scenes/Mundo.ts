@@ -17,7 +17,7 @@ import { frenteDeZona } from '../logic/capas'
 import { FondoParalaje } from '../fx/FondoParalaje'
 import { Niebla } from '../logic/niebla'
 import { pisoDe, thorBrilla, topeOscuridad } from '../logic/abismo'
-import { ABISMO, PUERTO } from '../config/balance'
+import { ABISMO, JEFE_PEZ, PUERTO } from '../config/balance'
 import { aspectoDe, claveAspecto } from '../logic/aspecto'
 import { puntosDeCaida, regionCaminable } from '../logic/lugar'
 import { RADIO_HEROINA } from '../logic/camino'
@@ -27,7 +27,7 @@ import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
 import { CALIDAD, COLOR, PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S, SOMBRA_LARGA } from '../config/juego'
 import { REACCIONES, AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, MUSICA_ESTADOS, OLFATO } from '../config/balance'
-import { enAnillo } from '../logic/jefe'
+import { enAnillo, enLinea } from '../logic/jefe'
 import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
@@ -42,6 +42,8 @@ import { MundoVista } from '../game/MundoVista'
 import { Reflejos } from '../game/Reflejos'
 import type { Reaccion } from '../logic/reaccion'
 import { Decos, type Luz } from '../game/Decos'
+import { moverCuerpo } from '../logic/movimiento'
+import { Misterio } from '../game/Misterio'
 import { Heroina } from '../game/Heroina'
 import { ThorSprite } from '../game/ThorSprite'
 import { Criaturas } from '../game/Criaturas'
@@ -79,7 +81,7 @@ export interface EventoDescubrimiento {
 
 /** Los efectos que usa el combate: proyectiles en sus 8 direcciones, impactos, novas, auras y escudos */
 function fxDeCombate(dirs: readonly string[]): string[] {
-  const out = ['aura_nivel', 'curar', 'escudo_de_thor', 'grito_de_guerra', 'nova_fuego', 'tajo', 'impacto_flecha', 'impacto_naturaleza', 'impacto_arcano', 'impacto_fuego', 'impacto_sagrado', 'impacto_veneno', 'onda_pisoton', 'aviso_polvo', 'nube_polvo']
+  const out = ['aura_nivel', 'curar', 'escudo_de_thor', 'grito_de_guerra', 'nova_fuego', 'tajo', 'impacto_flecha', 'impacto_naturaleza', 'impacto_arcano', 'impacto_fuego', 'impacto_sagrado', 'impacto_veneno', 'onda_pisoton', 'aviso_polvo', 'nube_polvo', 'aviso_mordida', 'aviso_ola', 'ola']
   for (const base of ['proyectil_flecha', 'proyectil_naturaleza', 'proyectil_arcano', 'proyectil_fuego']) for (const d of dirs) out.push(`${base}_${d}`)
   return out
 }
@@ -93,7 +95,7 @@ const NOMBRES_GANCHOS = [
   'combate', 'danar', 'enemigos', 'tocarEnemigo', 'habilidad', 'soltarHabilidad', 'pocion', 'darXp', 'cercaDeEnemigo', 'matarEnemigos', 'curarTodo', 'ponerNivel', 'proyectilesActivos',
   'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual', 'mecanismos', 'darBrasas', 'mercader', 'aspecto',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
-  'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable', 'puerto', 'adelantarMarea', 'alzarFarol', 'apagarFarol',
+  'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable', 'puerto', 'adelantarMarea', 'alzarFarol', 'apagarFarol', 'misterio',
 ]
 
 /**
@@ -155,6 +157,8 @@ export class Mundo extends Phaser.Scene {
   galerias: Galerias | null = null
   /** F12: el Puerto Ahogado (farol de Thor, faroles del muelle y marea) */
   puerto: Puerto | null = null
+  /** F12: la figura de los ojos rojos y el mural en los pisos sin cristales */
+  misterio: Misterio | null = null
   /** las luces del último cuadro (la sombra solo se ve dentro de una) */
   private lucesUltimas: Luz[] = []
   /** la heroína va en el carrito: hasta cuándo (segundos de juego) */
@@ -198,6 +202,11 @@ export class Mundo extends Phaser.Scene {
   private timersPiedras: Phaser.Time.TimerEvent[] = []
   private musicaVictoriaPuesta = false
   private victoriaVista = false
+  /** F12: la luz robada vuela del Pez Farol al faro (en segundos reales) */
+  private luzAlFaro: { x0: number; y0: number; x1: number; y1: number; t: number; dur: number } | null = null
+  /** F12: el faro del Puerto ya se prendió */
+  private faroPrendido = false
+  private tAvisoFarol = -99
   cat!: Catalogo
   private pendiente: Objetivo | null = null
   private cartelAbierto = false
@@ -309,6 +318,8 @@ export class Mundo extends Phaser.Scene {
     encolarObjetosMundo(this, this.m, new Set(mapa.entidades.filter((e) => e.tipo === 'rompible').map((e) => String(e.props.objeto ?? 'caja'))))
     // F11: los cristales (apagados y prendidos), el carrito y la figura de las Galerías
     if (mapa.cristales.length) encolarObjetosMundo(this, this.m, [...Object.keys(this.m.mundo.objetos).filter((n) => n.startsWith('cristal_')), 'carrito_mina', 'figura_ojos'])
+    // F12: la figura de los ojos rojos en los pisos sin cristales (mojada en el Puerto)
+    else if (entidadesDeTipo(mapa, 'figura').length) encolarObjetosMundo(this, this.m, ['figura_ojos', 'figura_ojos_mojada'])
     // F12: los faroles del muelle, el agua de la marea, los muelles flotantes y el farol de Thor del Puerto Ahogado
     if (entidadesDeTipo(mapa, 'farol_muelle').length || mapa.marea.some((v) => v)) {
       encolarObjetosMundo(this, this.m, ['farol_muelle_apagado', 'farol_muelle_prendido', 'farol_muelle_prenderse', 'agua_marea', 'muelle_flotante'])
@@ -470,12 +481,16 @@ export class Mundo extends Phaser.Scene {
           alGolpear: () => this.combate.golpeDeEnemigo(e.cfg.dano),
         })
       },
-      golpePesado: (e, rango, radio) => {
+      golpePesado: (e, rango, radio, empuje) => {
         if (this.combate.caido) return
         // el aviso es una elipse en el piso: ancha y baja
         const dx = (this.heroina.x - e.x) / radio
         const dy = (this.heroina.y - e.y) / (radio / 2)
-        if (dx * dx + dy * dy <= 1) this.combate.golpeDeEnemigo(rango)
+        if (dx * dx + dy * dy <= 1) {
+          this.combate.golpeDeEnemigo(rango)
+          // la ola corta del ancla la empuja hacia afuera
+          if (empuje) this.empujarHeroina(this.heroina.x - e.x, this.heroina.y - e.y, empuje)
+        }
       },
       alMorir: (e) => this.combate.alMorirEnemigo(e),
       efecto: (n, x, y) => this.proyectiles.fxEn(n, x, y),
@@ -580,8 +595,26 @@ export class Mundo extends Phaser.Scene {
             modoPeque: () => this.combate.modoPeque,
           })
         : null
+    this.misterio?.destruir()
+    this.misterio = !this.galerias && (entidadesDeTipo(this.mapa, 'figura').length || entidadesDeTipo(this.mapa, 'mural').length)
+      ? new Misterio(this, m, this.mapa, {
+          sonido: (n, op) => this.sonido.efecto(n, op),
+          thorGrune: () => this.sonido.efecto('ladrido', { volumen: 0.35, rate: 0.6 }),
+          alMural: (pieza) => this.alSecretoDeCofre(`mural:${pieza}`, pieza === 4 ? 'El mural de los faroleros' : 'Un pedazo del mural'),
+          // en el Puerto se lleva la luz del farol del muelle que tenga cerca (Thor lo vuelve a prender al pasar)
+          alIrse: (x, y) => this.puerto?.apagarMuelleCerca(x, y, 320),
+        })
+      : null
     // en el Puerto la luz grande es la de Thor: el farol de la heroína se achica
     this.atmosfera.radioHalo = this.puerto ? PUERTO.haloHeroina : COLOR.FAROL_RADIO
+    // el faro arranca apagado; si el Pez Farol ya cayó en esta partida, prendido con todo el muelle
+    this.faroPrendido = false
+    this.luzAlFaro = null
+    const faro = this.faroDelMapa()
+    if (faro) {
+      if (this.partida.jefeVencido) this.prenderFaro(false)
+      else this.decos.fijarAnim('faro', faro.x, faro.y, 'apagado')
+    }
     this.alCambioInventario(false)
 
     this.entrada = new Entrada(this, {
@@ -693,7 +726,9 @@ export class Mundo extends Phaser.Scene {
         for (let k = 0; k < Math.min(n, JEFE.grito.maxRatas - hay); k++) {
           const ang = (Math.PI * 2 * k) / Math.max(1, n) + 0.7
           const p = this.grilla.puntoLibreCerca(x + Math.cos(ang) * 46, y + Math.sin(ang) * 30, 8, 80) ?? { x, y }
-          this.enemigos.invocar(this, this.m, this.grilla, tipoJefe === 'polilla_reina' ? 'polilla_ceniza' : 'rata', p.x, p.y, evEnemigos)
+          // el minotauro llama ratas; la Polilla Reina, polillas; el Pez Farol, cangrejos y una medusa
+          const tipo = tipoJefe === 'polilla_reina' ? 'polilla_ceniza' : tipoJefe === 'pez_farol' ? (k % 3 === 2 ? 'medusa_negra' : 'cangrejo_ceniza') : 'rata'
+          this.enemigos.invocar(this, this.m, this.grilla, tipo, p.x, p.y, evEnemigos)
         }
       },
       efecto: (n, x, y, esc) => this.proyectiles.fxEn(n, x, y, esc ?? 1),
@@ -715,7 +750,27 @@ export class Mundo extends Phaser.Scene {
       escudo: (x, y) => {
         if (this.tAvisoEscudo > this.t) return
         this.tAvisoEscudo = this.t + 2.5
-        this.textoFlotante(x, y, '¡Prende los cristales!', 0x5ae8ff)
+        // el Pez Farol bajo el agua: salpica, y Thor ladra para que le alcen el farol
+        if (tipoJefe === 'pez_farol') {
+          this.atmosfera.particulas.estallido(x, y + 20, 'polvo', 4)
+          this.textoFlotante(this.thor.x, this.thor.y - 44, '¡Alza el farol!', 0xffd890)
+          this.sonido.efecto('ladrido', { volumen: 0.45, rate: 1.1 })
+          this.game.events.emit('farol-pista')
+        } else this.textoFlotante(x, y, '¡Prende los cristales!', 0x5ae8ff)
+      },
+      // F12: la ola del Pez Farol corre por la franja: pega y empuja a quien quede adentro
+      ola: (x, y, dx, dy, largo, ancho, dano, empuje) => {
+        this.olaQueCorre(x, y, dx, dy, largo)
+        if (this.combate.caido) return
+        if (enLinea(this.heroina.x, this.heroina.y, x, y, dx, dy, largo, ancho)) {
+          this.combate.golpeDeEnemigo(dano)
+          this.empujarHeroina(dx, dy, empuje)
+        } else if (this.mejoras && enLinea(this.heroina.x, this.heroina.y, x, y, dx, dy, largo, ancho + 50)) this.textoFlotante(this.heroina.x, this.heroina.y - 48, '¡Esquivaste!', 0x8af0e0)
+      },
+      encandilado: () => {
+        if (!this.jefe) return
+        this.textoFlotante(this.jefe.x, this.jefe.y - this.jefe.cuerpo.alto - 6, '¡Ahora!', 0xffd890)
+        this.game.events.emit('destello', { color: 0xffe8b0, alfa: this.suave ? 0.08 : 0.22, ms: 300 })
       },
       alMorir: () => this.victoria(),
     }
@@ -766,7 +821,7 @@ export class Mundo extends Phaser.Scene {
     }
     // si la heroína se va lejos de la arena (un salto de prueba, por ejemplo) la pelea se corta sin curar al jefe
     if (j.peleando && Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) > a.radio + 60) this.alCaerEnArena()
-    j.update({ dt, heroeX: this.heroina.x, heroeY: this.heroina.y, heroeVivo: !this.combate.caido, modoPeque: this.combate.modoPeque, ratasVivas: this.enemigos.invocadasVivas, vulnerable: this.galerias?.reinaVulnerable })
+    j.update({ dt, heroeX: this.heroina.x, heroeY: this.heroina.y, heroeVivo: !this.combate.caido, modoPeque: this.combate.modoPeque, ratasVivas: this.enemigos.invocadasVivas, vulnerable: this.galerias?.reinaVulnerable, alzado: this.puerto?.farolAlzado ? { x: this.thor.x, y: this.thor.y } : undefined })
     // al salir de la arena después de ganar, vuelve la música del bosque
     if (this.musicaVictoriaPuesta && Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) > a.radio + 40) {
       this.musicaVictoriaPuesta = false
@@ -865,6 +920,11 @@ export class Mundo extends Phaser.Scene {
     this.entidades.mostrarCofresTrasJefe()
     // F8: el Guardián de la Campana no muere: se libera de la corrupción y la catedral se ilumina
     if (this.jefe?.tipo === 'guardian_campana') this.liberarCatedral(!yaVencido)
+    // F12: el Pez Farol se libera y la luz robada vuelve al faro
+    if (this.jefe?.tipo === 'pez_farol') {
+      if (yaVencido) this.prenderFaro(false)
+      else this.luzAlFaro = this.faroDelMapa() ? { x0: this.jefe.x, y0: this.jefe.y - 50, ...this.puntaDelFaro()!, t: -1.1, dur: 2.4 } : null
+    }
     if (a && yaVencido) {
       this.encenderPiedras(true)
       this.abrirPortalJefe(false)
@@ -876,7 +936,9 @@ export class Mundo extends Phaser.Scene {
       this.camaraLenta(ESCENA_JEFE.lenta.factor, ESCENA_JEFE.lenta.seg)
       this.game.events.emit('destello', { color: 0xfff4d2, alfa: this.suave ? 0.15 : 0.55, ms: 600 })
       this.jefe?.desvanecer((x, y) => this.atmosfera.particulas.estallido(x, y, 'polvo', 4))
-      this.sonido.fijarMusica('musica_victoria')
+      // la zona puede traer su propia música de victoria (el faro que se prende)
+      const mv = a ? zonaEn(this.mapa.zonas, a.x, a.y)?.props.musica_victoria : undefined
+      this.sonido.fijarMusica(mv && this.cache.audio.exists(K.aud(`musica_${mv}`)) ? `musica_${mv}` : 'musica_victoria')
       this.musicaVictoriaPuesta = true
       this.sonido.efecto('legendario', { volumen: 0.8 })
       if (a) {
@@ -906,6 +968,96 @@ export class Mundo extends Phaser.Scene {
     // baja de a poco con el reloj del juego (en `paso`), no con una animación en tiempo real
     this.aclaradoMeta = 0.45
     this.game.events.emit('destello', { color: 0x8affe8, alfa: this.suave ? 0.12 : 0.35, ms: 1200 })
+  }
+
+  /** F12: el faro del Puerto (el decorado), si el mapa lo trae */
+  private faroDelMapa(): { x: number; y: number } | null {
+    return this.decos.posicionesDe('faro')[0] ?? null
+  }
+
+  /** F12: dónde está la luz del faro (arriba de la torre, lo que dice su `luz.dy`) */
+  private puntaDelFaro(): { x1: number; y1: number } | null {
+    const f = this.faroDelMapa()
+    if (!f) return null
+    return { x1: f.x, y1: f.y - (this.m.mundo.objetos.faro?.luz?.dy ?? 250) }
+  }
+
+  /**
+   * F12: el faro se prende otra vez. El piso entero se aclara (la oscuridad baja hasta PUERTO.oscuridadFaro), todos los
+   * faroles del muelle se prenden y suena la música de victoria del faro. Con `animar` es el gran momento: destello y sonido.
+   */
+  private prenderFaro(animar: boolean): void {
+    if (this.faroPrendido) return
+    this.faroPrendido = true
+    const f = this.faroDelMapa()
+    if (f) this.decos.fijarAnim('faro', f.x, f.y, 'prendido')
+    this.puerto?.prenderTodos(animar)
+    const max = Math.max(0.01, ...this.mapa.zonas.map((z) => z.oscuridad))
+    this.aclaradoMeta = Math.min(this.aclaradoMeta, PUERTO.oscuridadFaro / max)
+    if (!animar) {
+      this.atmosfera.aclarado = this.aclaradoMeta
+      return
+    }
+    this.sonido.efecto('faro_prende', { volumen: 0.9 })
+    this.game.events.emit('destello', { color: 0xffe8b0, alfa: this.suave ? 0.15 : 0.5, ms: 1400 })
+    this.sacudir(260, 0.004)
+  }
+
+  /** F12: la luz robada viaja del Pez Farol a la punta del faro (con estela); al llegar se prende el faro */
+  private moverLuzAlFaro(dt: number, luces: Luz[]): void {
+    const v = this.luzAlFaro
+    if (!v) return
+    v.t += dt
+    if (v.t < 0) {
+      luces.push({ x: v.x0, y: v.y0, r: 120, color: '#fff0c0', pulse: true, ph: 0.1 })
+      return
+    }
+    const k = Math.min(1, v.t / v.dur)
+    // sube en arco: sale para arriba y cae suave en la punta del faro
+    const e = k * k * (3 - 2 * k)
+    const x = v.x0 + (v.x1 - v.x0) * e
+    const y = v.y0 + (v.y1 - v.y0) * e - Math.sin(k * Math.PI) * 90
+    luces.push({ x, y, r: 130, color: '#fff0c0', flicker: true, ph: 0.2, alto: 40 })
+    if (Math.floor(v.t * 30) % 2 === 0) this.atmosfera.particulas.estallido(x, y, 'luciernaga_turquesa', 1)
+    if (k >= 1) {
+      this.luzAlFaro = null
+      this.prenderFaro(true)
+    }
+  }
+
+  /** F12: la ola corre por su franja (el `ola` del kit, varias veces a lo largo) */
+  private olaQueCorre(x: number, y: number, dx: number, dy: number, largo: number): void {
+    const paso = 48
+    for (let d = 20; d < largo; d += paso) {
+      this.time.delayedCall((d / largo) * 420, () => this.proyectiles.fxEn('ola', x + dx * d, y + dy * d))
+    }
+  }
+
+  /** Un empujón suave (la ola, el ancla): la heroína se corre sin atravesar paredes */
+  private empujarHeroina(dx: number, dy: number, cuanto: number): void {
+    const d = Math.hypot(dx, dy) || 1
+    const h = this.heroina
+    const r = moverCuerpo(this.grilla, { x: h.x, y: h.y, radio: 8 }, (dx / d) * cuanto, (dy / d) * cuanto)
+    if (Math.hypot(r.x - h.x, r.y - h.y) < 2) return
+    h.parar()
+    h.teleport(r.x, r.y)
+    this.atmosfera.particulas.estallido(r.x, r.y, 'polvo', 3)
+  }
+
+  /** F12: una medusa tocó a Thor: se le apaga el farol, aúlla y la heroína lo tiene que cuidar */
+  private medusaApagaFarol(): void {
+    const p = this.puerto
+    if (!p) return
+    const antes = p.farolApagado
+    p.apagar()
+    if (antes || !p.farolApagado) return
+    this.thor.hacer('howl', 1.1)
+    this.sonido.efecto('aullido', { volumen: 0.5 })
+    if (this.t - this.tAvisoFarol > 6) {
+      this.tAvisoFarol = this.t
+      this.textoFlotante(this.thor.x, this.thor.y - 44, '¡Cuida a Thor!', 0xffd890)
+    }
+    this.game.events.emit('farol-apagado')
   }
 
   /** El color de la luz del portal según el kit (azul o rojo) */
@@ -1175,6 +1327,8 @@ export class Mundo extends Phaser.Scene {
     this.galerias = null
     this.puerto?.destruir()
     this.puerto = null
+    this.misterio?.destruir()
+    this.misterio = null
     this.sombrasPj?.destruir()
     this.sombrasPj = null
     for (const f of this.portalesFx) f.destroy()
@@ -1331,7 +1485,10 @@ export class Mundo extends Phaser.Scene {
     const f = this.entidades.fogataCercana(h)
     const fogata = !!f && Math.hypot(f.x - h.x, f.y - h.y) <= MUSICA_ESTADOS.radioFogata
     this.estadoMusica = this.directorMusica.tick(paso, { alertas, elite, fogata })
-    const pista: Record<EstadoMusica, string | null> = { explorar: null, amenaza: 'musica_amenaza', combate: 'musica_combate', descanso: 'musica_fogata' }
+    // la zona puede traer la música de su pelea grande (el Capitán Ahogado en el Astillero): suena con un élite en la pelea
+    const mp = this.atmosfera.zona?.props.musica_pelea
+    const propia = elite && mp && this.cache.audio.exists(K.aud(`musica_${mp}`)) ? `musica_${mp}` : null
+    const pista: Record<EstadoMusica, string | null> = { explorar: null, amenaza: 'musica_amenaza', combate: propia ?? 'musica_combate', descanso: 'musica_fogata' }
     this.sonido.fijarEstado(this.mejoras ? pista[this.estadoMusica] : null)
     // el agua cercana: el cuadro de agua más próximo en 7 cuadros a la redonda
     const c = this.mapa.cuadro
@@ -1789,6 +1946,8 @@ export class Mundo extends Phaser.Scene {
         cristales: g?.cristales,
         luces: this.lucesUltimas,
         alApagar: g ? (id) => g.apagar(id) : undefined,
+        farol: this.puerto ? { alzado: this.puerto.farolAlzado, prendido: !this.puerto.farolApagado } : undefined,
+        alApagarFarol: this.puerto ? () => this.medusaApagaFarol() : undefined,
       })
       this.proyectiles.update(dt)
       this.combate.update(dt)
@@ -1832,7 +1991,10 @@ export class Mundo extends Phaser.Scene {
     if (thorBrilla(this.piso) && !this.puerto) luces.push({ x: this.thor.sprite.x, y: this.thor.sprite.y - 10, r: ABISMO.thorBrilloRadio, color: '#ffe8b0', pulse: true, ph: 0.6, alto: 10 })
     // en lo hondo el jefe lleva su propio brillo tenue: siempre se ve dónde está, aunque la arena esté a oscuras
     const jb = this.jefe
-    if (jb && jb.vivo && thorBrilla(this.piso)) luces.push({ x: jb.x, y: jb.y - jb.cuerpo.alto / 2, r: ABISMO.jefeBrilloRadio, color: '#c58aff', pulse: true, ph: 0.2 })
+    // el Pez Farol: la luz robada del faro en la punta de su antena (baila sobre el agua para atraer)
+    if (jb && jb.vivo && jb.luzAntena && !this.partida.jefeVencido) luces.push({ x: jb.x, y: jb.y - JEFE_PEZ.antenaAlto, r: Math.round(jb.luzAntena.radio * 0.7), color: jb.luzAntena.color, flicker: true, pulse: true, ph: 0.4, alto: JEFE_PEZ.antenaAlto })
+    else if (jb && jb.vivo && thorBrilla(this.piso)) luces.push({ x: jb.x, y: jb.y - jb.cuerpo.alto / 2, r: ABISMO.jefeBrilloRadio, color: '#c58aff', pulse: true, ph: 0.2 })
+    this.moverLuzAlFaro(dtVisual, luces)
     const heroe = { x: this.heroina.x, y: this.heroina.y }
     this.entidades.update(this.t, heroe, !this.presentacion?.activa)
     this.mercader.update(this.t, heroe)
@@ -1841,6 +2003,7 @@ export class Mundo extends Phaser.Scene {
     this.decos.otros[0] = { x: this.thor.sprite.x, y: this.thor.sprite.y }
     this.decos.enemigos = this.enemigos.vivos.map((e) => ({ x: e.x, y: e.y }))
     this.galerias?.update(heroe, luces)
+    this.misterio?.update(heroe, luces)
     this.puerto?.update(dtVisual, this.thor, [this.heroina, this.thor], luces)
     this.decos.actualizar(this.tViento, dtVisual, vista, heroe, luces)
     this.mecanismos?.update(this.t, luces)
@@ -1957,7 +2120,8 @@ export class Mundo extends Phaser.Scene {
       }) as never,
       apagarCristal: ((id: string) => this.galerias?.apagar(id)) as never,
       jefeVulnerable: () => this.galerias?.reinaVulnerable ?? null,
-      puerto: () => (this.puerto ? { ...this.puerto.info, halo: this.atmosfera.radioHalo } : null),
+      puerto: () => (this.puerto ? { ...this.puerto.info, halo: this.atmosfera.radioHalo, faro: this.faroPrendido, luzAlFaro: !!this.luzAlFaro } : null),
+      misterio: () => this.misterio?.info ?? null,
       adelantarMarea: ((s: number) => this.puerto?.adelantar(s)) as never,
       alzarFarol: () => this.alzarFarol(),
       apagarFarol: () => this.puerto?.apagar(),

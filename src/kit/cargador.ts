@@ -69,7 +69,7 @@ export function encolarFx(e: Escena, m: Manifest, nombres?: string[]): void {
   for (const [nombre, f] of Object.entries(m.fx)) {
     if (nombres && !nombres.includes(nombre)) continue
     const key = K.fx(nombre)
-    if (!yaHay(e, key)) e.load.spritesheet(key, rutaKit(f.archivo), { frameWidth: f.celda, frameHeight: f.celda })
+    if (!yaHay(e, key)) e.load.spritesheet(key, rutaKit(f.archivo), { frameWidth: f.w ?? f.celda, frameHeight: f.h ?? f.celda })
   }
 }
 

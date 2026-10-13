@@ -1,5 +1,5 @@
 import type { Azar } from './azar'
-import { JEFE, JEFE_CAMPANA, JEFE_POLILLA, MODO_PEQUE } from '../config/balance'
+import { JEFE, JEFE_CAMPANA, JEFE_PEZ, JEFE_POLILLA, MODO_PEQUE } from '../config/balance'
 
 /**
  * El Minotauro del Bosque (PLAN.md F4): máquina de estados con fases y temporizadores, sin Phaser.
@@ -7,9 +7,9 @@ import { JEFE, JEFE_CAMPANA, JEFE_POLILLA, MODO_PEQUE } from '../config/balance'
  * Todo ataque grande avisa 1.2 s antes (1.8 s en modo peque) y la vida del jefe nunca sube.
  */
 
-export type AtaqueJefe = 'golpe' | 'golpe_fuerte' | 'carga' | 'pisoton' | 'salto' | 'grito' | 'onda' | 'raices' | 'polvo'
+export type AtaqueJefe = 'golpe' | 'golpe_fuerte' | 'carga' | 'pisoton' | 'salto' | 'grito' | 'onda' | 'raices' | 'polvo' | 'mordida' | 'ola'
 /** F8: qué jefe es (cambia qué ataques elige) */
-export type PerfilJefe = 'minotauro' | 'campana' | 'polilla'
+export type PerfilJefe = 'minotauro' | 'campana' | 'polilla' | 'pez'
 export type EstadoJefe = 'dormido' | 'intro' | 'quieto' | 'perseguir' | 'aviso' | 'saltando' | 'cargando' | 'aturdido' | 'muerto'
 /** `frente` es una elipse delante del jefe, `circulo` es a su alrededor o en el destino del salto, `linea` es la carga */
 export type FormaAtaque = 'frente' | 'circulo' | 'linea' | 'anillo' | 'raices'
@@ -22,7 +22,8 @@ export interface Jefe {
   cy: number
   vida: number
   vidaMax: number
-  fase: 1 | 2
+  /** el Pez Farol tiene una tercera (llama cangrejos y medusas) */
+  fase: 1 | 2 | 3
   estado: EstadoJefe
   /** lo que queda del estado actual */
   t: number
@@ -55,6 +56,10 @@ export interface Jefe {
   vulnerablePrev: boolean
   /** F11: con los cuatro prendidos vuelve a caer aturdida cada tanto */
   aturdeEnS: number
+  /** F12: el Pez Farol fuera del agua después de morder o de la ola: lo que le queda afuera (ahí se le pega) */
+  fueraS: number
+  /** F12: hasta que el farol alzado de Thor lo pueda volver a encandilar */
+  alzarEnS: number
 }
 
 export interface EntradaJefe {
@@ -67,6 +72,8 @@ export interface EntradaJefe {
   ratasVivas: number
   /** F11: los cuatro cristales grandes de la arena están prendidos (la Polilla Reina se puede golpear) */
   vulnerable?: boolean
+  /** F12: Thor tiene el farol alzado aquí (el Pez Farol sale encandilado si está cerca) */
+  alzado?: { x: number; y: number }
 }
 
 export interface OrdenJefe {
@@ -75,13 +82,20 @@ export interface OrdenJefe {
   /** empezó el aviso de un ataque grande: dibujarlo y que dure `seg` */
   aviso?: { ataque: AtaqueJefe; forma: FormaAtaque; seg: number; x: number; y: number; radio: number; dx: number; dy: number; largo: number; ancho: number; interior?: number; puntos?: { x: number; y: number }[] }
   /** el ataque cae ahora */
-  golpe?: { ataque: AtaqueJefe; forma: FormaAtaque; dano: readonly [number, number]; x: number; y: number; radio: number; dx: number; dy: number; largo: number; ancho: number; interior?: number; puntos?: { x: number; y: number }[] }
+  golpe?: { ataque: AtaqueJefe; forma: FormaAtaque; dano: readonly [number, number]; x: number; y: number; radio: number; dx: number; dy: number; largo: number; ancho: number; interior?: number; puntos?: { x: number; y: number }[]; empuje?: number }
   /** F8: raíces que salen del piso un rato (tapan el paso donde cayeron) */
   raices?: { puntos: { x: number; y: number }[]; radio: number; seg: number }
   /** F11: el polvo de la reina cayó aquí: apaga los cristales que tapa */
   polvo?: { x: number; y: number; radio: number }
   /** F11: la reina perdió el escudo (true) o lo recuperó (false) */
   escudo?: boolean
+  /** F12: el Pez Farol sale del agua (anim `emerger` o la del ataque) o se vuelve a hundir */
+  emerger?: boolean
+  hundirse?: boolean
+  /** F12: el farol de Thor lo encandiló (sale aturdido) */
+  encandilado?: boolean
+  /** F12: cambió a la fase 3 */
+  fase3?: boolean
   fase2?: boolean
   rugir?: boolean
   invocar?: number
@@ -96,7 +110,8 @@ export function nuevoJefe(cx: number, cy: number, vida: number = JEFE.vida, perf
   return {
     x: cx, y: cy, cx, cy, vida, vidaMax: vida, fase: 1, estado: 'dormido', t: 0, pausaS: 1, ataque: null,
     dirX: 0, dirY: 1, destX: cx, destY: cy, origX: cx, origY: cy, cargaPego: false, gritoEnS: 4,
-    perfil, forzar: null, raicesVistas: false, escudo: perfil === 'polilla', vulnerablePrev: false, aturdeEnS: 0,
+    perfil, forzar: null, raicesVistas: false, escudo: perfil === 'polilla' || perfil === 'pez', vulnerablePrev: false, aturdeEnS: 0,
+    fueraS: 0, alzarEnS: 0,
   }
 }
 
@@ -133,10 +148,21 @@ export function reposar(j: Jefe): void {
   j.y = j.cy
   j.gritoEnS = 4
   j.cargaPego = false
+  // el Pez Farol vuelve al fondo del agua
+  if (j.perfil === 'pez') {
+    j.escudo = true
+    j.fueraS = 0
+    j.alzarEnS = 0
+  }
+}
+
+/** F12: si un punto cae en la franja de la ola (de (x, y) en (dx, dy), `largo` de largo y `ancho` de ancho) */
+export function enLinea(px: number, py: number, x: number, y: number, dx: number, dy: number, largo: number, ancho: number): boolean {
+  return distanciaASegmento(px, py, x, y, x + dx * largo, y + dy * largo) <= ancho / 2
 }
 
 /** El golpe que recibe el jefe. La vida solo baja: no hay manera de curarlo. Devuelve si cambió de fase o murió. */
-export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boolean; escudo?: boolean } {
+export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boolean; escudo?: boolean; fase3?: boolean } {
   if (j.estado === 'muerto' || dano <= 0) return { fase2: false, murio: false }
   // la Polilla Reina con los cristales apagados: el golpe no le llega
   if (j.escudo) return { fase2: false, murio: false, escudo: true }
@@ -151,12 +177,25 @@ export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boole
     j.raicesVistas = true
     j.forzar = 'raices'
   }
+  // el Pez Farol: la tercera fase llama cangrejos y medusas (la primera llamada sale sola)
+  if (j.perfil === 'pez' && j.fase === 2 && (j.vida / j.vidaMax) * 100 <= JEFE_PEZ.fase3Pct) {
+    j.fase = 3
+    j.forzar = 'grito'
+    if (j.estado !== 'dormido' && j.estado !== 'aturdido') {
+      j.estado = 'intro'
+      j.t = JEFE.fase2RugidoS
+      j.ataque = null
+      j.pausaS = 0.8
+    }
+    return { fase2: false, murio: false, fase3: true }
+  }
   if (j.fase === 1 && (j.vida / j.vidaMax) * 100 <= JEFE.fase2Pct) {
     j.fase = 2
-    // la onda se enseña sola, apenas empieza la fase 2
+    // la onda se enseña sola, apenas empieza la fase 2 (y la ola del Pez Farol)
     if (j.perfil === 'campana') j.forzar = 'onda'
-    // el rugido de la fase 2 corta lo que estuviera haciendo
-    if (j.estado !== 'dormido') {
+    if (j.perfil === 'pez') j.forzar = 'ola'
+    // el rugido de la fase 2 corta lo que estuviera haciendo (al Pez Farol encandilado lo deja en el piso)
+    if (j.estado !== 'dormido' && !(j.perfil === 'pez' && j.estado === 'aturdido')) {
       j.estado = 'intro'
       j.t = JEFE.fase2RugidoS
       j.ataque = null
@@ -170,6 +209,8 @@ export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boole
 /** Segundos de aviso de un ataque grande: 1.2 s, o 1.8 s en modo peque */
 export function avisoDe(ataque: AtaqueJefe, modoPeque: boolean): number {
   if (ataque === 'polvo') return JEFE_POLILLA.polvo.avisoS * (modoPeque ? MODO_PEQUE.avisos : 1)
+  if (ataque === 'mordida') return JEFE_PEZ.mordida.avisoS * (modoPeque ? MODO_PEQUE.avisos : 1)
+  if (ataque === 'ola') return JEFE_PEZ.ola.avisoS * (modoPeque ? MODO_PEQUE.avisos : 1)
   const base = ataque === 'onda' ? JEFE_CAMPANA.onda.avisoS : ataque === 'raices' ? JEFE_CAMPANA.raices.avisoS : ataque === 'golpe_fuerte' ? JEFE.golpeFuerte.avisoS : ataque === 'carga' ? JEFE.carga.avisoS : ataque === 'pisoton' ? JEFE.pisoton.avisoS : ataque === 'salto' ? JEFE.salto.avisoS : ataque === 'grito' ? JEFE.grito.avisoS : 0
   return base * (modoPeque ? MODO_PEQUE.avisos : 1)
 }
@@ -200,6 +241,15 @@ function elegir(j: Jefe, e: EntradaJefe, rng: Azar, dist: number): AtaqueJefe | 
     const a = j.forzar
     j.forzar = null
     return a
+  }
+  if (j.perfil === 'pez') {
+    // la mordida de cerca; desde la fase 2 la ola (de cerca o de lejos); desde la 3, la llamada
+    const pz = JEFE_PEZ
+    const pesos: [AtaqueJefe, number][] = [['mordida', dist <= pz.mordida.alcance ? 50 : 0]]
+    if (j.fase >= 2) pesos.push(['ola', dist <= pz.ola.largo - 40 ? 32 : 0])
+    if (j.fase >= 3) pesos.push(['grito', j.gritoEnS <= 0 && e.ratasVivas < pz.llamada.max ? 24 : 0])
+    if (pesos.every(([, p]) => p === 0)) return null
+    return rng.pesos(pesos)
   }
   if (j.perfil === 'polilla') {
     // el aletazo de cerca, el polvo a cualquier distancia y, cada tanto, la llamada de polillas
@@ -244,9 +294,10 @@ export function pensarJefe(j: Jefe, e: EntradaJefe, rng: Azar): OrdenJefe {
   j.pausaS = Math.max(0, j.pausaS - dt)
   j.gritoEnS = Math.max(0, j.gritoEnS - dt)
   const peque = e.modoPeque
-  const vel = JEFE.velocidad * (peque ? MODO_PEQUE.velocidadEnemigos : 1)
+  const vel = (j.perfil === 'pez' ? JEFE_PEZ.velocidad : JEFE.velocidad) * (peque ? MODO_PEQUE.velocidadEnemigos : 1)
   const dir = norm(e.heroeX - j.x, e.heroeY - j.y)
   if (j.perfil === 'polilla' && escudoPolilla(j, e, o)) return o
+  if (j.perfil === 'pez' && pasoPez(j, e, o)) return o
 
   // la heroína cayó: el jefe se queda donde está, sin curarse, esperando
   if (!e.heroeVivo && j.estado !== 'intro' && j.estado !== 'aturdido') {
@@ -271,6 +322,8 @@ export function pensarJefe(j: Jefe, e: EntradaJefe, rng: Azar): OrdenJefe {
       if (j.t <= 0) {
         j.estado = 'quieto'
         j.pausaS = 0.6
+        // el Pez Farol se despabila y vuelve al agua
+        if (j.perfil === 'pez') hundirPez(j, o)
       }
       return o
     }
@@ -331,7 +384,7 @@ export function pensarJefe(j: Jefe, e: EntradaJefe, rng: Azar): OrdenJefe {
   const dist = dir.d
   o.mirarA = { x: e.heroeX, y: e.heroeY }
   if (j.pausaS > 0) {
-    if (dist > JEFE.golpe.radio + 16) {
+    if (dist > (j.perfil === 'pez' ? JEFE_PEZ.mordida.alcance - 24 : JEFE.golpe.radio + 16)) {
       j.estado = 'perseguir'
       o.mover = { dx: dir.dx, dy: dir.dy, vel }
     } else j.estado = 'quieto'
@@ -345,6 +398,49 @@ export function pensarJefe(j: Jefe, e: EntradaJefe, rng: Azar): OrdenJefe {
     return o
   }
   return empezarAtaque(j, o, a, e, dir)
+}
+
+/** F12: el Pez Farol vuelve al fondo: no se le puede pegar hasta que vuelva a salir */
+function hundirPez(j: Jefe, o: OrdenJefe): void {
+  j.fueraS = 0
+  if (j.escudo) return
+  j.escudo = true
+  o.escudo = true
+  o.hundirse = true
+  j.pausaS = Math.max(j.pausaS, JEFE_PEZ.emergerS)
+}
+
+/**
+ * F12: lo propio del Pez Farol antes de pensar como los demás. El farol alzado de Thor lo encandila (sale aturdido) y,
+ * después de morder o de la ola, se queda un rato afuera sin moverse: la ventana para pegarle. Devuelve true si este
+ * paso ya quedó resuelto.
+ */
+function pasoPez(j: Jefe, e: EntradaJefe, o: OrdenJefe): boolean {
+  const pz = JEFE_PEZ
+  j.alzarEnS = Math.max(0, j.alzarEnS - e.dt)
+  const a = e.alzado
+  if (a && j.alzarEnS <= 0 && j.estado !== 'intro' && j.estado !== 'aturdido' && Math.hypot(a.x - j.x, a.y - j.y) <= pz.alzarRadio) {
+    const seg = pz.aturdidoS * (e.modoPeque ? MODO_PEQUE.avisos : 1)
+    j.estado = 'aturdido'
+    j.t = seg
+    j.ataque = null
+    j.fueraS = 0
+    j.pausaS = 0.8
+    j.alzarEnS = seg + pz.alzarCadaS
+    if (j.escudo) o.escudo = false
+    j.escudo = false
+    o.aturdido = seg
+    o.encandilado = true
+    return true
+  }
+  if (j.fueraS > 0 && (j.estado === 'quieto' || j.estado === 'perseguir')) {
+    j.fueraS -= e.dt
+    j.estado = 'quieto'
+    o.mirarA = { x: e.heroeX, y: e.heroeY }
+    if (j.fueraS <= 0) hundirPez(j, o)
+    return true
+  }
+  return false
 }
 
 /**
@@ -387,9 +483,15 @@ function empezarAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, e: EntradaJefe, dir
     o.atacando = 'golpe'
     return o
   }
-  const seg = avisoDe(a, e.modoPeque)
+  const seg = a === 'grito' && j.perfil === 'pez' ? JEFE_PEZ.llamada.avisoS * (e.modoPeque ? MODO_PEQUE.avisos : 1) : avisoDe(a, e.modoPeque)
   j.t = seg
   const base = { ataque: a, seg }
+  // el Pez Farol sale del agua para morder y para la ola (se le puede pegar desde que asoma)
+  if (j.perfil === 'pez' && (a === 'mordida' || a === 'ola') && j.escudo) {
+    j.escudo = false
+    o.escudo = false
+    o.emerger = true
+  }
   if (a === 'golpe_fuerte') {
     o.aviso = { ...base, forma: 'frente', x: j.x + dir.dx * JEFE.golpeFuerte.delante, y: j.y + dir.dy * JEFE.golpeFuerte.delante, radio: JEFE.golpeFuerte.radio, dx: dir.dx, dy: dir.dy, largo: 0, ancho: 0 }
   } else if (a === 'pisoton') {
@@ -414,6 +516,17 @@ function empezarAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, e: EntradaJefe, dir
   } else if (a === 'grito') {
     o.aviso = { ...base, forma: 'circulo', x: j.x, y: j.y, radio: 0, dx: 0, dy: 1, largo: 0, ancho: 0 }
     o.rugir = true
+  } else if (a === 'mordida') {
+    // la boca abierta en el piso, delante de él: si camina, se salva
+    const m = JEFE_PEZ.mordida
+    j.destX = j.x + dir.dx * m.delante
+    j.destY = j.y + dir.dy * m.delante
+    o.aviso = { ...base, forma: 'frente', x: j.destX, y: j.destY, radio: m.radio, dx: dir.dx, dy: dir.dy, largo: 0, ancho: 0 }
+  } else if (a === 'ola') {
+    // la franja por donde pasa la ola, hasta el borde de la arena
+    const ol = JEFE_PEZ.ola
+    const largo = Math.min(ol.largo, distanciaAlBorde(j, j.x, j.y, dir.dx, dir.dy) + JEFE.margenBorde)
+    o.aviso = { ...base, forma: 'linea', x: j.x, y: j.y, radio: 0, dx: dir.dx, dy: dir.dy, largo, ancho: ol.ancho }
   } else if (a === 'polvo') {
     // la mancha queda donde estaba la heroína al empezar: si camina, se salva
     j.destX = e.heroeX
@@ -455,6 +568,23 @@ function resolverAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, ratasVivas: number
       j.pausaS = pausa()
       break
     }
+    case 'mordida': {
+      const m = JEFE_PEZ.mordida
+      o.golpe = { ataque: 'mordida', forma: 'frente', dano: m.dano, x: j.destX, y: j.destY, radio: m.radio, dx: j.dirX, dy: j.dirY, largo: 0, ancho: 0 }
+      j.estado = 'quieto'
+      j.pausaS = pausa()
+      j.fueraS = m.fueraS
+      break
+    }
+    case 'ola': {
+      const ol = JEFE_PEZ.ola
+      const largo = Math.min(ol.largo, distanciaAlBorde(j, j.x, j.y, j.dirX, j.dirY) + JEFE.margenBorde)
+      o.golpe = { ataque: 'ola', forma: 'linea', dano: ol.dano, x: j.x, y: j.y, radio: 0, dx: j.dirX, dy: j.dirY, largo, ancho: ol.ancho, empuje: ol.empuje }
+      j.estado = 'quieto'
+      j.pausaS = pausa()
+      j.fueraS = ol.fueraS
+      break
+    }
     case 'polvo': {
       const pv = JEFE_POLILLA.polvo
       o.golpe = { ataque: 'polvo', forma: 'circulo', dano: pv.dano, x: j.destX, y: j.destY, radio: pv.radio, dx: 0, dy: 1, largo: 0, ancho: 0 }
@@ -486,7 +616,8 @@ function resolverAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, ratasVivas: number
       break
     case 'grito': {
       // el minotauro llama ratas; la Polilla Reina, polillas de ceniza
-      const ll = j.perfil === 'polilla' ? { n: JEFE_POLILLA.llamada.polillas, max: JEFE_POLILLA.llamada.maxPolillas, cada: JEFE_POLILLA.llamada.cadaS } : { n: JEFE.grito.ratas, max: JEFE.grito.maxRatas, cada: JEFE.grito.cadaS }
+      const pz = JEFE_PEZ.llamada
+      const ll = j.perfil === 'polilla' ? { n: JEFE_POLILLA.llamada.polillas, max: JEFE_POLILLA.llamada.maxPolillas, cada: JEFE_POLILLA.llamada.cadaS } : j.perfil === 'pez' ? { n: pz.cangrejos + pz.medusas, max: pz.max, cada: pz.cadaS } : { n: JEFE.grito.ratas, max: JEFE.grito.maxRatas, cada: JEFE.grito.cadaS }
       j.estado = 'quieto'
       j.gritoEnS = ll.cada
       j.pausaS = pausa()

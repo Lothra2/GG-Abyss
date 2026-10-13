@@ -10,7 +10,8 @@ import { ordenPolilla, sombraVisible, type Cristal } from '../logic/abismo'
 import { enemigoDelPiso } from '../logic/dureza'
 import { aturdir, matar, nuevoEnemigoIA, pensar, type ConfigIA, type EnemigoIA } from '../logic/ia'
 import { juego } from '../logic/azar'
-import { ABISMO, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, MODO_PEQUE, TROL_ELITE, type EnemigoBalance } from '../config/balance'
+import { ABISMO, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, MODO_PEQUE, PUERTO, TROL_ELITE, type EnemigoBalance } from '../config/balance'
+import { danoMarinero, puntoRodeo } from '../logic/puerto'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
 import { texto } from './Texto'
@@ -28,6 +29,10 @@ const CUERPO: Record<string, { alto: number; radio: number; sombra: number; barr
   polilla_ceniza: { alto: 26, radio: 10, sombra: 16, barra: 22 },
   minero_piedra: { alto: 40, radio: 16, sombra: 34, barra: 36 },
   sombra: { alto: 34, radio: 11, sombra: 18, barra: 26 },
+  marinero_niebla: { alto: 34, radio: 11, sombra: 18, barra: 26 },
+  cangrejo_ceniza: { alto: 16, radio: 10, sombra: 18, barra: 20 },
+  medusa_negra: { alto: 40, radio: 12, sombra: 14, barra: 22 },
+  capitan_ahogado: { alto: 50, radio: 18, sombra: 34, barra: 40 },
 }
 const CUERPO_DEFECTO = { alto: 28, radio: 12, sombra: 22, barra: 26 }
 
@@ -43,14 +48,18 @@ export interface ContextoEnemigos {
   luces?: readonly { x: number; y: number; r: number }[]
   /** F11: una polilla apagó este cristal */
   alApagar?(id: string): void
+  /** F12: el farol de Thor (el Puerto): si está alzado las medusas se espantan */
+  farol?: { alzado: boolean; prendido: boolean }
+  /** F12: una medusa tocó a Thor */
+  alApagarFarol?(): void
 }
 
 export interface EventosEnemigos {
   /** golpe cuerpo a cuerpo: ¿llegó a la heroína? Devuelve el daño ya calculado de [min,max] */
   golpeCuerpo(e: Enemigo, rango: readonly [number, number], radio: number): void
   disparar(e: Enemigo, angulo: number): void
-  /** el golpe pesado cae en una elipse alrededor del trol */
-  golpePesado(e: Enemigo, rango: readonly [number, number], radio: number): void
+  /** el golpe pesado cae en una elipse alrededor del trol (el ancla del capitán además empuja) */
+  golpePesado(e: Enemigo, rango: readonly [number, number], radio: number, empuje?: number): void
   alMorir(e: Enemigo): void
   efecto(nombre: string, x: number, y: number): void
   sonido(nombre: string, op?: { volumen?: number; rate?: number }): void
@@ -105,6 +114,14 @@ export class Enemigo implements Atacable {
   oculta = false
   private alfa = 1
   private ojos?: Phaser.GameObjects.Sprite
+  /** F12: el marinero de niebla dentro de una luz (se ve entero y recibe más daño) */
+  enLuz = false
+  /** F12: el cangrejo en su grupo: cuál es y cuántos son (lo reparte Enemigos) */
+  rodeo: { i: number; n: number; giro: number } | null = null
+  /** F12: la medusa espera esto antes de volver a buscar a Thor */
+  private medusaEsperaS = 0
+  /** el trol del puente es el élite de siempre; el capitán trae su propio golpe pesado */
+  private readonly trolElite: boolean
   private cfgIA: ConfigIA
   private durAtaque: number
   private cuadros: Record<string, { cuadros: number; fps: number }> = {}
@@ -124,6 +141,7 @@ export class Enemigo implements Atacable {
     // más abajo, más duros (logic/dureza.ts)
     this.cfg = enemigoDelPiso(ENEMIGOS[this.tipo] ?? ENEMIGOS.rata!, piso)
     this.elite = ent.props.elite === true
+    this.trolElite = this.elite && !this.cfg.pesado
     this.nombre = String(ent.props.nombre ?? (this.elite ? 'Trol del Puente' : this.tipo))
     this.cuerpo = CUERPO[this.tipo] ?? CUERPO_DEFECTO
     const p = m.personajes[this.tipo]!
@@ -138,7 +156,7 @@ export class Enemigo implements Atacable {
       ataquesPorSeg: this.cfg.ataquesPorSeg,
       duracionAtaqueS: this.durAtaque,
       huyeSi: this.cfg.huyeSi,
-      ...(this.elite
+      ...(this.trolElite
         ? {
             pesado: { cadaS: TROL_ELITE.golpePesadoCadaS, radio: TROL_ELITE.golpePesadoRadio, avisoS: TROL_ELITE.golpePesadoAvisoS },
             grito: { vidaPct: TROL_ELITE.gritoVidaPct, velocidadPct: TROL_ELITE.gritoVelocidadPct, duracionS: 0.9 },
@@ -158,14 +176,15 @@ export class Enemigo implements Atacable {
       this.estandarte = escena.add.container(0, 0, [img, t])
     }
     this.dir = (ent.id * 3) % 8
-    if (this.cfg.soloEnLuz) {
-      // arranca a oscuras: solo los ojos
-      this.oculta = true
-      this.alfa = 0
-      const ot = K.cri('sombra_ojos', 'parpadeo')
+    if (this.cfg.soloEnLuz || this.cfg.deNiebla) {
+      // arranca a oscuras: solo los ojos (las linternitas del marinero)
+      if (this.cfg.soloEnLuz) this.oculta = true
+      this.alfa = this.cfg.deNiebla ? PUERTO.marineroAlfaOscuro : 0
+      const nombreOjos = this.cfg.deNiebla ? 'marinero_ojos' : 'sombra_ojos'
+      const ot = K.cri(nombreOjos, 'parpadeo')
       if (escena.textures.exists(ot)) {
-        const a = m.mundo.criaturas.sombra_ojos?.anims.parpadeo
-        const key = 'sombra_ojos_parpadeo'
+        const a = m.mundo.criaturas[nombreOjos]?.anims.parpadeo
+        const key = `${nombreOjos}_parpadeo`
         if (a && !escena.anims.exists(key)) escena.anims.create({ key, frames: escena.anims.generateFrameNumbers(ot, { start: 0, end: a.cuadros - 1 }), frameRate: a.fps, repeat: -1, repeatDelay: 1800 })
         this.ojos = escena.add.sprite(ent.x, ent.y, ot, 0).setDepth(PROF.BRILLA_EN_OSCURO)
         if (escena.anims.exists(key)) this.ojos.play({ key, startFrame: ent.id % 4 })
@@ -211,6 +230,11 @@ export class Enemigo implements Atacable {
   /** Daño recibido. Devuelve true si murió con este golpe. */
   recibir(dano: number, desdeX?: number, desdeY?: number): boolean {
     if (!this.vivo || this.oculta) return false
+    // el marinero de niebla: en la luz se deshace rápido, a oscuras el golpe casi lo atraviesa
+    if (this.cfg.deNiebla) {
+      dano = danoMarinero(dano, this.enLuz)
+      if (this.enLuz) this.ev.sonido('marinero_se_deshace', { volumen: 0.35, rate: 0.9 + juego().next() * 0.2 })
+    }
     this.ia.vida = Math.max(0, this.ia.vida - dano)
     this.barraS = 4
     this.destellar()
@@ -266,7 +290,9 @@ export class Enemigo implements Atacable {
     this.aviso = undefined
     this.marcar(false)
     this.poner('die', true)
-    this.muertoS = 1.6
+    // el capitán se libera despacio (saluda y se va): se espera a que termine su animación
+    const die = this.cuadros.die
+    this.muertoS = Math.max(1.6, die ? die.cuadros / die.fps + 0.3 : 0)
     this.ev.sonido('enemigo_muere', { volumen: 0.7 })
     this.ev.alMorir(this)
   }
@@ -309,7 +335,12 @@ export class Enemigo implements Atacable {
 
     this.apagarEnS = Math.max(0, this.apagarEnS - dt)
     if (this.cfg.soloEnLuz) this.mirarLuz(ctx)
+    if (this.cfg.deNiebla) this.enLuz = sombraVisible(this.x, this.y - 12, ctx.luces ?? [])
     if (this.cfg.buscaLuz && ctx.cristales && this.buscarLuz(dt, ctx)) return
+    if (this.cfg.apagaFarol) {
+      this.flotarMedusa(dt, ctx)
+      return
+    }
 
     const antes = { x: this.x, y: this.y }
     // la raicita se distrae con Thor: si él está cerca (y más cerca que la heroína), lo persigue a él
@@ -317,7 +348,12 @@ export class Enemigo implements Atacable {
     const dT = t ? Math.hypot(t.x - this.x, t.y - this.y) : Infinity
     const dH = Math.hypot(ctx.heroe.x - this.x, ctx.heroe.y - this.y)
     this.distraida = !!this.cfg.distraeThor && !!t && dT < this.cfg.distraeThor.radio && dT < dH + 30
-    const blanco = this.distraida && t ? t : ctx.heroe
+    let blanco: { x: number; y: number } = this.distraida && t ? t : ctx.heroe
+    // los cangrejos se reparten alrededor de la heroína y desde ahí entran a pegar
+    if (this.rodeo && this.ia.estado !== 'atacando' && dH > this.cfg.alcance + 10) {
+      const p = puntoRodeo(this.rodeo.i, this.rodeo.n, ctx.heroe.x, ctx.heroe.y, this.rodeo.giro)
+      if (Math.hypot(p.x - this.x, p.y - this.y) > 14) blanco = p
+    }
     const orden = pensar(this.ia, this.cfgIA, { dt, heroeX: blanco.x, heroeY: blanco.y, heroeVivo: ctx.heroe.vivo, modoPeque: ctx.modoPeque }, juego())
 
     if (orden.mirarA) this.dir = indiceDireccion(orden.mirarA.x - this.x, orden.mirarA.y - this.y)
@@ -391,6 +427,56 @@ export class Enemigo implements Atacable {
     return true
   }
 
+  /**
+   * F12: la medusa negra flota hacia Thor (por encima del agua y de la orilla, sin pasar de su correa). Si lo toca le
+   * apaga el farol y se aleja un rato. Si el farol está alzado y ella cerca, se espanta. Nunca le pega a nadie.
+   */
+  private flotarMedusa(dt: number, ctx: ContextoEnemigos): void {
+    const md = PUERTO.medusa
+    this.medusaEsperaS = Math.max(0, this.medusaEsperaS - dt)
+    if (this.bloqueoAnimS > 0) return
+    const t = ctx.thor
+    const vel = this.cfg.velocidad * (ctx.modoPeque ? MODO_PEQUE.velocidadEnemigos : 1)
+    let meta = { x: this.ia.casaX, y: this.ia.casaY }
+    let mult = 1
+    if (t) {
+      const dT = Math.hypot(t.x - this.x, t.y - this.y)
+      if (ctx.farol?.alzado && dT < md.espantaA) {
+        // el farol alzado la espanta: se va lejos de Thor
+        const d = dT || 1
+        meta = { x: this.x + ((this.x - t.x) / d) * 80, y: this.y + ((this.y - t.y) / d) * 80 }
+        mult = md.velHuye
+      } else if (this.medusaEsperaS <= 0 && ctx.farol?.prendido !== false && dT < this.cfg.ve && Math.hypot(t.x - this.ia.casaX, t.y - this.ia.casaY) < md.correa + 40) {
+        meta = t
+        if (dT <= md.tocaA) {
+          this.medusaEsperaS = md.esperaS
+          this.ev.sonido('medusa_toca', { volumen: 0.6 })
+          ctx.alApagarFarol?.()
+        }
+      }
+    }
+    const dx = meta.x - this.x
+    const dy = meta.y - this.y
+    const d = Math.hypot(dx, dy)
+    if (d > 3) {
+      const paso = Math.min(d, vel * mult * dt)
+      let nx = this.x + (dx / d) * paso
+      let ny = this.y + (dy / d) * paso
+      // flota, pero no se va lejos de su casa
+      const cx = nx - this.ia.casaX
+      const cy = ny - this.ia.casaY
+      const dc = Math.hypot(cx, cy)
+      if (dc > md.correa) {
+        nx = this.ia.casaX + (cx / dc) * md.correa
+        ny = this.ia.casaY + (cy / dc) * md.correa
+      }
+      this.ia.x = nx
+      this.ia.y = ny
+      this.dir = indiceDireccion(dx, dy)
+      this.poner('walk')
+    } else this.poner('idle')
+  }
+
   /** F11: la sombra se ve dentro de una luz (un cristal prendido, el brillo de Thor) y se esconde afuera */
   private mirarLuz(ctx: ContextoEnemigos): void {
     const ve = sombraVisible(this.x, this.y - 12, ctx.luces ?? [])
@@ -416,6 +502,7 @@ export class Enemigo implements Atacable {
 
   private ejecutarGolpe(): void {
     if (!this.vivo || this.oculta) return
+    if (this.cfg.rodea) this.ev.sonido('cangrejo_tenaza', { volumen: 0.4, rate: 0.9 + juego().next() * 0.3 })
     if (this.cfg.proyectil) {
       // dispara hacia donde mira
       const v = DIRECCIONES[this.dir]!
@@ -439,20 +526,26 @@ export class Enemigo implements Atacable {
     if (def && this.escena.anims.exists(K.anim(this.tipo, 'attack_heavy', DIRECCIONES[this.dir]!))) {
       this.poner('attack_heavy', true, def.cuadros / Math.max(0.2, seg))
     }
-    // el guardián de cobre suena a metal que se levanta; el trol ruge
-    if (this.cfg.pesado && !this.elite) this.ev.sonido('bloqueo', { volumen: 0.45, rate: 0.6 })
+    // el guardián de cobre suena a metal que se levanta; el capitán levanta el ancla; el trol ruge
+    if (this.tipo === 'capitan_ahogado') this.ev.sonido('campana_cerca', { volumen: 0.3, rate: 0.7 })
+    else if (this.cfg.pesado && !this.elite) this.ev.sonido('bloqueo', { volumen: 0.45, rate: 0.6 })
     else this.ev.sonido('jefe_rugido', { volumen: 0.35, rate: 1.4 })
   }
 
   private soltarGolpePesado(): void {
     this.aviso?.destroy()
     this.aviso = undefined
-    this.ev.sonido('jefe_pisoton', { volumen: 0.6, rate: 1.1 })
     this.ev.sacudir()
-    const pe = this.elite ? { dano: TROL_ELITE.golpePesadoDano, radio: TROL_ELITE.golpePesadoRadio } : this.cfg.pesado ?? { dano: TROL_ELITE.golpePesadoDano, radio: TROL_ELITE.golpePesadoRadio }
-    this.ev.golpePesado(this, pe.dano, pe.radio)
-    // el guardián queda clavado un rato después del golpe grande: es la ventana para pegarle
-    this.bloqueoAnimS = this.cfg.pesado && !this.elite ? 1.1 : 0.3
+    const pe: { dano: readonly [number, number]; radio: number; empuje?: number } = this.trolElite ? { dano: TROL_ELITE.golpePesadoDano, radio: TROL_ELITE.golpePesadoRadio } : this.cfg.pesado ?? { dano: TROL_ELITE.golpePesadoDano, radio: TROL_ELITE.golpePesadoRadio }
+    if (pe.empuje) {
+      // el ancla del capitán: golpe de hierro y una ola corta que empuja
+      this.ev.sonido('ancla_golpe', { volumen: 0.8 })
+      this.ev.sonido('ola', { volumen: 0.5, rate: 1.2 })
+      this.ev.efecto('ola', this.x, this.y)
+    } else this.ev.sonido('jefe_pisoton', { volumen: 0.6, rate: 1.1 })
+    this.ev.golpePesado(this, pe.dano, pe.radio, pe.empuje)
+    // el guardián (y el capitán) quedan clavados un rato después del golpe grande: es la ventana para pegarle
+    this.bloqueoAnimS = this.cfg.pesado && !this.trolElite ? 1.1 : 0.3
   }
 
   private poner(anim: string, forzar = false, fps?: number): void {
@@ -483,6 +576,15 @@ export class Enemigo implements Atacable {
     this.relleno.setVisible(mostrar).setPosition(x - this.cuerpo.barra / 2, by).setSize(w, 3).setDepth(PROF.OBJETOS + 9401)
     if (this.estandarte) this.estandarte.setPosition(x, y - this.cuerpo.alto - 14).setDepth(PROF.OBJETOS + 9300).setVisible(this.vivo)
     if (this.aviso) this.aviso.setPosition(x, y)
+    if (this.cfg.deNiebla) {
+      // el marinero: en la luz (o cuando prepara un golpe: lo que pega siempre se ve antes) se ve entero; afuera, niebla y linternitas
+      const meta = this.enLuz || this.anticipaS > 0 || this.ia.estado === 'atacando' || !this.vivo ? 1 : PUERTO.marineroAlfaOscuro
+      this.alfa += (meta - this.alfa) * 0.12
+      if (Math.abs(meta - this.alfa) < 0.02) this.alfa = meta
+      this.sprite.setAlpha(this.alfa)
+      this.sombra.img.setAlpha(0.35 * this.alfa)
+      this.ojos?.setPosition(x, y - Math.round(this.cuerpo.alto * 0.78)).setVisible(this.vivo && this.sprite.visible && this.alfa < 0.6)
+    }
     if (this.cfg.soloEnLuz) {
       // la sombra aparece y desaparece suave; a oscuras solo quedan los ojos
       const meta = this.oculta ? 0 : 1
@@ -581,6 +683,7 @@ export class Enemigos {
 
   /** Los lejanos ni piensan ni se dibujan (cuesta menos y no cambia nada: vuelven a su sitio) */
   update(dt: number, ctx: ContextoEnemigos, vistaRadio = 900): void {
+    this.repartirRodeo(dt, ctx)
     for (const e of this.lista) {
       if (e.destruido) continue
       const lejos = Math.hypot(e.x - ctx.heroe.x, e.y - ctx.heroe.y) > vistaRadio
@@ -592,6 +695,19 @@ export class Enemigos {
       e.update(dt, ctx)
       e.actualizarVista()
     }
+  }
+
+  private giroRodeo = 0
+
+  /** F12: los cangrejos que persiguen a la heroína se reparten alrededor de ella (y el círculo gira despacio) */
+  private repartirRodeo(dt: number, ctx: ContextoEnemigos): void {
+    this.giroRodeo += dt * 0.35
+    const grupo = this.lista.filter((e) => e.vivo && e.cfg.rodea && Math.hypot(e.x - ctx.heroe.x, e.y - ctx.heroe.y) < e.cfg.ve)
+    for (const e of this.lista) if (e.cfg.rodea) e.rodeo = null
+    if (grupo.length < 2) return
+    // cada uno al punto que le queda más a mano: se ordenan por el ángulo desde la heroína
+    grupo.sort((a, b) => Math.atan2(a.y - ctx.heroe.y, a.x - ctx.heroe.x) - Math.atan2(b.y - ctx.heroe.y, b.x - ctx.heroe.x))
+    grupo.forEach((e, i) => (e.rodeo = { i, n: grupo.length, giro: this.giroRodeo + Math.atan2(grupo[0]!.y - ctx.heroe.y, grupo[0]!.x - ctx.heroe.x) }))
   }
 
   /** Una rata invocada por el grito del jefe: pelea como las del mapa y se cuenta aparte */

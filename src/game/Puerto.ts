@@ -14,6 +14,8 @@ interface FarolMuelle {
   y: number
   s: Phaser.GameObjects.Sprite | null
   prendido: boolean
+  /** recién apagado por la figura: Thor espera esto antes de volver a prenderlo */
+  esperaS?: number
 }
 
 export interface DepsPuerto {
@@ -180,7 +182,8 @@ export class Puerto {
     luces.push({ x: thor.x, y: thor.y - 18, r: this.radioThor, color: '#ffc070', flicker: true, ph: 0.6, alto: 18 })
     // los faroles del muelle: Thor los prende al pasar y quedan prendidos
     for (const f of this.faroles) {
-      if (!f.prendido && Math.hypot(thor.x - f.x, thor.y - f.y) < 64) this.prender(f)
+      if (f.esperaS) f.esperaS = Math.max(0, f.esperaS - dt)
+      if (!f.prendido && !f.esperaS && Math.hypot(thor.x - f.x, thor.y - f.y) < 64) this.prender(f)
       if (f.prendido) {
         const l = this.m.mundo.objetos.farol_muelle_prendido?.luz
         luces.push({ x: f.x, y: f.y - (l?.dy ?? 40), r: l?.radius ?? 180, color: l?.color ?? '#ffc070', flicker: true, ph: (f.x * 0.01) % 1, alto: l?.dy ?? 40 })
@@ -219,6 +222,39 @@ export class Puerto {
       f.s.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => f.s?.play('puerto_farol_muelle_prendido'))
     }
     this.deps.alCambiar(this.faroles.filter((q) => q.prendido).map((q) => q.id))
+  }
+
+  /** La figura se fue y se llevó la luz del farol del muelle más cercano (Thor lo vuelve a prender al pasar) */
+  apagarMuelleCerca(x: number, y: number, radio: number): string | null {
+    const f = this.faroles.filter((q) => q.prendido && Math.hypot(q.x - x, q.y - y) <= radio).sort((a, b) => Math.hypot(a.x - x, a.y - y) - Math.hypot(b.x - x, b.y - y))[0]
+    if (!f) return null
+    f.prendido = false
+    // Thor no lo vuelve a prender en el mismo instante: tiene que alejarse y volver
+    f.esperaS = 3
+    if (f.s && this.anim('farol_muelle_apagado')) {
+      const def = this.m.mundo.objetos.farol_muelle_apagado!
+      f.s.setTexture(K.obj('farol_muelle_apagado', 'idle'), 0).setOrigin(def.apoyo[0] / def.w, def.apoyo[1] / def.h).play('puerto_farol_muelle_apagado')
+    }
+    if (this.escena.cache.audio.exists(K.aud('farol_apagar'))) this.deps.sonido('farol_apagar', { volumen: 0.6, rate: 0.8 })
+    this.deps.alCambiar(this.faroles.filter((q) => q.prendido).map((q) => q.id))
+    return f.id
+  }
+
+  /** F12: el faro se prendió: todos los faroles del muelle se prenden (de a uno si se anima) */
+  prenderTodos(animar: boolean): void {
+    const apagados = this.faroles.filter((f) => !f.prendido)
+    if (!animar) {
+      for (const f of apagados) {
+        f.prendido = true
+        if (f.s && this.anim('farol_muelle_prendido')) {
+          const def = this.m.mundo.objetos.farol_muelle_prendido!
+          f.s.setTexture(K.obj('farol_muelle_prendido', 'idle'), 0).setOrigin(def.apoyo[0] / def.w, def.apoyo[1] / def.h).play('puerto_farol_muelle_prendido')
+        }
+      }
+      if (apagados.length) this.deps.alCambiar(this.faroles.map((q) => q.id))
+      return
+    }
+    apagados.forEach((f, i) => this.escena.time.delayedCall(400 + i * 350, () => !f.prendido && this.prender(f)))
   }
 
   /** Para las pruebas */
