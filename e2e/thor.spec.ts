@@ -26,8 +26,9 @@ test('Thor camina y corre con sus patas sin armadura y con cada armadura del kit
     await gancho(page, 'tocar', p0.x + (n % 2 ? -520 : 520), p0.y)
     const cuadros = new Set<number>()
     let info: InfoThor | null = null
-    // en tiempo real: las animaciones avanzan con el reloj del juego, no con el paso de prueba
-    for (let i = 0; i < 24 && cuadros.size < 3; i++) {
+    // en tiempo real: las animaciones avanzan con el reloj del juego, no con el paso de prueba. Con la máquina lenta
+    // el juego corre más despacio (cada cuadro avanza a lo sumo 50 ms), así que se espera hasta ver las patas
+    for (let i = 0; i < 80 && cuadros.size < 3; i++) {
       await page.waitForTimeout(220)
       info = await gancho<InfoThor>(page, 'thorInfo')
       if (info.anim && /_(walk|run)_/.test(info.anim)) cuadros.add(info.cuadro)

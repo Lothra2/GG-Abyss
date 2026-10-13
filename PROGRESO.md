@@ -34,6 +34,11 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - Mundo 3 jugable (PLAN.md F11, "Estado del Mundo 3"): cristales, polilla, sombra, minero, carrito, figura, mural y la Polilla Reina con su escudo de luz.
   - Intro con los cinco paneles pintados en capas, la pared de fuego, el humo, el logo en llamas, `musica_intro` y `latido`. Si el kit no trae los paneles sigue el intro con piezas prestadas.
   - El kit pesa 74.1 MB (antes 59.5): la tablet guarda todo para jugar sin red.
+- Pedido de Rick: portales, selección, cinturón y pociones:
+  - Cinturón de 5 casillas (teclas 1 a 5). Las pociones se ordenan arrastrando una sobre otra en el mismo HUD y un toque la toma. Se arma con piezas del kit (marco de las barras y casilleros) porque el arte trae 4 con los números pintados (pedido #39). Las partidas viejas llegan con la quinta vacía.
+  - Pociones más finas: en las pantallas de zoom par (la tablet) usa los íconos de 64 a la mitad, el doble de detalle sin romper los pixeles, con un brillo de su color que respira. Al tomarla salta y se desvanece.
+  - Selección: "¿Quién juega?" arriba, heroínas a escala 4 donde cabe, cada una con la luz de su clase, el círculo mágico del kit a los pies y brasas que suben. Las tarjetas van encima de la bruma. Al elegir, las otras se apagan, el aura y el estallido de su elemento la rodean mitad atrás y mitad adelante (antes el aro quedaba encima de ella) y Thor se sienta a su lado sin taparla.
+  - Portales: núcleo que late, halo, el círculo mágico en el piso y motas que giran y se meten al remolino. Se encienden más cuando la heroína se acerca (`game/PortalFx.ts`). El dibujo nuevo va pedido al taller (#40).
 - Las versiones nuevas no le llegaban al teléfono de Rick (seguía viendo el HUD y las sombras viejas):
   - Cada publicación hacía que el service worker bajara otra vez el juego entero (1380 archivos, unos 74 MB) antes de cambiar de versión. En el teléfono eso tarda o se corta al cerrar la app.
   - Ahora cada archivo lleva su huella. Al actualizar se copia de lo ya guardado todo lo que no cambió y solo se baja lo nuevo (medido en local: 1 archivo en 2.5 s). La primera vez desde una versión vieja, sin huellas, pregunta por el ETag de cada archivo y reusa lo que siga igual.
