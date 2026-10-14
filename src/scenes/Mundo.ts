@@ -17,6 +17,7 @@ import { frenteDeZona } from '../logic/capas'
 import { FondoParalaje } from '../fx/FondoParalaje'
 import { Niebla } from '../logic/niebla'
 import { danoDeJefe } from '../logic/dureza'
+import { haloCelestial } from '../logic/celestial'
 import { pisoDe, thorBrilla, topeOscuridad } from '../logic/abismo'
 import { ABISMO, PUERTO } from '../config/balance'
 import { aspectoDe, claveAspecto } from '../logic/aspecto'
@@ -725,7 +726,8 @@ export class Mundo extends Phaser.Scene {
     // la Dragona ya se liberó en esta partida: la fragua está fría de entrada
     if (this.fragua && this.partida.jefeVencido) this.liberarFragua(false)
     // en el Puerto la luz grande es la de Thor: el farol de la heroína se achica
-    this.atmosfera.radioHalo = this.puerto ? PUERTO.haloHeroina : COLOR.FAROL_RADIO
+    // F13: la celestial lleva más luz
+    this.atmosfera.radioHalo = haloCelestial(this.puerto ? PUERTO.haloHeroina : COLOR.FAROL_RADIO, this.partida.celestial)
     // el faro arranca apagado; si el Pez Farol ya cayó en esta partida, prendido con todo el muelle
     this.faroPrendido = false
     this.luzAlFaro = null
@@ -2315,7 +2317,7 @@ export class Mundo extends Phaser.Scene {
       fr.update(dtVisual, { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido && !this.presentacion?.activa }, this.thor, luces, jb && jb.peleando && jb.vivo ? { x: jb.x, y: jb.y } : null)
       this.heroina.velAmbiente = fr.velocidad
       // los hollines pegados le achican el farol a la heroína
-      this.atmosfera.radioHalo = Math.round(COLOR.FAROL_RADIO * fr.halo)
+      this.atmosfera.radioHalo = haloCelestial(Math.round(COLOR.FAROL_RADIO * fr.halo), this.partida.celestial)
       // encendida, la Dragona arde: su fuego alumbra la arena
       if (jb && jb.vivo && jb.peleando && jb.blindado) luces.push({ x: jb.x, y: jb.y - 40, r: 170, color: '#ff7020', flicker: true, ph: 0.5, alto: 40 })
       // la jaula que carga el farolero late de su color

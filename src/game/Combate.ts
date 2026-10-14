@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { bonosCelestial, vidaCelestial } from '../logic/celestial'
 import type { Manifest } from '../kit/tipos'
 import { K } from '../kit/claves'
 import { crearAnimFx } from '../kit/anims'
@@ -144,7 +145,11 @@ export class Combate {
     const p = this.d.partida()
     // el ataque básico sale del arma puesta (sin arma, el de su clase)
     this.ataque = ataqueBasico(this.clase, itemDe(this.d.cat, p.equipo.arma))
-    return conAtaque(statsDe(this.clase, p.nivel, bonosDeEquipo(this.d.cat, p.equipo, this.clase)), this.ataque)
+    // F13: la heroína celestial suma su daño encima del equipo y tiene más vida
+    const eq = bonosDeEquipo(this.d.cat, p.equipo, this.clase)
+    const cel = bonosCelestial(!!p.celestial)
+    const s = statsDe(this.clase, p.nivel, { ...eq, danoPct: (eq.danoPct ?? 0) + (cel.danoPct ?? 0) })
+    return conAtaque({ ...s, vidaMax: vidaCelestial(s.vidaMax, !!p.celestial) }, this.ataque)
   }
 
   /** Se equipó o se sacó algo: se recalculan los stats y la vida y el maná no pasan del nuevo máximo */
