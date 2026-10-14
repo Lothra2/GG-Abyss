@@ -605,7 +605,7 @@ export const AUTOGUARDADO_S = 30
 
 /**
  * F11: el camino al fondo (PLAN.md F11). Siete pisos, cada uno más oscuro. En modo peque la oscuridad nunca pasa de
- * 0.60 y siempre hay farol. Los nombres de los pisos 4 a 7 son de trabajo.
+ * 0.60 y siempre hay farol. El nombre del piso 7 es de trabajo.
  */
 export const ABISMO = {
   pisos: [
@@ -614,7 +614,7 @@ export const ABISMO = {
     { piso: 3, mundo: 'mundo3', nombre: 'Las Galerías del Eco', oscuridadMax: 0.75, jefe: 'polilla_reina' },
     { piso: 4, mundo: 'mundo4', nombre: 'El Puerto Ahogado', oscuridadMax: 0.8, jefe: 'pez_farol' },
     { piso: 5, mundo: 'mundo5', nombre: 'La Ciudad Dormida', oscuridadMax: 0.8, jefe: 'rey_de_piedra' },
-    { piso: 6, mundo: 'mundo6', nombre: 'Las Fraguas Rojas', oscuridadMax: 0.7, jefe: 'carcelero' },
+    { piso: 6, mundo: 'mundo6', nombre: 'La Fragua de las Luces', oscuridadMax: 0.82, jefe: 'dragona_brasa' },
     { piso: 7, mundo: 'mundo7', nombre: 'El Corazón del Abismo', oscuridadMax: 0.85, jefe: 'diablo' },
   ],
   /** la oscuridad de cualquier piso en modo peque nunca pasa de esto */
@@ -729,6 +729,84 @@ export const CIUDAD = {
   bostezo: { seg: 2, velocidad: 0.55 },
   /** el Relojero: la aguja barre girando alrededor de él */
   barrido: { largo: 150, ancho: 34, gradosPorS: 120, vueltaGrados: 360, avisoS: 1.6, dano: [12, 16] as [number, number] },
+}
+
+/**
+ * F12, el Mundo 6: La Fragua de las Luces. La luz quema: cerca del fuego se ve pero la heroína junta calor. Las grietas
+ * respiran al ritmo de los fuelles, las jaulas liberadas dan luz fría (alumbra sin calentar) y Thor se moja en el agua
+ * fría y se sacude para enfriar.
+ */
+export const FRAGUA = {
+  calor: {
+    max: 100,
+    /** lo que calienta cada cosa, por segundo (el juego suma lo que tenga cerca) */
+    lava: 12,
+    /** a esta distancia de la orilla de la lava calienta */
+    lavaA: 72,
+    grieta: 28,
+    fuegoPiso: 40,
+    brasero: 6,
+    braseroA: 64,
+    rastro: 18,
+    /** lo que enfría por segundo sin nada que caliente, dentro de la luz fría y en la fuente */
+    enfriaBase: 7,
+    enfriaLuzFria: 32,
+    enfriaFuente: 120,
+    /** con el calor lleno queda acalorada hasta que baje de esto */
+    sueltaEn: 65,
+    /** acalorada: camina más lento y pierde un poquito de vida cada tanto */
+    velocidad: 0.7,
+    dano: 3,
+    danoCadaS: 2,
+    /** en modo peque calienta la mitad y nunca quita vida */
+    pequeMult: 0.5,
+    pequeVelocidad: 0.8,
+  },
+  /** los fuelles soplan todos juntos y las grietas siguen el soplido: aviso, al rojo y después apagadas */
+  fuelle: { periodoS: 7, periodoFase3S: 5, avisoS: 1.5, calienteS: 2.2, sonidoAntesS: 1 },
+  jaula: {
+    /** el radio de la luz que queda flotando al liberarla: luz fría */
+    radioLuzLibre: 260,
+    /** desde aquí se le pega al candado */
+    golpeRadio: 30,
+  },
+  /** Thor se moja en el agua fría y guarda sacudidas */
+  sacudida: { cargas: 3, recargaS: 1.5, radio: 140, apagaGrietasS: 6, mojarA: 40, piedraS: 4 },
+  hollin: {
+    /** cuántos se le pueden pegar a la vez (en modo peque de a uno) */
+    max: 3,
+    maxPeque: 1,
+    /** cada hollín pegado achica el halo esto, hasta el mínimo */
+    halo: 0.18,
+    haloMin: 0.45,
+    /** pegado: la heroína camina un poquito más lento */
+    velocidad: 0.92,
+  },
+  salamandra: { rastroCadaS: 0.35, rastroS: 3, rastroRadio: 16, piedraMult: 2 },
+  surtidor: { recargaS: 8, alcance: 96, palancaA: 44 },
+  /** al vencer a la Dragona la fragua se enfría y la oscuridad baja a esto */
+  oscuridadApagada: 0.5,
+}
+
+/**
+ * F12: la Dragona de Brasa (Mundo 6). Fase 1: zarpazo y coletazo. Fase 2: se cubre de fuego (los golpes no le hacen nada)
+ * y echa el aliento que deja el piso ardiendo. El chorro de un surtidor (o Thor sacudiéndose cerca) la apaga: echada y
+ * humeando, ahí se le pega. Fase 3: llama hollines y salamandras.
+ */
+export const JEFE_DRAGONA = {
+  vida: 900,
+  velocidad: 36,
+  fase3Pct: 30,
+  zarpazo: { dano: [13, 17] as [number, number], radio: 50, delante: 56, alcance: 124, avisoS: 1.3 },
+  /** el coletazo barre medio círculo del lado de la heroína */
+  coletazo: { dano: [11, 15] as [number, number], radio: 150, alcance: 140, avisoS: 1.5 },
+  aliento: { dano: [10, 14] as [number, number], largo: 240, ancho: 56, avisoS: 1.8, fuegoS: 5 },
+  llamada: { hollines: 2, salamandras: 1, max: 4, avisoS: 1, cadaS: 16 },
+  /** apagada por el chorro: echada y humeando. Con la sacudida de Thor dura menos */
+  apagadaS: 5,
+  apagadaThorS: 2.5,
+  /** después de prenderse otra vez, hasta que otro chorro la pueda apagar */
+  apagarCadaS: 3,
 }
 
 export const REACCIONES = { morasCuran: 8 } as const

@@ -1,5 +1,5 @@
 import type { Azar } from './azar'
-import { JEFE, JEFE_CAMPANA, JEFE_PEZ, JEFE_POLILLA, JEFE_REY, MODO_PEQUE } from '../config/balance'
+import { JEFE, JEFE_CAMPANA, JEFE_DRAGONA, JEFE_PEZ, JEFE_POLILLA, JEFE_REY, MODO_PEQUE } from '../config/balance'
 
 /**
  * El Minotauro del Bosque (PLAN.md F4): máquina de estados con fases y temporizadores, sin Phaser.
@@ -7,12 +7,15 @@ import { JEFE, JEFE_CAMPANA, JEFE_PEZ, JEFE_POLILLA, JEFE_REY, MODO_PEQUE } from
  * Todo ataque grande avisa 1.2 s antes (1.8 s en modo peque) y la vida del jefe nunca sube.
  */
 
-export type AtaqueJefe = 'golpe' | 'golpe_fuerte' | 'carga' | 'pisoton' | 'salto' | 'grito' | 'onda' | 'raices' | 'polvo' | 'mordida' | 'ola' | 'puno' | 'barrido' | 'cancion'
+export type AtaqueJefe = 'golpe' | 'golpe_fuerte' | 'carga' | 'pisoton' | 'salto' | 'grito' | 'onda' | 'raices' | 'polvo' | 'mordida' | 'ola' | 'puno' | 'barrido' | 'cancion' | 'zarpazo' | 'coletazo' | 'aliento'
 /** F8: qué jefe es (cambia qué ataques elige) */
-export type PerfilJefe = 'minotauro' | 'campana' | 'polilla' | 'pez' | 'rey'
+export type PerfilJefe = 'minotauro' | 'campana' | 'polilla' | 'pez' | 'rey' | 'dragona'
 export type EstadoJefe = 'dormido' | 'intro' | 'quieto' | 'perseguir' | 'aviso' | 'saltando' | 'cargando' | 'aturdido' | 'muerto'
-/** `frente` es una elipse delante del jefe, `circulo` es a su alrededor o en el destino del salto, `linea` es la carga */
-export type FormaAtaque = 'frente' | 'circulo' | 'linea' | 'anillo' | 'raices'
+/**
+ * `frente` es una elipse delante del jefe, `circulo` es a su alrededor o en el destino del salto, `linea` es la carga,
+ * `medio` es el medio círculo del coletazo hacia (dx, dy)
+ */
+export type FormaAtaque = 'frente' | 'circulo' | 'linea' | 'anillo' | 'raices' | 'medio'
 
 export interface Jefe {
   x: number
@@ -62,6 +65,8 @@ export interface Jefe {
   alzarEnS: number
   /** F12: el Rey de Piedra, hasta que pueda volver a cantar la canción de cuna */
   cancionEnS: number
+  /** F12: la Dragona de Brasa, hasta que otro chorro (o Thor) la pueda volver a apagar */
+  apagarEnS: number
 }
 
 export interface EntradaJefe {
@@ -76,6 +81,10 @@ export interface EntradaJefe {
   vulnerable?: boolean
   /** F12: Thor tiene el farol alzado aquí (el Pez Farol sale encandilado si está cerca) */
   alzado?: { x: number; y: number }
+  /** F12: el chorro de un surtidor le pegó a la Dragona en este paso */
+  chorro?: boolean
+  /** F12: Thor se sacudió mojado al lado de la Dragona en este paso */
+  sacudida?: boolean
 }
 
 export interface OrdenJefe {
@@ -102,6 +111,11 @@ export interface OrdenJefe {
   cancion?: boolean
   /** F12: el golpe cayó al piso (el Rey suelta chispas de la corona aquí) */
   chispas?: { x: number; y: number; n: number }
+  /** F12: el aliento de la Dragona deja esta franja ardiendo `seg` segundos */
+  fuegoPiso?: { x: number; y: number; dx: number; dy: number; largo: number; ancho: number; seg: number }
+  /** F12: la Dragona quedó apagada (por el chorro o por Thor) o se volvió a encender */
+  apagada?: 'chorro' | 'thor'
+  encender?: boolean
   fase2?: boolean
   rugir?: boolean
   invocar?: number
@@ -117,8 +131,15 @@ export function nuevoJefe(cx: number, cy: number, vida: number = JEFE.vida, perf
     x: cx, y: cy, cx, cy, vida, vidaMax: vida, fase: 1, estado: 'dormido', t: 0, pausaS: 1, ataque: null,
     dirX: 0, dirY: 1, destX: cx, destY: cy, origX: cx, origY: cy, cargaPego: false, gritoEnS: 4,
     perfil, forzar: null, raicesVistas: false, escudo: perfil === 'polilla' || perfil === 'pez', vulnerablePrev: false, aturdeEnS: 0,
-    fueraS: 0, alzarEnS: 0, cancionEnS: 0,
+    fueraS: 0, alzarEnS: 0, cancionEnS: 0, apagarEnS: 0,
   }
+}
+
+/** F12: si un punto cae en el medio círculo del coletazo: a menos de `radio` y del lado de (dx, dy) */
+export function enMedio(px: number, py: number, x: number, y: number, dx: number, dy: number, radio: number): boolean {
+  const vx = px - x
+  const vy = py - y
+  return Math.hypot(vx, vy) <= radio && vx * dx + vy * dy >= 0
 }
 
 /** F8: si un punto cae en el anillo de la onda (entre el borde de adentro y el de afuera) */
@@ -160,6 +181,11 @@ export function reposar(j: Jefe): void {
     j.fueraS = 0
     j.alzarEnS = 0
   }
+  // la Dragona vuelve encendida si ya estaba en la fase 2
+  if (j.perfil === 'dragona') {
+    j.escudo = j.fase >= 2
+    j.apagarEnS = 0
+  }
 }
 
 /** F12: si un punto cae en la franja de la ola (de (x, y) en (dx, dy), `largo` de largo y `ancho` de ancho) */
@@ -184,7 +210,8 @@ export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boole
     j.forzar = 'raices'
   }
   // el Pez Farol: la tercera fase llama cangrejos y medusas (la primera llamada sale sola)
-  if ((j.perfil === 'pez' || j.perfil === 'rey') && j.fase === 2 && (j.vida / j.vidaMax) * 100 <= (j.perfil === 'rey' ? JEFE_REY.fase3Pct : JEFE_PEZ.fase3Pct)) {
+  const pct3 = j.perfil === 'rey' ? JEFE_REY.fase3Pct : j.perfil === 'dragona' ? JEFE_DRAGONA.fase3Pct : JEFE_PEZ.fase3Pct
+  if ((j.perfil === 'pez' || j.perfil === 'rey' || j.perfil === 'dragona') && j.fase === 2 && (j.vida / j.vidaMax) * 100 <= pct3) {
     j.fase = 3
     j.forzar = 'grito'
     if (j.estado !== 'dormido' && j.estado !== 'aturdido') {
@@ -206,6 +233,11 @@ export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boole
       j.vulnerablePrev = true
       j.aturdeEnS = JEFE_REY.rodillasCadaS
     }
+    // la Dragona se cubre de fuego y enseña el aliento
+    if (j.perfil === 'dragona') {
+      j.forzar = 'aliento'
+      j.escudo = true
+    }
     // el rugido de la fase 2 corta lo que estuviera haciendo (al Pez Farol encandilado lo deja en el piso)
     if (j.estado !== 'dormido' && !(j.perfil === 'pez' && j.estado === 'aturdido')) {
       j.estado = 'intro'
@@ -226,6 +258,9 @@ export function avisoDe(ataque: AtaqueJefe, modoPeque: boolean): number {
   if (ataque === 'puno') return JEFE_REY.puno.avisoS * (modoPeque ? MODO_PEQUE.avisos : 1)
   if (ataque === 'barrido') return JEFE_REY.barrido.avisoS * (modoPeque ? MODO_PEQUE.avisos : 1)
   if (ataque === 'cancion') return JEFE_REY.cancion.avisoS * (modoPeque ? MODO_PEQUE.avisos : 1)
+  if (ataque === 'zarpazo') return JEFE_DRAGONA.zarpazo.avisoS * (modoPeque ? MODO_PEQUE.avisos : 1)
+  if (ataque === 'coletazo') return JEFE_DRAGONA.coletazo.avisoS * (modoPeque ? MODO_PEQUE.avisos : 1)
+  if (ataque === 'aliento') return JEFE_DRAGONA.aliento.avisoS * (modoPeque ? MODO_PEQUE.avisos : 1)
   const base = ataque === 'onda' ? JEFE_CAMPANA.onda.avisoS : ataque === 'raices' ? JEFE_CAMPANA.raices.avisoS : ataque === 'golpe_fuerte' ? JEFE.golpeFuerte.avisoS : ataque === 'carga' ? JEFE.carga.avisoS : ataque === 'pisoton' ? JEFE.pisoton.avisoS : ataque === 'salto' ? JEFE.salto.avisoS : ataque === 'grito' ? JEFE.grito.avisoS : 0
   return base * (modoPeque ? MODO_PEQUE.avisos : 1)
 }
@@ -256,6 +291,18 @@ function elegir(j: Jefe, e: EntradaJefe, rng: Azar, dist: number): AtaqueJefe | 
     const a = j.forzar
     j.forzar = null
     return a
+  }
+  if (j.perfil === 'dragona') {
+    // el zarpazo de cerca y el coletazo; desde la fase 2 el aliento (ni muy cerca ni muy lejos); desde la 3 la llamada
+    const d = JEFE_DRAGONA
+    const pesos: [AtaqueJefe, number][] = [
+      ['zarpazo', dist <= d.zarpazo.alcance ? 50 : 0],
+      ['coletazo', dist <= d.coletazo.alcance ? 25 : 0],
+    ]
+    if (j.fase >= 2) pesos.push(['aliento', dist >= 80 && dist <= d.aliento.largo - 20 ? 34 : 0])
+    if (j.fase >= 3) pesos.push(['grito', j.gritoEnS <= 0 && e.ratasVivas < d.llamada.max ? 22 : 0])
+    if (pesos.every(([, p]) => p === 0)) return null
+    return rng.pesos(pesos)
   }
   if (j.perfil === 'rey') {
     // el puño de cerca y el pisotón; desde la fase 2 la canción cuando las lámparas están prendidas; desde la 3 el
@@ -325,12 +372,13 @@ export function pensarJefe(j: Jefe, e: EntradaJefe, rng: Azar): OrdenJefe {
   j.pausaS = Math.max(0, j.pausaS - dt)
   j.gritoEnS = Math.max(0, j.gritoEnS - dt)
   const peque = e.modoPeque
-  const vel = (j.perfil === 'pez' ? JEFE_PEZ.velocidad : j.perfil === 'rey' ? JEFE_REY.velocidad : JEFE.velocidad) * (peque ? MODO_PEQUE.velocidadEnemigos : 1)
+  const vel = (j.perfil === 'pez' ? JEFE_PEZ.velocidad : j.perfil === 'rey' ? JEFE_REY.velocidad : j.perfil === 'dragona' ? JEFE_DRAGONA.velocidad : JEFE.velocidad) * (peque ? MODO_PEQUE.velocidadEnemigos : 1)
   j.cancionEnS = Math.max(0, j.cancionEnS - dt)
   const dir = norm(e.heroeX - j.x, e.heroeY - j.y)
   if (j.perfil === 'polilla' && escudoPolilla(j, e, o)) return o
   if (j.perfil === 'pez' && pasoPez(j, e, o)) return o
   if (j.perfil === 'rey' && j.fase >= 2 && escudoLuz(j, e, o, JEFE_REY.rodillasS, JEFE_REY.rodillasCadaS)) return o
+  if (j.perfil === 'dragona' && pasoDragona(j, e, o)) return o
 
   // la heroína cayó: el jefe se queda donde está, sin curarse, esperando
   if (!e.heroeVivo && j.estado !== 'intro' && j.estado !== 'aturdido') {
@@ -357,6 +405,12 @@ export function pensarJefe(j: Jefe, e: EntradaJefe, rng: Azar): OrdenJefe {
         j.pausaS = 0.6
         // el Pez Farol se despabila y vuelve al agua
         if (j.perfil === 'pez') hundirPez(j, o)
+        // la Dragona apagada se vuelve a encender
+        if (j.perfil === 'dragona' && j.fase >= 2 && !j.escudo) {
+          j.escudo = true
+          o.escudo = true
+          o.encender = true
+        }
       }
       return o
     }
@@ -417,7 +471,7 @@ export function pensarJefe(j: Jefe, e: EntradaJefe, rng: Azar): OrdenJefe {
   const dist = dir.d
   o.mirarA = { x: e.heroeX, y: e.heroeY }
   if (j.pausaS > 0) {
-    if (dist > (j.perfil === 'pez' ? JEFE_PEZ.mordida.alcance - 24 : j.perfil === 'rey' ? JEFE_REY.puno.alcance - 30 : JEFE.golpe.radio + 16)) {
+    if (dist > (j.perfil === 'pez' ? JEFE_PEZ.mordida.alcance - 24 : j.perfil === 'rey' ? JEFE_REY.puno.alcance - 30 : j.perfil === 'dragona' ? JEFE_DRAGONA.zarpazo.alcance - 30 : JEFE.golpe.radio + 16)) {
       j.estado = 'perseguir'
       o.mover = { dx: dir.dx, dy: dir.dy, vel }
     } else j.estado = 'quieto'
@@ -431,6 +485,33 @@ export function pensarJefe(j: Jefe, e: EntradaJefe, rng: Azar): OrdenJefe {
     return o
   }
   return empezarAtaque(j, o, a, e, dir)
+}
+
+/**
+ * F12: lo propio de la Dragona de Brasa. Desde la fase 2 está encendida (los golpes no le hacen nada). El chorro de un
+ * surtidor, o Thor sacudiéndose a su lado, la apaga: queda echada y humeando (aturdida y sin escudo) y al levantarse se
+ * vuelve a encender. Devuelve true si este paso quedó apagada.
+ */
+function pasoDragona(j: Jefe, e: EntradaJefe, o: OrdenJefe): boolean {
+  const d = JEFE_DRAGONA
+  j.apagarEnS = Math.max(0, j.apagarEnS - e.dt)
+  if (j.fase < 2 || j.estado === 'aturdido' || j.estado === 'intro') return false
+  if (!j.escudo) {
+    j.escudo = true
+    o.escudo = true
+  }
+  if (!(e.chorro || e.sacudida) || j.apagarEnS > 0) return false
+  const seg = (e.chorro ? d.apagadaS : d.apagadaThorS) * (e.modoPeque ? MODO_PEQUE.avisos : 1)
+  j.estado = 'aturdido'
+  j.t = seg
+  j.ataque = null
+  j.pausaS = 0.8
+  j.escudo = false
+  j.apagarEnS = seg + d.apagarCadaS
+  o.escudo = false
+  o.aturdido = seg
+  o.apagada = e.chorro ? 'chorro' : 'thor'
+  return true
 }
 
 /** F12: el Pez Farol vuelve al fondo: no se le puede pegar hasta que vuelva a salir */
@@ -524,7 +605,7 @@ function empezarAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, e: EntradaJefe, dir
     o.atacando = 'golpe'
     return o
   }
-  const seg = a === 'grito' && j.perfil === 'pez' ? JEFE_PEZ.llamada.avisoS * (e.modoPeque ? MODO_PEQUE.avisos : 1) : a === 'grito' && j.perfil === 'rey' ? JEFE_REY.llamada.avisoS * (e.modoPeque ? MODO_PEQUE.avisos : 1) : a === 'pisoton' && j.perfil === 'rey' ? JEFE_REY.pisoton.avisoS * (e.modoPeque ? MODO_PEQUE.avisos : 1) : avisoDe(a, e.modoPeque)
+  const seg = a === 'grito' && j.perfil === 'dragona' ? JEFE_DRAGONA.llamada.avisoS * (e.modoPeque ? MODO_PEQUE.avisos : 1) : a === 'grito' && j.perfil === 'pez' ? JEFE_PEZ.llamada.avisoS * (e.modoPeque ? MODO_PEQUE.avisos : 1) : a === 'grito' && j.perfil === 'rey' ? JEFE_REY.llamada.avisoS * (e.modoPeque ? MODO_PEQUE.avisos : 1) : a === 'pisoton' && j.perfil === 'rey' ? JEFE_REY.pisoton.avisoS * (e.modoPeque ? MODO_PEQUE.avisos : 1) : avisoDe(a, e.modoPeque)
   j.t = seg
   const base = { ataque: a, seg }
   // el Pez Farol sale del agua para morder y para la ola (se le puede pegar desde que asoma)
@@ -566,6 +647,19 @@ function empezarAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, e: EntradaJefe, dir
   } else if (a === 'barrido') {
     const b = JEFE_REY.barrido
     o.aviso = { ...base, forma: 'linea', x: j.x, y: j.y, radio: 0, dx: dir.dx, dy: dir.dy, largo: b.largo, ancho: b.ancho }
+  } else if (a === 'zarpazo') {
+    // la zarpa cae delante de ella, donde estaba la heroína: si camina, se salva
+    const z = JEFE_DRAGONA.zarpazo
+    j.destX = j.x + dir.dx * Math.min(z.delante, Math.max(20, dir.d))
+    j.destY = j.y + dir.dy * Math.min(z.delante, Math.max(20, dir.d))
+    o.aviso = { ...base, forma: 'frente', x: j.destX, y: j.destY, radio: z.radio, dx: dir.dx, dy: dir.dy, largo: 0, ancho: 0 }
+  } else if (a === 'coletazo') {
+    // gira y la cola barre medio círculo del lado de la heroína
+    o.aviso = { ...base, forma: 'medio', x: j.x, y: j.y, radio: JEFE_DRAGONA.coletazo.radio, dx: dir.dx, dy: dir.dy, largo: 0, ancho: 0 }
+  } else if (a === 'aliento') {
+    // toma aire: la franja por donde va a ir el fuego (se fija al avisar, si camina de lado se salva)
+    const al = JEFE_DRAGONA.aliento
+    o.aviso = { ...base, forma: 'linea', x: j.x, y: j.y, radio: 0, dx: dir.dx, dy: dir.dy, largo: al.largo, ancho: al.ancho }
   } else if (a === 'cancion') {
     // canta: un aviso sin daño (las lámparas se apagan al terminar)
     o.aviso = { ...base, forma: 'circulo', x: j.x, y: j.y, radio: 0, dx: 0, dy: 1, largo: 0, ancho: 0 }
@@ -637,6 +731,28 @@ function resolverAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, ratasVivas: number
       j.pausaS = pausa()
       break
     }
+    case 'zarpazo': {
+      const z = JEFE_DRAGONA.zarpazo
+      o.golpe = { ataque: 'zarpazo', forma: 'frente', dano: z.dano, x: j.destX, y: j.destY, radio: z.radio, dx: j.dirX, dy: j.dirY, largo: 0, ancho: 0 }
+      j.estado = 'quieto'
+      j.pausaS = pausa()
+      break
+    }
+    case 'coletazo': {
+      const c = JEFE_DRAGONA.coletazo
+      o.golpe = { ataque: 'coletazo', forma: 'medio', dano: c.dano, x: j.x, y: j.y, radio: c.radio, dx: j.dirX, dy: j.dirY, largo: 0, ancho: 0 }
+      j.estado = 'quieto'
+      j.pausaS = pausa()
+      break
+    }
+    case 'aliento': {
+      const al = JEFE_DRAGONA.aliento
+      o.golpe = { ataque: 'aliento', forma: 'linea', dano: al.dano, x: j.x, y: j.y, radio: 0, dx: j.dirX, dy: j.dirY, largo: al.largo, ancho: al.ancho }
+      o.fuegoPiso = { x: j.x, y: j.y, dx: j.dirX, dy: j.dirY, largo: al.largo, ancho: al.ancho, seg: al.fuegoS }
+      j.estado = 'quieto'
+      j.pausaS = pausa()
+      break
+    }
     case 'cancion': {
       // terminó la canción: las lámparas se apagan (lo hace el juego) y su piedra vuelve a no sentir los golpes
       o.cancion = true
@@ -696,7 +812,8 @@ function resolverAtaque(j: Jefe, o: OrdenJefe, a: AtaqueJefe, ratasVivas: number
       // el minotauro llama ratas; la Polilla Reina, polillas de ceniza
       const pz = JEFE_PEZ.llamada
       const ry = JEFE_REY.llamada
-      const ll = j.perfil === 'polilla' ? { n: JEFE_POLILLA.llamada.polillas, max: JEFE_POLILLA.llamada.maxPolillas, cada: JEFE_POLILLA.llamada.cadaS } : j.perfil === 'pez' ? { n: pz.cangrejos + pz.medusas, max: pz.max, cada: pz.cadaS } : j.perfil === 'rey' ? { n: ry.sonambulos, max: ry.max, cada: ry.cadaS } : { n: JEFE.grito.ratas, max: JEFE.grito.maxRatas, cada: JEFE.grito.cadaS }
+      const dg = JEFE_DRAGONA.llamada
+      const ll = j.perfil === 'dragona' ? { n: dg.hollines + dg.salamandras, max: dg.max, cada: dg.cadaS } : j.perfil === 'polilla' ? { n: JEFE_POLILLA.llamada.polillas, max: JEFE_POLILLA.llamada.maxPolillas, cada: JEFE_POLILLA.llamada.cadaS } : j.perfil === 'pez' ? { n: pz.cangrejos + pz.medusas, max: pz.max, cada: pz.cadaS } : j.perfil === 'rey' ? { n: ry.sonambulos, max: ry.max, cada: ry.cadaS } : { n: JEFE.grito.ratas, max: JEFE.grito.maxRatas, cada: JEFE.grito.cadaS }
       j.estado = 'quieto'
       j.gritoEnS = ll.cada
       j.pausaS = pausa()
