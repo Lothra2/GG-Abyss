@@ -1311,7 +1311,15 @@ export class Mundo extends Phaser.Scene {
     this.guardar()
     this.sonido.efecto('portal', { volumen: 0.8 })
     this.cameras.main.fadeOut(700, 5, 6, 12)
-    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('Continuara'))
+    // F13: vencido el Diablo, la cinemática del cierre (la primera vez) y después el final con las alas
+    const cine = this.piso === 7 && this.partida.jefeVencido && !this.partida.cines.includes('fin') && !!base.cine_fin
+    if (cine) {
+      this.partida.cines.push('fin')
+      guardarPartida(this.alm, this.partida)
+    }
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () =>
+      cine ? this.scene.start('Cine', { cine: 'cine_fin', luego: { escena: 'Continuara' } }) : this.scene.start('Continuara'),
+    )
   }
 
   /**
