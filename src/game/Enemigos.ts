@@ -12,6 +12,9 @@ import { aturdir, matar, nuevoEnemigoIA, pensar, type ConfigIA, type EnemigoIA }
 import { juego } from '../logic/azar'
 import { ABISMO, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, MODO_PEQUE, PUERTO, TROL_ELITE, type EnemigoBalance } from '../config/balance'
 import { danoMarinero, puntoRodeo } from '../logic/puerto'
+import { puntaAguja } from '../logic/ciudad'
+import { CIUDAD } from '../config/balance'
+import { crearAnimFx } from '../kit/anims'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
 import { texto } from './Texto'
@@ -33,8 +36,14 @@ const CUERPO: Record<string, { alto: number; radio: number; sombra: number; barr
   cangrejo_ceniza: { alto: 16, radio: 10, sombra: 18, barra: 20 },
   medusa_negra: { alto: 40, radio: 12, sombra: 14, barra: 22 },
   capitan_ahogado: { alto: 50, radio: 18, sombra: 34, barra: 40 },
+  sonambulo_piedra: { alto: 36, radio: 12, sombra: 20, barra: 26 },
+  gargola_dormida: { alto: 34, radio: 12, sombra: 16, barra: 24 },
+  duende_sueno: { alto: 26, radio: 10, sombra: 16, barra: 22 },
+  relojero: { alto: 50, radio: 17, sombra: 32, barra: 40 },
 }
 const CUERPO_DEFECTO = { alto: 28, radio: 12, sombra: 22, barra: 26 }
+/** Hacia dónde mira cada dirección, en grados (0 a la derecha, crece hacia abajo como la pantalla) */
+const DIRECCIONES_GRADOS = [90, 135, 180, 225, 270, 315, 0, 45]
 
 export interface ContextoEnemigos {
   heroe: { x: number; y: number; vivo: boolean }
@@ -52,6 +61,8 @@ export interface ContextoEnemigos {
   farol?: { alzado: boolean; prendido: boolean }
   /** F12: una medusa tocó a Thor */
   alApagarFarol?(): void
+  /** F12: la Ciudad Dormida, ¿este punto está en la luz de un barrio prendido? (el sonámbulo se queda de piedra) */
+  enLuzFija?(x: number, y: number): boolean
 }
 
 export interface EventosEnemigos {
@@ -60,6 +71,10 @@ export interface EventosEnemigos {
   disparar(e: Enemigo, angulo: number): void
   /** el golpe pesado cae en una elipse alrededor del trol (el ancla del capitán además empuja) */
   golpePesado(e: Enemigo, rango: readonly [number, number], radio: number, empuje?: number): void
+  /** F12: la aguja del Relojero en `grados`: ¿toca a la heroína? (el juego le pega una vez por vuelta) */
+  aguja?(e: Enemigo, grados: number, largo: number, ancho: number, dano: readonly [number, number]): boolean
+  /** F12: la picada de la gárgola cae en (x, y) */
+  picada?(e: Enemigo, x: number, y: number, radio: number, dano: readonly [number, number]): void
   alMorir(e: Enemigo): void
   efecto(nombre: string, x: number, y: number): void
   sonido(nombre: string, op?: { volumen?: number; rate?: number }): void
@@ -124,6 +139,14 @@ export class Enemigo implements Atacable {
   private medusaEsperaS = 0
   /** el trol del puente es el élite de siempre; el capitán trae su propio golpe pesado */
   private readonly trolElite: boolean
+  /** F12: el sonámbulo de piedra quieto en la luz */
+  petrificado = false
+  /** F12: la gárgola posada (dormida) hasta que la heroína se acerca */
+  posada = false
+  private picada: { x: number; y: number; resta: number; total: number; ox: number; oy: number; s: Phaser.GameObjects.Sprite | null } | null = null
+  private picadaEnS = 0
+  /** F12: la aguja del Relojero barriendo */
+  private barridoAguja: { grados: number; resta: number; pego: boolean; sprites: Phaser.GameObjects.Sprite[]; aviso: number } | null = null
   private cfgIA: ConfigIA
   private durAtaque: number
   private cuadros: Record<string, { cuadros: number; fps: number }> = {}
@@ -192,7 +215,12 @@ export class Enemigo implements Atacable {
         if (escena.anims.exists(key)) this.ojos.play({ key, startFrame: ent.id % 4 })
       }
     }
-    this.poner('idle', true)
+    if (this.cfg.gargola) {
+      // dormida, posada como una estatua más
+      this.posada = true
+      this.picadaEnS = 1.5
+    }
+    this.poner(this.posada ? 'posada' : 'idle', true)
     this.colocar()
   }
 
@@ -237,6 +265,11 @@ export class Enemigo implements Atacable {
   /** Daño recibido. Devuelve true si murió con este golpe. */
   recibir(dano: number, desdeX?: number, desdeY?: number): boolean {
     if (!this.vivo || this.oculta) return false
+    // la gárgola posada despierta con el golpe
+    if (this.posada) {
+      this.posada = false
+      this.ev.sonido('gargola_despierta', { volumen: 0.6 })
+    }
     if (this.cfg.deNiebla && this.enLuz) this.ev.sonido('marinero_se_deshace', { volumen: 0.35, rate: 0.9 + juego().next() * 0.2 })
     this.ia.vida = Math.max(0, this.ia.vida - dano)
     this.barraS = 4
@@ -286,6 +319,10 @@ export class Enemigo implements Atacable {
   }
 
   private morir(): void {
+    this.picada?.s?.destroy()
+    this.picada = null
+    for (const s2 of this.barridoAguja?.sprites ?? []) s2.destroy()
+    this.barridoAguja = null
     this.vivo = false
     matar(this.ia)
     this.golpeEn = null
@@ -344,6 +381,15 @@ export class Enemigo implements Atacable {
       this.flotarMedusa(dt, ctx)
       return
     }
+    if (this.cfg.gargola) {
+      this.volarGargola(dt, ctx)
+      return
+    }
+    if (this.barridoAguja) {
+      this.seguirBarrido(dt)
+      return
+    }
+    if (this.cfg.petrificaEnLuz && this.mirarPiedra(ctx)) return
 
     const antes = { x: this.x, y: this.y }
     // la raicita se distrae con Thor: si él está cerca (y más cerca que la heroína), lo persigue a él
@@ -428,6 +474,150 @@ export class Enemigo implements Atacable {
     this.dir = indiceDireccion(dx, dy)
     this.poner('walk')
     return true
+  }
+
+  /**
+   * F12: el sonámbulo de piedra en la luz de un barrio prendido se queda quieto (de piedra, se le puede pegar) y suelta lo
+   * que estaba por pegar. A oscuras camina. Devuelve true si este paso se quedó quieto.
+   */
+  private mirarPiedra(ctx: ContextoEnemigos): boolean {
+    const luz = ctx.enLuzFija?.(this.x, this.y) ?? false
+    if (luz !== this.petrificado) {
+      this.petrificado = luz
+      if (luz) {
+        this.golpeEn = null
+        this.anticipaS = 0
+        this.ia.estado = 'quieto'
+        this.ev.sonido('estatua_quieta', { volumen: 0.45, rate: 0.9 + juego().next() * 0.2 })
+        this.poner('quieto', true)
+      } else this.ev.sonido('estatua_paso', { volumen: 0.4 })
+    }
+    if (luz) this.poner('quieto')
+    return luz
+  }
+
+  /**
+   * F12: la gárgola dormida. Posada parece una estatua hasta que la heroína se acerca: despierta y vuela (por encima del
+   * abismo, sin pasar de su correa). Cada tanto se tira en picada donde estaba la heroína: su sombra crece en el piso
+   * mientras baja (el aviso) y pega donde cae.
+   */
+  private volarGargola(dt: number, ctx: ContextoEnemigos): void {
+    const g = this.cfg.gargola!
+    const h = ctx.heroe
+    const dH = Math.hypot(h.x - this.x, h.y - this.y)
+    if (this.posada) {
+      if (!h.vivo || dH > g.despiertaA) return
+      this.posada = false
+      this.ev.sonido('gargola_despierta', { volumen: 0.6 })
+      this.poner('despertar', true)
+      const d = this.cuadros.despertar
+      this.bloqueoAnimS = d ? d.cuadros / d.fps : 0.6
+      return
+    }
+    if (this.bloqueoAnimS > 0) return
+    const peque = ctx.modoPeque
+    const pc = this.picada
+    if (pc) {
+      pc.resta -= dt
+      const k = 1 - Math.max(0, pc.resta) / pc.total
+      // baja hacia donde estaba la heroína
+      this.ia.x = pc.ox + (pc.x - pc.ox) * k
+      this.ia.y = pc.oy + (pc.y - pc.oy) * k
+      if (pc.s) pc.s.setPosition(Math.round(pc.x), Math.round(pc.y)).setAlpha(0.5 + 0.5 * k)
+      if (pc.resta > 0) return
+      pc.s?.destroy()
+      this.picada = null
+      this.ev.sonido('gargola_picada', { volumen: 0.6 })
+      this.ev.picada?.(this, pc.x, pc.y, g.picadaRadio, this.cfg.dano)
+      this.ev.efecto('impacto_arena', pc.x, pc.y)
+      this.picadaEnS = g.picadaCadaS * (peque ? 1.4 : 1)
+      return
+    }
+    this.picadaEnS = Math.max(0, this.picadaEnS - dt)
+    if (h.vivo && dH < 150 && this.picadaEnS <= 0) {
+      const seg = g.picadaAvisoS * (peque ? MODO_PEQUE.avisos : 1)
+      this.picada = { x: h.x, y: h.y, resta: seg, total: seg, ox: this.x, oy: this.y, s: null }
+      const k = crearAnimFx(this.escena, this.m, 'sombra_picada')
+      if (k && this.escena.textures.exists(K.fx('sombra_picada'))) {
+        const def = this.m.fx.sombra_picada
+        this.picada.s = this.escena.add.sprite(Math.round(h.x), Math.round(h.y), K.fx('sombra_picada'), 0).setDepth(PROF.SOMBRAS + 2).setAlpha(0.5)
+        this.picada.s.play({ key: k, frameRate: (def?.cuadros ?? 6) / seg })
+      }
+      this.dir = indiceDireccion(h.x - this.x, h.y - this.y)
+      const a = this.cuadros.attack
+      const pre = this.m.personajes[this.tipo]?.anims.attack?.aviso?.[1] ?? 6
+      this.poner('attack', true, a ? pre / seg : undefined)
+      this.anticipaS = seg
+      return
+    }
+    // vuela hacia la heroína (o vuelve a su casa si se alejó), sin pasar de la correa
+    const vel = this.cfg.velocidad * (peque ? MODO_PEQUE.velocidadEnemigos : 1)
+    const casa = Math.hypot(h.x - this.ia.casaX, h.y - this.ia.casaY) < g.correa + 60 && h.vivo
+    const meta = casa && dH > 46 ? h : casa ? { x: this.x, y: this.y } : { x: this.ia.casaX, y: this.ia.casaY }
+    const dx = meta.x - this.x
+    const dy = meta.y - this.y
+    const d = Math.hypot(dx, dy)
+    if (d > 3) {
+      const paso = Math.min(d, vel * dt)
+      let nx = this.x + (dx / d) * paso
+      let ny = this.y + (dy / d) * paso
+      const cx = nx - this.ia.casaX
+      const cy = ny - this.ia.casaY
+      const dc = Math.hypot(cx, cy)
+      if (dc > g.correa) {
+        nx = this.ia.casaX + (cx / dc) * g.correa
+        ny = this.ia.casaY + (cy / dc) * g.correa
+      }
+      this.ia.x = nx
+      this.ia.y = ny
+      this.dir = indiceDireccion(dx, dy)
+      this.poner('walk')
+    } else this.poner('idle')
+  }
+
+  /**
+   * F12: la aguja del Relojero. Tras el aviso (la línea de la aguja en el piso) barre una vuelta alrededor de él y pega
+   * una sola vez a quien toque. Se esquiva alejándose más que el largo de la aguja o pasando detrás de ella.
+   */
+  private empezarBarrido(): void {
+    const cfg = CIUDAD.barrido
+    const k = crearAnimFx(this.escena, this.m, 'aviso_aguja')
+    const sprites: Phaser.GameObjects.Sprite[] = []
+    if (k && this.escena.textures.exists(K.fx('aviso_aguja'))) {
+      for (let d = 24; d <= cfg.largo; d += 26) {
+        const s2 = this.escena.add.sprite(0, 0, K.fx('aviso_aguja'), 0).setDepth(PROF.SOMBRAS + 3).setAlpha(0.95)
+        s2.play({ key: k, startFrame: Math.floor(d / 26) % 6 })
+        sprites.push(s2)
+      }
+    }
+    const grados = (DIRECCIONES_GRADOS[this.dir] ?? 0)
+    this.barridoAguja = { grados, resta: cfg.vueltaGrados, pego: false, sprites, aviso: 0 }
+    this.ev.sonido('aguja_barre', { volumen: 0.7 })
+    this.colocarAguja()
+  }
+
+  private colocarAguja(): void {
+    const b = this.barridoAguja
+    if (!b) return
+    const ang = (b.grados * Math.PI) / 180
+    b.sprites.forEach((s2, i) => {
+      const p = puntaAguja(this.x, this.y, b.grados, 24 + i * 26)
+      s2.setPosition(Math.round(p.x), Math.round(p.y)).setRotation(ang)
+    })
+  }
+
+  private seguirBarrido(dt: number): void {
+    const b = this.barridoAguja!
+    const cfg = CIUDAD.barrido
+    const paso = cfg.gradosPorS * dt
+    b.grados += paso
+    b.resta -= paso
+    this.colocarAguja()
+    if (!b.pego && this.ev.aguja?.(this, b.grados, cfg.largo, cfg.ancho, cfg.dano)) b.pego = true
+    if (b.resta > 0) return
+    for (const s2 of b.sprites) s2.destroy()
+    this.barridoAguja = null
+    this.bloqueoAnimS = 1.1
   }
 
   /**
@@ -529,8 +719,9 @@ export class Enemigo implements Atacable {
     if (def && this.escena.anims.exists(K.anim(this.tipo, 'attack_heavy', DIRECCIONES[this.dir]!))) {
       this.poner('attack_heavy', true, def.cuadros / Math.max(0.2, seg))
     }
-    // el guardián de cobre suena a metal que se levanta; el capitán levanta el ancla; el trol ruge
-    if (this.tipo === 'capitan_ahogado') this.ev.sonido('campana_cerca', { volumen: 0.3, rate: 0.7 })
+    // el guardián de cobre suena a metal que se levanta; el capitán levanta el ancla; el Relojero da cuerda; el trol ruge
+    if (this.cfg.pesado?.barrido) this.ev.sonido('reloj_campanada', { volumen: 0.4, rate: 1.3 })
+    else if (this.tipo === 'capitan_ahogado') this.ev.sonido('campana_cerca', { volumen: 0.3, rate: 0.7 })
     else if (this.cfg.pesado && !this.elite) this.ev.sonido('bloqueo', { volumen: 0.45, rate: 0.6 })
     else this.ev.sonido('jefe_rugido', { volumen: 0.35, rate: 1.4 })
   }
@@ -540,6 +731,12 @@ export class Enemigo implements Atacable {
     this.aviso = undefined
     this.ev.sacudir()
     const pe: { dano: readonly [number, number]; radio: number; empuje?: number } = this.trolElite ? { dano: TROL_ELITE.golpePesadoDano, radio: TROL_ELITE.golpePesadoRadio } : this.cfg.pesado ?? { dano: TROL_ELITE.golpePesadoDano, radio: TROL_ELITE.golpePesadoRadio }
+    if (this.cfg.pesado?.barrido) {
+      // el Relojero: la aguja de su reloj barre girando alrededor de él
+      this.ev.sonido('reloj_campanada', { volumen: 0.6 })
+      this.empezarBarrido()
+      return
+    }
     if (pe.empuje) {
       // el ancla del capitán: golpe de hierro y una ola corta que empuja
       this.ev.sonido('ancla_golpe', { volumen: 0.8 })
@@ -627,6 +824,8 @@ export class Enemigo implements Atacable {
     this.estandarte?.destroy()
     this.aviso?.destroy()
     this.ojos?.destroy()
+    this.picada?.s?.destroy()
+    for (const s2 of this.barridoAguja?.sprites ?? []) s2.destroy()
     this.destruido = true
   }
 

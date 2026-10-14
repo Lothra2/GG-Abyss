@@ -396,7 +396,10 @@ export class Mundo extends Phaser.Scene {
     this.vista = new MundoVista(this, m, this.mapa)
 
     // decorados del mapa más el portal de llegada, que es una entidad
-    const decos: Deco[] = [...this.mapa.decos]
+    // los faroles y las lámparas que prende el juego (Puerto, Ciudad) los dibuja su módulo: el objeto del mapa en el mismo
+    // punto no va, si no el apagado tapa al prendido
+    const manejados = /^(farol_muelle|farol_plaza|lampara_trono)_/
+    const decos: Deco[] = this.mapa.decos.filter((d) => !manejados.test(d.sprite))
     for (const p of entidadesDeTipo(this.mapa, 'portal_llegada')) decos.push({ sprite: this.portalDe(p.props.color), x: p.x, y: p.y })
     for (const f of this.portalesFx) f.destroy()
     this.portalesFx = entidadesDeTipo(this.mapa, 'portal_llegada').map((p) => new PortalFx(this, p.x, p.y, this.colorDePortal(this.portalDe(p.props.color)), this.m.mundo.objetos[this.portalDe(p.props.color)]))

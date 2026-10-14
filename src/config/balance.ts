@@ -157,7 +157,7 @@ export interface EnemigoBalance {
   /** F8: si Thor anda cerca, persigue a Thor en vez de a la heroína (y a Thor no le hace nada): la raicita */
   distraeThor?: { radio: number }
   /** F8: golpe pesado anunciado sin ser élite (el guardián de cobre): cada cuánto, radio, aviso y daño */
-  pesado?: { cadaS: number; radio: number; avisoS: number; dano: [number, number]; empuje?: number }
+  pesado?: { cadaS: number; radio: number; avisoS: number; dano: [number, number]; empuje?: number; barrido?: boolean }
   /** F11: la polilla de ceniza va a apagar los cristales prendidos antes que pelear */
   buscaLuz?: boolean
   /** F11: la sombra solo se ve (y solo pega y se le pega) dentro de una luz. Afuera son dos ojos */
@@ -168,6 +168,12 @@ export interface EnemigoBalance {
   rodea?: boolean
   /** F12: no pega: va hacia Thor y si lo toca le apaga el farol (la medusa negra). Se aleja del farol alzado */
   apagaFarol?: boolean
+  /** F12: el sonámbulo de piedra: en un barrio prendido (o en la luz de un farol de plaza) se queda quieto, de piedra */
+  petrificaEnLuz?: boolean
+  /** F12: la gárgola duerme posada hasta que la heroína se acerca, y pega en picada con su sombra de aviso en el piso */
+  gargola?: { despiertaA: number; picadaCadaS: number; picadaAvisoS: number; picadaRadio: number; correa: number }
+  /** F12: su proyectil hace bostezar a la heroína (el duende del sueño) */
+  bostezo?: boolean
 }
 
 export const ENEMIGOS: Record<string, EnemigoBalance> = {
@@ -195,6 +201,14 @@ export const ENEMIGOS: Record<string, EnemigoBalance> = {
   // flota lenta y no pega: si toca a Thor le apaga el farol. Lo que enseña: cuidar al perro y alzar el farol
   medusa_negra: { vida: 22, dano: [0, 0], anim: 'idle', ataquesPorSeg: 0.5, alcance: 0, velocidad: 28, ve: 170, xp: 8, oro: [1, 2], apagaFarol: true },
   // el minijefe del Astillero: el golpe de ancla avisa grande en el piso, levanta una ola corta que empuja y lo deja clavado
+  // F12, la Ciudad Dormida. El sonámbulo: lento y duro, de piedra en la luz (ahí se le pega tranquilo), camina a oscuras
+  sonambulo_piedra: { vida: 52, dano: [5, 8], anim: 'attack', ataquesPorSeg: 0.55, alcance: 30, velocidad: 34, ve: 200, xp: 26, oro: [4, 8], petrificaEnLuz: true },
+  // posada parece una estatua más; despierta y se tira en picada donde estaba la heroína (la sombra avisa)
+  gargola_dormida: { vida: 30, dano: [6, 9], anim: 'attack', ataquesPorSeg: 0.4, alcance: 30, velocidad: 72, ve: 200, xp: 20, oro: [3, 7], gargola: { despiertaA: 150, picadaCadaS: 3.6, picadaAvisoS: 1.1, picadaRadio: 30, correa: 260 } },
+  // dormilón con su bolsa de arena: tira de lejos y la arena hace bostezar (más lento un rato)
+  duende_sueno: { vida: 22, dano: [2, 4], anim: 'attack', ataquesPorSeg: 0.5, alcance: 190, velocidad: 52, ve: 230, xp: 14, oro: [2, 5], proyectil: 'proyectil_arena', impacto: 'impacto_arena', huyeSi: 100, bostezo: true },
+  // el minijefe de la Torre: la aguja de su reloj barre girando alrededor de él (con aviso en línea)
+  relojero: { vida: 260, dano: [6, 9], anim: 'attack', ataquesPorSeg: 0.5, alcance: 40, velocidad: 38, ve: 230, xp: 150, oro: [30, 50], pesado: { cadaS: 6, radio: 150, avisoS: 1.6, dano: [12, 16], barrido: true } },
   capitan_ahogado: { vida: 240, dano: [6, 9], anim: 'attack', ataquesPorSeg: 0.5, alcance: 40, velocidad: 40, ve: 230, xp: 140, oro: [30, 50], pesado: { cadaS: 5, radio: 56, avisoS: 1.6, dano: [14, 18], empuje: 56 } },
 }
 
@@ -276,6 +290,10 @@ export const BOTIN = {
   cangrejo_ceniza: { objeto: 0.05, oro: 0.4, cantidad: 1 } as BotinFuente,
   medusa_negra: { objeto: 0.06, oro: 0.4, cantidad: 1 } as BotinFuente,
   capitan_ahogado: { objeto: 1, oro: 1, cantidad: 2, garantiza: 'rare' } as BotinFuente,
+  sonambulo_piedra: { objeto: 0.15, oro: 0.6, cantidad: 1 } as BotinFuente,
+  gargola_dormida: { objeto: 0.1, oro: 0.5, cantidad: 1 } as BotinFuente,
+  duende_sueno: { objeto: 0.08, oro: 0.5, cantidad: 1 } as BotinFuente,
+  relojero: { objeto: 1, oro: 1, cantidad: 2, garantiza: 'rare' } as BotinFuente,
   rompible: { objeto: 0.1, oro: 0.4, cantidad: 1, pocionProb: 0.6 },
   cofres: {
     madera: { objetos: 1, oro: [5, 10] as [number, number], raroProb: 0, raroGarantizado: 0, legendarioProb: 0 },

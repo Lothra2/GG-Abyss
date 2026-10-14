@@ -22,6 +22,8 @@ export interface AnimHoja {
   elevacion?: number[]
   /** F12: la antena del Pez Farol: por dirección (fila de la hoja) y por cuadro, [x, y] desde el pivote o null bajo el agua */
   antena?: ([number, number] | null)[][]
+  /** F12: la corona del Rey de Piedra, igual que la antena */
+  corona?: ([number, number] | null)[][]
 }
 
 export interface EventoAnim {
@@ -61,6 +63,8 @@ export interface Personaje {
   en_agua?: boolean
   /** la luz que lleva en la antena (la luz robada del faro) */
   luz_antena?: { color: string; radius: number; notas?: string }
+  /** la luz de la corona (la luz robada de la ciudad) */
+  luz_corona?: { color: string; radius: number; notas?: string }
 }
 
 export type TipoCapa = 'pecho' | 'casco' | 'arma' | 'mano'

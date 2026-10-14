@@ -63,6 +63,25 @@ export class Heroina {
   private tinteS = 0
   /** multiplicador de velocidad del equipo (botas del viento...) */
   velMult = 1
+  /** F12: el bostezo de la arena de sueño (camina más lento un rato) */
+  private suenoS = 0
+  private suenoMult = 1
+
+  /** La arena del duende la hace bostezar: camina más lento `seg` segundos */
+  bostezar(seg: number, mult: number): void {
+    if (seg <= 0) return
+    this.suenoS = Math.max(this.suenoS, seg)
+    this.suenoMult = mult
+  }
+
+  get bostezando(): boolean {
+    return this.suenoS > 0
+  }
+
+  /** La velocidad con el equipo y el sueño */
+  private get velTotal(): number {
+    return this.velMult * (this.suenoS > 0 ? this.suenoMult : 1)
+  }
 
   constructor(
     private escena: Phaser.Scene,
@@ -227,6 +246,7 @@ export class Heroina {
   }
 
   update(dt: number): void {
+    this.suenoS = Math.max(0, this.suenoS - dt)
     if (this.tinteS > 0) {
       this.tinteS -= dt
       if (this.tinteS <= 0) this.sprite.clearTint()
@@ -273,14 +293,14 @@ export class Heroina {
       if (f.resta <= 0) this.forzado = null
       movio = false
     } else if (this.teclado) {
-      const r = caminarDireccion(this.grilla, c, this.teclado.x, this.teclado.y, COMBATE.velocidadHeroe * this.velMult, dt)
+      const r = caminarDireccion(this.grilla, c, this.teclado.x, this.teclado.y, COMBATE.velocidadHeroe * this.velTotal, dt)
       this.x = r.x
       this.y = r.y
       vx = r.vx
       vy = r.vy
       movio = r.vx !== 0 || r.vy !== 0
     } else if (this.camino.length > 0) {
-      const v = (this.corriendo ? COMBATE.velocidadHeroeCorrer : COMBATE.velocidadHeroe) * this.velMult
+      const v = (this.corriendo ? COMBATE.velocidadHeroeCorrer : COMBATE.velocidadHeroe) * this.velTotal
       const r = seguirCamino(this.grilla, c, this.camino, v, dt)
       this.x = r.x
       this.y = r.y
@@ -331,7 +351,7 @@ export class Heroina {
     if (this.escena.anims.exists(key)) this.sprite.play({ key, startFrame: idx })
     // premium: al caminar y correr la animación va al ritmo del paso, así los pies no patinan
     const def = this.personaje.anims[this.estado]
-    const vel = (this.estado === 'run' ? COMBATE.velocidadHeroeCorrer : COMBATE.velocidadHeroe) * this.velMult
+    const vel = (this.estado === 'run' ? COMBATE.velocidadHeroeCorrer : COMBATE.velocidadHeroe) * this.velTotal
     this.sprite.anims.timeScale = def && this.estado !== 'idle' ? ritmoAnim(vel, def) : 1
   }
 
