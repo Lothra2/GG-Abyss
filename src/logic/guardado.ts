@@ -64,6 +64,12 @@ export interface Partida {
   cristales: string[]
   /** F12: los faroles del muelle que ya prendió Thor (Mundo 4), son del mundo */
   faroles: string[]
+  /** F13: en qué ciclo va (1 la primera vez; al terminar puede bajar otra vez, más duro) */
+  ciclo: number
+  /** F13: terminó el juego: la heroína es celestial para siempre en este perfil */
+  celestial: boolean
+  /** F13: las cinemáticas que ya vio (la bajada al infierno, el cierre) */
+  cines: string[]
 }
 
 /** Lo que una partida recuerda de un mundo en el que no está */
@@ -129,7 +135,38 @@ export function partidaNueva(id: string, ahora: number = Date.now()): Partida {
     niebla: '',
     cristales: [],
     faroles: [],
+    ciclo: 1,
+    celestial: false,
+    cines: [],
   }
+}
+
+/**
+ * F13: empieza el ciclo siguiente. Vuelve al Bosque con todo lo de la heroína (nivel, experiencia, oro, equipo, bolsa,
+ * cinturón, ajustes) y las alas, pero los siete mundos se reinician: cofres, jefes, faroles, jaulas y lo descubierto.
+ */
+export function empezarCiclo(p: Partida): Partida {
+  const nuevo = mundoNuevo()
+  const poner = (a: string[], b: string[]) => a.splice(0, a.length, ...b)
+  p.ciclo = Math.max(1, Math.floor(p.ciclo || 1)) + 1
+  p.celestial = true
+  p.mundo = MUNDO_INICIAL
+  p.otrosMundos = {}
+  p.posicion = { ...nuevo.posicion }
+  p.ultimaFogata = ''
+  poner(p.zonas, [])
+  poner(p.secretos, [])
+  poner(p.cofres, [])
+  poner(p.rompibles, [])
+  poner(p.brasas, [])
+  poner(p.cristales, [])
+  poner(p.faroles, [])
+  // la presentación ya la vio: el ciclo nuevo arranca jugando
+  p.presentacionVista = true
+  p.jefeVencido = false
+  p.niebla = ''
+  delete p.jefeVida
+  return p
 }
 
 /** Lo que la partida tiene del mundo donde está ahora (copias, no los mismos arreglos) */
@@ -306,6 +343,9 @@ export function migrar(json: unknown, idEsperado?: string): Partida | null {
     niebla: typeof j.niebla === 'string' ? j.niebla : '',
     cristales: textos(j.cristales),
     faroles: textos(j.faroles),
+    ciclo: esNum(j.ciclo) ? Math.max(1, Math.floor(j.ciclo)) : 1,
+    celestial: j.celestial === true,
+    cines: textos(j.cines),
     equipo,
     bolsa,
     cinturon: cinto,

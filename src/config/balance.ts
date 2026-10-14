@@ -843,4 +843,98 @@ export const JEFE_DRAGONA = {
   apagarCadaS: 3,
 }
 
+/**
+ * F13, el Mundo 7: El Corazón Helado. Oscuridad casi total y frío: a oscuras y en la ventisca la heroína se congela,
+ * cerca del fuego o de sus luces compañeras se calienta. La ventisca empuja y achica la luz (detrás de una columna de
+ * hielo no llega). El hielo fino se rompe si se queda parada. Las sombras devoradoras se comen las luces compañeras.
+ */
+export const CORAZON = {
+  frio: {
+    max: 100,
+    /** lo que enfría por segundo a oscuras, más en la ventisca y en el agua helada */
+    oscuro: 6,
+    ventisca: 16,
+    aguaHelada: 60,
+    /** lo que calienta por segundo cerca del fuego (hogueras, braseros) y en la luz de sus compañeras */
+    fuego: 40,
+    companeras: 10,
+    /** congelada: camina más lento y pierde vida cada tanto, hasta bajar de esto */
+    sueltaEn: 60,
+    velocidad: 0.65,
+    dano: 4,
+    danoCadaS: 2,
+    /** en modo peque enfría un poco menos y quita la mitad */
+    pequeMult: 0.7,
+    pequeDano: 2,
+    /** al lado de una hoguera o un brasero prendido es fuego */
+    fuegoA: 110,
+  },
+  ventisca: {
+    /** cada cuánto viene (segundos entre una y otra), el aviso (el aullido) y cuánto dura */
+    cadaS: [24, 38] as [number, number],
+    avisoS: 2.5,
+    duraS: 7,
+    /** empuja a esto por segundo en su dirección y achica el halo a esto */
+    empuje: 26,
+    halo: 0.5,
+    /** detrás de una columna o un gigante, hasta esta distancia, no llega */
+    refugioLargo: 110,
+    refugioAncho: 46,
+  },
+  hielo: {
+    /** parada sobre el hielo fino: cruje desde aquí y se rompe aquí (en modo peque más tarde) */
+    crujeS: 1.2,
+    rompeS: 2.6,
+    pequeMult: 1.6,
+    /** roto queda así hasta que se vuelve a congelar */
+    rehaceS: 12,
+  },
+  companeras: {
+    max: 5,
+    radio: 120,
+    /** una devorada vuelve sola a los esto (o en la próxima hoguera) */
+    vuelveS: 25,
+  },
+  oscuridad: 0.95,
+}
+
+/**
+ * F13: El Diablo (Mundo 7). Cinco fases: el hielo y el fuego (zarpazo, nova, carga), el rayo (rayo que gira, pilares,
+ * diablillos), la oscuridad (blindado hasta prender los cuatro braseros de hueso, que su aliento congela), la jaula de
+ * huesos y la desesperada (todo junto y más rápido).
+ */
+export const JEFE_DIABLO = {
+  vida: 1400,
+  velocidad: 40,
+  /** dónde empieza cada fase (porcentaje de vida) */
+  fases: [75, 50, 30, 10] as [number, number, number, number],
+  zarpazo: { dano: [16, 22] as [number, number], radio: 60, delante: 66, alcance: 140, avisoS: 1.2 },
+  /** la nova sale en anillo desde él: pega a quien esté en el anillo cuando pasa (el hueco de adentro no) */
+  nova: { dano: [14, 19] as [number, number], radio: 230, ancho: 46, avisoS: 1.6 },
+  carga: { dano: [18, 24] as [number, number], ancho: 70, velocidad: 320, avisoS: 1.3 },
+  /** el rayo rojo gira alrededor de él: una vuelta (como la aguja del Relojero, más largo) */
+  rayo: { dano: [15, 20] as [number, number], largo: 250, ancho: 36, gradosPorS: 110, vuelta: 300, avisoS: 1.7 },
+  /** los pilares salen donde está la heroína y alrededor */
+  pilares: { dano: [14, 19] as [number, number], radio: 34, cuantos: 5, separacion: 70, avisoS: 1.4 },
+  llamada: { demonios: 4, max: 7, avisoS: 1, cadaS: 14 },
+  /** la oscuridad: con los cuatro braseros prendidos cae de rodillas (aturdido) y su aliento vuelve a congelar uno */
+  oscuridad: { rodillasS: 5, rodillasCadaS: 11, congelaCadaS: 9 },
+  /** la jaula de huesos: tantos golpes la rompen (Thor ayuda desde afuera) */
+  jaula: { golpes: 8, avisoS: 1.2, cadaS: 18, pilaresDentro: 1 },
+  /** la desesperada: todo más rápido */
+  desesperado: { velocidad: 1.35, pausa: 0.6 },
+}
+
+/**
+ * F13: la heroína celestial (al terminar el juego, para siempre en ese perfil). Más vida, daño y luz, y dos poderes:
+ * las alas (un vuelo corto por encima de todo, sin recibir daño) y la lanza de luz (atraviesa a todos en línea).
+ */
+export const CELESTIAL = {
+  vidaPct: 25,
+  danoPct: 25,
+  halo: 1.3,
+  alas: { distancia: 170, duracionS: 0.45, recargaS: 4, mana: 8 },
+  lanza: { largo: 260, ancho: 30, danoPct: 230, recargaS: 3, mana: 14 },
+}
+
 export const REACCIONES = { morasCuran: 8 } as const
