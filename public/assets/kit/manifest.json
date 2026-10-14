@@ -66140,7 +66140,7 @@
       }
      }
     },
-    "palanca": {
+    "palanca_surtidor": {
      "w": 32,
      "h": 48,
      "apoyo": [
@@ -66153,16 +66153,16 @@
       20,
       6
      ],
-     "sombra": "mundo/objetos/palanca_sombra.png",
+     "sombra": "mundo/objetos/palanca_surtidor_sombra.png",
      "anims": {
       "arriba": {
-       "archivo": "mundo/objetos/palanca_arriba.png",
+       "archivo": "mundo/objetos/palanca_surtidor_arriba.png",
        "cuadros": 1,
        "fps": 1,
        "loop": true
       },
       "tirar": {
-       "archivo": "mundo/objetos/palanca_tirar.png",
+       "archivo": "mundo/objetos/palanca_surtidor_tirar.png",
        "cuadros": 8,
        "fps": 10,
        "loop": false
