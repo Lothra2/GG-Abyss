@@ -74,6 +74,10 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - Arreglos en el camino: los faroles del muelle del Puerto se dibujaban dos veces (el apagado podía tapar al prendido) y los efectos nuevos de la ciudad no se cargaban (el duende no tiraba su arena).
   - Publicado en e891c5f con la suite completa en verde (282 pasaron, 7 se saltan a propósito).
   - Pulido del taller `cfa5d34`: caras y ojos que se leen a 48 px, la fuente seca rehecha, el ícono de prender y objetos nuevos (el organillo que despierta, dos atriles en el Barrio de los Músicos y tres estandartes del Rey). Postales de la Ciudad al día. Suite completa en verde (282 pasaron, 7 se saltan).
+- Mundo 6, La Fragua de las Luces (PLAN.md F12), con el taller `d05328b` (sesión nueva del taller en `claude/abyss-mundo6`):
+  - La luz quema: calor con termómetro, grietas que respiran con los fuelles, jaulas que dejan luz fría, Thor que se moja y se sacude, hollines que se pegan, salamandras, faroleros, El Carcelero y la Dragona de Brasa que el chorro de un surtidor apaga.
+  - Al liberarla todas las luces vuelven a sus pisos y la fragua se enfría.
+  - Arreglos en el camino: la palanca nueva chocaba de nombre con la vieja (el juego ya no se rompe con una hoja sin cuadros y el taller la renombra) y el chorro del surtidor ahora cuenta con el reloj del juego.
 - Arreglo publicado: tras vencer al Pez Farol el oro caía en la poza y la heroína se quedaba pegada. Ahora cae en el muelle y ningún botín cae donde no se camina.
 - Verificación de F10a, F11 e intro:
   - Typecheck limpio y 380 tests unitarios.

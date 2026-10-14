@@ -1616,7 +1616,8 @@ export class Mundo extends Phaser.Scene {
       return
     }
     this.sonido.efecto('cadenas_rompen', { volumen: 0.8 })
-    this.game.events.emit('destello', { color: 0xffe0a0, alfa: this.suave ? 0.15 : 0.5, ms: 1400 })
+    // suave: viene justo después del destello del golpe final y no tiene que tapar el río de luces
+    this.game.events.emit('destello', { color: 0xffe0a0, alfa: this.suave ? 0.08 : 0.22, ms: 1000 })
     this.sacudir(260, 0.004)
   }
 
