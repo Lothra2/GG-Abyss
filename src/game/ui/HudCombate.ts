@@ -506,7 +506,8 @@ export class HudCombate {
     // XP y nivel
     const ancho = Math.max(1, Math.round((this.xpAncho - 6) * c.fraccionXp))
     this.rellenoXp.setSize(ancho, 4)
-    this.txtNivel.setText(`Nv ${p.nivel}`)
+    // F13: desde el Ciclo 2 se ve en qué ciclo va (en celeste si es celestial)
+    this.txtNivel.setText((p.ciclo ?? 1) > 1 ? `Ciclo ${p.ciclo}  Nv ${p.nivel}` : `Nv ${p.nivel}`).setTint(p.celestial ? 0xfff0b0 : 0xffd27a)
 
     // cinturón: los íconos de las pociones que haya, con el brillo de su color que respira
     this.tBrillo += dt
