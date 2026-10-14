@@ -293,7 +293,9 @@ export class Cine extends Phaser.Scene {
   override update(_t: number, ms: number): void {
     if (this.terminada || !this.planos.length) return
     const dt = Math.min(0.1, ms / 1000)
-    this.t += dt
+    // el guion va sobre la música: si suena, manda ella (aunque la máquina vaya lenta, el título cae con el golpe)
+    const seek = this.musica?.isPlaying ? (this.musica as unknown as { seek: number }).seek : NaN
+    this.t = Number.isFinite(seek) && seek > 0 ? Math.max(this.t, seek) : this.t + dt
     const en = planoEn(this.planos, this.t)
     if (!en) {
       this.terminar()
