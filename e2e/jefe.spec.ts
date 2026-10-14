@@ -1,5 +1,10 @@
 import { expect, test, type Page } from '@playwright/test'
 import { abrirMundo, esperarEscena, gancho, sinErrores, vigilarErrores } from './util'
+import { JEFE } from '../src/config/balance'
+import { vidaDeJefe } from '../src/logic/dureza'
+
+/** F13: la vida del minotauro con la dureza de los jefes */
+const VIDA = vidaDeJefe(JEFE.vida)
 
 // F4: el Minotauro del Bosque. Fases, avisos, rescate sin curar al jefe, victoria, portal y Continuará.
 
@@ -41,7 +46,7 @@ test.describe('El minotauro', () => {
     const antes = await jefe(page)
     expect(antes.existe).toBe(true)
     expect(antes.peleando).toBe(false)
-    expect(antes.vida).toBe(650)
+    expect(antes.vida).toBe(VIDA)
     await gancho(page, 'entrarArena')
     await avanzar(page, 0.3)
     const j = await jefe(page)
@@ -68,7 +73,7 @@ test.describe('El minotauro', () => {
     await empezar(page)
     expect((await jefe(page)).fase).toBe(1)
     await hasta(page, (j) => j.estado !== 'intro', 10)
-    await gancho(page, 'danarJefe', 650 * 0.41)
+    await gancho(page, 'danarJefe', VIDA * 0.41)
     const j = await jefe(page)
     expect(j.fase).toBe(2)
     let ultima = j.vida
@@ -84,7 +89,7 @@ test.describe('El minotauro', () => {
   test('los ataques grandes avisan 1.2 s antes en modo normal y 1.8 s en modo peque', async ({ page }) => {
     for (const [heroe, esperado] of [['rick', 1.2], ['alana', 1.8]] as const) {
       await empezar(page, heroe)
-      await gancho(page, 'danarJefe', 650 * 0.41)
+      await gancho(page, 'danarJefe', VIDA * 0.41)
       const totales = new Set<number>()
       for (let t = 0; t < 120; t += 0.1) {
         await gancho(page, 'curarTodo')
@@ -99,7 +104,7 @@ test.describe('El minotauro', () => {
 
   test('en la fase 2 grita y llama ratas, nunca más de 4', async ({ page }) => {
     await empezar(page)
-    await gancho(page, 'danarJefe', 650 * 0.41)
+    await gancho(page, 'danarJefe', VIDA * 0.41)
     let max = 0
     for (let t = 0; t < 200 && max < 2; t += 0.2) {
       await gancho(page, 'curarTodo')
