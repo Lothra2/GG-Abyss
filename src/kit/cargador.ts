@@ -79,6 +79,7 @@ export function encolarMundoBase(e: Escena, m: Manifest): void {
   const id = idMundo(mu)
   if (!e.cache.json.exists(K.mapaDe(id))) e.load.json(K.mapaDe(id), rutaKit(mu.mapa))
   if (!yaHay(e, K.aguaDe(id))) e.load.spritesheet(K.aguaDe(id), rutaKit(mu.agua), { frameWidth: mu.cuadro, frameHeight: mu.cuadro })
+  if (mu.agua_apagada && !yaHay(e, K.aguaApagadaDe(id))) e.load.spritesheet(K.aguaApagadaDe(id), rutaKit(mu.agua_apagada), { frameWidth: mu.cuadro, frameHeight: mu.cuadro })
   mu.suelo.forEach((s, i) => {
     if (!yaHay(e, K.sueloDe(id, i))) e.load.image(K.sueloDe(id, i), rutaKit(s.archivo))
   })

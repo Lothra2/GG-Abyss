@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import { K } from '../../kit/claves'
-import { BOTIN, JEFE, MODO_PEQUE } from '../../config/balance'
+import { BOTIN, FRAGUA, JEFE, MODO_PEQUE } from '../../config/balance'
 import { HUD as MARGENES } from '../../config/juego'
 import { escalaDe, toqueMinimo } from '../Pantalla'
 import { texto } from '../Texto'
@@ -196,14 +196,19 @@ export class HudCombate {
     this.ataqueZona.on('pointerup', soltarAtaque)
     this.ataqueZona.on('pointerout', soltarAtaque)
     this.ponerIconoAtaque()
-    if (escena.textures.exists(k('hab_farol'))) {
-      const icono = escena.add.image(0, 0, k('hab_farol')).setVisible(false)
+    // el botón de Thor: en el Puerto alza el farol, en la Fragua se sacude mojado
+    if (escena.textures.exists(k('hab_farol')) || escena.textures.exists(k('hab_sacudir'))) {
+      const icono = escena.add.image(0, 0, escena.textures.exists(k('hab_farol')) ? k('hab_farol') : k('hab_sacudir')).setVisible(false)
       const arco = escena.add.graphics()
       const zona = escena.add.zone(0, 0, 40, 40).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true })
       zona.on('pointerdown', (p: Phaser.Input.Pointer) => {
-        if (!this.mundo.puerto) return
-        Bloqueo.tomar(p.id)
-        this.mundo.alzarFarol()
+        if (this.mundo.puerto) {
+          Bloqueo.tomar(p.id)
+          this.mundo.alzarFarol()
+        } else if (this.mundo.fragua) {
+          Bloqueo.tomar(p.id)
+          this.mundo.sacudirThor()
+        }
       })
       this.farol = { icono, arco, zona, x: 0, y: 0, lado: 40, late: 0 }
       escena.game.events.on('farol-pista', this.alPistaFarol, this)
@@ -351,10 +356,40 @@ export class HudCombate {
     const f = this.farol
     if (!f) return
     const p = this.mundo.puerto
-    f.icono.setVisible(!!p)
-    f.zona.setVisible(!!p)
-    if (f.zona.input) f.zona.input.enabled = !!p
+    const fg = this.mundo.fragua && !this.mundo.fragua.apagada && this.escena.textures.exists(K.ui('hab_sacudir')) ? this.mundo.fragua : null
+    const ver = !!p || !!fg
+    f.icono.setVisible(ver)
+    f.zona.setVisible(ver)
+    if (f.zona.input) f.zona.input.enabled = ver
     f.arco.clear()
+    if (fg) {
+      // en la Fragua: Thor mojado (con sus gotitas, una por sacudida) o seco y gris
+      const seco = K.ui('hab_sacudir_seco')
+      const tex = !fg.puedeSacudir && this.escena.textures.exists(seco) ? seco : K.ui('hab_sacudir')
+      if (f.icono.texture.key !== tex) f.icono.setTexture(tex)
+      const r = f.lado / 2
+      const fr = fg.agua.recargaS / FRAGUA.sacudida.recargaS
+      if (fr > 0) {
+        f.arco.fillStyle(0x000000, 0.62)
+        f.arco.slice(f.x, f.y, r, Phaser.Math.DegToRad(-90), Phaser.Math.DegToRad(-90 + 360 * fr), false)
+        f.arco.fillPath()
+      }
+      const n = fg.agua.cargas
+      const k = Math.max(1, Math.floor(f.lado / 40))
+      for (let i = 0; i < FRAGUA.sacudida.cargas; i++) {
+        const gx = f.x + (i - (FRAGUA.sacudida.cargas - 1) / 2) * 7 * k
+        const gy = f.y + r + 4 * k
+        f.arco.fillStyle(0x000000, 0.6).fillCircle(gx, gy, 3 * k)
+        f.arco.fillStyle(i < n ? 0x7ad0ff : 0x3a4250, 1).fillCircle(gx, gy, 2 * k)
+      }
+      f.late = Math.max(0, f.late - dt)
+      if (f.late > 0 && fg.puedeSacudir) {
+        const kk = 0.5 + 0.5 * Math.sin(f.late * 12)
+        f.arco.lineStyle(2, 0x7ad0ff, 0.5 + 0.5 * kk).strokeCircle(f.x, f.y, r + 2 + kk * 3)
+      }
+      f.arco.setDepth(f.icono.depth + 1)
+      return
+    }
     if (!p) return
     const fr = p.recargaFraccion
     const gris = K.ui('hab_farol_recarga')

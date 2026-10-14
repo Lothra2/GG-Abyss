@@ -157,7 +157,7 @@ export interface EnemigoBalance {
   /** F8: si Thor anda cerca, persigue a Thor en vez de a la heroína (y a Thor no le hace nada): la raicita */
   distraeThor?: { radio: number }
   /** F8: golpe pesado anunciado sin ser élite (el guardián de cobre): cada cuánto, radio, aviso y daño */
-  pesado?: { cadaS: number; radio: number; avisoS: number; dano: [number, number]; empuje?: number; barrido?: boolean }
+  pesado?: { cadaS: number; radio: number; avisoS: number; dano: [number, number]; empuje?: number; barrido?: boolean; cadena?: boolean; linea?: { largo: number; ancho: number; jalarS: number } }
   /** F11: la polilla de ceniza va a apagar los cristales prendidos antes que pelear */
   buscaLuz?: boolean
   /** F11: la sombra solo se ve (y solo pega y se le pega) dentro de una luz. Afuera son dos ojos */
@@ -174,6 +174,12 @@ export interface EnemigoBalance {
   gargola?: { despiertaA: number; picadaCadaS: number; picadaAvisoS: number; picadaRadio: number; correa: number }
   /** F12: su proyectil hace bostezar a la heroína (el duende del sueño) */
   bostezo?: boolean
+  /** F12, la Fragua: el hollín no pega, se le pega a la heroína (le achica el halo) y huye de la luz fría */
+  pegaHollin?: boolean
+  huyeLuzFria?: boolean
+  /** F12: la salamandra deja un rastro de piso caliente y, mojada por Thor, queda de piedra (recibe el doble) */
+  rastro?: boolean
+  seMoja?: boolean
 }
 
 export const ENEMIGOS: Record<string, EnemigoBalance> = {
@@ -210,6 +216,14 @@ export const ENEMIGOS: Record<string, EnemigoBalance> = {
   // el minijefe de la Torre: la aguja de su reloj barre girando alrededor de él (con aviso en línea)
   relojero: { vida: 260, dano: [6, 9], anim: 'attack', ataquesPorSeg: 0.5, alcance: 40, velocidad: 38, ve: 230, xp: 150, oro: [30, 50], pesado: { cadaS: 6, radio: 150, avisoS: 1.6, dano: [12, 16], barrido: true } },
   capitan_ahogado: { vida: 240, dano: [6, 9], anim: 'attack', ataquesPorSeg: 0.5, alcance: 40, velocidad: 40, ve: 230, xp: 140, oro: [30, 50], pesado: { cadaS: 5, radio: 56, avisoS: 1.6, dano: [14, 18], empuje: 56 } },
+  // F12, la Fragua. El hollín: en grupo, salta a pegarse (si ya tiene muchos encima, raspa poquito). Huye de la luz fría
+  hollin: { vida: 12, dano: [1, 2], anim: 'attack', ataquesPorSeg: 0.8, alcance: 22, velocidad: 74, ve: 190, xp: 6, oro: [1, 2], pegaHollin: true, huyeLuzFria: true },
+  // rápida, escupe brasas de lejos y deja el piso caliente donde pasa; mojada por Thor queda de piedra un rato
+  salamandra_brasa: { vida: 30, dano: [4, 7], anim: 'attack', ataquesPorSeg: 0.55, alcance: 170, velocidad: 70, ve: 220, xp: 18, oro: [3, 6], proyectil: 'proyectil_brasa', impacto: 'impacto_brasa', huyeSi: 80, rastro: true, seMoja: true },
+  // lenta: la cadena gira en anillo alrededor de ella (el aviso se llena en el piso). Algunas cargan una jaula de luz
+  farolero_cadenas: { vida: 90, dano: [5, 8], anim: 'attack', ataquesPorSeg: 0.5, alcance: 34, velocidad: 32, ve: 200, xp: 40, oro: [6, 12], pesado: { cadaS: 5.5, radio: 64, avisoS: 1.6, dano: [11, 15], cadena: true } },
+  // el minijefe de la Cárcel: lanza la cadena en línea (aviso en el piso) y se jala hasta donde cayó
+  carcelero: { vida: 300, dano: [7, 10], anim: 'attack', ataquesPorSeg: 0.5, alcance: 40, velocidad: 36, ve: 240, xp: 170, oro: [35, 55], pesado: { cadaS: 5.5, radio: 190, avisoS: 1.6, dano: [13, 17], linea: { largo: 210, ancho: 34, jalarS: 0.45 } } },
 }
 
 /**
@@ -294,6 +308,10 @@ export const BOTIN = {
   gargola_dormida: { objeto: 0.1, oro: 0.5, cantidad: 1 } as BotinFuente,
   duende_sueno: { objeto: 0.08, oro: 0.5, cantidad: 1 } as BotinFuente,
   relojero: { objeto: 1, oro: 1, cantidad: 2, garantiza: 'rare' } as BotinFuente,
+  hollin: { objeto: 0.05, oro: 0.4, cantidad: 1 } as BotinFuente,
+  salamandra_brasa: { objeto: 0.12, oro: 0.6, cantidad: 1 } as BotinFuente,
+  farolero_cadenas: { objeto: 0.25, oro: 0.8, cantidad: 1 } as BotinFuente,
+  carcelero: { objeto: 1, oro: 1, cantidad: 2, garantiza: 'rare' } as BotinFuente,
   rompible: { objeto: 0.1, oro: 0.4, cantidad: 1, pocionProb: 0.6 },
   cofres: {
     madera: { objetos: 1, oro: [5, 10] as [number, number], raroProb: 0, raroGarantizado: 0, legendarioProb: 0 },
@@ -799,7 +817,8 @@ export const JEFE_DRAGONA = {
   fase3Pct: 30,
   zarpazo: { dano: [13, 17] as [number, number], radio: 50, delante: 56, alcance: 124, avisoS: 1.3 },
   /** el coletazo barre medio círculo del lado de la heroína */
-  coletazo: { dano: [11, 15] as [number, number], radio: 150, alcance: 140, avisoS: 1.5 },
+  // radio 96: el aviso_cola del kit (192 x 96) a escala 1
+  coletazo: { dano: [11, 15] as [number, number], radio: 96, alcance: 110, avisoS: 1.5 },
   aliento: { dano: [10, 14] as [number, number], largo: 240, ancho: 56, avisoS: 1.8, fuegoS: 5 },
   llamada: { hollines: 2, salamandras: 1, max: 4, avisoS: 1, cadaS: 16 },
   /** apagada por el chorro: echada y humeando. Con la sacudida de Thor dura menos */

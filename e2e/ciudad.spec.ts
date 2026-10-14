@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { abrirMundo, esperarEscena, gancho, sinErrores, vigilarErrores } from './util'
+import { abrirMundo, esperarEscena, gancho, manifest, sinErrores, vigilarErrores } from './util'
 
 // F12, el Mundo 5: La Ciudad Dormida. La luz te la roban: el farol de plaza aclara su barrio, la Ladrona le chupa la
 // luz (si llegas antes se va), la luz robada se rompe en chispas que Thor rastrea, los sonámbulos solo se mueven a
@@ -214,10 +214,16 @@ test.describe('La Ciudad Dormida', () => {
     expect(Object.keys(await gancho<Record<string, number>>(page, 'sonido'))).toContain('musica_despertar')
     await gancho(page, 'guardarAhora')
     expect((await gancho<{ jefeVencido: boolean }>(page, 'estado')).jefeVencido).toBe(true)
-    // el portal plata baja más hondo: el kit todavía no trae el Mundo 6, así que Continuará
+    // el portal plata baja más hondo: si el kit trae el Mundo 6 va a la Fragua, si no Continuará
     await expect.poll(async () => (await gancho<Jefe>(page, 'jefe')).portal, { timeout: 60_000 }).toBe(true)
+    const hay6 = ((await manifest(page)).mundos ?? []).some((q) => q.id === 'mundo6')
     await gancho(page, 'irAlPortal')
-    await esperarEscena(page, 'Continuara')
+    if (hay6) {
+      await esperarEscena(page, 'Bajada')
+      await esperarEscena(page, 'Mundo')
+      await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true && typeof a.fragua === 'function' }, null, { timeout: 120_000 })
+      await expect.poll(async () => (await gancho<{ id: string }>(page, 'mundoActual')).id, { timeout: 60_000 }).toBe('mundo6')
+    } else await esperarEscena(page, 'Continuara')
     await sinErrores(errores)
   })
 })

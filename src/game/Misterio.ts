@@ -43,8 +43,8 @@ export class Misterio {
     mapa: MapaJuego,
     private d: DepsMisterio,
   ) {
-    // la figura mojada del Puerto si el kit la trae, si no la de las Galerías
-    const def = this.existe('figura_ojos_mojada') ? 'figura_ojos_mojada' : this.existe('figura_ojos') ? 'figura_ojos' : null
+    // la que carga jaulas en la Fragua, la figura mojada del Puerto si el kit la trae, si no la de las Galerías
+    const def = this.existe('figura_cargadora') ? 'figura_cargadora' : this.existe('figura_ojos_mojada') ? 'figura_ojos_mojada' : this.existe('figura_ojos') ? 'figura_ojos' : null
     if (def) {
       const o = m.mundo.objetos[def]!
       // las figuras con barrio son la Ladrona de la Ciudad Dormida (las maneja Ciudad): acá solo las que miran

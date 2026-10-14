@@ -542,7 +542,7 @@ export class Decos {
 
       // luz propia del objeto
       // el que trae `apagado` y `prendido` (el faro del Puerto) solo alumbra prendido
-      if (def.luz && !d.apagada && !(def.anims.prendido && def.anims.apagado && d.anim !== 'prendido')) luces.push({ x: d.x, y: d.y - (def.luz.dy ?? 0), r: def.luz.radius, color: def.luz.color, flicker: def.luz.flicker, pulse: def.luz.pulse, ph: d.ph, alto: def.luz.dy ?? 0 })
+      if (def.luz && !d.apagada && d.anim !== 'apagado' && !(def.anims.prendido && def.anims.apagado && d.anim !== 'prendido')) luces.push({ x: d.x, y: d.y - (def.luz.dy ?? 0), r: def.luz.radius, color: def.luz.color, flicker: def.luz.flicker, pulse: def.luz.pulse, ph: d.ph, alto: def.luz.dy ?? 0 })
       // luz de los ojos de un árbol despierto
       if (a.despierto && !an.endsWith('dormido')) luces.push({ x: d.x, y: d.y - 54, r: 46, color: d.tipo.endsWith('1') ? COLOR.OJOS_HECHIZADO_1 : COLOR.OJOS_HECHIZADO, pulse: true, ph: d.ph })
 

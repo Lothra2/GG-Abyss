@@ -46,6 +46,10 @@ import { moverCuerpo } from '../logic/movimiento'
 import { Misterio } from '../game/Misterio'
 import { Ciudad } from '../game/Ciudad'
 import { bostezo } from '../logic/ciudad'
+import { Fragua } from '../game/Fragua'
+import { alcanzaSacudida } from '../logic/fragua'
+import { enMedio } from '../logic/jefe'
+import { FRAGUA } from '../config/balance'
 import { enLinea as enFranja } from '../logic/jefe'
 import { Heroina } from '../game/Heroina'
 import { ThorSprite } from '../game/ThorSprite'
@@ -84,8 +88,9 @@ export interface EventoDescubrimiento {
 
 /** Los efectos que usa el combate: proyectiles en sus 8 direcciones, impactos, novas, auras y escudos */
 function fxDeCombate(dirs: readonly string[]): string[] {
-  const out = ['aura_nivel', 'curar', 'escudo_de_thor', 'grito_de_guerra', 'nova_fuego', 'tajo', 'impacto_flecha', 'impacto_naturaleza', 'impacto_arcano', 'impacto_fuego', 'impacto_sagrado', 'impacto_veneno', 'onda_pisoton', 'aviso_polvo', 'nube_polvo', 'aviso_mordida', 'aviso_ola', 'ola', 'sombra_picada', 'impacto_arena', 'aviso_aguja', 'aviso_puno', 'grieta_luz', 'nota_cuna']
-  for (const base of ['proyectil_flecha', 'proyectil_naturaleza', 'proyectil_arcano', 'proyectil_fuego', 'proyectil_arena']) for (const d of dirs) out.push(`${base}_${d}`)
+  const out = ['aura_nivel', 'curar', 'escudo_de_thor', 'grito_de_guerra', 'nova_fuego', 'tajo', 'impacto_flecha', 'impacto_naturaleza', 'impacto_arcano', 'impacto_fuego', 'impacto_sagrado', 'impacto_veneno', 'onda_pisoton', 'aviso_polvo', 'nube_polvo', 'aviso_mordida', 'aviso_ola', 'ola', 'sombra_picada', 'impacto_arena', 'aviso_aguja', 'aviso_puno', 'grieta_luz', 'nota_cuna',
+    'impacto_brasa', 'rastro_brasa', 'aviso_cadena', 'aviso_linea_cadena', 'vapor', 'aviso_aliento', 'fuego_piso', 'aviso_cola', 'vapor_grande']
+  for (const base of ['proyectil_flecha', 'proyectil_naturaleza', 'proyectil_arcano', 'proyectil_fuego', 'proyectil_arena', 'proyectil_brasa']) for (const d of dirs) out.push(`${base}_${d}`)
   return out
 }
 
@@ -99,6 +104,7 @@ const NOMBRES_GANCHOS = [
   'jefe', 'danarJefe', 'entrarArena', 'irAlPortal', 'impactos', 'abrirTienda', 'darOro', 'olfatear', 'olfato', 'ponerHeroina', 'abrirAlbum', 'guia', 'forzarGuia', 'planoJefe', 'musicaEstado', 'tutorial', 'saltarTutorial', 'irAMundo', 'mundoActual', 'mecanismos', 'darBrasas', 'mercader', 'aspecto',
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
   'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable', 'puerto', 'adelantarMarea', 'alzarFarol', 'apagarFarol', 'misterio', 'ciudad', 'robarYa', 'bostezando', 'enLuzFija', 'gargolas', 'relojero', 'decosDespiertos',
+  'fragua', 'sacudirThor', 'mojarThor', 'tirarPalanca', 'abrirJaula', 'relojFragua', 'pegarHollin', 'salamandras', 'faroleros', 'lavaApagada',
 ]
 
 /**
@@ -164,6 +170,11 @@ export class Mundo extends Phaser.Scene {
   misterio: Misterio | null = null
   /** F12: la Ciudad Dormida (faroles de plaza, la Ladrona, las chispas, las lámparas del trono y el despertar) */
   ciudad: Ciudad | null = null
+  /** F12: la Fragua de las Luces (el calor, las grietas, las jaulas, la sacudida de Thor y los surtidores) */
+  fragua: Fragua | null = null
+  /** F12: el chorro de un surtidor o la sacudida de Thor le llegan a la Dragona en el próximo paso del jefe */
+  private chorroPendiente = false
+  private sacudidaPendiente = false
   /** las luces del último cuadro (la sombra solo se ve dentro de una) */
   private lucesUltimas: Luz[] = []
   /** la heroína va en el carrito: hasta cuándo (segundos de juego) */
@@ -324,7 +335,9 @@ export class Mundo extends Phaser.Scene {
     // F11: los cristales (apagados y prendidos), el carrito y la figura de las Galerías
     if (mapa.cristales.length) encolarObjetosMundo(this, this.m, [...Object.keys(this.m.mundo.objetos).filter((n) => n.startsWith('cristal_')), 'carrito_mina', 'figura_ojos'])
     // F12: la figura de los ojos rojos en los pisos sin cristales (mojada en el Puerto)
-    else if (entidadesDeTipo(mapa, 'figura').length) encolarObjetosMundo(this, this.m, ['figura_ojos', 'figura_ojos_mojada'])
+    else if (entidadesDeTipo(mapa, 'figura').length) encolarObjetosMundo(this, this.m, ['figura_ojos', 'figura_ojos_mojada', 'figura_cargadora'])
+    // F12: la Fragua: las jaulas y sus luces libres, las grietas, los fuelles, los surtidores, las palancas y las cadenas
+    if (entidadesDeTipo(mapa, 'jaula').length || entidadesDeTipo(mapa, 'grieta').length) encolarObjetosMundo(this, this.m, Object.keys(this.m.mundo.objetos).filter((n) => /^(jaula_luz_|luz_libre_|grieta_brasa|fuelle_gigante_|surtidor|palanca_surtidor$|cadena_dragona$)/.test(n)))
     // F12: la Ciudad Dormida: los faroles de plaza en todos sus estados, las chispas, la Ladrona y las lámparas del trono
     if (entidadesDeTipo(mapa, 'farol_plaza').length) encolarObjetosMundo(this, this.m, ['farol_plaza_apagado', 'farol_plaza_prendido', 'farol_plaza_prenderse', 'farol_plaza_robado', 'chispa_luz', 'figura_ladrona', 'lampara_trono_apagada', 'lampara_trono_prendida', 'lampara_trono_prenderse'])
     // F12: los faroles del muelle, el agua de la marea, los muelles flotantes y el farol de Thor del Puerto Ahogado
@@ -405,7 +418,8 @@ export class Mundo extends Phaser.Scene {
     // decorados del mapa más el portal de llegada, que es una entidad
     // los faroles y las lámparas que prende el juego (Puerto, Ciudad) los dibuja su módulo: el objeto del mapa en el mismo
     // punto no va, si no el apagado tapa al prendido
-    const manejados = /^(farol_muelle|farol_plaza|lampara_trono)_/
+    // la Fragua dibuja sus fuelles, surtidores y palancas (soplan, echan el chorro, se tiran)
+    const manejados = entidadesDeTipo(this.mapa, 'surtidor').length || entidadesDeTipo(this.mapa, 'fuelle').length ? /^(farol_muelle|farol_plaza|lampara_trono)_|^(fuelle_gigante_.*|surtidor|palanca|palanca_surtidor)$/ : /^(farol_muelle|farol_plaza|lampara_trono)_/
     const decos: Deco[] = this.mapa.decos.filter((d) => !manejados.test(d.sprite))
     for (const p of entidadesDeTipo(this.mapa, 'portal_llegada')) decos.push({ sprite: this.portalDe(p.props.color), x: p.x, y: p.y })
     for (const f of this.portalesFx) f.destroy()
@@ -519,6 +533,19 @@ export class Mundo extends Phaser.Scene {
         if (Math.hypot(this.heroina.x - x, (this.heroina.y - y) * 1.4) <= radio) this.combate.golpeDeEnemigo(dano)
         else if (this.mejoras && Math.hypot(this.heroina.x - x, this.heroina.y - y) <= radio + 40) this.textoFlotante(this.heroina.x, this.heroina.y - 48, '¡Esquivaste!', 0x8af0e0)
       },
+      // F12: el hollín se le pega a la heroína si la alcanza (con muchos encima ya no cabe y raspa)
+      pegarHollin: (e) => {
+        if (this.combate.caido || !this.fragua) return false
+        if (Math.hypot(this.heroina.x - e.x, this.heroina.y - e.y) > e.cfg.alcance + 18) return false
+        return this.fragua.pegarHollin()
+      },
+      rastro: (x, y) => this.fragua?.rastro(x, y),
+      // F12: la cadena del Carcelero cae en su franja
+      golpeLinea: (_e, x, y, dx, dy, largo, ancho, dano) => {
+        if (this.combate.caido) return
+        if (enFranja(this.heroina.x, this.heroina.y, x, y, dx, dy, largo, ancho)) this.combate.golpeDeEnemigo(dano)
+        else if (this.mejoras && enFranja(this.heroina.x, this.heroina.y, x, y, dx, dy, largo, ancho + 50)) this.textoFlotante(this.heroina.x, this.heroina.y - 48, '¡Esquivaste!', 0x8af0e0)
+      },
       golpePesado: (e, rango, radio, empuje) => {
         if (this.combate.caido) return
         // el aviso es una elipse en el piso: ancha y baja
@@ -530,7 +557,15 @@ export class Mundo extends Phaser.Scene {
           if (empuje) this.empujarHeroina(this.heroina.x - e.x, this.heroina.y - e.y, empuje)
         }
       },
-      alMorir: (e) => this.combate.alMorirEnemigo(e),
+      alMorir: (e) => {
+        this.combate.alMorirEnemigo(e)
+        // F12: el Carcelero abre su cárcel entera; el farolero suelta la luz que cargaba
+        if (e.tipo === 'carcelero' && this.fragua) {
+          const n = this.fragua.abrirCarcel()
+          if (n) this.time.delayedCall(400, () => this.textoFlotante(e.x, e.y - 70, '¡Las luces son libres!', 0xbfe8ff))
+        }
+        if (e.jaulaLuz && this.fragua) this.fragua.liberarFarolero(e.ent.id)
+      },
       efecto: (n, x, y) => this.proyectiles.fxEn(n, x, y),
       sonido: (n, op) => this.sonido.efecto(n, op),
       sacudir: () => this.sacudir(160, 0.004),
@@ -639,7 +674,7 @@ export class Mundo extends Phaser.Scene {
       ? new Misterio(this, m, this.mapa, {
           sonido: (n, op) => this.sonido.efecto(n, op),
           thorGrune: () => this.sonido.efecto('ladrido', { volumen: 0.35, rate: 0.6 }),
-          alMural: (pieza) => this.alSecretoDeCofre(`mural:${pieza}`, pieza === 4 ? 'El mural de los faroleros' : pieza === 5 ? 'El mural de la ciudad dormida' : 'Un pedazo del mural'),
+          alMural: (pieza) => this.alSecretoDeCofre(`mural:${pieza}`, pieza === 4 ? 'El mural de los faroleros' : pieza === 5 ? 'El mural de la ciudad dormida' : pieza === 6 ? 'El mural de la puerta negra' : 'Un pedazo del mural'),
           // en el Puerto se lleva la luz del farol del muelle que tenga cerca (Thor lo vuelve a prender al pasar)
           alIrse: (x, y) => this.puerto?.apagarMuelleCerca(x, y, 320),
         })
@@ -661,6 +696,28 @@ export class Mundo extends Phaser.Scene {
       : null
     // el Rey ya se liberó en esta partida: la ciudad despierta de entrada
     if (this.ciudad && this.partida.jefeVencido) this.ciudad.despertar(false)
+    this.fragua?.destruir()
+    this.fragua = entidadesDeTipo(this.mapa, 'jaula').length || entidadesDeTipo(this.mapa, 'grieta').length
+      ? new Fragua(this, m, this.mapa, this.grilla, this.partida.faroles, {
+          sonido: (n, op) => this.sonido.efecto(n, op),
+          alCambiar: (ids) => {
+            this.partida.faroles = ids
+            this.relojGuia.progreso()
+            this.guardar()
+          },
+          estallido: (x, y, llave, n) => this.atmosfera.particulas.estallido(x, y, llave, n),
+          texto: (x, y, t, tinte) => this.textoFlotante(x, y, t, tinte),
+          fx: (n, x, y, esc) => this.proyectiles.fxEn(n, x, y, esc ?? 1),
+          modoPeque: () => this.combate.modoPeque,
+          danar: (n) => this.combate.danar(n),
+        }, (n) => this.decos.posicionesDe(n))
+      : null
+    this.chorroPendiente = false
+    this.sacudidaPendiente = false
+    // los faroleros cuya luz ya está libre salen sin su jaula
+    if (this.fragua) for (const e of this.enemigos.lista) if (e.jaulaLuz && this.fragua.faroleroLibre(e.ent.id)) e.jaulaLuz = null
+    // la Dragona ya se liberó en esta partida: la fragua está fría de entrada
+    if (this.fragua && this.partida.jefeVencido) this.liberarFragua(false)
     // en el Puerto la luz grande es la de Thor: el farol de la heroína se achica
     this.atmosfera.radioHalo = this.puerto ? PUERTO.haloHeroina : COLOR.FAROL_RADIO
     // el faro arranca apagado; si el Pez Farol ya cayó en esta partida, prendido con todo el muelle
@@ -695,6 +752,14 @@ export class Mundo extends Phaser.Scene {
           const ang = x !== undefined && y !== undefined && Math.hypot(x - h.x, y - h.y) > 4 ? Math.atan2(y - h.y, x - h.x) : null
           const c = g.cercaDeGolpe(h.x, h.y, ang === null ? 0 : Math.cos(ang), ang === null ? 0 : Math.sin(ang), ang === null ? 40 : 46)
           if (c) this.time.delayedCall(220, () => g.prender(c))
+        }
+        // F12: un golpe al aire cerca de una jaula cerrada le rompe el candado
+        const f = this.fragua
+        if (pego && f) {
+          const h = this.heroina
+          const ang = x !== undefined && y !== undefined && Math.hypot(x - h.x, y - h.y) > 4 ? Math.atan2(y - h.y, x - h.x) : null
+          const id = f.cercaDeGolpe(h.x, h.y, ang === null ? 0 : Math.cos(ang), ang === null ? 0 : Math.sin(ang), ang === null ? 40 : 46)
+          if (id) this.time.delayedCall(220, () => f.abrirPorId(id))
         }
       },
       direccion: (dx, dy) => {
@@ -783,7 +848,7 @@ export class Mundo extends Phaser.Scene {
           const ang = (Math.PI * 2 * k) / Math.max(1, n) + 0.7
           const p = this.grilla.puntoLibreCerca(x + Math.cos(ang) * 46, y + Math.sin(ang) * 30, 8, 80) ?? { x, y }
           // el minotauro llama ratas; la Polilla Reina, polillas; el Pez Farol, cangrejos y una medusa
-          const tipo = tipoJefe === 'polilla_reina' ? 'polilla_ceniza' : tipoJefe === 'pez_farol' ? (k % 3 === 2 ? 'medusa_negra' : 'cangrejo_ceniza') : tipoJefe === 'rey_de_piedra' ? 'sonambulo_piedra' : 'rata'
+          const tipo = tipoJefe === 'polilla_reina' ? 'polilla_ceniza' : tipoJefe === 'pez_farol' ? (k % 3 === 2 ? 'medusa_negra' : 'cangrejo_ceniza') : tipoJefe === 'rey_de_piedra' ? 'sonambulo_piedra' : tipoJefe === 'dragona_brasa' ? (k % 3 === 2 ? 'salamandra_brasa' : 'hollin') : 'rata'
           this.enemigos.invocar(this, this.m, this.grilla, tipo, p.x, p.y, evEnemigos)
         }
       },
@@ -818,6 +883,11 @@ export class Mundo extends Phaser.Scene {
           // a oscuras la piedra no siente: hay que prender las lámparas con las chispas de la corona
           this.textoFlotante(x, y, '¡Prende las lámparas!', 0xffd890)
           this.sonido.efecto('bloqueo', { volumen: 0.5, rate: 0.8 })
+        } else if (tipoJefe === 'dragona_brasa') {
+          // encendida no siente los golpes: hay que llevarla al chorro de un surtidor (o mojarla con Thor)
+          this.textoFlotante(x, y, '¡Llévala al chorro!', 0x7ad0ff)
+          this.sonido.efecto('bloqueo', { volumen: 0.5, rate: 0.8 })
+          this.game.events.emit('farol-pista')
         } else this.textoFlotante(x, y, '¡Prende los cristales!', 0x5ae8ff)
       },
       // F12: el barrido del Rey pega en su franja
@@ -832,6 +902,18 @@ export class Mundo extends Phaser.Scene {
         this.game.events.emit('destello', { color: 0x6a5aaa, alfa: this.suave ? 0.08 : 0.2, ms: 600 })
       },
       chispas: (x, y, n) => this.ciudad?.soltarChispasJefe(x, y, n),
+      // F12: el coletazo de la Dragona barre medio círculo del lado de la heroína
+      golpeMedio: (x, y, dx, dy, radio, dano) => {
+        if (this.combate.caido) return
+        if (enMedio(this.heroina.x, this.heroina.y, x, y, dx, dy, radio)) this.combate.golpeDeEnemigo(dano)
+        else if (this.mejoras && Math.hypot(this.heroina.x - x, this.heroina.y - y) <= radio + 40) this.textoFlotante(this.heroina.x, this.heroina.y - 48, '¡Esquivaste!', 0x8af0e0)
+      },
+      fuegoPiso: (x, y, dx, dy, largo, ancho, seg) => this.fragua?.fuegoPiso(x, y, dx, dy, largo, ancho, seg),
+      apagada: (por) => {
+        if (!this.jefe) return
+        this.textoFlotante(this.jefe.x, this.jefe.y - this.jefe.cuerpo.alto - 6, por === 'thor' ? '¡Thor la mojó!' : '¡Ahora!', 0x7ad0ff)
+        this.game.events.emit('destello', { color: 0xb0e8ff, alfa: this.suave ? 0.08 : 0.22, ms: 300 })
+      },
       // F12: la ola del Pez Farol corre por la franja: pega y empuja a quien quede adentro
       ola: (x, y, dx, dy, largo, ancho, dano, empuje) => {
         this.olaQueCorre(x, y, dx, dy, largo)
@@ -895,7 +977,11 @@ export class Mundo extends Phaser.Scene {
     }
     // si la heroína se va lejos de la arena (un salto de prueba, por ejemplo) la pelea se corta sin curar al jefe
     if (j.peleando && Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) > a.radio + 60) this.alCaerEnArena()
-    j.update({ dt, heroeX: this.heroina.x, heroeY: this.heroina.y, heroeVivo: !this.combate.caido, modoPeque: this.combate.modoPeque, ratasVivas: this.enemigos.invocadasVivas, vulnerable: this.galerias?.reinaVulnerable ?? this.ciudad?.lamparasTodas, alzado: this.puerto?.farolAlzado ? { x: this.thor.x, y: this.thor.y } : undefined })
+    j.update({ dt, heroeX: this.heroina.x, heroeY: this.heroina.y, heroeVivo: !this.combate.caido, modoPeque: this.combate.modoPeque, ratasVivas: this.enemigos.invocadasVivas, vulnerable: this.galerias?.reinaVulnerable ?? this.ciudad?.lamparasTodas, alzado: this.puerto?.farolAlzado ? { x: this.thor.x, y: this.thor.y } : undefined, chorro: this.chorroPendiente, sacudida: this.sacudidaPendiente })
+    this.chorroPendiente = false
+    this.sacudidaPendiente = false
+    // F12: en la fase 3 de la Dragona los fuelles soplan más seguido
+    if (this.fragua) this.fragua.rapido = j.peleando && j.fase >= 3
     // al salir de la arena después de ganar, vuelve la música del bosque
     if (this.musicaVictoriaPuesta && Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) > a.radio + 40) {
       this.musicaVictoriaPuesta = false
@@ -1008,6 +1094,8 @@ export class Mundo extends Phaser.Scene {
         this.luzAlFaro = { x0, y0, x1: x0, y1: y0 - 260, t: -1.6, dur: 2.2, alLlegar: () => this.despertarCiudad() }
       }
     }
+    // F12: la Dragona se libera: se rompen las cadenas y todas las luces vuelven a casa
+    if (this.jefe?.tipo === 'dragona_brasa' && !yaVencido) this.time.delayedCall(1400, () => this.liberarFragua(true))
     if (this.jefe?.tipo === 'pez_farol') {
       if (yaVencido) this.prenderFaro(false)
       // la luz arranca de donde se vio la antena por última vez (en `die` se apaga y se va)
@@ -1409,7 +1497,7 @@ export class Mundo extends Phaser.Scene {
     kb.on('keydown-T', () => !this.entrada.estaPausada && this.olfatear())
     ;(['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'] as const).forEach((k, i) => kb.on(`keydown-${k}`, () => !this.entrada.estaPausada && this.combate.pocion(i)))
     // F12: F alza el farol de Thor en el Puerto
-    kb.on('keydown-F', () => !this.entrada.estaPausada && this.alzarFarol())
+    kb.on('keydown-F', () => !this.entrada.estaPausada && (this.alzarFarol() || this.sacudirThor()))
   }
 
   private cerrar(): void {
@@ -1439,6 +1527,8 @@ export class Mundo extends Phaser.Scene {
     this.misterio = null
     this.ciudad?.destruir()
     this.ciudad = null
+    this.fragua?.destruir()
+    this.fragua = null
     this.sombrasPj?.destruir()
     this.sombrasPj = null
     for (const f of this.portalesFx) f.destroy()
@@ -1460,6 +1550,68 @@ export class Mundo extends Phaser.Scene {
     if (!this.puerto?.alzar()) return false
     this.thor.hacer('howl', 1.1)
     return true
+  }
+
+  /**
+   * F12: Thor se sacude mojado (la Fragua). La heroína cerca se enfría del todo, las grietas cercanas se apagan, las
+   * salamandras quedan de piedra y, si la Dragona está al lado, se apaga un ratico. false si está seco. También lo usa el
+   * botón del HUD.
+   */
+  sacudirThor(): boolean {
+    const f = this.fragua
+    if (!f) return false
+    const p = f.sacudir({ x: this.heroina.x, y: this.heroina.y }, { x: this.thor.x, y: this.thor.y })
+    if (!p) {
+      if (!f.apagada && f.agua.cargas <= 0 && this.t - this.tAvisoSeco > 4) {
+        this.tAvisoSeco = this.t
+        this.textoFlotante(this.thor.x, this.thor.y - 44, '¡Mójalo en el agua fría!', 0x7ad0ff)
+      }
+      return false
+    }
+    this.thor.hacer('wag', 0.8)
+    for (const e of this.enemigos.vivos) if (e.cfg.seMoja && alcanzaSacudida(p, e)) e.mojar()
+    const j = this.jefe
+    if (j && j.peleando && alcanzaSacudida(p, j)) this.sacudidaPendiente = true
+    this.game.events.emit('thor-sacude')
+    return true
+  }
+
+  private tAvisoSeco = -99
+
+  /** F12: la heroína tira de la palanca: sale el chorro del surtidor y, si la Dragona está encima, la apaga */
+  private tirarPalanca(o: Objetivo): boolean {
+    const f = this.fragua
+    if (!f) return false
+    const r = f.usar(o)
+    const s = r.surtidor
+    if (!s) return false
+    this.time.delayedCall(280, () => {
+      const j = this.jefe
+      if (j && j.peleando && f.chorroA(s, j)) this.chorroPendiente = true
+    })
+    return true
+  }
+
+  /**
+   * F12: la Dragona se liberó. Todas las jaulas se abren y sus luces suben de vuelta a sus pisos, la lava se vuelve
+   * piedra tibia, los fuelles se callan, los braseros y el horno se apagan y la oscuridad baja.
+   */
+  private liberarFragua(animar: boolean): void {
+    const f = this.fragua
+    if (!f) return
+    f.liberar(animar)
+    this.vista.cambiarAgua(K.aguaApagadaDe(idMundo(this.m.mundo)), this)
+    for (const n of Object.keys(this.m.mundo.objetos).filter((k) => /^(brasero_|boca_horno)/.test(k))) for (const p of this.decos.posicionesDe(n)) this.decos.fijarAnim(n, p.x, p.y, 'apagado')
+    for (const p of this.decos.posicionesDe('puerta_negra')) this.decos.fijarAnim('puerta_negra', p.x, p.y, 'latido')
+    const max = Math.max(0.01, ...this.mapa.zonas.map((z) => z.oscuridad))
+    this.aclaradoMeta = Math.min(this.aclaradoMeta, FRAGUA.oscuridadApagada / max)
+    if (!animar) {
+      this.atmosfera.aclarado = this.aclaradoMeta
+      return
+    }
+    this.sonido.efecto('cadenas_rompen', { volumen: 0.8 })
+    this.game.events.emit('destello', { color: 0xffe0a0, alfa: this.suave ? 0.15 : 0.5, ms: 1400 })
+    this.sacudir(260, 0.004)
   }
 
   /** F12: la marea alcanzó a alguien: se lo lleva suave al seco más cercano, sin daño (nadie pierde) */
@@ -1491,6 +1643,7 @@ export class Mundo extends Phaser.Scene {
     // tocar a Thor: olfatea. En el Puerto primero alza el farol (si lo tiene en recarga, olfatea como siempre)
     if (this.tocaThor(x, y)) {
       if (this.alzarFarol()) return true
+      if (this.sacudirThor()) return true
       this.olfatear()
       return true
     }
@@ -1498,6 +1651,12 @@ export class Mundo extends Phaser.Scene {
     const mo = this.mercader.golpe(x, y)
     if (mo) {
       this.irAUsar(mo)
+      return true
+    }
+    // F12: el candado de una jaula de la Fragua o una palanca de la arena
+    const fo = this.fragua?.golpe(x, y)
+    if (fo) {
+      this.irAUsar(fo)
       return true
     }
     // F11: un cristal apagado (para prenderlo) o el carrito de la mina
@@ -1691,6 +1850,8 @@ export class Mundo extends Phaser.Scene {
     // F12: en la Ciudad Dormida, si hay luz robada, Thor rastrea solo las chispas (lo más urgente)
     const chispas = this.ciudad?.pistasChispas ?? []
     if (chispas.length) pistas.splice(0, pistas.length, ...chispas.map((c) => ({ llave: `chispa:${Math.round(c.x)},${Math.round(c.y)}`, x: c.x, y: c.y, secreto: true })))
+    // F12: en la Fragua Thor rastrea también las jaulas cerradas de la zona (cada luz libre es luz fría)
+    for (const j of this.fragua?.pistasJaulas(this.heroina.x, this.heroina.y) ?? []) pistas.push({ llave: `jaula:${j.x},${j.y}`, x: j.x, y: j.y + 18, secreto: false })
     for (const p of ordenarPistas(pistas, { x: this.heroina.x, y: this.heroina.y }).slice(0, 4)) {
       const camino = buscarCamino(this.grilla, this.thor.x, this.thor.y, p.x, p.y, { radio: 6, radioBusqueda: 3 })
       if (!camino || camino.length === 0) continue
@@ -1731,6 +1892,12 @@ export class Mundo extends Phaser.Scene {
       this.combate.atacarHacia(o.x, o.y - 16)
       this.time.delayedCall(220, () => g.usar(o, () => {}))
     } else if (o.tipo === 'carrito' && this.galerias) this.galerias.usar(o, (_x, _y, ms) => this.subirAlCarrito(ms))
+    else if (o.tipo === 'jaula' && this.fragua) {
+      // le pega al candado: el golpe al aire hacia él y, cuando cae, la jaula se abre
+      const f = this.fragua
+      this.combate.atacarHacia(o.x, o.y - 16)
+      this.time.delayedCall(220, () => f.usar(o))
+    } else if (o.tipo === 'palanca' && this.fragua) this.tirarPalanca(o)
     else this.entidades.usar(o)
   }
 
@@ -2062,6 +2229,7 @@ export class Mundo extends Phaser.Scene {
         farol: this.puerto ? { alzado: this.puerto.farolAlzado, prendido: !this.puerto.farolApagado } : undefined,
         alApagarFarol: this.puerto ? () => this.medusaApagaFarol() : undefined,
         enLuzFija: this.ciudad ? (x, y) => this.ciudad!.enLuz(x, y) : undefined,
+        enLuzFria: this.fragua ? (x, y) => this.fragua!.enLuzFria(x, y) : undefined,
       })
       this.proyectiles.update(dt)
       this.combate.update(dt)
@@ -2122,6 +2290,21 @@ export class Mundo extends Phaser.Scene {
     this.galerias?.update(heroe, luces)
     this.misterio?.update(heroe, luces)
     this.ciudad?.update(dtVisual, { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido }, this.thor, luces)
+    const fr = this.fragua
+    if (fr) {
+      fr.update(dtVisual, { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido && !this.presentacion?.activa }, this.thor, luces, jb && jb.peleando && jb.vivo ? { x: jb.x, y: jb.y } : null)
+      this.heroina.velAmbiente = fr.velocidad
+      // los hollines pegados le achican el farol a la heroína
+      this.atmosfera.radioHalo = Math.round(COLOR.FAROL_RADIO * fr.halo)
+      // encendida, la Dragona arde: su fuego alumbra la arena
+      if (jb && jb.vivo && jb.peleando && jb.blindado) luces.push({ x: jb.x, y: jb.y - 40, r: 170, color: '#ff7020', flicker: true, ph: 0.5, alto: 40 })
+      // la jaula que carga el farolero late de su color
+      for (const e of this.enemigos.vivos) {
+        const pj = e.jaulaLuz ? e.puntoJaula() : null
+        const l = pj ? this.m.mundo.objetos[`jaula_luz_${e.jaulaLuz}`]?.luz : undefined
+        if (pj && l) luces.push({ x: pj.x, y: pj.y, r: 48, color: l.color, pulse: true, ph: 0.2, alto: 30 })
+      }
+    }
     this.puerto?.update(dtVisual, this.thor, [this.heroina, this.thor], luces)
     this.decos.actualizar(this.tViento, dtVisual, vista, heroe, luces)
     this.mecanismos?.update(this.t, luces)
@@ -2248,6 +2431,19 @@ export class Mundo extends Phaser.Scene {
       gargolas: () => this.enemigos.lista.filter((e) => e.cfg.gargola && e.vivo).map((e) => ({ x: Math.round(e.x), y: Math.round(e.y), posada: e.posada, picada: e.enPicada })),
       relojero: () => ({ agujas: this.enemigos.lista.filter((e) => e.conAguja).length }),
       decosDespiertos: () => this.decos.despiertos,
+      fragua: () => (this.fragua ? { ...this.fragua.info, halo: this.atmosfera.radioHalo, velocidad: this.heroina.velAmbiente } : null),
+      sacudirThor: () => this.sacudirThor(),
+      mojarThor: () => (this.fragua ? (this.fragua.agua.cargas = FRAGUA.sacudida.cargas) : 0),
+      tirarPalanca: ((id?: string) => {
+        const s = this.fragua?.info.surtidores.find((q) => !id || q.id === id)
+        return !!s && this.tirarPalanca({ tipo: 'palanca', x: s.px, y: s.py, radio: 40, parada: { x: s.px, y: s.py }, llave: `palanca:${s.id}` })
+      }) as never,
+      abrirJaula: ((id: string) => this.fragua?.abrirPorId(id) ?? false) as never,
+      relojFragua: ((t: number) => this.fragua?.fijarReloj(t)) as never,
+      pegarHollin: () => this.fragua?.pegarHollin() ?? false,
+      salamandras: () => this.enemigos.lista.filter((e) => e.tipo === 'salamandra_brasa' && e.vivo).map((e) => ({ x: Math.round(e.x), y: Math.round(e.y), piedra: e.dePiedra })),
+      faroleros: () => this.enemigos.lista.filter((e) => e.tipo === 'farolero_cadenas' && e.vivo).map((e) => ({ id: e.ent.id, x: Math.round(e.x), y: Math.round(e.y), jaula: e.jaulaLuz })),
+      lavaApagada: () => this.vista.aguaCambiada,
       adelantarMarea: ((s: number) => this.puerto?.adelantar(s)) as never,
       alzarFarol: () => this.alzarFarol(),
       apagarFarol: () => this.puerto?.apagar(),

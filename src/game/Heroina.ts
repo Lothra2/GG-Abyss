@@ -79,8 +79,11 @@ export class Heroina {
   }
 
   /** La velocidad con el equipo y el sueño */
+  /** F12: lo que la frena el lugar (el calor de la Fragua, los hollines pegados) */
+  velAmbiente = 1
+
   private get velTotal(): number {
-    return this.velMult * (this.suenoS > 0 ? this.suenoMult : 1)
+    return this.velMult * this.velAmbiente * (this.suenoS > 0 ? this.suenoMult : 1)
   }
 
   constructor(

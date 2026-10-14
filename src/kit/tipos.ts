@@ -24,6 +24,10 @@ export interface AnimHoja {
   antena?: ([number, number] | null)[][]
   /** F12: la corona del Rey de Piedra, igual que la antena */
   corona?: ([number, number] | null)[][]
+  /** F12: la boca de la Dragona de Brasa (su luz y de dónde sale el aliento), igual que la antena */
+  boca?: ([number, number] | null)[][]
+  /** F12: la jaula que carga el farolero de cadenas, igual que la antena */
+  jaula?: ([number, number] | null)[][]
 }
 
 export interface EventoAnim {
@@ -65,6 +69,8 @@ export interface Personaje {
   luz_antena?: { color: string; radius: number; notas?: string }
   /** la luz de la corona (la luz robada de la ciudad) */
   luz_corona?: { color: string; radius: number; notas?: string }
+  /** la luz de la boca de la Dragona de Brasa */
+  luz_boca?: { color: string; radius: number; notas?: string }
 }
 
 export type TipoCapa = 'pecho' | 'casco' | 'arma' | 'mano'
@@ -176,6 +182,8 @@ export interface MundoManifest {
   espuma?: { archivo: string; capa: string; columnas: number; cuadros: number; fps: number }
   /** F10: la capa del mapa que marca el agua quieta donde hay reflejo */
   reflejo?: { capa: string }
+  /** F12: la Fragua, la tira del agua para la lava ya enfriada (después de la Dragona) */
+  agua_apagada?: string
 }
 
 export interface UiImagen {

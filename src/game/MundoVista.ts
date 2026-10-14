@@ -76,6 +76,17 @@ export class MundoVista {
     }
   }
 
+  /** F12: la lava de la Fragua se enfría: la misma tira con otra textura (la apagada del kit) */
+  cambiarAgua(textura: string, escena: Phaser.Scene): boolean {
+    if (!escena.textures.exists(textura)) return false
+    for (const a of this.agua) a.img.setTexture(textura, a.id === 1 ? Math.max(0, this.cuadroAgua) : a.id - 1)
+    this.aguaCambiada = true
+    return true
+  }
+
+  /** la lava ya se enfrió (para las pruebas) */
+  aguaCambiada = false
+
   /** Cuántas piezas de espuma hay (para las pruebas) */
   get espumas(): number {
     return this.espuma.length

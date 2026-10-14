@@ -16,6 +16,9 @@ export interface Entidad {
   x: number
   y: number
   props: Props
+  /** F12: los rectángulos de Tiled traen su ancho y su alto (las grietas de la Fragua), los puntos no */
+  w?: number
+  h?: number
 }
 
 export interface Zona {
@@ -150,6 +153,7 @@ export function parsearMapa(json: MapaTiled): MapaJuego {
     x: o.x,
     y: o.y,
     props: leerProps(o),
+    ...(o.width && o.height ? { w: o.width, h: o.height } : {}),
   }))
 
   const zonas: Zona[] = objetosDe(json.layers, 'zonas').map((o) => {

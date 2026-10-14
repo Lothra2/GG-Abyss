@@ -617,3 +617,111 @@ test('captura la Ciudad Dormida: las zonas, la Ladrona robando, las chispas, el 
     await ctx.close()
   }
 })
+
+test('captura la Fragua de las Luces: las zonas, el calor, las jaulas libres, la sacudida, la Dragona y la liberación', async ({ browser }) => {
+  test.setTimeout(900_000)
+  const dir = join(process.cwd(), 'docs', 'capturas', 'f12')
+  mkdirSync(dir, { recursive: true })
+  const vistas = [
+    { sufijo: '', ctx: { viewport: { width: 960, height: 540 } } },
+    { sufijo: '_tablet', ctx: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
+  ]
+  type Fg = { jaulas: { id: string; x: number; y: number; abierta: boolean; carcel: boolean; farolero: boolean }[]; grietas: { x: number; y: number; w: number; h: number; fase: number }[]; surtidores: { id: string; x: number; y: number; px: number; py: number }[]; periodo: number; apagada: boolean; libres: number; total: number; acalorada: boolean }
+  type J = { x: number; y: number; vida: number; vidaMax: number; estado: string; blindado: boolean; vencido: boolean; avisos: { ataque: string }[] }
+  for (const v of vistas) {
+    const ctx = await browser.newContext(v.ctx)
+    const page = await ctx.newPage()
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'irAMundo', 'mundo6')
+    await esperarEscena(page, 'Bajada')
+    await esperarEscena(page, 'Mundo')
+    await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true && typeof a.fragua === 'function' && !!a.fragua() }, null, { timeout: 120_000 })
+    await gancho(page, 'ponerNivel', 16)
+    const foto = async (nombre: string, espera = 1500) => {
+      await page.waitForTimeout(espera)
+      await page.screenshot({ path: join(dir, `fragua_${nombre}${v.sufijo}.png`) })
+    }
+    const fg = () => gancho<Fg>(page, 'fragua')
+    if (!v.sufijo) {
+      for (const p of (await gancho<string[]>(page, 'postales')).filter((n) => /escalera|rio|jaulas|fuelles|bosque|carcel|horno|corazon/.test(n))) {
+        await gancho(page, 'irAPostal', p)
+        await gancho(page, 'avanzar', 1)
+        await foto(`zona_${p}`, 2500)
+      }
+    }
+    await gancho(page, 'matarEnemigos')
+    // una grieta al rojo con la heroína acalorada encima
+    const f0 = await fg()
+    const g = f0.grietas[Math.min(2, f0.grietas.length - 1)]!
+    await gancho(page, 'teleport', g.x + g.w / 2, g.y + g.h / 2 + 4)
+    for (let i = 0; i < 50 && !(await fg()).acalorada; i++) {
+      await gancho(page, 'relojFragua', (g.fase + 1.9 / f0.periodo) * f0.periodo)
+      await gancho(page, 'ponerHeroina', g.x + g.w / 2, g.y + g.h / 2 + 4)
+      await gancho(page, 'curarTodo')
+      await gancho(page, 'avanzar', 0.25)
+    }
+    await gancho(page, 'relojFragua', (g.fase + 1.9 / f0.periodo) * f0.periodo)
+    await gancho(page, 'avanzar', 0.1)
+    await foto('grieta_calor', 300)
+    // una jaula que se abre y su luz fría
+    const j = f0.jaulas.find((q) => !q.abierta && !q.farolero && !q.carcel)!
+    await gancho(page, 'teleport', j.x - 60, j.y + 40)
+    await gancho(page, 'avanzar', 0.6)
+    await foto('jaula_cerrada', 400)
+    await gancho(page, 'abrirJaula', j.id)
+    for (let i = 0; i < 6; i++) await gancho(page, 'avanzar', 0.3)
+    await foto('jaula_libre', 600)
+    // Thor se sacude
+    await gancho(page, 'mojarThor')
+    await gancho(page, 'sacudirThor')
+    await gancho(page, 'avanzar', 0.25)
+    await foto('thor_sacude', 150)
+    // la Cárcel de las Luces llena de luces, después del Carcelero
+    const car = (await gancho<{ id: number; tipo: string; x: number; y: number; vivo: boolean }[]>(page, 'enemigos')).find((e) => e.tipo === 'carcelero')
+    if (car) {
+      await gancho(page, 'teleport', car.x + 40, car.y + 40)
+      await gancho(page, 'danarEnemigo', car.id, 99999)
+      for (let i = 0; i < 12; i++) await gancho(page, 'avanzar', 0.4)
+      await foto('carcel_libre', 1200)
+    }
+    // la Dragona: encendida, el aliento, apagada por el chorro y la liberación
+    await gancho(page, 'matarEnemigos')
+    await gancho(page, 'curarTodo')
+    await gancho(page, 'entrarArena')
+    await gancho(page, 'avanzar', 3.5)
+    await foto('dragona_arena')
+    const jj = await gancho<J>(page, 'jefe')
+    await gancho(page, 'danarJefe', jj.vidaMax * 0.45)
+    for (let i = 0; i < 200 && !(await gancho<J>(page, 'jefe')).avisos.some((a) => a.ataque === 'aliento'); i++) {
+      await gancho(page, 'curarTodo')
+      await gancho(page, 'avanzar', 0.1)
+    }
+    await gancho(page, 'avanzar', 0.9)
+    await foto('dragona_aliento', 200)
+    await gancho(page, 'avanzar', 0.8)
+    await foto('dragona_fuego', 300)
+    const ss = (await fg()).surtidores
+    for (let k = 0; k < 200 && (await gancho<J>(page, 'jefe')).estado !== 'aturdido'; k++) {
+      const d = await gancho<J>(page, 'jefe')
+      const s = ss.reduce((a, b) => (Math.hypot(b.x - d.x, b.y - d.y) < Math.hypot(a.x - d.x, a.y - d.y) ? b : a))
+      await gancho(page, 'curarTodo')
+      await gancho(page, 'ponerHeroina', s.px, s.py + 10)
+      if (Math.hypot(s.x - d.x, s.y - d.y) <= 90) await gancho(page, 'tirarPalanca', s.id)
+      await gancho(page, 'avanzar', 0.25)
+    }
+    await gancho(page, 'avanzar', 0.4)
+    await foto('dragona_apagada', 200)
+    await gancho(page, 'danarJefe', 99999)
+    await page.waitForFunction(() => (window.__ABYSS__ as unknown as { fragua: () => { apagada: boolean } }).fragua().apagada, null, { timeout: 60_000 })
+    for (let i = 0; i < 4; i++) await gancho(page, 'avanzar', 0.6)
+    await foto('rio_de_luces', 600)
+    for (let i = 0; i < 8; i++) await gancho(page, 'avanzar', 1)
+    await foto('fragua_libre', 2500)
+    await gancho(page, 'irAPostal', 'rio_de_lava')
+    await gancho(page, 'avanzar', 1)
+    await foto('lava_fria', 2500)
+    await sinErrores(errores)
+    await ctx.close()
+  }
+})

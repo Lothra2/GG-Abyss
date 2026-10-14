@@ -32,5 +32,7 @@ export const K = {
   /** F8: el mapa, el agua y el suelo de cada mundo (el Bosque con los nombres de siempre) */
   mapaDe: (mundo: string) => (mundo === 'mundo1' ? 'mapa_tiled' : `mapa_tiled_${mundo}`),
   aguaDe: (mundo: string) => (mundo === 'mundo1' ? 'agua' : `agua_${mundo}`),
+  /** F12: la lava enfriada de la Fragua (la misma tira del agua, después de la Dragona) */
+  aguaApagadaDe: (mundo: string) => `agua_apagada_${mundo}`,
   sueloDe: (mundo: string, i: number) => (mundo === 'mundo1' ? `suelo_${i}` : `suelo_${mundo}_${i}`),
 } as const

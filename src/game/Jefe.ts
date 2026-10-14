@@ -8,7 +8,7 @@ import type { Grilla } from '../logic/grilla'
 import { moverCuerpo } from '../logic/movimiento'
 import { fx, juego } from '../logic/azar'
 import { danarJefe, despertar, nuevoJefe, pensarJefe, reposar, type EstadoJefe, type Jefe, type OrdenJefe, type PerfilJefe } from '../logic/jefe'
-import { IMPACTO, JEFE, JEFE_CAMPANA, JEFE_PEZ, JEFE_POLILLA, JEFE_REY } from '../config/balance'
+import { IMPACTO, JEFE, JEFE_CAMPANA, JEFE_DRAGONA, JEFE_PEZ, JEFE_POLILLA, JEFE_REY } from '../config/balance'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
 import { texto } from './Texto'
@@ -42,6 +42,13 @@ export interface EventosJefe {
   cancion?(): void
   /** F12: se le cayeron chispas de la corona al golpear el piso */
   chispas?(x: number, y: number, n: number): void
+  /** F12: el coletazo de la Dragona barre medio círculo hacia (dx, dy) */
+  golpeMedio?(x: number, y: number, dx: number, dy: number, radio: number, dano: readonly [number, number]): void
+  /** F12: el aliento de la Dragona deja el piso ardiendo en su franja */
+  fuegoPiso?(x: number, y: number, dx: number, dy: number, largo: number, ancho: number, seg: number): void
+  /** F12: la Dragona quedó apagada (el chorro o Thor) o se volvió a encender */
+  apagada?(por: 'chorro' | 'thor'): void
+  encender?(): void
   alFase2(): void
   alMorir(): void
 }
@@ -52,6 +59,7 @@ export function perfilDe(tipo: string): { perfil: PerfilJefe; vida: number } {
   if (tipo === 'polilla_reina') return { perfil: 'polilla', vida: JEFE_POLILLA.vida }
   if (tipo === 'pez_farol') return { perfil: 'pez', vida: JEFE_PEZ.vida }
   if (tipo === 'rey_de_piedra') return { perfil: 'rey', vida: JEFE_REY.vida }
+  if (tipo === 'dragona_brasa') return { perfil: 'dragona', vida: JEFE_DRAGONA.vida }
   return { perfil: 'minotauro', vida: JEFE.vida }
 }
 
@@ -66,6 +74,9 @@ export interface ContextoJefe {
   vulnerable?: boolean
   /** F12: Thor tiene el farol alzado aquí */
   alzado?: { x: number; y: number }
+  /** F12: el chorro de un surtidor le pegó a la Dragona, o Thor se sacudió a su lado */
+  chorro?: boolean
+  sacudida?: boolean
 }
 
 interface Telegrafo {
@@ -140,12 +151,15 @@ export class JefeSprite implements Atacable {
     if ((this.logica.vida / this.logica.vidaMax) * 100 <= JEFE.fase2Pct) this.logica.fase = 2
     if (perfil === 'pez' && (this.logica.vida / this.logica.vidaMax) * 100 <= JEFE_PEZ.fase3Pct) this.logica.fase = 3
     if (perfil === 'rey' && (this.logica.vida / this.logica.vidaMax) * 100 <= JEFE_REY.fase3Pct) this.logica.fase = 3
+    if (perfil === 'dragona' && (this.logica.vida / this.logica.vidaMax) * 100 <= JEFE_DRAGONA.fase3Pct) this.logica.fase = 3
+    // la Dragona en la fase 2 o más arranca encendida
+    if (perfil === 'dragona' && this.logica.fase >= 2) this.logica.escudo = true
     // un guardado que ya pasó de raicesPct no vuelve a enseñarlas
     if (campana && (this.logica.vida / this.logica.vidaMax) * 100 <= JEFE_CAMPANA.raicesPct) this.logica.raicesVistas = true
     const p = m.personajes[this.tipo]!
     this.celda = p.celda
     // la luz robada en la antena del Pez Farol o en la corona del Rey de Piedra
-    const luz = p.luz_antena ?? p.luz_corona
+    const luz = p.luz_antena ?? p.luz_corona ?? p.luz_boca
     if (luz) this.luzAntena = { color: luz.color, radio: luz.radius }
     this.enAgua = p.en_agua === true || ent.props.en_agua === true
     for (const [n, a] of Object.entries(p.anims)) this.cuadros[n] = { cuadros: a.cuadros, fps: a.fps }
@@ -312,7 +326,8 @@ export class JefeSprite implements Atacable {
     // el Pez Farol se libera: se achica, se pone azul y dorado y se va nadando. Se espera al último cuadro de `die`
     // (con la cámara lenta tarda más), se lo deja ver un momento y se va suave, sin polvo
     // el Rey de Piedra se libera y se queda: un viejito bonachón que bosteza y saluda (el último cuadro de `die`)
-    if (this.logica.perfil === 'rey') return
+    // la Dragona también: queda una dragoncita dorada que ronronea (el último cuadro de `die`)
+    if (this.logica.perfil === 'rey' || this.logica.perfil === 'dragona') return
     if (this.enAgua) {
       const irse = () =>
         this.escena.time.delayedCall(900, () => {
@@ -347,7 +362,7 @@ export class JefeSprite implements Atacable {
       return
     }
     const j = this.logica
-    const o = pensarJefe(j, { dt: c.dt, heroeX: c.heroeX, heroeY: c.heroeY, heroeVivo: c.heroeVivo, modoPeque: c.modoPeque, ratasVivas: c.ratasVivas, vulnerable: c.vulnerable, alzado: c.alzado }, juego())
+    const o = pensarJefe(j, { dt: c.dt, heroeX: c.heroeX, heroeY: c.heroeY, heroeVivo: c.heroeVivo, modoPeque: c.modoPeque, ratasVivas: c.ratasVivas, vulnerable: c.vulnerable, alzado: c.alzado, chorro: c.chorro, sacudida: c.sacudida }, juego())
     this.ejecutar(o, c)
     this.colocar()
   }
@@ -400,6 +415,13 @@ export class JefeSprite implements Atacable {
         this.poner('aturdido', true)
         this.ev.efecto('grieta_luz', j.x, j.y - this.cuerpo.alto / 2, 2)
         this.ev.sonido('corona_rompe', { volumen: 0.5, rate: 1.4 })
+      } else if (this.logica.perfil === 'dragona') {
+        // el chorro la apaga: echada en el piso, gris y humeando (ahí se le pega)
+        this.limpiarTelegrafos()
+        this.poner('apagada', true)
+        this.ev.efecto('vapor_grande', j.x, j.y - 10, 1)
+        this.ev.sonido('dragona_apagada', { volumen: 0.8 })
+        if (o.apagada) this.ev.apagada?.(o.apagada)
       } else if (this.logica.perfil === 'pez') {
         // el farol de Thor lo encandila: sale del agua de costado, boqueando
         this.limpiarTelegrafos()
@@ -417,6 +439,13 @@ export class JefeSprite implements Atacable {
       this.ev.sonido('ola', { volumen: 0.4, rate: 1.3 })
     }
     if (o.golpe) this.soltarGolpe(o.golpe)
+    if (o.fuegoPiso) this.ev.fuegoPiso?.(o.fuegoPiso.x, o.fuegoPiso.y, o.fuegoPiso.dx, o.fuegoPiso.dy, o.fuegoPiso.largo, o.fuegoPiso.ancho, o.fuegoPiso.seg)
+    if (o.encender) {
+      // se levanta y se vuelve a cubrir de fuego
+      this.poner('encendida', true)
+      this.voz({ volumen: 0.5, rate: 1.1 })
+      this.ev.encender?.()
+    }
     if (o.cancion) this.ev.cancion?.()
     if (o.chispas) this.ev.chispas?.(o.chispas.x, o.chispas.y, o.chispas.n)
     if (o.raices) this.ev.raices?.(o.raices.puntos, o.raices.radio, o.raices.seg)
@@ -434,10 +463,10 @@ export class JefeSprite implements Atacable {
     if (e === this.estadoPrevio && e !== 'perseguir' && e !== 'quieto') return
     this.estadoPrevio = e
     if (e === 'perseguir') this.poner('walk')
-    else if (e === 'quieto' || e === 'intro') this.poner('idle')
+    else if (e === 'quieto' || e === 'intro') this.poner(this.logica.perfil === 'dragona' && this.logica.escudo ? 'encendida' : 'idle')
     else if (e === 'aviso') this.poner(this.logica.ataque === 'grito' ? 'warcry' : 'idle')
     else if (e === 'cargando') this.poner('charge')
-    else if (e === 'aturdido') this.poner(this.logica.perfil === 'polilla' ? 'aturdida' : this.logica.perfil === 'pez' || this.logica.perfil === 'rey' ? 'aturdido' : 'idle')
+    else if (e === 'aturdido') this.poner(this.logica.perfil === 'polilla' ? 'aturdida' : this.logica.perfil === 'dragona' ? 'apagada' : this.logica.perfil === 'pez' || this.logica.perfil === 'rey' ? 'aturdido' : 'idle')
   }
 
   private soltarGolpe(g: NonNullable<OrdenJefe['golpe']>): void {
@@ -473,6 +502,34 @@ export class JefeSprite implements Atacable {
       this.ev.golpeCirculo(g.x, g.y, g.radio, g.dano, true)
       this.ev.efecto('onda_pisoton', g.x, g.y, 1)
       this.ev.sonido('rey_puno', { volumen: 0.9 })
+      this.ev.sacudir(true)
+      this.limpiarTelegrafos(g.ataque)
+      return
+    }
+    if (g.ataque === 'zarpazo') {
+      this.seguirAtaque('attack')
+      this.bloqueoAnimS = 0.6
+      this.ev.golpeCirculo(g.x, g.y, g.radio, g.dano, true)
+      this.ev.efecto('impacto_brasa', g.x, g.y, 1)
+      this.ev.sonido('golpe', { volumen: 0.8, rate: 0.55 })
+      this.ev.sacudir(false)
+      this.limpiarTelegrafos(g.ataque)
+      return
+    }
+    if (g.ataque === 'coletazo') {
+      this.seguirAtaque('coletazo')
+      this.bloqueoAnimS = 0.6
+      this.ev.golpeMedio?.(g.x, g.y, g.dx, g.dy, g.radio, g.dano)
+      this.ev.sonido('jefe_pisoton', { volumen: 0.7, rate: 0.9 })
+      this.ev.sacudir(true)
+      this.limpiarTelegrafos(g.ataque)
+      return
+    }
+    if (g.ataque === 'aliento') {
+      this.seguirAtaque('aliento')
+      this.bloqueoAnimS = 0.9
+      this.ev.golpeLinea?.(g.x, g.y, g.dx, g.dy, g.largo, g.ancho, g.dano)
+      this.ev.sonido('dragona_aliento', { volumen: 0.9 })
       this.ev.sacudir(true)
       this.limpiarTelegrafos(g.ataque)
       return
@@ -525,7 +582,7 @@ export class JefeSprite implements Atacable {
    * cuadro del golpe a su velocidad. Al terminar se queda con el último cuadro de `emerger` (afuera del agua) mientras
    * dura la ventana para pegarle.
    */
-  private seguirAtaque(anim: 'attack' | 'attack_heavy' | 'barrido'): void {
+  private seguirAtaque(anim: 'attack' | 'attack_heavy' | 'barrido' | 'coletazo' | 'aliento'): void {
     const def = this.m.personajes[this.tipo]?.anims[anim]
     const key = K.anim(this.tipo, anim, DIRECCIONES[this.dir]!)
     if (!def || !this.escena.anims.exists(key)) return
@@ -548,6 +605,7 @@ export class JefeSprite implements Atacable {
     const op = typeof a === 'number' ? { volumen: a, rate } : a
     if (this.logica.perfil === 'pez') this.ev.sonido('pez_emerge', { volumen: (op.volumen ?? 1) * 0.8, rate: (op.rate ?? 1) * 0.8 })
     else if (this.logica.perfil === 'rey') this.ev.sonido('rey_canta', { volumen: (op.volumen ?? 1) * 0.6, rate: (op.rate ?? 1) * 0.7 })
+    else if (this.logica.perfil === 'dragona') this.ev.sonido('dragona_ruge', { volumen: (op.volumen ?? 1) * 0.7, rate: op.rate })
     else if (this.logica.perfil === 'polilla') this.ev.sonido('polilla_aleteo', { volumen: op.volumen, rate: (op.rate ?? 1) * 0.7 })
     else this.ev.sonido('jefe_rugido', op)
   }
@@ -600,6 +658,44 @@ export class JefeSprite implements Atacable {
       this.bloqueoAnimS = a.seg + 0.2
       this.ev.sonido('rey_canta', { volumen: 0.8 })
       for (let i = 0; i < 6; i++) this.escena.time.delayedCall(i * (a.seg * 1000 / 6), () => this.ev.efecto('nota_cuna', this.x + (i % 2 ? 18 : -18), this.y - this.cuerpo.alto - 8 - i * 4, 1))
+    } else if (a.ataque === 'zarpazo') {
+      // donde cae la zarpa: el aviso de siempre (x1) se llena en lo que dura el aviso
+      if (this.escena.textures.exists(tex)) {
+        if (!this.escena.anims.exists('aviso_jefe_llenar')) this.escena.anims.create({ key: 'aviso_jefe_llenar', frames: this.escena.anims.generateFrameNumbers(tex, { start: 0, end: 7 }), frameRate: 8, repeat: 0 })
+        t.s = this.escena.add.sprite(Math.round(a.x), Math.round(a.y), tex, 0).setDepth(PROF.SOMBRAS + 2).setAlpha(0.92)
+        t.s.play({ key: 'aviso_jefe_llenar', frameRate: 8 / Math.max(0.2, a.seg) })
+      }
+      this.estirarAtaque('attack', a.seg)
+      this.voz({ volumen: 0.35, rate: 1.3 })
+    } else if (a.ataque === 'coletazo') {
+      // el medio círculo de la cola, del lado de la heroína: el aviso_cola del kit viene apuntando para arriba
+      const k = crearAnimFx(this.escena, this.m, 'aviso_cola')
+      if (k && this.escena.textures.exists(K.fx('aviso_cola'))) {
+        t.s = this.escena.add.sprite(Math.round(a.x), Math.round(a.y), K.fx('aviso_cola'), 0).setOrigin(0.5, 1).setRotation(Math.atan2(a.dx, -a.dy)).setDepth(PROF.SOMBRAS + 2).setAlpha(0.92)
+        t.s.play({ key: k, frameRate: (this.m.fx.aviso_cola?.cuadros ?? 8) / Math.max(0.2, a.seg) })
+      }
+      this.estirarAtaque('coletazo', a.seg)
+      this.voz({ volumen: 0.35, rate: 1.4 })
+    } else if (a.ataque === 'aliento') {
+      // toma aire con el pecho al rojo: la franja donde va el fuego, con el aviso_aliento del kit repetido
+      t.linea = { x: a.x, y: a.y, dx: a.dx, dy: a.dy, largo: a.largo, ancho: a.ancho }
+      t.g = this.escena.add.graphics().setDepth(PROF.SOMBRAS + 2)
+      const k = crearAnimFx(this.escena, this.m, 'aviso_aliento')
+      if (k && this.escena.textures.exists(K.fx('aviso_aliento'))) {
+        const ang = Math.atan2(a.dy, a.dx)
+        const px = -a.dy
+        const py = a.dx
+        t.extra = []
+        for (let d = 30; d < a.largo; d += 28) {
+          for (const lado of [-0.3, 0.3]) {
+            const s2 = this.escena.add.sprite(Math.round(a.x + a.dx * d + px * lado * a.ancho), Math.round(a.y + a.dy * d + py * lado * a.ancho), K.fx('aviso_aliento'), 0).setRotation(ang).setDepth(PROF.SOMBRAS + 3).setAlpha(0.92)
+            s2.play({ key: k, startFrame: Math.floor(d / 28) % 6 })
+            t.extra.push(s2)
+          }
+        }
+      }
+      this.estirarAtaque('aliento', a.seg)
+      this.ev.sonido('dragona_ruge', { volumen: 0.4, rate: 1.3 })
     } else if (a.ataque === 'barrido') {
       // la franja por donde va a barrer el brazo
       t.linea = { x: a.x, y: a.y, dx: a.dx, dy: a.dy, largo: a.largo, ancho: a.ancho }
@@ -670,7 +766,7 @@ export class JefeSprite implements Atacable {
   }
 
   /** F12: la preparación del ataque del Pez Farol dura lo que el aviso: los cuadros de `aviso` se estiran hasta el golpe */
-  private estirarAtaque(anim: 'attack' | 'attack_heavy' | 'barrido', seg: number): void {
+  private estirarAtaque(anim: 'attack' | 'attack_heavy' | 'barrido' | 'coletazo' | 'aliento', seg: number): void {
     const def = this.cuadros[anim]
     const pre = this.m.personajes[this.tipo]?.anims[anim]?.aviso?.[1] ?? 6
     if (!def) return
@@ -787,7 +883,7 @@ export class JefeSprite implements Atacable {
   antena(): { x: number; y: number } | null {
     if (!this.luzAntena) return null
     const def = this.m.personajes[this.tipo]?.anims[this.animNombre]
-    const puntos = def?.antena ?? def?.corona
+    const puntos = def?.antena ?? def?.corona ?? def?.boca
     if (!puntos) {
       const p = { x: this.x, y: this.y - JEFE_PEZ.antenaAlto }
       this.ultimaAntena = p

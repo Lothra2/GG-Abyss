@@ -13,7 +13,7 @@ import { juego } from '../logic/azar'
 import { ABISMO, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, MODO_PEQUE, PUERTO, TROL_ELITE, type EnemigoBalance } from '../config/balance'
 import { danoMarinero, puntoRodeo } from '../logic/puerto'
 import { puntaAguja } from '../logic/ciudad'
-import { CIUDAD } from '../config/balance'
+import { CIUDAD, FRAGUA } from '../config/balance'
 import { crearAnimFx } from '../kit/anims'
 import { PROF } from '../config/juego'
 import { Sombra } from './Sombras'
@@ -40,6 +40,10 @@ const CUERPO: Record<string, { alto: number; radio: number; sombra: number; barr
   gargola_dormida: { alto: 34, radio: 12, sombra: 16, barra: 24 },
   duende_sueno: { alto: 26, radio: 10, sombra: 16, barra: 22 },
   relojero: { alto: 50, radio: 17, sombra: 32, barra: 40 },
+  hollin: { alto: 16, radio: 9, sombra: 14, barra: 18 },
+  salamandra_brasa: { alto: 18, radio: 12, sombra: 22, barra: 24 },
+  farolero_cadenas: { alto: 48, radio: 16, sombra: 30, barra: 36 },
+  carcelero: { alto: 52, radio: 18, sombra: 34, barra: 40 },
 }
 const CUERPO_DEFECTO = { alto: 28, radio: 12, sombra: 22, barra: 26 }
 /** Hacia dónde mira cada dirección, en grados (0 a la derecha, crece hacia abajo como la pantalla) */
@@ -63,6 +67,8 @@ export interface ContextoEnemigos {
   alApagarFarol?(): void
   /** F12: la Ciudad Dormida, ¿este punto está en la luz de un barrio prendido? (el sonámbulo se queda de piedra) */
   enLuzFija?(x: number, y: number): boolean
+  /** F12: la Fragua, ¿este punto está en la luz fría de una jaula liberada? (el hollín huye) */
+  enLuzFria?(x: number, y: number): boolean
 }
 
 export interface EventosEnemigos {
@@ -75,6 +81,12 @@ export interface EventosEnemigos {
   aguja?(e: Enemigo, grados: number, largo: number, ancho: number, dano: readonly [number, number]): boolean
   /** F12: la picada de la gárgola cae en (x, y) */
   picada?(e: Enemigo, x: number, y: number, radio: number, dano: readonly [number, number]): void
+  /** F12: el hollín alcanzó a la heroína: ¿se le pegó? (si ya tiene muchos encima, no) */
+  pegarHollin?(e: Enemigo): boolean
+  /** F12: la salamandra dejó piso caliente aquí */
+  rastro?(x: number, y: number): void
+  /** F12: la cadena del Carcelero cayó en esta franja */
+  golpeLinea?(e: Enemigo, x: number, y: number, dx: number, dy: number, largo: number, ancho: number, dano: readonly [number, number]): void
   alMorir(e: Enemigo): void
   efecto(nombre: string, x: number, y: number): void
   sonido(nombre: string, op?: { volumen?: number; rate?: number }): void
@@ -152,6 +164,19 @@ export class Enemigo implements Atacable {
   get conAguja(): boolean {
     return !!this.barridoAguja
   }
+  /** F12: la salamandra mojada por Thor: de piedra, quieta, recibe el doble */
+  private piedraS = 0
+  private rastroEnS = 0
+  /** F12: la cadena del Carcelero: el aviso en línea y después se jala hasta donde cayó */
+  private cadena: { dx: number; dy: number; sprites: Phaser.GameObjects.Sprite[]; jalar: { x0: number; y0: number; x1: number; y1: number; resta: number; total: number } | null } | null = null
+  private pasoEnS = 0
+  /** la anim que corre (sin dirección): para leer la `jaula` del farolero */
+  private animNombre = 'idle'
+  /** F12: el farolero carga una jaula de luz (de qué color) */
+  jaulaLuz: string | null = null
+  get dePiedra(): boolean {
+    return this.piedraS > 0
+  }
   /** F12: la aguja del Relojero barriendo */
   private barridoAguja: { grados: number; resta: number; pego: boolean; sprites: Phaser.GameObjects.Sprite[]; aviso: number } | null = null
   private cfgIA: ConfigIA
@@ -222,6 +247,7 @@ export class Enemigo implements Atacable {
         if (escena.anims.exists(key)) this.ojos.play({ key, startFrame: ent.id % 4 })
       }
     }
+    if (this.tipo === 'farolero_cadenas' && ent.props.jaula === true) this.jaulaLuz = String(ent.props.luz ?? 'catedral')
     if (this.cfg.gargola) {
       // dormida, posada como una estatua más
       this.posada = true
@@ -266,7 +292,40 @@ export class Enemigo implements Atacable {
 
   /** El marinero de niebla: en la luz se deshace rápido, a oscuras el golpe casi lo atraviesa */
   ajustarDano(dano: number): number {
+    if (this.piedraS > 0) return dano * FRAGUA.salamandra.piedraMult
     return this.cfg.deNiebla ? danoMarinero(dano, this.enLuz) : dano
+  }
+
+  /** F12: la sacudida de Thor la moja: la salamandra queda de piedra negra unos segundos (y recibe el doble) */
+  mojar(): boolean {
+    if (!this.vivo || !this.cfg.seMoja) return false
+    const nueva = this.piedraS <= 0
+    this.piedraS = FRAGUA.sacudida.piedraS
+    this.golpeEn = null
+    this.anticipaS = 0
+    this.ia.estado = 'quieto'
+    this.poner('piedra', true)
+    if (nueva) this.ev.sonido('salamandra_piedra', { volumen: 0.5 })
+    return true
+  }
+
+  /** F12: el hollín se pegó a la heroína: aquí ya no está (lo dibuja la Fragua encima de ella) */
+  private pegarse(): void {
+    this.vivo = false
+    matar(this.ia)
+    this.golpeEn = null
+    this.marcar(false)
+    this.setVisible(false)
+    this.escena.time.delayedCall(0, () => !this.destruido && this.destruir())
+  }
+
+  /** F12: dónde va la jaula del farolero en este cuadro (el kit la trae por anim, dirección y cuadro) */
+  puntoJaula(): { x: number; y: number } | null {
+    if (!this.jaulaLuz || !this.vivo) return null
+    const a = this.m.personajes[this.tipo]?.anims[this.animNombre] as { jaula?: ([number, number] | null)[][] } | undefined
+    const f = Math.max(0, (this.sprite.anims.currentFrame?.index ?? 1) - 1)
+    const pt = a?.jaula?.[this.dir]?.[f]
+    return pt ? { x: this.sprite.x + pt[0], y: this.sprite.y + pt[1] } : { x: this.x - 8, y: this.y - 30 }
   }
 
   /** Daño recibido. Devuelve true si murió con este golpe. */
@@ -326,6 +385,9 @@ export class Enemigo implements Atacable {
   }
 
   private morir(): void {
+    for (const s2 of this.cadena?.sprites ?? []) s2.destroy()
+    this.cadena = null
+    this.piedraS = 0
     this.picada?.s?.destroy()
     this.picada = null
     for (const s2 of this.barridoAguja?.sprites ?? []) s2.destroy()
@@ -397,6 +459,33 @@ export class Enemigo implements Atacable {
       return
     }
     if (this.cfg.petrificaEnLuz && this.mirarPiedra(ctx)) return
+    // F12: la salamandra de piedra no se mueve; el Carcelero se jala por su cadena
+    if (this.piedraS > 0) {
+      this.piedraS -= dt
+      this.poner('piedra')
+      if (this.piedraS <= 0) this.poner('idle', true)
+      return
+    }
+    if (this.cadena?.jalar) {
+      this.jalar(dt)
+      return
+    }
+    // F12: el hollín huye de la luz fría (se va a lo oscuro, lejos de la heroína)
+    if (this.cfg.huyeLuzFria && ctx.enLuzFria?.(this.x, this.y)) {
+      const dx = this.x - ctx.heroe.x
+      const dy = this.y - ctx.heroe.y
+      const d = Math.hypot(dx, dy) || 1
+      const vel = this.cfg.velocidad * (ctx.modoPeque ? MODO_PEQUE.velocidadEnemigos : 1)
+      const r = moverCuerpo(this.grilla, { x: this.x, y: this.y, radio: 7 }, (dx / d) * vel * dt, (dy / d) * vel * dt)
+      this.ia.x = r.x
+      this.ia.y = r.y
+      this.ia.estado = 'quieto'
+      this.golpeEn = null
+      this.anticipaS = 0
+      this.dir = indiceDireccion(dx, dy)
+      this.poner('walk')
+      return
+    }
 
     const antes = { x: this.x, y: this.y }
     // la raicita se distrae con Thor: si él está cerca (y más cerca que la heroína), lo persigue a él
@@ -422,6 +511,21 @@ export class Enemigo implements Atacable {
       this.ia.y = r.y
       mueve = r.movido > 0.05
       if (!orden.mirarA) this.dir = indiceDireccion(o.dx, o.dy)
+    }
+    // F12: la salamandra deja brasitas donde pasa; el farolero suena a hierro hueco
+    if (mueve && this.cfg.rastro) {
+      this.rastroEnS -= dt
+      if (this.rastroEnS <= 0) {
+        this.rastroEnS = FRAGUA.salamandra.rastroCadaS
+        this.ev.rastro?.(this.x, this.y)
+      }
+    }
+    if (mueve && this.cfg.pesado?.cadena) {
+      this.pasoEnS -= dt
+      if (this.pasoEnS <= 0 && dH < 420) {
+        this.pasoEnS = 0.7
+        this.ev.sonido('farolero_paso', { volumen: 0.25, rate: 0.9 + juego().next() * 0.2 })
+      }
     }
     if (orden.curar) this.ev.curo(this)
     if (orden.gritar) {
@@ -702,6 +806,11 @@ export class Enemigo implements Atacable {
 
   private ejecutarGolpe(): void {
     if (!this.vivo || this.oculta) return
+    // el hollín salta a pegarse: si llega y cabe, se pega (no hace daño); si no, raspa poquito
+    if (this.cfg.pegaHollin && this.ev.pegarHollin?.(this)) {
+      this.pegarse()
+      return
+    }
     if (this.cfg.rodea) this.ev.sonido('cangrejo_tenaza', { volumen: 0.4, rate: 0.9 + juego().next() * 0.3 })
     if (this.cfg.proyectil) {
       // dispara hacia donde mira
@@ -714,6 +823,40 @@ export class Enemigo implements Atacable {
   private comenzarAviso(seg: number): void {
     const def = this.cuadros.attack_heavy
     const tex = K.obj('aviso_jefe', 'llenar')
+    const pe = this.cfg.pesado
+    if (pe?.linea) {
+      // la cadena del Carcelero: la línea donde va a caer, hacia la heroína (se fija ahora: si camina de lado, se salva)
+      const v = DIRECCIONES[this.dir]!
+      const ang = { down: Math.PI / 2, down_left: (3 * Math.PI) / 4, left: Math.PI, up_left: (-3 * Math.PI) / 4, up: -Math.PI / 2, up_right: -Math.PI / 4, right: 0, down_right: Math.PI / 4 }[v]!
+      const dx = Math.cos(ang)
+      const dy = Math.sin(ang)
+      const sprites: Phaser.GameObjects.Sprite[] = []
+      const k = crearAnimFx(this.escena, this.m, 'aviso_linea_cadena')
+      if (k && this.escena.textures.exists(K.fx('aviso_linea_cadena'))) {
+        for (let d = 26; d <= pe.linea.largo; d += 28) {
+          const s2 = this.escena.add.sprite(Math.round(this.x + dx * d), Math.round(this.y + dy * d), K.fx('aviso_linea_cadena'), 0).setRotation(ang).setDepth(PROF.SOMBRAS + 3).setAlpha(0.95)
+          s2.play({ key: k, startFrame: Math.floor(d / 28) % 6 })
+          sprites.push(s2)
+        }
+      }
+      for (const s2 of this.cadena?.sprites ?? []) s2.destroy()
+      this.cadena = { dx, dy, sprites, jalar: null }
+      if (def && this.escena.anims.exists(K.anim(this.tipo, 'attack_heavy', DIRECCIONES[this.dir]!))) this.poner('attack_heavy', true, def.cuadros / Math.max(0.2, seg))
+      this.ev.sonido('carcelero_llaves', { volumen: 0.6 })
+      return
+    }
+    if (pe?.cadena) {
+      // la cadena del farolero va a girar en anillo: el aviso_cadena del kit se llena en el piso
+      const k = crearAnimFx(this.escena, this.m, 'aviso_cadena')
+      if (k && this.escena.textures.exists(K.fx('aviso_cadena'))) {
+        this.aviso?.destroy()
+        this.aviso = this.escena.add.sprite(Math.round(this.x), Math.round(this.y), K.fx('aviso_cadena'), 0).setDepth(PROF.SOMBRAS + 2).setAlpha(0.92)
+        this.aviso.play({ key: k, frameRate: (this.m.fx.aviso_cadena?.cuadros ?? 8) / Math.max(0.2, seg) })
+      }
+      if (def && this.escena.anims.exists(K.anim(this.tipo, 'attack_heavy', DIRECCIONES[this.dir]!))) this.poner('attack_heavy', true, def.cuadros / Math.max(0.2, seg))
+      this.ev.sonido('cadena_gira', { volumen: 0.4, rate: 0.8 })
+      return
+    }
     if (this.escena.textures.exists(tex)) {
       if (!this.escena.anims.exists('aviso_jefe_llenar')) {
         this.escena.anims.create({ key: 'aviso_jefe_llenar', frames: this.escena.anims.generateFrameNumbers(tex, { start: 0, end: 7 }), frameRate: 8, repeat: 0 })
@@ -744,6 +887,20 @@ export class Enemigo implements Atacable {
       this.empezarBarrido()
       return
     }
+    const li = this.cfg.pesado?.linea
+    const ca = this.cadena
+    if (li && ca) {
+      // la cadena cae en su franja y el Carcelero se jala hasta donde llegó (sin atravesar paredes)
+      this.ev.sonido('cadena_gira', { volumen: 0.7, rate: 1.2 })
+      this.ev.golpeLinea?.(this, this.x, this.y, ca.dx, ca.dy, li.largo, li.ancho, this.cfg.pesado!.dano)
+      for (const s2 of ca.sprites) s2.destroy()
+      ca.sprites = []
+      const r = moverCuerpo(this.grilla, { x: this.x, y: this.y, radio: 10 }, ca.dx * (li.largo - 30), ca.dy * (li.largo - 30))
+      ca.jalar = { x0: this.x, y0: this.y, x1: r.x, y1: r.y, resta: li.jalarS, total: li.jalarS }
+      this.poner('jalar', true)
+      return
+    }
+    if (this.cfg.pesado?.cadena) this.ev.sonido('cadena_gira', { volumen: 0.8 })
     if (pe.empuje) {
       // el ancla del capitán: golpe de hierro y una ola corta que empuja
       this.ev.sonido('ancla_golpe', { volumen: 0.8 })
@@ -755,6 +912,22 @@ export class Enemigo implements Atacable {
     this.bloqueoAnimS = this.cfg.pesado && !this.trolElite ? 1.1 : 0.3
   }
 
+  /** F12: el Carcelero se jala por su cadena hasta donde cayó; al llegar queda un rato quieto (la ventana para pegarle) */
+  private jalar(dt: number): void {
+    const j = this.cadena!.jalar!
+    j.resta -= dt
+    const k = 1 - Math.max(0, j.resta) / j.total
+    this.ia.x = j.x0 + (j.x1 - j.x0) * k
+    this.ia.y = j.y0 + (j.y1 - j.y0) * k
+    this.poner('jalar')
+    if (j.resta > 0) return
+    this.cadena = null
+    this.ia.estado = 'quieto'
+    this.bloqueoAnimS = 1.1
+    this.ev.sonido('carcelero_portazo', { volumen: 0.5 })
+    this.ev.sacudir()
+  }
+
   private poner(anim: string, forzar = false, fps?: number): void {
     const ok = this.m.personajes[this.tipo]!.anims
     let a = anim
@@ -762,6 +935,7 @@ export class Enemigo implements Atacable {
     const key = K.anim(this.tipo, a, DIRECCIONES[this.dir]!)
     if (key === this.animActual && !forzar) return
     this.animActual = key
+    this.animNombre = a
     if (this.escena.anims.exists(key)) this.sprite.play(fps ? { key, frameRate: fps } : key)
   }
 
@@ -833,6 +1007,7 @@ export class Enemigo implements Atacable {
     this.ojos?.destroy()
     this.picada?.s?.destroy()
     for (const s2 of this.barridoAguja?.sprites ?? []) s2.destroy()
+    for (const s2 of this.cadena?.sprites ?? []) s2.destroy()
     this.destruido = true
   }
 

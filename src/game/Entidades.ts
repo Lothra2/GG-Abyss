@@ -9,7 +9,7 @@ import type { Partida } from '../logic/guardado'
 import type { Sonido } from './Sonido'
 import { texto } from './Texto'
 
-export type TipoObjetivo = 'cofre' | 'cartel' | 'fogata' | 'abuelo' | 'rompible' | 'mercader' | 'cristal' | 'carrito'
+export type TipoObjetivo = 'cofre' | 'cartel' | 'fogata' | 'abuelo' | 'rompible' | 'mercader' | 'cristal' | 'carrito' | 'jaula' | 'palanca'
 
 /** Algo del mundo que se puede tocar: la heroína camina hasta ahí y lo usa */
 export interface Objetivo {
