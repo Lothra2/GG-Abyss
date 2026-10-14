@@ -76,6 +76,8 @@ test.describe('Combate', () => {
 
   test('los golpes pesan: matar congela un instante, sacude la cámara y el mundo sigue solo', async ({ page }) => {
     await abrirMundo(page, 'sophie')
+    // F13: con la dureza nueva la rata aguanta más: con nivel la mata de una antes de que otro le pegue
+    await gancho(page, 'ponerNivel', 12)
     const { id } = await cerca(page, 'rata', 0)
     await matar(page, id)
     const i = await gancho<{ ultimo: { tipo: string; pausa: number; sacude: boolean } | null; pausa: number; escalaAnims: number }>(page, 'impactos')
