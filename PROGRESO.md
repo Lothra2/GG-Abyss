@@ -77,6 +77,7 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
 - Mundo 6, La Fragua de las Luces (PLAN.md F12), con el taller `d05328b` (sesión nueva del taller en `claude/abyss-mundo6`):
   - La luz quema: calor con termómetro, grietas que respiran con los fuelles, jaulas que dejan luz fría, Thor que se moja y se sacude, hollines que se pegan, salamandras, faroleros, El Carcelero y la Dragona de Brasa que el chorro de un surtidor apaga.
   - Al liberarla todas las luces vuelven a sus pisos y la fragua se enfría.
+  - Suite completa en verde con el taller `b684504` (290 pasaron, 7 se saltan a propósito).
   - Arreglos en el camino: la palanca nueva chocaba de nombre con la vieja (el juego ya no se rompe con una hoja sin cuadros y el taller la renombra) y el chorro del surtidor ahora cuenta con el reloj del juego.
 - Arreglo publicado: tras vencer al Pez Farol el oro caía en la poza y la heroína se quedaba pegada. Ahora cae en el muelle y ningún botín cae donde no se camina.
 - Verificación de F10a, F11 e intro:
