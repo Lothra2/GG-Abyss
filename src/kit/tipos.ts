@@ -76,13 +76,14 @@ export interface Personaje {
   luz_ojos?: { color: string; radius: number; notas?: string }
 }
 
-export type TipoCapa = 'pecho' | 'casco' | 'arma' | 'mano'
+export type TipoCapa = 'pecho' | 'casco' | 'arma' | 'mano' | 'alas_detras' | 'alas_delante' | 'aura'
 
 /** Una capa: una hoja con un bloque por animación (8 filas, una por dirección, y una columna por cuadro) */
 export interface CapaHoja {
   archivo: string
   columnas: number
-  bloques: Record<string, { x: number; y: number; cuadros: number }>
+  /** F13: un bloque puede venir en su propia hoja (el `volar` de la celestial): `archivo` y `columnas` propios */
+  bloques: Record<string, { x: number; y: number; cuadros: number; archivo?: string; columnas?: number }>
 }
 
 export interface CapasPersonaje {
@@ -93,6 +94,11 @@ export interface CapasPersonaje {
   mano: Record<string, CapaHoja>
   pecho: Record<string, CapaHoja>
   casco: Record<string, CapaHoja>
+  /** F13: la heroína celestial: las alas (detrás y delante del cuerpo) y la aureola, y en qué orden van con la base */
+  alas_detras?: Record<string, CapaHoja>
+  alas_delante?: Record<string, CapaHoja>
+  aura?: Record<string, CapaHoja>
+  orden_celestial?: string[]
 }
 
 export interface AtlasRutas {

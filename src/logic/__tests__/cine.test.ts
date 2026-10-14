@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CINE, duracionCine, letrasCine, panelesCine, planoEn, planosCine, TEXTOS_CINE } from '../cine'
+import { CINE, duracionCine, hojasCine, letrasCine, panelesCine, planoEn, planosCine, sonidosCine, TEXTOS_CINE } from '../cine'
 
 const capa = { nombre: 'fondo', archivo: 'x.png', cuadros: 1, fps: 1, paralaje: 0.5 }
 const cine = {
@@ -33,5 +33,28 @@ describe('las cinemáticas del final', () => {
     expect(planoEn(ps, 999)).toBeNull()
     expect(letrasCine('Hola', 0)).toBe(0)
     expect(letrasCine('Hola', 10)).toBe(4)
+  })
+})
+
+describe('el guion del taller (desde y hasta sobre la música)', () => {
+  const c2 = {
+    bajada_puerta: { w: 480, h: 270, capas: [capa] },
+    bajada_titulo: { w: 480, h: 270, capas: [capa] },
+    logo_hielo: { archivo: 'l.png', w: 300, h: 100, cuadros: 16, columnas: 4, bucle_desde: 12 },
+    nieve_frente: { archivo: 'n.png', w: 128, h: 128, cuadros: 8 },
+    guion: [
+      { panel: 'bajada_puerta', desde: 0, hasta: 10, subtitulo: 'La Puerta Negra se abrió.', sonido: [{ nombre: 'puerta_negra', en: 0.5 }] },
+      { panel: 'bajada_titulo', desde: 50.5, hasta: 60, sonido: [{ nombre: 'cine_rugido', en: 50.5 }] },
+    ],
+  }
+  it('cada panel va en su segundo de la música, con sus sonidos', () => {
+    const ps = planosCine(c2)
+    expect(ps.map((p) => [p.desde, p.dura])).toEqual([[0, 10], [50.5, 9.5]])
+    expect(ps[1]!.titulo).toBe(true)
+    expect(ps[0]!.sonidos).toEqual([{ nombre: 'puerta_negra', en: 0.5 }])
+    expect(sonidosCine(c2).sort()).toEqual(['cine_rugido', 'puerta_negra'])
+  })
+  it('separa el logo de lo que cruza delante', () => {
+    expect(hojasCine(c2)).toEqual({ logo: 'logo_hielo', cruza: ['nieve_frente'] })
   })
 })

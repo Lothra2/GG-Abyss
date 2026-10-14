@@ -577,7 +577,7 @@ export class Combate {
     h.parar()
     // la animación de volar si el taller la trae; si no, la esquiva
     h.accion(this.d.m.personajes[h.id]?.anims.volar ? 'volar' : 'dodge', { interrumpible: true, dur: CELESTIAL.alas.duracionS })
-    this.d.sonido.efecto(this.d.escena.cache.audio.exists(K.aud('alas')) ? 'alas' : 'esquiva', { volumen: 0.7, rate: 0.9 })
+    this.d.sonido.efecto(this.d.escena.cache.audio.exists(K.aud('alas_vuelo')) ? 'alas_vuelo' : 'esquiva', { volumen: 0.7 })
     this.d.estallido?.(h.x, h.y - 20, 'chispa', 10)
     return true
   }
@@ -589,7 +589,11 @@ export class Combate {
     const r = pasoVuelo(v, dt)
     if (!r.llego) {
       h.ponerEn(r.x, r.y)
-      if (juego().next() < dt * 20) this.d.estallido?.(r.x, r.y - 20 - r.alto, 'chispa', 2)
+      // la estela de las alas (el fx del taller, o chispas)
+      if (juego().next() < dt * 14) {
+        if (crearAnimFx(this.d.escena, this.d.m, 'estela_alas')) this.d.proyectiles.fxEn('estela_alas', r.x, r.y - 22, 1)
+        else this.d.estallido?.(r.x, r.y - 20 - r.alto, 'chispa', 2)
+      }
       return
     }
     const fin = this.d.aterrizar ? this.d.aterrizar(r.x, r.y) : { x: r.x, y: r.y }
@@ -633,6 +637,7 @@ export class Combate {
     for (const e of this.d.enemigos.todos) {
       if (!e.vivo || !enLinea(e.x, e.y, h.x, h.y, dx, dy, k.largo, k.ancho + e.radioHit)) continue
       this.golpear(e, 1, { ...golpe, dano })
+      if (crearAnimFx(this.d.escena, this.d.m, 'impacto_luz')) this.d.proyectiles.fxEn('impacto_luz', e.x, e.y - 16, 1)
       n++
     }
     this.ultimaLanza = n

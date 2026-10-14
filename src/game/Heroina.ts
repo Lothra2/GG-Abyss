@@ -103,6 +103,8 @@ export class Heroina {
     this.sombra = new Sombra(escena, 22)
     this.capas = new CapasSprite(escena, m, id, this.sprite)
     this.sprite.on(Phaser.Animations.Events.ANIMATION_UPDATE, (_a: unknown, frame: Phaser.Animations.AnimationFrame) => {
+      // F13: el vuelo de la celestial sube el sprite sobre su sombra cuadro a cuadro
+      if (this.accionActual?.anim === 'volar') this.colocar()
       if (this.estado === 'idle' || this.accionActual) return
       // premium: el manifest dice en qué cuadros pisa. Si no, los pies tocan en los cuadros 1 y 5 de 8
       const pasos = cuadrosDe(this.personaje.anims[this.estado] ?? { cuadros: 0, fps: 0 }, 'paso')
@@ -345,9 +347,18 @@ export class Heroina {
   }
 
   private colocar(): void {
-    this.sprite.setPosition(Math.round(this.x), Math.round(this.y))
+    this.sprite.setPosition(Math.round(this.x), Math.round(this.y) - this.elevacion())
     this.sprite.setDepth(PROF.OBJETOS + this.y)
     this.sombra.poner(this.x, this.y)
+  }
+
+  /** F13: cuánto sube el sprite en este cuadro (el `volar` de la celestial trae `elevacion`), o 0 */
+  private elevacion(): number {
+    const a = this.accionActual?.anim
+    const el = a ? this.personaje.anims[a]?.elevacion : undefined
+    if (!el || !this.sprite.anims.currentAnim?.key.includes(`_${a}_`)) return 0
+    const f = this.sprite.anims.currentFrame?.index ?? 1
+    return Math.round(el[Math.max(0, Math.min(el.length - 1, f - 1))] ?? 0)
   }
 
   /** Pone la animación de la dirección y el estado actuales, sin saltar de cuadro al girar */

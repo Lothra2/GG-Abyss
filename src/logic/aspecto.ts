@@ -11,8 +11,9 @@ export interface PiezaVisible {
  * El arma y la mano libre que no tiene puestas son las de su clase (Sophie sin arma lleva su arco). Un arma de dos
  * manos deja la mano libre vacía. Solo entra lo que el kit trae dibujado.
  */
-export function aspectoDe(equipo: Record<string, string>, cat: Catalogo, capas: CapasPersonaje | undefined): PiezaVisible[] {
+export function aspectoDe(equipo: Record<string, string>, cat: Catalogo, capas: CapasPersonaje | undefined, celestial = false): PiezaVisible[] {
   if (!capas) return []
+  if (celestial) return aspectoCelestial(aspectoDe(equipo, cat, capas), capas)
   const vis = (ranura: string) => itemDe(cat, equipo[ranura])?.visual ?? null
   const arma = itemDe(cat, equipo.arma)
   const elegido: Partial<Record<TipoCapa, string | null>> = {
@@ -27,6 +28,31 @@ export function aspectoDe(equipo: Record<string, string>, cat: Catalogo, capas: 
     if (clave && capas[tipo]?.[clave]) out.push({ tipo, clave })
   }
   return out
+}
+
+/**
+ * F13: la heroína celestial: lo de siempre más las alas (detrás y delante) y la aureola, en el orden de
+ * `orden_celestial`. Sin nada en el pecho lleva la túnica celestial.
+ */
+export function aspectoCelestial(base: readonly PiezaVisible[], capas: CapasPersonaje): PiezaVisible[] {
+  const piezas = [...base]
+  if (!piezas.some((p) => p.tipo === 'pecho') && capas.pecho?.tunica_celestial) piezas.push({ tipo: 'pecho', clave: 'tunica_celestial' })
+  for (const tipo of ['alas_detras', 'alas_delante', 'aura'] as const) if (capas[tipo]?.celestial) piezas.push({ tipo, clave: 'celestial' })
+  const orden = capas.orden_celestial ?? ['alas_detras', 'base', ...capas.orden, 'alas_delante', 'aura']
+  const pos = (t: string) => {
+    const i = orden.indexOf(t)
+    return i < 0 ? orden.length : i
+  }
+  return piezas.sort((a, b) => pos(a.tipo) - pos(b.tipo))
+}
+
+/** ¿Esta pieza va detrás del cuerpo? (las alas de atrás, antes de `base` en el orden) */
+export function vaDetras(tipo: TipoCapa, capas: CapasPersonaje | undefined): boolean {
+  const orden = capas?.orden_celestial
+  if (!orden) return tipo === 'alas_detras'
+  const b = orden.indexOf('base')
+  const i = orden.indexOf(tipo)
+  return b >= 0 && i >= 0 && i < b
 }
 
 /** Para comparar si cambió lo que se ve */

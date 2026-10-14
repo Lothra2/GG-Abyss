@@ -1,12 +1,15 @@
 import Phaser from 'phaser'
 import { K } from '../kit/claves'
 import type { CapaHoja, Manifest } from '../kit/tipos'
-import type { PiezaVisible } from '../logic/aspecto'
+import { vaDetras, type PiezaVisible } from '../logic/aspecto'
 
 interface Capa {
   pieza: PiezaVisible
   hoja: CapaHoja
   s: Phaser.GameObjects.Sprite
+  /** F13: las alas de atrás van debajo del cuerpo */
+  detras: boolean
+  key: string
 }
 
 /**
@@ -50,8 +53,12 @@ export class CapasSprite {
         continue
       }
       const s = this.escena.add.sprite(this.base.x, this.base.y, key, 0)
-      if (this.contenedor) this.contenedor.addAt(s, this.contenedor.getIndex(this.base) + 1 + this.capas.length)
-      this.capas.push({ pieza, hoja, s })
+      const detras = vaDetras(pieza.tipo, capas)
+      if (this.contenedor) {
+        const i = this.contenedor.getIndex(this.base)
+        this.contenedor.addAt(s, detras ? i : i + 1 + this.capas.filter((c) => !c.detras).length)
+      }
+      this.capas.push({ pieza, hoja, s, detras, key })
     }
     this.sync()
     return faltan
@@ -75,9 +82,16 @@ export class CapasSprite {
       }
       const fila = Math.floor(idx / info.cuadros)
       const col = Math.min(idx % info.cuadros, bl.cuadros - 1)
-      c.s.setFrame((bl.y + fila) * c.hoja.columnas + bl.x + col)
+      // F13: el bloque puede venir en su propia hoja (el vuelo): `bloque.archivo ?? capa.archivo`
+      const tex = bl.archivo ? K.capaBloque(this.id, c.pieza.tipo, c.pieza.clave, info.nombre) : c.key
+      if (!this.escena.textures.exists(tex)) {
+        c.s.setVisible(false)
+        return
+      }
+      if (c.s.texture.key !== tex) c.s.setTexture(tex)
+      c.s.setFrame((bl.y + fila) * (bl.columnas ?? c.hoja.columnas) + bl.x + col)
       c.s.setPosition(b.x, b.y).setOrigin(b.originX, b.originY).setScale(b.scaleX, b.scaleY).setFlip(b.flipX, b.flipY)
-      c.s.setDepth(b.depth + 0.001 * (k + 1)).setAlpha(b.alpha).setVisible(b.visible)
+      c.s.setDepth(b.depth + (c.detras ? -0.001 : 0.001 * (k + 1))).setAlpha(b.alpha).setVisible(b.visible)
       if (b.isTinted) {
         c.s.tintFill = b.tintFill
         c.s.setTint(b.tintTopLeft)

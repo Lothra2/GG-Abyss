@@ -58,7 +58,16 @@ export function encolarCapas(e: Escena, m: Manifest, id: string, lista: readonly
   for (const c of lista) {
     const h = p?.capas?.[c.tipo]?.[c.clave]
     const key = K.capa(id, c.tipo, c.clave)
-    if (!h || yaHay(e, key)) continue
+    if (!h) continue
+    // F13: los bloques que vienen en su propia hoja (el vuelo de la celestial)
+    for (const [anim, bl] of Object.entries(h.bloques)) {
+      const kb = K.capaBloque(id, c.tipo, c.clave, anim)
+      if (bl.archivo && !yaHay(e, kb)) {
+        e.load.spritesheet(kb, rutaKit(bl.archivo), { frameWidth: p!.celda, frameHeight: p!.celda })
+        n++
+      }
+    }
+    if (yaHay(e, key)) continue
     e.load.spritesheet(key, rutaKit(h.archivo), { frameWidth: p!.celda, frameHeight: p!.celda })
     n++
   }
@@ -207,15 +216,17 @@ export function encolarTodo(e: Escena, m: Manifest): void {
 
 /** F11: las capas de los paneles del intro y sus hojas sueltas, con el tamaño de cuadro que dice el manifest */
 /** F13: los paneles y las hojas de una cinemática del final (`cine_bajada`, `cine_fin`) */
-export function encolarCine(e: Escena, m: Manifest, cine: 'cine_bajada' | 'cine_fin'): void {
+export function encolarCine(e: Escena, m: Manifest, cine: 'cine_bajada' | 'cine_fin', heroe?: string): void {
   const c = m[cine] ?? {}
   for (const [n, v] of Object.entries(c)) {
-    const p = v as { w?: number; h?: number; capas?: { nombre: string; archivo: string }[]; archivo?: string; cuadros?: number } | null
+    const p = v as { w?: number; h?: number; capas?: { nombre: string; archivo: string; por_heroina?: Record<string, string> }[]; archivo?: string; cuadros?: number } | null
     if (!p || typeof p !== 'object') continue
     if (Array.isArray(p.capas) && p.w && p.h) {
       for (const k of p.capas) {
         const key = K.cine(cine, `${n}_${k.nombre}`)
-        if (!yaHay(e, key)) e.load.spritesheet(key, rutaKit(k.archivo), { frameWidth: p.w, frameHeight: p.h })
+        // la capa donde sale la heroína viene dibujada para cada una: la del perfil (si no, la de siempre)
+        const archivo = (heroe && k.por_heroina?.[heroe]) || k.archivo
+        if (!yaHay(e, key)) e.load.spritesheet(key, rutaKit(archivo), { frameWidth: p.w, frameHeight: p.h })
       }
     } else if (typeof p.archivo === 'string' && p.w && p.h && typeof p.cuadros === 'number') {
       const key = K.cine(cine, n)

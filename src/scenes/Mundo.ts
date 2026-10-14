@@ -24,7 +24,7 @@ import { aspectoDe, claveAspecto } from '../logic/aspecto'
 import { puntosDeCaida, regionCaminable } from '../logic/lugar'
 import { RADIO_HEROINA } from '../logic/camino'
 import { familiaDeArma, NOMBRE_FAMILIA } from '../logic/armas'
-import { crearAnimsPersonaje } from '../kit/anims'
+import { crearAnimFx, crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
 import { CALIDAD, COLOR, PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S, SOMBRA_LARGA } from '../config/juego'
@@ -92,8 +92,10 @@ export interface EventoDescubrimiento {
 /** Los efectos que usa el combate: proyectiles en sus 8 direcciones, impactos, novas, auras y escudos */
 function fxDeCombate(dirs: readonly string[]): string[] {
   const out = ['aura_nivel', 'curar', 'escudo_de_thor', 'grito_de_guerra', 'nova_fuego', 'tajo', 'impacto_flecha', 'impacto_naturaleza', 'impacto_arcano', 'impacto_fuego', 'impacto_sagrado', 'impacto_veneno', 'onda_pisoton', 'aviso_polvo', 'nube_polvo', 'aviso_mordida', 'aviso_ola', 'ola', 'sombra_picada', 'impacto_arena', 'aviso_aguja', 'aviso_puno', 'grieta_luz', 'nota_cuna',
-    'impacto_brasa', 'rastro_brasa', 'aviso_cadena', 'aviso_linea_cadena', 'vapor', 'aviso_aliento', 'fuego_piso', 'aviso_cola', 'vapor_grande']
-  for (const base of ['proyectil_flecha', 'proyectil_naturaleza', 'proyectil_arcano', 'proyectil_fuego', 'proyectil_arena', 'proyectil_brasa']) for (const d of dirs) out.push(`${base}_${d}`)
+    'impacto_brasa', 'rastro_brasa', 'aviso_cadena', 'aviso_linea_cadena', 'vapor', 'aviso_aliento', 'fuego_piso', 'aviso_cola', 'vapor_grande',
+    // F13: la celestial y el Diablo (lo que el kit no traiga, no se carga)
+    'lanza_luz', 'impacto_luz', 'estela_alas', 'aura_celestial', 'impacto_hielo', 'nova_fuego_diablo', 'aviso_nova', 'rayo_rojo', 'aviso_rayo', 'pilar_fuego', 'aviso_pilar', 'jaula_huesos', 'jaula_huesos_romper', 'aviso_carga_diablo', 'aviso_lanza_hielo', 'aviso_cruz']
+  for (const base of ['proyectil_flecha', 'proyectil_naturaleza', 'proyectil_arcano', 'proyectil_fuego', 'proyectil_arena', 'proyectil_brasa', 'proyectil_hielo', 'proyectil_fuego_chico']) for (const d of dirs) out.push(`${base}_${d}`)
   return out
 }
 
@@ -182,6 +184,8 @@ export class Mundo extends Phaser.Scene {
   corazon: Corazon | null = null
   /** F13: la jaula de huesos del Diablo, mientras la tiene encerrada */
   jaulaHuesos: JaulaHuesos | null = null
+  /** F13: el aura dorada al pie de la celestial */
+  private auraCel: Phaser.GameObjects.Sprite | null = null
   /** F12: el chorro de un surtidor o la sacudida de Thor le llegan a la Dragona en el próximo paso del jefe */
   private chorroPendiente = false
   private sacudidaPendiente = false
@@ -364,7 +368,7 @@ export class Mundo extends Phaser.Scene {
     // lo que la heroína lleva puesto (capas de equipo de PixelForja): se ve desde el primer cuadro
     const idHeroe = this.registry.get('heroeId') as string
     const partidaCarga = this.registry.get('partida') as Partida | undefined
-    if (partidaCarga && this.cache.json.exists(K.catalogo)) encolarCapas(this, this.m, idHeroe, aspectoDe(partidaCarga.equipo, leerCatalogo(this.cache.json.get(K.catalogo)), this.m.personajes[idHeroe]?.capas))
+    if (partidaCarga && this.cache.json.exists(K.catalogo)) encolarCapas(this, this.m, idHeroe, aspectoDe(partidaCarga.equipo, leerCatalogo(this.cache.json.get(K.catalogo)), this.m.personajes[idHeroe]?.capas, partidaCarga.celestial))
     encolarFx(this, this.m, fxDeCombate(this.m.direcciones))
     if (this.load.list.size === 0) return this.armar()
     this.load.once(Phaser.Loader.Events.COMPLETE, () => this.armar())
@@ -1005,6 +1009,21 @@ export class Mundo extends Phaser.Scene {
     }
   }
 
+  /** F13: la celestial lleva su aura al pie, sumando luz (el fx del taller) */
+  private ponerAuraCelestial(): void {
+    if (!this.partida.celestial || this.combate.caido) {
+      this.auraCel?.setVisible(false)
+      return
+    }
+    if (!this.auraCel || !this.auraCel.active) {
+      const k = crearAnimFx(this, this.m, 'aura_celestial')
+      if (!k) return
+      this.auraCel = this.add.sprite(0, 0, K.fx('aura_celestial'), 0).setBlendMode(Phaser.BlendModes.ADD).setAlpha(0.85)
+      this.auraCel.play(k)
+    }
+    this.auraCel.setVisible(this.heroina.sprite.visible).setPosition(Math.round(this.heroina.x), Math.round(this.heroina.y)).setDepth(PROF.OBJETOS + this.heroina.y - 0.5)
+  }
+
   /** F13: la música del Diablo según su fase: 1 a 3 cada vez más fuerte y la final en la desesperada */
   private musicaDiablo(fase: number): string {
     const n = fase >= 5 ? 'musica_diablo_final' : `musica_diablo_${Math.min(3, Math.max(1, fase === 4 ? 3 : fase))}`
@@ -1430,7 +1449,7 @@ export class Mundo extends Phaser.Scene {
       guardarPartida(this.alm, this.partida)
     }
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () =>
-      cine ? this.scene.start('Cine', { cine: 'cine_fin', luego: { escena: 'Continuara' } }) : this.scene.start('Continuara'),
+      cine ? this.scene.start('Cine', { cine: 'cine_fin', luego: { escena: 'Continuara' }, heroe: this.heroina.id }) : this.scene.start('Continuara'),
     )
   }
 
@@ -1461,7 +1480,7 @@ export class Mundo extends Phaser.Scene {
       guardarPartida(this.alm, this.partida)
     }
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () =>
-      cine ? this.scene.start('Cine', { cine: 'cine_bajada', luego: { escena: 'Bajada', datos: bajada } }) : this.scene.start('Bajada', bajada),
+      cine ? this.scene.start('Cine', { cine: 'cine_bajada', luego: { escena: 'Bajada', datos: bajada }, heroe: this.heroina.id }) : this.scene.start('Bajada', bajada),
     )
   }
 
@@ -1550,7 +1569,7 @@ export class Mundo extends Phaser.Scene {
   private actualizarAspecto(): void {
     const h = this.heroina
     if (!h) return
-    const lista = aspectoDe(this.partida.equipo, this.cat, this.m.personajes[h.id]?.capas)
+    const lista = aspectoDe(this.partida.equipo, this.cat, this.m.personajes[h.id]?.capas, this.partida.celestial)
     const clave = claveAspecto(lista)
     if (clave === this.aspectoPuesto) return
     const faltan = h.capas.poner(lista)
@@ -2439,6 +2458,7 @@ export class Mundo extends Phaser.Scene {
     this.galerias?.update(heroe, luces)
     this.misterio?.update(heroe, luces)
     this.ciudad?.update(dtVisual, { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido }, this.thor, luces)
+    this.ponerAuraCelestial()
     const co = this.corazon
     if (co) {
       co.update(dtVisual, { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido && !this.presentacion?.activa }, luces)
@@ -2667,12 +2687,13 @@ export class Mundo extends Phaser.Scene {
         this.partida.celestial = true
         this.combate.refrescarStats()
         this.atmosfera.radioHalo = haloCelestial(COLOR.FAROL_RADIO, true)
+        this.actualizarAspecto()
         this.game.events.emit('celestial')
       }) as never,
       ciclo: () => ({ ciclo: this.partida.ciclo, celestial: this.partida.celestial, cines: [...this.partida.cines], multJefe: Math.round(this.multJefe * 100) / 100, halo: this.atmosfera.radioHalo, vidaMax: this.combate.stats.vidaMax, nivel: this.partida.nivel, mundo: this.partida.mundo, alasS: Math.round(this.combate.alasS * 10) / 10, lanzaS: Math.round(this.combate.lanzaS * 10) / 10, vuelos: this.combate.vuelos, volando: this.combate.volando, ultimaLanza: this.combate.ultimaLanza, invulnerable: this.combate.invulnerableS > 0 }),
       verCine: ((cine: 'cine_bajada' | 'cine_fin') => {
         this.guardar()
-        this.scene.start('Cine', { cine, luego: { escena: 'Mundo' } })
+        this.scene.start('Cine', { cine, luego: { escena: 'Mundo' }, heroe: this.heroina.id })
       }) as never,
       // como si acabara de vencer al Diablo: la escena del final con el botón del ciclo celestial
       probarFinal: (() => {

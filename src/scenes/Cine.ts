@@ -6,7 +6,7 @@ import { escalaPanel } from '../kit/intro'
 import { alCambiarEscala, escalaDe } from '../game/Pantalla'
 import { texto } from '../game/Texto'
 import { crearBoton, type Boton } from '../game/ui/Boton'
-import { CINE, duracionCine, letrasCine, panelesCine, planoEn, planosCine, TEXTOS_CINE, type PanelCine, type PlanoCine } from '../logic/cine'
+import { CINE, duracionCine, hojasCine, letrasCine, panelesCine, planoEn, planosCine, sonidosCine, TEXTOS_CINE, type PanelCine, type PlanoCine } from '../logic/cine'
 import { agregarGanchos, quitarGanchos } from '../test/ganchos'
 import { pantallaChica } from '../logic/escala'
 
@@ -16,6 +16,8 @@ export interface DatosCine {
   cine: NombreCine
   /** a dónde sigue al terminar (o al saltarla) */
   luego: { escena: string; datos?: object }
+  /** la heroína del perfil (las capas `por_heroina` la muestran a ella) */
+  heroe?: string
 }
 
 interface CapaViva {
@@ -52,6 +54,8 @@ export class Cine extends Phaser.Scene {
   private terminada = false
   private cruces = 0
   private golpes = 0
+  private logo: Phaser.GameObjects.Sprite | null = null
+  private sonados = new Set<string>()
 
   constructor() {
     super('Cine')
@@ -70,13 +74,16 @@ export class Cine extends Phaser.Scene {
     this.franjas = []
     this.saltar = null
     this.musica = undefined
+    this.logo = null
+    this.sonados = new Set()
   }
 
   preload(): void {
     const m = manifestDe(this)
-    encolarCine(this, m, this.d.cine)
+    encolarCine(this, m, this.d.cine, this.d.heroe ?? (this.registry.get('heroe') as string | undefined))
     const a = this.audioDe()
-    encolarAudio(this, m, [a.musica, a.rugido, 'jefe_pisoton', 'legendario', 'portal', 'click'].filter((x): x is string => !!x))
+    const c = m[this.d.cine] as Record<string, unknown> | undefined
+    encolarAudio(this, m, [a.musica, a.rugido, 'jefe_pisoton', 'legendario', 'portal', 'click', ...sonidosCine(c)].filter((x): x is string => !!x))
   }
 
   private audioDe(): { musica?: string; rugido?: string } {
@@ -90,7 +97,7 @@ export class Cine extends Phaser.Scene {
     this.paneles = panelesCine(c).filter((p) => p.capas.every((k) => this.textures.exists(K.cine(this.d.cine, `${p.nombre}_${k.nombre}`))))
     this.planos = planosCine(Object.fromEntries([...this.paneles.map((p) => [p.nombre, c?.[p.nombre]]), ['guion', c?.guion]]), TEXTOS_CINE[this.d.cine])
     agregarGanchos({
-      cine: () => ({ cine: this.d.cine, t: Math.round(this.t * 10) / 10, plano: this.planos[this.actual]?.panel ?? null, planos: this.planos.map((p) => p.panel), texto: this.leyenda?.text ?? '', duracion: duracionCine(this.planos), capas: this.capas.length, cruces: this.cruces, golpes: this.golpes, terminada: this.terminada }),
+      cine: () => ({ cine: this.d.cine, t: Math.round(this.t * 10) / 10, plano: this.planos[this.actual]?.panel ?? null, planos: this.planos.map((p) => p.panel), texto: this.leyenda?.text ?? '', duracion: duracionCine(this.planos), capas: this.capas.length, cruces: this.cruces, golpes: this.golpes, terminada: this.terminada, logo: !!this.logo, sonados: [...this.sonados] }),
       saltarCine: () => this.terminar(),
     })
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -133,14 +140,21 @@ export class Cine extends Phaser.Scene {
       for (const k of p.capas) {
         const tex = K.cine(n, `${p.nombre}_${k.nombre}`)
         const key = `${tex}_anim`
-        if (k.cuadros > 1 && !this.anims.exists(key)) this.anims.create({ key, frames: this.anims.generateFrameNumbers(tex, { start: 0, end: k.cuadros - 1 }), frameRate: k.fps, repeat: /logo|titulo/.test(k.nombre) ? 0 : -1 })
+        // `bucle: false`: pasa una vez y se queda en el último cuadro (la puerta que se abre, los ojos del Diablo)
+        if (k.cuadros > 1 && !this.anims.exists(key)) this.anims.create({ key, frames: this.anims.generateFrameNumbers(tex, { start: 0, end: k.cuadros - 1 }), frameRate: k.fps, repeat: k.bucle === false || /logo/.test(k.nombre) ? 0 : -1 })
       }
     }
     for (const [nombre, h] of Object.entries(c)) {
       if (!h || typeof h !== 'object' || Array.isArray(h.capas) || typeof h.cuadros !== 'number') continue
       const tex = K.cine(n, nombre)
       const key = `${tex}_anim`
-      if (this.textures.exists(tex) && !this.anims.exists(key)) this.anims.create({ key, frames: this.anims.generateFrameNumbers(tex, { start: 0, end: h.cuadros - 1 }), frameRate: h.fps ?? 8, repeat: -1 })
+      if (!this.textures.exists(tex) || this.anims.exists(key)) continue
+      const desde = (h as { bucle_desde?: number }).bucle_desde
+      if (typeof desde === 'number' && desde > 0 && desde < h.cuadros) {
+        // el logo se arma una vez y después late en bucle desde `bucle_desde`
+        this.anims.create({ key, frames: this.anims.generateFrameNumbers(tex, { start: 0, end: h.cuadros - 1 }), frameRate: h.fps ?? 10, repeat: 0 })
+        this.anims.create({ key: `${key}_late`, frames: this.anims.generateFrameNumbers(tex, { start: desde, end: h.cuadros - 1 }), frameRate: h.fps ?? 10, repeat: -1 })
+      } else this.anims.create({ key, frames: this.anims.generateFrameNumbers(tex, { start: 0, end: h.cuadros - 1 }), frameRate: h.fps ?? 8, repeat: -1 })
     }
   }
 
@@ -151,6 +165,11 @@ export class Cine extends Phaser.Scene {
     this.esc = pantallaChica(escalaDe(this.game)) ? 1 : 2
     for (const g of this.grupos) g.destroy(true)
     this.grupos = []
+    if (this.logo) {
+      this.logo.destroy()
+      this.logo = null
+      if (this.planos[this.actual]?.titulo) this.time.delayedCall(0, () => this.ponerLogo())
+    }
     this.capas = []
     this.alto = Math.max(Math.min(Math.max(0, Math.round((h - w / 2.2) / 2)), Math.round(h * 0.12)), Math.round(26 * this.esc))
     this.franjas[0]!.setPosition(0, 0).setSize(w, this.alto)
@@ -213,16 +232,21 @@ export class Cine extends Phaser.Scene {
     // lo que cruza delante: nieve en la bajada, humo o chispas en el cierre (lo que traiga el taller)
     if (!pl.titulo && i % 2 === 1) this.cruzar()
     const a = this.audioDe()
+    // si el taller trae los sonidos en el guion, van ellos en su segundo; si no, el rugido de siempre
+    const conGuion = this.planos.some((q) => q.sonidos.length > 0)
     if (/diablo|cae/.test(pl.panel)) {
-      // el Diablo despierta (o cae): el rugido grave y la pantalla que tiembla, sin susto de golpe
-      const r = a.rugido && this.cache.audio.exists(K.aud(a.rugido)) ? a.rugido : 'jefe_pisoton'
-      if (this.cache.audio.exists(K.aud(r))) this.time.delayedCall(900, () => this.sound.play(K.aud(r), { volume: 0.75, rate: 0.85 }))
+      // el Diablo despierta (o cae): la pantalla tiembla de a poco, sin susto de golpe
+      if (!conGuion) {
+        const r = a.rugido && this.cache.audio.exists(K.aud(a.rugido)) ? a.rugido : 'jefe_pisoton'
+        if (this.cache.audio.exists(K.aud(r))) this.time.delayedCall(900, () => this.sound.play(K.aud(r), { volume: 0.75, rate: 0.85 }))
+      }
       this.time.delayedCall(1000, () => this.cameras.main.shake(1400, 0.004))
       this.golpes++
     }
     if (pl.titulo) {
       this.golpes++
-      if (this.cache.audio.exists(K.aud('jefe_pisoton'))) this.sound.play(K.aud('jefe_pisoton'), { volume: 0.9, rate: 0.7 })
+      this.ponerLogo()
+      if (!conGuion && this.cache.audio.exists(K.aud('jefe_pisoton'))) this.sound.play(K.aud('jefe_pisoton'), { volume: 0.9, rate: 0.7 })
       if (this.d.cine === 'cine_fin' && this.cache.audio.exists(K.aud('legendario'))) this.sound.play(K.aud('legendario'), { volume: 0.6 })
       this.cameras.main.flash(500, this.d.cine === 'cine_fin' ? 255 : 120, this.d.cine === 'cine_fin' ? 230 : 20, this.d.cine === 'cine_fin' ? 170 : 10)
       // las franjas se abren: el título respira
@@ -232,10 +256,28 @@ export class Cine extends Phaser.Scene {
     }
   }
 
+  /** El logo del taller sobre el título: se arma y después late. Cae con un destello */
+  private ponerLogo(): void {
+    const c = manifestDe(this)[this.d.cine] as Record<string, unknown> | undefined
+    const n = hojasCine(c).logo
+    const tex = n ? K.cine(this.d.cine, n) : ''
+    if (!n || !this.textures.exists(tex) || this.logo) return
+    const h = c![n] as { w: number; h: number }
+    const w = this.scale.width
+    const alto = this.scale.height
+    const k = Math.max(1, Math.min(Math.floor((w * 0.8) / h.w), Math.floor((alto * 0.5) / h.h)))
+    this.logo = this.add.sprite(Math.round(w / 2), Math.round(alto / 2), tex, 0).setScale(k).setDepth(150)
+    const key = `${tex}_anim`
+    if (this.anims.exists(key)) {
+      this.logo.play(key)
+      if (this.anims.exists(`${key}_late`)) this.logo.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => this.logo?.active && this.logo.play(`${key}_late`))
+    }
+  }
+
   /** Una hoja suelta del kit (nieve, humo) cruza la pantalla delante de todo */
   private cruzar(): void {
     const c = (manifestDe(this)[this.d.cine] ?? {}) as Record<string, { w?: number; cuadros?: number; capas?: unknown }>
-    const nombre = Object.keys(c).find((n) => c[n] && typeof c[n] === 'object' && !Array.isArray(c[n]!.capas) && typeof c[n]!.cuadros === 'number' && this.textures.exists(K.cine(this.d.cine, n)))
+    const nombre = hojasCine(c).cruza.find((n) => this.textures.exists(K.cine(this.d.cine, n)))
     if (!nombre) return
     this.cruces++
     const w = this.scale.width
@@ -259,6 +301,16 @@ export class Cine extends Phaser.Scene {
     }
     if (en.i !== this.actual) this.entrar(en.i)
     this.mover(en.i, en.k)
+    // los sonidos del guion, cada uno en su segundo
+    for (const p of this.planos) {
+      for (const q of p.sonidos) {
+        const id = `${q.nombre}@${q.en}`
+        if (this.t >= q.en && !this.sonados.has(id)) {
+          this.sonados.add(id)
+          if (this.cache.audio.exists(K.aud(q.nombre))) this.sound.play(K.aud(q.nombre), { volume: /rugido/.test(q.nombre) ? 0.85 : 0.6 })
+        }
+      }
+    }
     const pl = this.planos[en.i]!
     const n = letrasCine(pl.texto, this.t - pl.desde)
     if (n !== this.letras) {

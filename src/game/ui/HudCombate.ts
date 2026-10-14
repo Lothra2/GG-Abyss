@@ -218,7 +218,8 @@ export class HudCombate {
     }
     // F13: las alas y la lanza de la celestial (con su ícono del taller, o la luz técnica dorada mientras no esté)
     for (const id of ['alas', 'lanza'] as const) {
-      const tex = escena.textures.exists(k(`hab_${id}`)) ? k(`hab_${id}`) : K.luz
+      const nombre = id === 'lanza' ? 'hab_lanza_luz' : 'hab_alas'
+      const tex = escena.textures.exists(k(nombre)) ? k(nombre) : K.luz
       const icono = escena.add.image(0, 0, tex).setVisible(false)
       if (tex === K.luz) icono.setTint(id === 'alas' ? 0xfff4d0 : 0xffd27a).setBlendMode(Phaser.BlendModes.ADD)
       const arco = escena.add.graphics()
