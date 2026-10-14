@@ -185,6 +185,8 @@ test.describe('Combate', () => {
 
   test('el trol avisa su golpe pesado 1.2 s antes y se esquiva caminando', async ({ page }) => {
     await abrirMundo(page, 'sophie')
+    // F13: con la dureza nueva el trol tumba a una heroína de nivel 1 en tres golpes antes de avisar
+    await gancho(page, 'ponerNivel', 8)
     const t = (await enemigos(page)).find((e) => e.elite)!
     await gancho(page, 'teleport', t.x - 40, t.y)
     await gancho(page, 'curarTodo')
@@ -195,6 +197,7 @@ test.describe('Combate', () => {
     // la vida se mide desde que empieza el aviso: antes el trol pega golpes normales (y desde el rebalance pegan más)
     let vida0 = 0
     for (let i = 0; i < 400; i++) {
+      if (!vio) await gancho(page, 'curarTodo')
       await avanzar(page, 0.05)
       const e = await enemigo(page, t.id)
       if (e.estado === 'aviso') {
@@ -221,12 +224,14 @@ test.describe('Combate', () => {
   test('en modo peque el trol avisa 1.8 s', async ({ page }) => {
     await abrirMundo(page, 'alana')
     expect((await combate(page)).modoPeque).toBe(true)
+    await gancho(page, 'ponerNivel', 8)
     const t = (await enemigos(page)).find((e) => e.elite)!
     await gancho(page, 'teleport', t.x - 40, t.y)
     await gancho(page, 'curarTodo')
     let tAviso = 0
     let vio = false
     for (let i = 0; i < 600; i++) {
+      if (!vio) await gancho(page, 'curarTodo')
       await avanzar(page, 0.05)
       const e = await enemigo(page, t.id)
       if (e.estado === 'aviso') {
