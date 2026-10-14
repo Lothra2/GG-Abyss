@@ -264,6 +264,8 @@ test.describe('El Puerto Ahogado', () => {
     if (hayMundo5) {
       await esperarEscena(page, 'Bajada')
       await esperarEscena(page, 'Mundo')
+      // la escena nueva tarda en dejar sus ganchos listos
+      await page.waitForFunction(() => { const x = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof x.noEsperar === 'function' && x.noEsperar() === true && typeof x.ciudad === 'function' }, null, { timeout: 120_000 })
       await expect.poll(async () => (await gancho<{ id: string }>(page, 'mundoActual')).id, { timeout: 60_000 }).toBe('mundo5')
     } else await esperarEscena(page, 'Continuara')
     await sinErrores(errores)

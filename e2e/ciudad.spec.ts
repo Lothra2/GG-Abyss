@@ -186,6 +186,8 @@ test.describe('La Ciudad Dormida', () => {
     // fase 2: la canción de cuna apaga las lámparas y a oscuras la piedra no siente
     await gancho(page, 'danarJefe', j0.vidaMax * 0.42)
     await expect.poll(async () => { await gancho(page, 'curarTodo'); await avanzar(page, 0.1); return (await cdd(page)).lamparas.every((l) => !l.prendida) }, { timeout: 30_000 }).toBe(true)
+    // la lógica del jefe lee las lámparas en su paso siguiente
+    await avanzar(page, 0.1)
     const j1 = await gancho<Jefe>(page, 'jefe')
     expect(j1.blindado).toBe(true)
     await gancho(page, 'danarJefe', 40)
