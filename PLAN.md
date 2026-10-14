@@ -1126,6 +1126,17 @@ Los créditos LPC corren al final.
 3. Mientras el taller dibuja, el juego hace las reglas puras con tests: el frío, la ventisca, el hielo fino, las luces compañeras, el Diablo, el Ciclo 2 y los poderes celestiales.
 4. Llega el arte y se conecta: postales, suite completa y publicar.
 
+**Estado (en el juego, esperando el arte del taller).**
+- Dificultad: la vida y el daño de todos los enemigos x2.6 desde el Bosque y más por piso, refuerzos desde el piso 3, los jefes x2.8 de vida y **sus golpes también pegan más por piso** (x1.4 en el Bosque a x4.1 en el piso 7). Medido en `dificultad.test.ts`: un común aguanta de 2 a 14 golpes, la heroína aguanta de 6 a 40 golpes comunes y de 4 a 16 golpes de jefe (antes hasta 39), y cada jefe dura más de 45 s de golpes seguidos. Modo peque más amable sin regalar.
+- Ciclo 2: llega a enemigos (vida x1.7, daño x1.5 por ciclo, más refuerzos) y a jefes (vida y golpes).
+- Mundo 7 en el juego (`game/Corazon.ts`): el frío con su termómetro, la ventisca que avisa, empuja y achica la luz (detrás de `columna_hielo` y `gigante` no llega), el hielo fino que cruje y se rompe (cae al agua helada y vuelve a lo firme), cinco luces compañeras (al vencer a la Dragona se abren todas las jaulas, así que llegan las cinco) que la sombra devoradora se come y vuelven solas o en la hoguera, y los cuatro braseros de hueso que se prenden quedándose al lado (sin botón, para Alana).
+- Enemigos del piso 7 con su balance: lobo en manada, espectro con rayo de hielo, diablillos en grupo, caballero con escudo de frente (hay que rodearlo), bruja que cura a los suyos, sombra devoradora, y los minijefes Reina Escarcha y Guardián de la Puerta.
+- El Diablo (`perfil: diablo`): la nova en anillo, el rayo rojo que gira y pega una vez por vuelta, los pilares de fuego, la oscuridad (blindado hasta prender los cuatro braseros, su aliento congela uno), la jaula de huesos (se rompe a golpes y Thor muerde desde afuera), la llamada de diablillos y lobos, y la música que sube con cada fase (`musica_diablo_1..3`, `musica_diablo_final`).
+- Cinemáticas (`scenes/Cine.ts`): la bajada al infierno la primera vez que se cruza a `mundo7` y el cierre al vencer al Diablo, con franjas, paralaje, fundidos, subtítulos letra por letra, nieve o humo que cruza y un toque para saltar. Sin el kit siguen derecho.
+- El final: "¡Venciste al Diablo!" con "Jugar con alas" (empieza el ciclo siguiente) o "Quedarme aquí".
+- La celestial: +25 % de vida y daño, farol más grande, y dos botones nuevos: las alas (R) y la lanza de luz (X).
+- Falta del taller: el mapa y el arte del Mundo 7, el Diablo, los paneles de las cinemáticas, las capas `alas` y `aura` de las heroínas y los íconos `hab_alas`, `hab_lanza`, `hab_frio`.
+
 ## 6. Riesgos y mitigación
 
 | Riesgo | Mitigación |
