@@ -72,6 +72,8 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - Sonámbulos de piedra quietos en la luz, gárgolas posadas que se tiran en picada con su sombra, duendes cuya arena hace bostezar y El Relojero con la aguja que barre girando.
   - El Rey de Piedra: la canción apaga las lámparas y lo blinda, las chispas de su corona las prenden y de rodillas se le pega. Al liberarlo la ciudad despierta de colores y él se queda como un viejito bonachón.
   - Arreglos en el camino: los faroles del muelle del Puerto se dibujaban dos veces (el apagado podía tapar al prendido) y los efectos nuevos de la ciudad no se cargaban (el duende no tiraba su arena).
+  - Publicado en e891c5f con la suite completa en verde (282 pasaron, 7 se saltan a propósito).
+  - Pulido del taller `cfa5d34`: caras y ojos que se leen a 48 px, la fuente seca rehecha, el ícono de prender y objetos nuevos (el organillo que despierta, dos atriles en el Barrio de los Músicos y tres estandartes del Rey). Postales de la Ciudad al día. Suite completa en verde (282 pasaron, 7 se saltan).
 - Arreglo publicado: tras vencer al Pez Farol el oro caía en la poza y la heroína se quedaba pegada. Ahora cae en el muelle y ningún botín cae donde no se camina.
 - Verificación de F10a, F11 e intro:
   - Typecheck limpio y 380 tests unitarios.
