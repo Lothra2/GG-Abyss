@@ -311,6 +311,8 @@ export class JefeSprite implements Atacable {
   desvanecer(alPolvo: (x: number, y: number) => void): void {
     // el Pez Farol se libera: se achica, se pone azul y dorado y se va nadando. Se espera al último cuadro de `die`
     // (con la cámara lenta tarda más), se lo deja ver un momento y se va suave, sin polvo
+    // el Rey de Piedra se libera y se queda: un viejito bonachón que bosteza y saluda (el último cuadro de `die`)
+    if (this.logica.perfil === 'rey') return
     if (this.enAgua) {
       const irse = () =>
         this.escena.time.delayedCall(900, () => {

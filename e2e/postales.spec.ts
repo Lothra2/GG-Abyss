@@ -520,3 +520,100 @@ test('captura el Puerto Ahogado: las zonas, el farol de Thor, la marea, el Capit
     await ctx.close()
   }
 })
+
+test('captura la Ciudad Dormida: las zonas, la Ladrona robando, las chispas, el Relojero, el Rey de Piedra y la ciudad despierta', async ({ browser }) => {
+  test.setTimeout(600_000)
+  const dir = join('docs', 'capturas', 'f12')
+  mkdirSync(dir, { recursive: true })
+  const vistas = [
+    { sufijo: '', ctx: { viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 } },
+    { sufijo: '_tablet', ctx: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
+  ]
+  type F = { id: string; x: number; y: number; estado: string; chispas: { x: number; y: number }[] }
+  type C = { faroles: F[]; ladrona: { x: number; y: number } | null; lamparas: { prendida: boolean }[]; chispasJefe: { x: number; y: number }[]; despierta: boolean }
+  type J = { x: number; y: number; vida: number; vidaMax: number; estado: string; avisos: { ataque: string; resta: number; total: number }[] }
+  for (const v of vistas) {
+    const ctx = await browser.newContext(v.ctx)
+    const page = await ctx.newPage()
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'irAMundo', 'mundo5')
+    await esperarEscena(page, 'Bajada')
+    await esperarEscena(page, 'Mundo')
+    await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true && typeof a.ciudad === 'function' && !!a.ciudad() }, null, { timeout: 120_000 })
+    await gancho(page, 'ponerNivel', 16)
+    const foto = async (nombre: string, espera = 1500) => {
+      await page.waitForTimeout(espera)
+      await page.screenshot({ path: join(dir, `ciudad_${nombre}${v.sufijo}.png`) })
+    }
+    const cdd = () => gancho<C>(page, 'ciudad')
+    if (!v.sufijo) {
+      for (const p of (await gancho<string[]>(page, 'postales')).filter((n) => /puerta|panaderos|fuente|musicos|jardines|reloj|puente|palacio/.test(n))) {
+        await gancho(page, 'irAPostal', p)
+        await gancho(page, 'avanzar', 1)
+        await foto(`zona_${p}`, 2500)
+      }
+    }
+    // el Relojero con su aguja
+    const r = (await gancho<{ tipo: string; x: number; y: number }[]>(page, 'enemigos')).find((e) => e.tipo === 'relojero')
+    if (r) {
+      await gancho(page, 'teleport', r.x + 120, r.y + 20)
+      for (let i = 0; i < 80 && !(await gancho<{ agujas: number }>(page, 'relojero')).agujas; i++) {
+        await gancho(page, 'curarTodo')
+        await gancho(page, 'avanzar', 0.2)
+      }
+      await gancho(page, 'avanzar', 0.6)
+      await foto('relojero_aguja', 200)
+    }
+    // el farol de la Puerta prendido y la Ladrona chupándole la luz
+    const f = (await cdd()).faroles[0]!
+    await gancho(page, 'matarEnemigos')
+    await gancho(page, 'teleport', f.x + 24, f.y + 30)
+    for (let i = 0; i < 6; i++) await gancho(page, 'avanzar', 0.3)
+    await foto('farol_prendido')
+    await gancho(page, 'teleport', f.x + 900, f.y)
+    await gancho(page, 'robarYa')
+    const l = (await cdd()).ladrona!
+    await gancho(page, 'ponerHeroina', l.x - 160, l.y + 40)
+    await gancho(page, 'avanzar', 1.5)
+    await foto('ladrona_robando', 600)
+    for (let i = 0; i < 12 && (await cdd()).faroles[0]!.estado !== 'robado'; i++) await gancho(page, 'avanzar', 1)
+    const ch = (await cdd()).faroles[0]!.chispas[0]
+    if (ch) {
+      await gancho(page, 'ponerHeroina', ch.x - 70, ch.y + 20)
+      await gancho(page, 'avanzar', 1)
+      await foto('chispa', 800)
+    }
+    // el Rey: el salón, a oscuras con la canción, de rodillas, y la ciudad despierta
+    await gancho(page, 'matarEnemigos')
+    await gancho(page, 'curarTodo')
+    await gancho(page, 'entrarArena')
+    await gancho(page, 'avanzar', 3.5)
+    await foto('rey_salon')
+    const j = await gancho<J>(page, 'jefe')
+    await gancho(page, 'danarJefe', j.vidaMax * 0.45)
+    for (let i = 0; i < 300 && !(await cdd()).lamparas.every((q) => !q.prendida); i++) {
+      await gancho(page, 'curarTodo')
+      await gancho(page, 'avanzar', 0.1)
+    }
+    await gancho(page, 'avanzar', 0.8)
+    await foto('rey_oscuro', 400)
+    for (let k = 0; k < 120 && (await cdd()).lamparas.some((q) => !q.prendida); k++) {
+      const cc = (await cdd()).chispasJefe
+      await gancho(page, 'curarTodo')
+      if (cc.length) await gancho(page, 'ponerHeroina', cc[0]!.x, cc[0]!.y)
+      await gancho(page, 'avanzar', 0.3)
+    }
+    await gancho(page, 'avanzar', 0.6)
+    await foto('rey_rodillas', 400)
+    await gancho(page, 'danarJefe', 9999)
+    await page.waitForFunction(() => (window.__ABYSS__ as unknown as { ciudad: () => { despierta: boolean } }).ciudad().despierta, null, { timeout: 60_000 })
+    for (let i = 0; i < 8; i++) await gancho(page, 'avanzar', 1)
+    await foto('palacio_despierto', 3000)
+    await gancho(page, 'irAPostal', 'plaza_de_la_fuente')
+    await gancho(page, 'avanzar', 1)
+    await foto('plaza_despierta', 2500)
+    await sinErrores(errores)
+    await ctx.close()
+  }
+})
