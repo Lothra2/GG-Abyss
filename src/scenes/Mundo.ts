@@ -469,7 +469,9 @@ export class Mundo extends Phaser.Scene {
     // punto no va, si no el apagado tapa al prendido
     // la Fragua dibuja sus fuelles, surtidores y palancas (soplan, echan el chorro, se tiran)
     const manejados = entidadesDeTipo(this.mapa, 'surtidor').length || entidadesDeTipo(this.mapa, 'fuelle').length ? /^(farol_muelle|farol_plaza|lampara_trono)_|^(fuelle_gigante_.*|surtidor|palanca|palanca_surtidor)$/ : /^(farol_muelle|farol_plaza|lampara_trono)_/
-    const decos: Deco[] = this.mapa.decos.filter((d) => !manejados.test(d.sprite))
+    // F13: los braseros de hueso de la arena los dibuja el Corazón (se prenden, se congelan)
+    const delCorazon = entidadesDeTipo(this.mapa, 'brasero_hueso').length ? /^brasero_hueso$/ : null
+    const decos: Deco[] = this.mapa.decos.filter((d) => !manejados.test(d.sprite) && !delCorazon?.test(d.sprite))
     for (const p of entidadesDeTipo(this.mapa, 'portal_llegada')) decos.push({ sprite: this.portalDe(p.props.color), x: p.x, y: p.y })
     for (const f of this.portalesFx) f.destroy()
     this.portalesFx = entidadesDeTipo(this.mapa, 'portal_llegada').map((p) => new PortalFx(this, p.x, p.y, this.colorDePortal(this.portalDe(p.props.color)), this.m.mundo.objetos[this.portalDe(p.props.color)]))
