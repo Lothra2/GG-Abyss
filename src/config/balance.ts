@@ -180,6 +180,12 @@ export interface EnemigoBalance {
   /** F12: la salamandra deja un rastro de piso caliente y, mojada por Thor, queda de piedra (recibe el doble) */
   rastro?: boolean
   seMoja?: boolean
+  /** F13: el caballero congelado: con el escudo de frente recibe solo esto (por la espalda o mientras pega, todo) */
+  escudoFrente?: { mult: number; grados: number }
+  /** F13: la sombra devoradora: su golpe se come una luz compañera (si no queda ninguna, muerde) */
+  devoraLuz?: boolean
+  /** F13: la bruja de escarcha cura a los suyos de alrededor cada tanto */
+  curaAliados?: { cadaS: number; radio: number; pct: number }
 }
 
 export const ENEMIGOS: Record<string, EnemigoBalance> = {
@@ -224,6 +230,21 @@ export const ENEMIGOS: Record<string, EnemigoBalance> = {
   farolero_cadenas: { vida: 90, dano: [5, 8], anim: 'attack', ataquesPorSeg: 0.5, alcance: 34, velocidad: 32, ve: 200, xp: 40, oro: [6, 12], pesado: { cadaS: 5.5, radio: 64, avisoS: 1.6, dano: [11, 15], cadena: true } },
   // el minijefe de la Cárcel: lanza la cadena en línea (aviso en el piso) y se jala hasta donde cayó
   carcelero: { vida: 300, dano: [7, 10], anim: 'attack', ataquesPorSeg: 0.5, alcance: 40, velocidad: 36, ve: 240, xp: 170, oro: [35, 55], pesado: { cadaS: 5.5, radio: 190, avisoS: 1.6, dano: [13, 17], linea: { largo: 210, ancho: 34, jalarS: 0.45 } } },
+  // F13, el Corazón Helado: el piso más duro, en grupos grandes. El lobo de escarcha va en manada y rodea
+  lobo_escarcha: { vida: 34, dano: [5, 8], anim: 'attack', ataquesPorSeg: 0.8, alcance: 26, velocidad: 88, ve: 230, xp: 22, oro: [3, 7], rodea: true },
+  // flota y tira su rayo de hielo de lejos (se ve venir)
+  espectro_helado: { vida: 32, dano: [5, 8], anim: 'cast', ataquesPorSeg: 0.5, alcance: 220, velocidad: 46, ve: 250, xp: 24, oro: [4, 8], proyectil: 'proyectil_hielo', impacto: 'impacto_hielo', huyeSi: 90 },
+  // chiquitos, de a muchos: tiran bolitas de fuego y se reparten alrededor
+  diablillo: { vida: 18, dano: [3, 5], anim: 'attack', ataquesPorSeg: 0.7, alcance: 150, velocidad: 78, ve: 220, xp: 10, oro: [2, 4], proyectil: 'proyectil_fuego_chico', impacto: 'impacto_brasa', huyeSi: 60, rodea: true },
+  // el escudo de frente para casi todo: hay que rodearlo (o pegarle cuando ataca). Su golpe grande avisa
+  caballero_congelado: { vida: 46, dano: [6, 9], anim: 'attack', ataquesPorSeg: 0.5, alcance: 34, velocidad: 34, ve: 210, xp: 50, oro: [8, 14], escudoFrente: { mult: 0.25, grados: 70 }, pesado: { cadaS: 5, radio: 52, avisoS: 1.5, dano: [12, 16] } },
+  // se queda atrás y cura a los suyos: hay que ir por ella primero
+  bruja_escarcha: { vida: 40, dano: [4, 7], anim: 'cast', ataquesPorSeg: 0.45, alcance: 200, velocidad: 40, ve: 240, xp: 28, oro: [5, 9], proyectil: 'proyectil_hielo', impacto: 'impacto_hielo', huyeSi: 110, curaAliados: { cadaS: 6, radio: 150, pct: 25 } },
+  // sin cuerpo claro: se come las luces compañeras. Solo se ve (y se le pega) en la luz, como la sombra de las Galerías
+  sombra_devoradora: { vida: 44, dano: [5, 8], anim: 'attack', ataquesPorSeg: 0.6, alcance: 26, velocidad: 62, ve: 210, xp: 26, oro: [4, 8], soloEnLuz: true, devoraLuz: true },
+  // los minijefes: la Reina Escarcha (sus lanzas de hielo caen con aviso en anillo) y el Guardián de la Puerta (golpe en cruz)
+  reina_escarcha: { vida: 320, dano: [7, 10], anim: 'attack', ataquesPorSeg: 0.5, alcance: 40, velocidad: 44, ve: 260, xp: 200, oro: [40, 60], pesado: { cadaS: 5, radio: 120, avisoS: 1.6, dano: [12, 16], cadena: true } },
+  guardian_puerta: { vida: 360, dano: [8, 11], anim: 'attack', ataquesPorSeg: 0.5, alcance: 44, velocidad: 40, ve: 260, xp: 220, oro: [45, 65], pesado: { cadaS: 5, radio: 200, avisoS: 1.6, dano: [14, 18], linea: { largo: 220, ancho: 40, jalarS: 0.4 } } },
 }
 
 /**
@@ -329,6 +350,14 @@ export const BOTIN = {
   salamandra_brasa: { objeto: 0.12, oro: 0.6, cantidad: 1 } as BotinFuente,
   farolero_cadenas: { objeto: 0.25, oro: 0.8, cantidad: 1 } as BotinFuente,
   carcelero: { objeto: 1, oro: 1, cantidad: 2, garantiza: 'rare' } as BotinFuente,
+  lobo_escarcha: { objeto: 0.08, oro: 0.5, cantidad: 1 } as BotinFuente,
+  espectro_helado: { objeto: 0.12, oro: 0.6, cantidad: 1 } as BotinFuente,
+  diablillo: { objeto: 0.05, oro: 0.4, cantidad: 1 } as BotinFuente,
+  caballero_congelado: { objeto: 0.3, oro: 0.8, cantidad: 1 } as BotinFuente,
+  bruja_escarcha: { objeto: 0.2, oro: 0.7, cantidad: 1 } as BotinFuente,
+  sombra_devoradora: { objeto: 0.15, oro: 0.6, cantidad: 1 } as BotinFuente,
+  reina_escarcha: { objeto: 1, oro: 1, cantidad: 2, garantiza: 'rare' } as BotinFuente,
+  guardian_puerta: { objeto: 1, oro: 1, cantidad: 3, garantiza: 'rare' } as BotinFuente,
   rompible: { objeto: 0.1, oro: 0.4, cantidad: 1, pocionProb: 0.6 },
   cofres: {
     madera: { objetos: 1, oro: [5, 10] as [number, number], raroProb: 0, raroGarantizado: 0, legendarioProb: 0 },
@@ -883,6 +912,8 @@ export const CORAZON = {
     /** detrás de una columna o un gigante, hasta esta distancia, no llega */
     refugioLargo: 110,
     refugioAncho: 46,
+    /** en la ventisca camina más lento */
+    lento: 0.75,
   },
   hielo: {
     /** parada sobre el hielo fino: cruje desde aquí y se rompe aquí (en modo peque más tarde) */
@@ -891,7 +922,11 @@ export const CORAZON = {
     pequeMult: 1.6,
     /** roto queda así hasta que se vuelve a congelar */
     rehaceS: 12,
+    /** caer al agua helada enfría esto de golpe */
+    frioAlCaer: 45,
   },
+  /** los braseros de hueso de la arena: se prenden quedándose al lado este rato */
+  braseros: { prenderS: 0.6 },
   companeras: {
     max: 5,
     radio: 120,

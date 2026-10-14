@@ -49,6 +49,9 @@ const CUERPO_DEFECTO = { alto: 28, radio: 12, sombra: 22, barra: 26 }
 /** Hacia dónde mira cada dirección, en grados (0 a la derecha, crece hacia abajo como la pantalla) */
 const DIRECCIONES_GRADOS = [90, 135, 180, 225, 270, 315, 0, 45]
 
+/** El ángulo de cada una de las ocho direcciones (para disparar y para el escudo) */
+const ANGULO_DIR: Record<string, number> = { down: Math.PI / 2, down_left: (3 * Math.PI) / 4, left: Math.PI, up_left: (-3 * Math.PI) / 4, up: -Math.PI / 2, up_right: -Math.PI / 4, right: 0, down_right: Math.PI / 4 }
+
 export interface ContextoEnemigos {
   heroe: { x: number; y: number; vivo: boolean }
   /** F8: dónde anda Thor (la raicita lo persigue a él si está cerca) */
@@ -87,6 +90,10 @@ export interface EventosEnemigos {
   rastro?(x: number, y: number): void
   /** F12: la cadena del Carcelero cayó en esta franja */
   golpeLinea?(e: Enemigo, x: number, y: number, dx: number, dy: number, largo: number, ancho: number, dano: readonly [number, number]): void
+  /** F13: la sombra devoradora llegó: ¿se comió una luz compañera? */
+  devorarLuz?(e: Enemigo): boolean
+  /** F13: la bruja curó a otro */
+  curoAliado?(bruja: Enemigo, otro: Enemigo, n: number): void
   alMorir(e: Enemigo): void
   efecto(nombre: string, x: number, y: number): void
   sonido(nombre: string, op?: { volumen?: number; rate?: number }): void
@@ -166,6 +173,13 @@ export class Enemigo implements Atacable {
   }
   /** F12: la salamandra mojada por Thor: de piedra, quieta, recibe el doble */
   private piedraS = 0
+  /** F13: dónde estaba la heroína en el último paso (el escudo del caballero mira hacia ella) */
+  private heroeX = 0
+  private heroeY = 0
+  /** F13: la bruja: lo que le falta para curar otra vez */
+  curaS = 0
+  /** F13: cuántos golpes paró el escudo (para las pruebas) */
+  bloqueos = 0
   private rastroEnS = 0
   /** F12: la cadena del Carcelero: el aviso en línea y después se jala hasta donde cayó */
   private cadena: { dx: number; dy: number; sprites: Phaser.GameObjects.Sprite[]; jalar: { x0: number; y0: number; x1: number; y1: number; resta: number; total: number } | null } | null = null
@@ -294,7 +308,36 @@ export class Enemigo implements Atacable {
   /** El marinero de niebla: en la luz se deshace rápido, a oscuras el golpe casi lo atraviesa */
   ajustarDano(dano: number): number {
     if (this.piedraS > 0) return dano * FRAGUA.salamandra.piedraMult
+    if (this.escudoDeFrente()) {
+      this.bloqueos++
+      this.ev.sonido('escudo_bloquea', { volumen: 0.5, rate: 0.9 + juego().next() * 0.2 })
+      if (this.cuadros.bloquear) {
+        this.poner('bloquear', true)
+        this.bloqueoAnimS = 0.35
+      }
+      return dano * this.cfg.escudoFrente!.mult
+    }
     return this.cfg.deNiebla ? danoMarinero(dano, this.enLuz) : dano
+  }
+
+  /** F13: ¿la heroína le pega de frente al escudo? Mientras ataca o avisa el escudo no tapa */
+  private escudoDeFrente(): boolean {
+    const k = this.cfg.escudoFrente
+    if (!k || this.golpeEn || this.anticipaS > 0 || this.ia.estado === 'aviso') return false
+    const a = ANGULO_DIR[DIRECCIONES[this.dir]!]!
+    const b = Math.atan2(this.heroeY - this.y, this.heroeX - this.x)
+    let d = Math.abs(a - b) % (Math.PI * 2)
+    if (d > Math.PI) d = Math.PI * 2 - d
+    return (d * 180) / Math.PI <= k.grados
+  }
+
+  /** F13: la bruja cura un poco a uno de los suyos */
+  curar(pct: number): number {
+    if (!this.vivo || this.ia.vida >= this.ia.vidaMax) return 0
+    const n = Math.round((this.ia.vidaMax * pct) / 100)
+    this.ia.vida = Math.min(this.ia.vidaMax, this.ia.vida + n)
+    this.barraS = 2
+    return n
   }
 
   /** F12: la sacudida de Thor la moja: la salamandra queda de piedra negra unos segundos (y recibe el doble) */
@@ -431,6 +474,8 @@ export class Enemigo implements Atacable {
     this.bloqueoAnimS = Math.max(0, this.bloqueoAnimS - dt)
     this.barraS = Math.max(0, this.barraS - dt)
     this.anticipaS = Math.max(0, this.anticipaS - dt)
+    this.heroeX = ctx.heroe.x
+    this.heroeY = ctx.heroe.y
 
     // el golpe pendiente de un ataque ya empezado
     if (this.golpeEn) {
@@ -812,11 +857,16 @@ export class Enemigo implements Atacable {
       this.pegarse()
       return
     }
+    // la sombra devoradora se traga una luz compañera en vez de morder (si no queda ninguna, muerde)
+    if (this.cfg.devoraLuz && this.ev.devorarLuz?.(this)) {
+      this.ev.sonido('luz_comida', { volumen: 0.55 })
+      return
+    }
     if (this.cfg.rodea) this.ev.sonido('cangrejo_tenaza', { volumen: 0.4, rate: 0.9 + juego().next() * 0.3 })
     if (this.cfg.proyectil) {
       // dispara hacia donde mira
       const v = DIRECCIONES[this.dir]!
-      const ang = { down: Math.PI / 2, down_left: (3 * Math.PI) / 4, left: Math.PI, up_left: (-3 * Math.PI) / 4, up: -Math.PI / 2, up_right: -Math.PI / 4, right: 0, down_right: Math.PI / 4 }[v]!
+      const ang = ANGULO_DIR[v]!
       this.ev.disparar(this, ang)
     } else this.ev.golpeCuerpo(this, this.cfg.dano, this.cfg.alcance + 18)
   }
@@ -828,7 +878,7 @@ export class Enemigo implements Atacable {
     if (pe?.linea) {
       // la cadena del Carcelero: la línea donde va a caer, hacia la heroína (se fija ahora: si camina de lado, se salva)
       const v = DIRECCIONES[this.dir]!
-      const ang = { down: Math.PI / 2, down_left: (3 * Math.PI) / 4, left: Math.PI, up_left: (-3 * Math.PI) / 4, up: -Math.PI / 2, up_right: -Math.PI / 4, right: 0, down_right: Math.PI / 4 }[v]!
+      const ang = ANGULO_DIR[v]!
       const dx = Math.cos(ang)
       const dy = Math.sin(ang)
       const sprites: Phaser.GameObjects.Sprite[] = []
@@ -1026,7 +1076,7 @@ export class Enemigos {
     return [...this.lista.filter((e) => !e.oculta), ...this.adicionales]
   }
 
-  constructor(escena: Phaser.Scene, m: Manifest, grilla: Grilla, entidades: readonly Entidad[], ev: EventosEnemigos, private piso = 1, private ciclo = 1) {
+  constructor(escena: Phaser.Scene, m: Manifest, grilla: Grilla, entidades: readonly Entidad[], private ev: EventosEnemigos, private piso = 1, private ciclo = 1) {
     for (const e of entidades) {
       if (e.tipo !== 'enemigo') continue
       if (e.props.tras_jefe === true) continue
@@ -1075,6 +1125,7 @@ export class Enemigos {
   /** Los lejanos ni piensan ni se dibujan (cuesta menos y no cambia nada: vuelven a su sitio) */
   update(dt: number, ctx: ContextoEnemigos, vistaRadio = 900): void {
     this.repartirRodeo(dt, ctx)
+    this.curarBrujas(dt, ctx)
     for (const e of this.lista) {
       if (e.destruido) continue
       const lejos = Math.hypot(e.x - ctx.heroe.x, e.y - ctx.heroe.y) > vistaRadio
@@ -1091,6 +1142,23 @@ export class Enemigos {
   private giroRodeo = 0
 
   /** F12: los cangrejos que persiguen a la heroína se reparten alrededor de ella (y el círculo gira despacio) */
+  /** F13: cada bruja de escarcha que ve a la heroína cura a los heridos de alrededor cada tanto */
+  private curarBrujas(dt: number, ctx: ContextoEnemigos): void {
+    for (const b of this.lista) {
+      const k = b.cfg.curaAliados
+      if (!k || !b.vivo) continue
+      b.curaS -= dt
+      if (b.curaS > 0) continue
+      b.curaS = k.cadaS
+      if (Math.hypot(b.x - ctx.heroe.x, b.y - ctx.heroe.y) > b.cfg.ve) continue
+      for (const o of this.lista) {
+        if (o === b || !o.vivo || Math.hypot(o.x - b.x, o.y - b.y) > k.radio) continue
+        const n = o.curar(k.pct)
+        if (n > 0) this.ev.curoAliado?.(b, o, n)
+      }
+    }
+  }
+
   private repartirRodeo(dt: number, ctx: ContextoEnemigos): void {
     this.giroRodeo += dt * 0.35
     const grupo = this.lista.filter((e) => e.vivo && e.cfg.rodea && Math.hypot(e.x - ctx.heroe.x, e.y - ctx.heroe.y) < e.cfg.ve)

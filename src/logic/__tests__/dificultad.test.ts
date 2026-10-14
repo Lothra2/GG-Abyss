@@ -13,8 +13,8 @@ import catJson from '../../../public/assets/kit/botin/catalogo.json'
 type It = { id: string; level: number; rarity: string; base: { cat: string; icon?: string; slot?: string }; stats: { damage?: [number, number]; defense?: number } }
 const items = (catJson as unknown as { items: It[] }).items
 const cat = leerCatalogo(catJson as never)
-const NIVEL_DE_PISO = [0, 2, 4, 6, 8, 10, 10]
-const COMUNES: Record<number, string[]> = { 1: ['rata', 'calabaza', 'goblin_arquero'], 2: ['raicita', 'vigia_raices'], 3: ['polilla_ceniza', 'sombra'], 4: ['marinero_niebla', 'cangrejo_ceniza'], 5: ['sonambulo_piedra', 'gargola_dormida', 'duende_sueno'], 6: ['salamandra_brasa'] }
+const NIVEL_DE_PISO = [0, 2, 4, 6, 8, 10, 10, 12]
+const COMUNES: Record<number, string[]> = { 1: ['rata', 'calabaza', 'goblin_arquero'], 2: ['raicita', 'vigia_raices'], 3: ['polilla_ceniza', 'sombra'], 4: ['marinero_niebla', 'cangrejo_ceniza'], 5: ['sonambulo_piedra', 'gargola_dormida', 'duende_sueno'], 6: ['salamandra_brasa'], 7: ['lobo_escarcha', 'espectro_helado', 'diablillo', 'caballero_congelado', 'bruja_escarcha', 'sombra_devoradora'] }
 const ATAQUES: Record<string, unknown>[] = [{}, JEFE, JEFE_CAMPANA, JEFE_POLILLA, JEFE_PEZ, JEFE_REY, JEFE_DRAGONA]
 const JEFES = [0, JEFE.vida, JEFE_CAMPANA.vida, JEFE_POLILLA.vida, JEFE_PEZ.vida, JEFE_REY.vida, JEFE_DRAGONA.vida]
 
@@ -36,7 +36,7 @@ function heroina(clase: ClaseId, piso: number) {
 describe('la dificultad (F13)', () => {
   for (const clase of ['paladin', 'amazona'] as const) {
     it(`${clase}: un enemigo común aguanta varios golpes y la heroína no aguanta para siempre`, () => {
-      for (let piso = 1; piso <= 6; piso++) {
+      for (let piso = 1; piso <= 7; piso++) {
         const s = heroina(clase, piso)
         const golpe = (s.danoMin + s.danoMax) / 2
         for (const t of COMUNES[piso]!) {

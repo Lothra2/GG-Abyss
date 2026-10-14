@@ -48,9 +48,10 @@ import { Misterio } from '../game/Misterio'
 import { Ciudad } from '../game/Ciudad'
 import { bostezo } from '../logic/ciudad'
 import { Fragua } from '../game/Fragua'
+import { Corazon } from '../game/Corazon'
 import { alcanzaSacudida } from '../logic/fragua'
 import { enMedio } from '../logic/jefe'
-import { FRAGUA } from '../config/balance'
+import { CORAZON, FRAGUA } from '../config/balance'
 import { enLinea as enFranja } from '../logic/jefe'
 import { Heroina } from '../game/Heroina'
 import { ThorSprite } from '../game/ThorSprite'
@@ -106,7 +107,7 @@ const NOMBRES_GANCHOS = [
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
   'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable', 'puerto', 'adelantarMarea', 'alzarFarol', 'apagarFarol', 'misterio', 'ciudad', 'robarYa', 'bostezando', 'enLuzFija', 'gargolas', 'relojero', 'decosDespiertos',
   'fragua', 'sacudirThor', 'mojarThor', 'tirarPalanca', 'abrirJaula', 'relojFragua', 'pegarHollin', 'salamandras', 'faroleros', 'lavaApagada',
-  'ciclo', 'verCine', 'probarFinal',
+  'ciclo', 'verCine', 'probarFinal', 'corazon', 'ventisca', 'devorarLuz', 'prenderBrasero', 'frioA',
 ]
 
 /**
@@ -176,6 +177,8 @@ export class Mundo extends Phaser.Scene {
   ciudad: Ciudad | null = null
   /** F12: la Fragua de las Luces (el calor, las grietas, las jaulas, la sacudida de Thor y los surtidores) */
   fragua: Fragua | null = null
+  /** F13: el Mundo 7, el Corazón Helado (el frío, la ventisca, el hielo fino, las compañeras y los braseros) */
+  corazon: Corazon | null = null
   /** F12: el chorro de un surtidor o la sacudida de Thor le llegan a la Dragona en el próximo paso del jefe */
   private chorroPendiente = false
   private sacudidaPendiente = false
@@ -576,6 +579,15 @@ export class Mundo extends Phaser.Scene {
       sonido: (n, op) => this.sonido.efecto(n, op),
       sacudir: () => this.sacudir(160, 0.004),
       curo: (e) => this.numeros.mostrar(e.x, e.y - e.cuerpo.alto - 4, '+', 'verde'),
+      // F13: la bruja de escarcha cura a los suyos: se ve el brillo y el número verde
+      curoAliado: (b, o, n) => {
+        this.numeros.mostrar(o.x, o.y - o.cuerpo.alto - 4, `+${n}`, 'verde')
+        this.proyectiles.fxEn('impacto_hielo', o.x, o.y - 10, 1)
+        this.sonido.efecto('bruja_cura', { volumen: 0.45 })
+        if (this.mejoras) this.textoFlotante(b.x, b.y - b.cuerpo.alto - 10, '¡Está curando!', 0x9ad8ff)
+      },
+      // F13: la sombra devoradora se come una luz compañera (el Corazón Helado las lleva)
+      devorarLuz: () => this.corazon?.devorarUna() ?? false,
     }
     this.botin = new Botin({
       escena: this,
@@ -721,6 +733,31 @@ export class Mundo extends Phaser.Scene {
     this.chorroPendiente = false
     this.sacudidaPendiente = false
     this.chorros = []
+    this.corazon?.destruir()
+    this.corazon = entidadesDeTipo(this.mapa, 'brasero_hueso').length || entidadesDeTipo(this.mapa, 'hielo_fino').length || entidadesDeTipo(this.mapa, 'columna_hielo').length
+      ? new Corazon(this, m, this.mapa, CORAZON.companeras.max, {
+          sonido: (n, op) => this.sonido.efecto(n, op),
+          texto: (x, y, t, tinte) => this.textoFlotante(x, y, t, tinte),
+          fx: (n, x, y, esc) => this.proyectiles.fxEn(n, x, y, esc ?? 1),
+          estallido: (x, y, llave, n) => this.atmosfera.particulas.estallido(x, y, llave, n),
+          modoPeque: () => this.combate.modoPeque,
+          danar: (n) => this.combate.danar(n),
+          empujar: (dx, dy) => {
+            const h = this.heroina
+            const r = moverCuerpo(this.grilla, { x: h.x, y: h.y, radio: 8 }, dx, dy)
+            h.teleport(r.x, r.y)
+          },
+          alAgua: (firme) => {
+            this.caidasAgua++
+            this.heroina.parar()
+            this.time.delayedCall(500, () => {
+              this.heroina.teleport(firme.x, firme.y)
+              this.thor.teleport(firme.x - 18, firme.y + 6)
+            })
+          },
+        })
+      : null
+    if (this.corazon && this.partida.jefeVencido) this.corazon.apagar()
     // los faroleros cuya luz ya está libre salen sin su jaula
     if (this.fragua) for (const e of this.enemigos.lista) if (e.jaulaLuz && this.fragua.faroleroLibre(e.ent.id)) e.jaulaLuz = null
     // la Dragona ya se liberó en esta partida: la fragua está fría de entrada
@@ -1560,6 +1597,8 @@ export class Mundo extends Phaser.Scene {
     this.ciudad = null
     this.fragua?.destruir()
     this.fragua = null
+    this.corazon?.destruir()
+    this.corazon = null
     this.sombrasPj?.destruir()
     this.sombrasPj = null
     for (const f of this.portalesFx) f.destroy()
@@ -1978,6 +2017,8 @@ export class Mundo extends Phaser.Scene {
 
   private alGuardarEnFogata(f: { id: string; nombre: string; x: number; y: number }): void {
     this.partida.ultimaFogata = f.id
+    // F13: en la hoguera de hueso vuelven las compañeras que se comieron las sombras
+    this.corazon?.enHoguera()
     this.guardar()
     this.fxSobre('curar', this.heroina.x, this.heroina.y)
     this.entidades.flotante(this.heroina.x, this.heroina.y - 58, 'Guardado', 'icono_guardado', 0xbfe6ff)
@@ -2320,6 +2361,13 @@ export class Mundo extends Phaser.Scene {
     this.galerias?.update(heroe, luces)
     this.misterio?.update(heroe, luces)
     this.ciudad?.update(dtVisual, { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido }, this.thor, luces)
+    const co = this.corazon
+    if (co) {
+      co.update(dtVisual, { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido && !this.presentacion?.activa }, luces)
+      this.heroina.velAmbiente = co.velocidad
+      // la ventisca le achica el farol
+      this.atmosfera.radioHalo = haloCelestial(Math.round(COLOR.FAROL_RADIO * co.halo), this.partida.celestial)
+    }
     const fr = this.fragua
     if (fr) {
       fr.update(dtVisual, { x: this.heroina.x, y: this.heroina.y, vivo: !this.combate.caido && !this.presentacion?.activa }, this.thor, luces, jb && jb.peleando && jb.vivo ? { x: jb.x, y: jb.y } : null)
@@ -2526,6 +2574,14 @@ export class Mundo extends Phaser.Scene {
       abrirAlbum: (() => this.abrirAlbum()) as never,
       tutorial: () => ({ hechos: [...this.partida.tutorial], demo: this.demoTutorial ? { paso: this.demoTutorial.paso } : null }),
       saltarTutorial: (() => this.saltarTutorial()) as never,
+      // F13: el Corazón Helado
+      corazon: () => (this.corazon ? { ...this.corazon.info, halo: this.atmosfera.radioHalo, velocidad: this.heroina.velAmbiente } : null),
+      ventisca: ((fase: 'aviso' | 'sopla' | 'calma', dx = 1, dy = 0) => this.corazon?.forzarVentisca(fase, dx, dy)) as never,
+      devorarLuz: () => this.corazon?.devorarUna() ?? false,
+      prenderBrasero: ((i: number) => this.corazon?.prenderPorIndice(i) ?? false) as never,
+      frioA: ((v: number) => {
+        if (this.corazon) this.corazon.frio.valor = v
+      }) as never,
       // F13: el ciclo, las alas y el final
       ciclo: () => ({ ciclo: this.partida.ciclo, celestial: this.partida.celestial, cines: [...this.partida.cines], multJefe: Math.round(this.multJefe * 100) / 100, halo: this.atmosfera.radioHalo, vidaMax: this.combate.stats.vidaMax, nivel: this.partida.nivel, mundo: this.partida.mundo }),
       verCine: ((cine: 'cine_bajada' | 'cine_fin') => {
