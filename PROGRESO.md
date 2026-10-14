@@ -67,6 +67,12 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - La arena del Faro era piso y el pez nadaba sobre piedra: el taller la rehízo como una poza negra con un anillo de tablas (`243c319`). El pez nada adentro sin salirse.
   - Botón redondo del farol para Alana (#41, entregado): gris con el arco de recarga y late cuando el pez está bajo el agua. La luz del pez sigue su antena cuadro por cuadro (#42, entregado).
   - Al liberarse, el pez termina su animación entera (chiquito y azul, se va nadando) antes de irse. El cartel dice "¡La luz vuelve!".
+- Mundo 5, La Ciudad Dormida (PLAN.md F12), con el taller `ec9b6f2` (sesión nueva del taller en `claude/abyss-mundo5`):
+  - La luz te la roban: el farol de plaza se prende al pasar y aclara su barrio. La Ladrona chupa la luz de un barrio prendido con un hilo que se ve, si llegas antes se va. Si no, la luz cae en tres chispas que Thor rastrea y trae, y el farol vuelve.
+  - Sonámbulos de piedra quietos en la luz, gárgolas posadas que se tiran en picada con su sombra, duendes cuya arena hace bostezar y El Relojero con la aguja que barre girando.
+  - El Rey de Piedra: la canción apaga las lámparas y lo blinda, las chispas de su corona las prenden y de rodillas se le pega. Al liberarlo la ciudad despierta de colores y él se queda como un viejito bonachón.
+  - Arreglos en el camino: los faroles del muelle del Puerto se dibujaban dos veces (el apagado podía tapar al prendido) y los efectos nuevos de la ciudad no se cargaban (el duende no tiraba su arena).
+- Arreglo publicado: tras vencer al Pez Farol el oro caía en la poza y la heroína se quedaba pegada. Ahora cae en el muelle y ningún botín cae donde no se camina.
 - Verificación de F10a, F11 e intro:
   - Typecheck limpio y 380 tests unitarios.
   - e2e completo (escritorio, tablet y postales): 188 pasaron, 5 se saltan a propósito y 3 fallaron en la compu por la cámara nueva. La flecha guía medía sus márgenes con el zoom del mundo y una ayuda de las pruebas no lo tomaba en cuenta.
