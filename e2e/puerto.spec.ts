@@ -192,8 +192,12 @@ test.describe('El Puerto Ahogado', () => {
     const c = (await enemigos(page)).find((e) => e.id === cap!.id)!
     await gancho(page, 'ponerHeroina', c.x + 20, c.y + 6)
     const pos0 = await gancho<{ x: number; y: number }>(page, 'pos')
-    for (let i = 0; i < 12; i++) await avanzar(page, 0.25, true)
-    const pos1 = await gancho<{ x: number; y: number }>(page, 'pos')
+    // el aviso del ancla es largo: se espera hasta que caiga (y un poco más para la ola)
+    let pos1 = pos0
+    for (let i = 0; i < 24 && Math.hypot(pos1.x - pos0.x, pos1.y - pos0.y) <= 10; i++) {
+      await avanzar(page, 0.25, true)
+      pos1 = await gancho<{ x: number; y: number }>(page, 'pos')
+    }
     expect(Math.hypot(pos1.x - pos0.x, pos1.y - pos0.y)).toBeGreaterThan(10)
     await sinErrores(errores)
   })
