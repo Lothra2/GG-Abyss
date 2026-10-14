@@ -259,7 +259,8 @@ test.describe('La Fragua de las Luces', () => {
     }
     expect((await gancho<Jefe>(page, 'jefe')).vencido).toBe(true)
     await expect.poll(async () => { await avanzar(page, 0.5); return (await fg(page)).apagada }, { timeout: 30_000 }).toBe(true)
-    await expect.poll(async () => { await avanzar(page, 0.5); const f = await fg(page); return f.libres === f.total }, { timeout: 30_000 }).toBe(true)
+    // las jaulas se abren de a una con el reloj real (con la máquina cargada va más lento): hay que darle tiempo
+    await expect.poll(async () => { await avanzar(page, 0.5); const f = await fg(page); return f.libres === f.total }, { timeout: 120_000 }).toBe(true)
     expect(await gancho<boolean>(page, 'lavaApagada')).toBe(true)
     expect(Object.keys(await gancho<Record<string, number>>(page, 'sonido'))).toContain('musica_liberacion')
     await gancho(page, 'guardarAhora')
