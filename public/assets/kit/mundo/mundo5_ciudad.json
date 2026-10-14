@@ -12488,12 +12488,12 @@
     0,
     5,
     5,
+    5,
     0,
     0,
     0,
-    5,
-    5,
-    5,
+    0,
+    0,
     0,
     0,
     5,
@@ -12599,10 +12599,10 @@
     0,
     0,
     0,
-    0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
+    5,
     0,
     0,
     5,
@@ -12827,7 +12827,7 @@
     0,
     0,
     0,
-    0,
+    5,
     0,
     0,
     0,
@@ -12931,8 +12931,8 @@
     0,
     0,
     0,
-    5,
     0,
+    5,
     0,
     0,
     0,
@@ -13218,7 +13218,6 @@
     0,
     0,
     5,
-    0,
     0,
     0,
     0,
@@ -13273,6 +13272,7 @@
     0,
     0,
     0,
+    5,
     0,
     0,
     0,
@@ -15956,7 +15956,7 @@
     0,
     0,
     0,
-    5,
+    0,
     0,
     0,
     0,
@@ -16066,14 +16066,13 @@
     0,
     0,
     0,
-    5,
     0,
     0,
     0,
     0,
     0,
-    5,
     0,
+    5,
     0,
     0,
     0,
@@ -16086,6 +16085,7 @@
     0,
     0,
     0,
+    5,
     0,
     5,
     5,
@@ -16179,8 +16179,7 @@
     0,
     0,
     0,
-    0,
-    0,
+    5,
     0,
     0,
     0,
@@ -16193,6 +16192,7 @@
     0,
     0,
     0,
+    5,
     0,
     0,
     0,
@@ -16302,7 +16302,7 @@
     0,
     0,
     0,
-    0,
+    5,
     0,
     0,
     0,
@@ -16401,7 +16401,7 @@
     0,
     0,
     0,
-    0,
+    5,
     0,
     0,
     0,
@@ -16503,19 +16503,19 @@
     0,
     5,
     5,
-    0,
     0,
     0,
     0,
     0,
     0,
-    0,
-    0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
     0,
+    5,
+    5,
     0,
     0,
     0,
@@ -16618,14 +16618,14 @@
     0,
     0,
     0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
     0,
     0,
     0,
-    5,
     0,
     0,
     0,
@@ -16740,10 +16740,10 @@
     0,
     5,
     0,
-    5,
     0,
-    5,
-    5,
+    0,
+    0,
+    0,
     0,
     0,
     0,
@@ -16948,9 +16948,9 @@
     0,
     0,
     0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -17063,7 +17063,6 @@
     0,
     0,
     0,
-    5,
     0,
     0,
     0,
@@ -17077,6 +17076,7 @@
     0,
     0,
     0,
+    0,
     5,
     5,
     5,
@@ -17416,7 +17416,6 @@
     5,
     5,
     5,
-    0,
     0,
     0,
     0,
@@ -17430,8 +17429,10 @@
     0,
     0,
     0,
+    5,
     0,
     0,
+    5,
     0,
     0,
     0,
@@ -17449,7 +17450,6 @@
     0,
     0,
     0,
-    5,
     0,
     0,
     0,
@@ -17526,7 +17526,6 @@
     5,
     5,
     5,
-    0,
     0,
     0,
     0,
@@ -17537,6 +17536,8 @@
     0,
     0,
     0,
+    5,
+    5,
     0,
     0,
     0,
@@ -17544,7 +17545,6 @@
     0,
     0,
     0,
-    5,
     0,
     0,
     0,
@@ -17559,12 +17559,12 @@
     5,
     0,
     0,
-    5,
     0,
     0,
     0,
     0,
     0,
+    0,
     5,
     5,
     5,
@@ -17613,8 +17613,6 @@
     0,
     0,
     0,
-    5,
-    5,
     0,
     0,
     0,
@@ -17648,6 +17646,8 @@
     0,
     0,
     0,
+    5,
+    5,
     0,
     0,
     0,
@@ -17767,9 +17767,7 @@
     0,
     0,
     5,
-    5,
-    5,
-    5,
+    0,
     5,
     0,
     0,
@@ -17785,6 +17783,8 @@
     0,
     0,
     0,
+    0,
+    0,
     5,
     5,
     5,
@@ -17843,10 +17843,10 @@
     0,
     0,
     0,
-    5,
     0,
     0,
     0,
+    0,
     5,
     5,
     5,
@@ -17945,8 +17945,6 @@
     0,
     0,
     0,
-    5,
-    5,
     5,
     0,
     0,
@@ -17957,6 +17955,8 @@
     0,
     0,
     0,
+    0,
+    0,
     5,
     5,
     5,
@@ -17980,8 +17980,7 @@
     0,
     0,
     0,
-    5,
-    5,
+    0,
     0,
     0,
     0,
@@ -18003,6 +18002,7 @@
     0,
     0,
     0,
+    0,
     5,
     0,
     5,
@@ -18517,14 +18517,14 @@
     0,
     0,
     0,
-    5,
-    5,
     0,
     0,
     0,
     0,
     0,
     0,
+    5,
+    5,
     0,
     0,
     0,
@@ -18852,7 +18852,6 @@
     0,
     0,
     0,
-    5,
     0,
     0,
     0,
@@ -18882,6 +18881,7 @@
     0,
     0,
     0,
+    0,
     5,
     0,
     0,
@@ -18950,7 +18950,6 @@
     5,
     5,
     5,
-    0,
     0,
     0,
     0,
@@ -18976,6 +18975,7 @@
     0,
     0,
     0,
+    5,
     0,
     0,
     0,
@@ -19511,7 +19511,6 @@
     0,
     0,
     0,
-    5,
     0,
     0,
     0,
@@ -19535,6 +19534,7 @@
     0,
     0,
     0,
+    5,
     0,
     0,
     0,
@@ -19631,8 +19631,8 @@
     0,
     0,
     0,
-    5,
-    5,
+    0,
+    0,
     0,
     0,
     0,
@@ -56342,6 +56342,63 @@
     },
     {
      "id": 51,
+     "name": "organillo",
+     "type": "deco",
+     "x": 2896,
+     "y": 380,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "organillo"
+      }
+     ]
+    },
+    {
+     "id": 52,
+     "name": "atril_piedra_0",
+     "type": "deco",
+     "x": 2960,
+     "y": 476,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "atril_piedra_0"
+      }
+     ]
+    },
+    {
+     "id": 53,
+     "name": "atril_piedra_1",
+     "type": "deco",
+     "x": 3120,
+     "y": 444,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "atril_piedra_1"
+      }
+     ]
+    },
+    {
+     "id": 54,
      "name": "farol_plaza_apagado",
      "type": "deco",
      "x": 3248,
@@ -56360,7 +56417,7 @@
      ]
     },
     {
-     "id": 52,
+     "id": 55,
      "name": "arbol_piedra_0",
      "type": "deco",
      "x": 128,
@@ -56379,7 +56436,7 @@
      ]
     },
     {
-     "id": 53,
+     "id": 56,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 192,
@@ -56398,7 +56455,7 @@
      ]
     },
     {
-     "id": 54,
+     "id": 57,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 256,
@@ -56417,7 +56474,7 @@
      ]
     },
     {
-     "id": 55,
+     "id": 58,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 384,
@@ -56436,7 +56493,7 @@
      ]
     },
     {
-     "id": 56,
+     "id": 59,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 448,
@@ -56455,7 +56512,7 @@
      ]
     },
     {
-     "id": 57,
+     "id": 60,
      "name": "seto_piedra_1_b",
      "type": "deco",
      "x": 512,
@@ -56474,7 +56531,7 @@
      ]
     },
     {
-     "id": 58,
+     "id": 61,
      "name": "seto_piedra_2_b",
      "type": "deco",
      "x": 576,
@@ -56493,7 +56550,7 @@
      ]
     },
     {
-     "id": 59,
+     "id": 62,
      "name": "seto_piedra_2_b",
      "type": "deco",
      "x": 640,
@@ -56512,7 +56569,7 @@
      ]
     },
     {
-     "id": 60,
+     "id": 63,
      "name": "seto_piedra_1_b",
      "type": "deco",
      "x": 704,
@@ -56531,7 +56588,7 @@
      ]
     },
     {
-     "id": 61,
+     "id": 64,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 768,
@@ -56550,7 +56607,7 @@
      ]
     },
     {
-     "id": 62,
+     "id": 65,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 832,
@@ -56569,7 +56626,7 @@
      ]
     },
     {
-     "id": 63,
+     "id": 66,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 896,
@@ -56588,7 +56645,7 @@
      ]
     },
     {
-     "id": 64,
+     "id": 67,
      "name": "seto_piedra_1_b",
      "type": "deco",
      "x": 960,
@@ -56607,7 +56664,7 @@
      ]
     },
     {
-     "id": 65,
+     "id": 68,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 1024,
@@ -56626,7 +56683,7 @@
      ]
     },
     {
-     "id": 66,
+     "id": 69,
      "name": "seto_piedra_2_b",
      "type": "deco",
      "x": 128,
@@ -56645,7 +56702,7 @@
      ]
     },
     {
-     "id": 67,
+     "id": 70,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 896,
@@ -56664,7 +56721,7 @@
      ]
     },
     {
-     "id": 68,
+     "id": 71,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 1024,
@@ -56683,7 +56740,7 @@
      ]
     },
     {
-     "id": 69,
+     "id": 72,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 128,
@@ -56702,7 +56759,7 @@
      ]
     },
     {
-     "id": 70,
+     "id": 73,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 192,
@@ -56721,7 +56778,7 @@
      ]
     },
     {
-     "id": 71,
+     "id": 74,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 256,
@@ -56740,7 +56797,7 @@
      ]
     },
     {
-     "id": 72,
+     "id": 75,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 320,
@@ -56759,7 +56816,7 @@
      ]
     },
     {
-     "id": 73,
+     "id": 76,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 384,
@@ -56778,7 +56835,7 @@
      ]
     },
     {
-     "id": 74,
+     "id": 77,
      "name": "seto_piedra_2_b",
      "type": "deco",
      "x": 448,
@@ -56797,7 +56854,7 @@
      ]
     },
     {
-     "id": 75,
+     "id": 78,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 512,
@@ -56816,7 +56873,7 @@
      ]
     },
     {
-     "id": 76,
+     "id": 79,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 640,
@@ -56835,7 +56892,7 @@
      ]
     },
     {
-     "id": 77,
+     "id": 80,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 704,
@@ -56854,7 +56911,7 @@
      ]
     },
     {
-     "id": 78,
+     "id": 81,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 768,
@@ -56873,7 +56930,7 @@
      ]
     },
     {
-     "id": 79,
+     "id": 82,
      "name": "seto_piedra_1_b",
      "type": "deco",
      "x": 896,
@@ -56892,7 +56949,7 @@
      ]
     },
     {
-     "id": 80,
+     "id": 83,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 1024,
@@ -56911,7 +56968,7 @@
      ]
     },
     {
-     "id": 81,
+     "id": 84,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 128,
@@ -56930,7 +56987,7 @@
      ]
     },
     {
-     "id": 82,
+     "id": 85,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 640,
@@ -56949,7 +57006,7 @@
      ]
     },
     {
-     "id": 83,
+     "id": 86,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 1024,
@@ -56968,7 +57025,7 @@
      ]
     },
     {
-     "id": 84,
+     "id": 87,
      "name": "arbol_piedra_1_b",
      "type": "deco",
      "x": 128,
@@ -56987,7 +57044,7 @@
      ]
     },
     {
-     "id": 85,
+     "id": 88,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 256,
@@ -57006,7 +57063,7 @@
      ]
     },
     {
-     "id": 86,
+     "id": 89,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 320,
@@ -57025,7 +57082,7 @@
      ]
     },
     {
-     "id": 87,
+     "id": 90,
      "name": "seto_piedra_2_b",
      "type": "deco",
      "x": 384,
@@ -57044,7 +57101,7 @@
      ]
     },
     {
-     "id": 88,
+     "id": 91,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 448,
@@ -57063,7 +57120,7 @@
      ]
     },
     {
-     "id": 89,
+     "id": 92,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 576,
@@ -57082,7 +57139,7 @@
      ]
     },
     {
-     "id": 90,
+     "id": 93,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 640,
@@ -57101,7 +57158,7 @@
      ]
     },
     {
-     "id": 91,
+     "id": 94,
      "name": "seto_piedra_2_b",
      "type": "deco",
      "x": 704,
@@ -57120,7 +57177,7 @@
      ]
     },
     {
-     "id": 92,
+     "id": 95,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 768,
@@ -57139,7 +57196,7 @@
      ]
     },
     {
-     "id": 93,
+     "id": 96,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 832,
@@ -57158,7 +57215,7 @@
      ]
     },
     {
-     "id": 94,
+     "id": 97,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 896,
@@ -57177,7 +57234,7 @@
      ]
     },
     {
-     "id": 95,
+     "id": 98,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 960,
@@ -57196,7 +57253,7 @@
      ]
     },
     {
-     "id": 96,
+     "id": 99,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 1024,
@@ -57215,7 +57272,7 @@
      ]
     },
     {
-     "id": 97,
+     "id": 100,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 128,
@@ -57234,7 +57291,7 @@
      ]
     },
     {
-     "id": 98,
+     "id": 101,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 256,
@@ -57253,7 +57310,7 @@
      ]
     },
     {
-     "id": 99,
+     "id": 102,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 640,
@@ -57272,7 +57329,7 @@
      ]
     },
     {
-     "id": 100,
+     "id": 103,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 1024,
@@ -57291,7 +57348,7 @@
      ]
     },
     {
-     "id": 101,
+     "id": 104,
      "name": "seto_piedra_2_b",
      "type": "deco",
      "x": 128,
@@ -57310,7 +57367,7 @@
      ]
     },
     {
-     "id": 102,
+     "id": 105,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 256,
@@ -57329,7 +57386,7 @@
      ]
     },
     {
-     "id": 103,
+     "id": 106,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 384,
@@ -57348,7 +57405,7 @@
      ]
     },
     {
-     "id": 104,
+     "id": 107,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 448,
@@ -57367,7 +57424,7 @@
      ]
     },
     {
-     "id": 105,
+     "id": 108,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 512,
@@ -57386,7 +57443,7 @@
      ]
     },
     {
-     "id": 106,
+     "id": 109,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 576,
@@ -57405,7 +57462,7 @@
      ]
     },
     {
-     "id": 107,
+     "id": 110,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 640,
@@ -57424,7 +57481,7 @@
      ]
     },
     {
-     "id": 108,
+     "id": 111,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 768,
@@ -57443,7 +57500,7 @@
      ]
     },
     {
-     "id": 109,
+     "id": 112,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 832,
@@ -57462,7 +57519,7 @@
      ]
     },
     {
-     "id": 110,
+     "id": 113,
      "name": "arbol_piedra_0_b",
      "type": "deco",
      "x": 896,
@@ -57481,7 +57538,7 @@
      ]
     },
     {
-     "id": 111,
+     "id": 114,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 1024,
@@ -57500,7 +57557,7 @@
      ]
     },
     {
-     "id": 112,
+     "id": 115,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 128,
@@ -57519,7 +57576,7 @@
      ]
     },
     {
-     "id": 113,
+     "id": 116,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 256,
@@ -57538,7 +57595,7 @@
      ]
     },
     {
-     "id": 114,
+     "id": 117,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 640,
@@ -57557,7 +57614,7 @@
      ]
     },
     {
-     "id": 115,
+     "id": 118,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 768,
@@ -57576,7 +57633,7 @@
      ]
     },
     {
-     "id": 116,
+     "id": 119,
      "name": "arbol_piedra_1",
      "type": "deco",
      "x": 128,
@@ -57595,7 +57652,7 @@
      ]
     },
     {
-     "id": 117,
+     "id": 120,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 256,
@@ -57614,7 +57671,7 @@
      ]
     },
     {
-     "id": 118,
+     "id": 121,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 320,
@@ -57633,7 +57690,7 @@
      ]
     },
     {
-     "id": 119,
+     "id": 122,
      "name": "seto_piedra_1_b",
      "type": "deco",
      "x": 384,
@@ -57652,7 +57709,7 @@
      ]
     },
     {
-     "id": 120,
+     "id": 123,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 448,
@@ -57671,7 +57728,7 @@
      ]
     },
     {
-     "id": 121,
+     "id": 124,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 512,
@@ -57690,7 +57747,7 @@
      ]
     },
     {
-     "id": 122,
+     "id": 125,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 640,
@@ -57709,7 +57766,7 @@
      ]
     },
     {
-     "id": 123,
+     "id": 126,
      "name": "seto_piedra_1_b",
      "type": "deco",
      "x": 896,
@@ -57728,7 +57785,7 @@
      ]
     },
     {
-     "id": 124,
+     "id": 127,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 960,
@@ -57747,7 +57804,7 @@
      ]
     },
     {
-     "id": 125,
+     "id": 128,
      "name": "arbol_piedra_2_b",
      "type": "deco",
      "x": 1024,
@@ -57766,7 +57823,7 @@
      ]
     },
     {
-     "id": 126,
+     "id": 129,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 128,
@@ -57785,7 +57842,7 @@
      ]
     },
     {
-     "id": 127,
+     "id": 130,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 512,
@@ -57804,7 +57861,7 @@
      ]
     },
     {
-     "id": 128,
+     "id": 131,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 768,
@@ -57823,7 +57880,7 @@
      ]
     },
     {
-     "id": 129,
+     "id": 132,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 896,
@@ -57842,7 +57899,7 @@
      ]
     },
     {
-     "id": 130,
+     "id": 133,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 1024,
@@ -57861,7 +57918,7 @@
      ]
     },
     {
-     "id": 131,
+     "id": 134,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 128,
@@ -57880,7 +57937,7 @@
      ]
     },
     {
-     "id": 132,
+     "id": 135,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 256,
@@ -57899,7 +57956,7 @@
      ]
     },
     {
-     "id": 133,
+     "id": 136,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 320,
@@ -57918,7 +57975,7 @@
      ]
     },
     {
-     "id": 134,
+     "id": 137,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 384,
@@ -57937,7 +57994,7 @@
      ]
     },
     {
-     "id": 135,
+     "id": 138,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 448,
@@ -57956,7 +58013,7 @@
      ]
     },
     {
-     "id": 136,
+     "id": 139,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 512,
@@ -57975,7 +58032,7 @@
      ]
     },
     {
-     "id": 137,
+     "id": 140,
      "name": "seto_piedra_2_b",
      "type": "deco",
      "x": 576,
@@ -57994,7 +58051,7 @@
      ]
     },
     {
-     "id": 138,
+     "id": 141,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 640,
@@ -58013,7 +58070,7 @@
      ]
     },
     {
-     "id": 139,
+     "id": 142,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 704,
@@ -58032,7 +58089,7 @@
      ]
     },
     {
-     "id": 140,
+     "id": 143,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 768,
@@ -58051,7 +58108,7 @@
      ]
     },
     {
-     "id": 141,
+     "id": 144,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 896,
@@ -58070,7 +58127,7 @@
      ]
     },
     {
-     "id": 142,
+     "id": 145,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 1024,
@@ -58089,7 +58146,7 @@
      ]
     },
     {
-     "id": 143,
+     "id": 146,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 128,
@@ -58108,7 +58165,7 @@
      ]
     },
     {
-     "id": 144,
+     "id": 147,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 1024,
@@ -58127,7 +58184,7 @@
      ]
     },
     {
-     "id": 145,
+     "id": 148,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 128,
@@ -58146,7 +58203,7 @@
      ]
     },
     {
-     "id": 146,
+     "id": 149,
      "name": "seto_piedra_1_b",
      "type": "deco",
      "x": 192,
@@ -58165,7 +58222,7 @@
      ]
     },
     {
-     "id": 147,
+     "id": 150,
      "name": "seto_piedra_3_b",
      "type": "deco",
      "x": 256,
@@ -58184,7 +58241,7 @@
      ]
     },
     {
-     "id": 148,
+     "id": 151,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 320,
@@ -58203,7 +58260,7 @@
      ]
     },
     {
-     "id": 149,
+     "id": 152,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 384,
@@ -58222,7 +58279,7 @@
      ]
     },
     {
-     "id": 150,
+     "id": 153,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 448,
@@ -58241,7 +58298,7 @@
      ]
     },
     {
-     "id": 151,
+     "id": 154,
      "name": "seto_piedra_3",
      "type": "deco",
      "x": 512,
@@ -58260,7 +58317,7 @@
      ]
     },
     {
-     "id": 152,
+     "id": 155,
      "name": "seto_piedra_0_b",
      "type": "deco",
      "x": 576,
@@ -58279,7 +58336,7 @@
      ]
     },
     {
-     "id": 153,
+     "id": 156,
      "name": "seto_piedra_1_b",
      "type": "deco",
      "x": 640,
@@ -58298,7 +58355,7 @@
      ]
     },
     {
-     "id": 154,
+     "id": 157,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 704,
@@ -58317,7 +58374,7 @@
      ]
     },
     {
-     "id": 155,
+     "id": 158,
      "name": "seto_piedra_1_b",
      "type": "deco",
      "x": 768,
@@ -58336,7 +58393,7 @@
      ]
     },
     {
-     "id": 156,
+     "id": 159,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 832,
@@ -58355,7 +58412,7 @@
      ]
     },
     {
-     "id": 157,
+     "id": 160,
      "name": "seto_piedra_2",
      "type": "deco",
      "x": 896,
@@ -58374,7 +58431,7 @@
      ]
     },
     {
-     "id": 158,
+     "id": 161,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 960,
@@ -58393,7 +58450,7 @@
      ]
     },
     {
-     "id": 159,
+     "id": 162,
      "name": "seto_piedra_0",
      "type": "deco",
      "x": 1024,
@@ -58412,7 +58469,7 @@
      ]
     },
     {
-     "id": 160,
+     "id": 163,
      "name": "estatua_ciudadano_9",
      "type": "deco",
      "x": 208,
@@ -58431,7 +58488,7 @@
      ]
     },
     {
-     "id": 161,
+     "id": 164,
      "name": "casa_ciudad_8",
      "type": "deco",
      "x": 1141,
@@ -58450,7 +58507,7 @@
      ]
     },
     {
-     "id": 162,
+     "id": 165,
      "name": "casa_ciudad_2",
      "type": "deco",
      "x": 1271,
@@ -58469,7 +58526,7 @@
      ]
     },
     {
-     "id": 163,
+     "id": 166,
      "name": "casa_ciudad_1",
      "type": "deco",
      "x": 1539,
@@ -58488,7 +58545,7 @@
      ]
     },
     {
-     "id": 164,
+     "id": 167,
      "name": "casa_ciudad_7",
      "type": "deco",
      "x": 1671,
@@ -58507,7 +58564,7 @@
      ]
     },
     {
-     "id": 165,
+     "id": 168,
      "name": "torre_reloj",
      "type": "deco",
      "x": 1424,
@@ -58526,7 +58583,7 @@
      ]
     },
     {
-     "id": 166,
+     "id": 169,
      "name": "estatua_ciudadano_5",
      "type": "deco",
      "x": 1168,
@@ -58545,7 +58602,7 @@
      ]
     },
     {
-     "id": 167,
+     "id": 170,
      "name": "estatua_ciudadano_0",
      "type": "deco",
      "x": 1744,
@@ -58564,7 +58621,7 @@
      ]
     },
     {
-     "id": 168,
+     "id": 171,
      "name": "farol_puente_2",
      "type": "deco",
      "x": 2762,
@@ -58583,7 +58640,7 @@
      ]
     },
     {
-     "id": 169,
+     "id": 172,
      "name": "farol_puente_3_b",
      "type": "deco",
      "x": 2870,
@@ -58602,7 +58659,7 @@
      ]
     },
     {
-     "id": 170,
+     "id": 173,
      "name": "farol_puente_1",
      "type": "deco",
      "x": 2762,
@@ -58621,7 +58678,7 @@
      ]
     },
     {
-     "id": 171,
+     "id": 174,
      "name": "farol_puente_0_b",
      "type": "deco",
      "x": 2870,
@@ -58640,7 +58697,7 @@
      ]
     },
     {
-     "id": 172,
+     "id": 175,
      "name": "farol_puente_3",
      "type": "deco",
      "x": 2762,
@@ -58659,7 +58716,7 @@
      ]
     },
     {
-     "id": 173,
+     "id": 176,
      "name": "farol_plaza_apagado",
      "type": "deco",
      "x": 2384,
@@ -58678,7 +58735,7 @@
      ]
     },
     {
-     "id": 174,
+     "id": 177,
      "name": "estatua_ciudadano_1",
      "type": "deco",
      "x": 3088,
@@ -58697,7 +58754,7 @@
      ]
     },
     {
-     "id": 175,
+     "id": 178,
      "name": "estatua_ciudadano_6",
      "type": "deco",
      "x": 2224,
@@ -58716,7 +58773,7 @@
      ]
     },
     {
-     "id": 176,
+     "id": 179,
      "name": "farol_plaza_apagado",
      "type": "deco",
      "x": 2256,
@@ -58735,7 +58792,7 @@
      ]
     },
     {
-     "id": 177,
+     "id": 180,
      "name": "estatua_ciudadano_8",
      "type": "deco",
      "x": 2544,
@@ -58754,7 +58811,7 @@
      ]
     },
     {
-     "id": 178,
+     "id": 181,
      "name": "estatua_ciudadano_6",
      "type": "deco",
      "x": 2860,
@@ -58773,7 +58830,7 @@
      ]
     },
     {
-     "id": 179,
+     "id": 182,
      "name": "estatua_ciudadano_4",
      "type": "deco",
      "x": 2128,
@@ -58792,7 +58849,7 @@
      ]
     },
     {
-     "id": 180,
+     "id": 183,
      "name": "estatua_ciudadano_3",
      "type": "deco",
      "x": 3184,
@@ -58811,7 +58868,7 @@
      ]
     },
     {
-     "id": 181,
+     "id": 184,
      "name": "columna_palacio_0",
      "type": "deco",
      "x": 2064,
@@ -58830,7 +58887,7 @@
      ]
     },
     {
-     "id": 182,
+     "id": 185,
      "name": "columna_palacio_1",
      "type": "deco",
      "x": 3280,
@@ -58849,7 +58906,7 @@
      ]
     },
     {
-     "id": 183,
+     "id": 186,
      "name": "seto_piedra_1",
      "type": "deco",
      "x": 2416,
@@ -58868,7 +58925,7 @@
      ]
     },
     {
-     "id": 184,
+     "id": 187,
      "name": "seto_piedra_2_b",
      "type": "deco",
      "x": 2960,
@@ -58887,7 +58944,7 @@
      ]
     },
     {
-     "id": 185,
+     "id": 188,
      "name": "flor_piedra_0",
      "type": "deco",
      "x": 2480,
@@ -58906,7 +58963,7 @@
      ]
     },
     {
-     "id": 186,
+     "id": 189,
      "name": "flor_piedra_3_b",
      "type": "deco",
      "x": 2896,
@@ -58925,7 +58982,7 @@
      ]
     },
     {
-     "id": 187,
+     "id": 190,
      "name": "maceta_piedra_1",
      "type": "deco",
      "x": 2384,
@@ -58944,7 +59001,7 @@
      ]
     },
     {
-     "id": 188,
+     "id": 191,
      "name": "trono_rey",
      "type": "deco",
      "x": 2688,
@@ -58963,68 +59020,11 @@
      ]
     },
     {
-     "id": 189,
-     "name": "lampara_trono_apagada",
-     "type": "deco",
-     "x": 2598,
-     "y": 2758,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "lampara_trono_apagada"
-      }
-     ]
-    },
-    {
-     "id": 190,
-     "name": "lampara_trono_apagada",
-     "type": "deco",
-     "x": 2810,
-     "y": 2758,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "lampara_trono_apagada"
-      }
-     ]
-    },
-    {
-     "id": 191,
-     "name": "lampara_trono_apagada",
-     "type": "deco",
-     "x": 2598,
-     "y": 2970,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "lampara_trono_apagada"
-      }
-     ]
-    },
-    {
      "id": 192,
      "name": "lampara_trono_apagada",
      "type": "deco",
-     "x": 2810,
-     "y": 2970,
+     "x": 2598,
+     "y": 2758,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -59040,6 +59040,63 @@
     },
     {
      "id": 193,
+     "name": "lampara_trono_apagada",
+     "type": "deco",
+     "x": 2810,
+     "y": 2758,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "lampara_trono_apagada"
+      }
+     ]
+    },
+    {
+     "id": 194,
+     "name": "lampara_trono_apagada",
+     "type": "deco",
+     "x": 2598,
+     "y": 2970,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "lampara_trono_apagada"
+      }
+     ]
+    },
+    {
+     "id": 195,
+     "name": "lampara_trono_apagada",
+     "type": "deco",
+     "x": 2810,
+     "y": 2970,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "lampara_trono_apagada"
+      }
+     ]
+    },
+    {
+     "id": 196,
      "name": "alfombra_palacio",
      "type": "deco",
      "x": 2704,
@@ -59058,7 +59115,7 @@
      ]
     },
     {
-     "id": 194,
+     "id": 197,
      "name": "alfombra_palacio",
      "type": "deco",
      "x": 2704,
@@ -59077,7 +59134,7 @@
      ]
     },
     {
-     "id": 195,
+     "id": 198,
      "name": "alfombra_palacio",
      "type": "deco",
      "x": 2704,
@@ -59096,7 +59153,7 @@
      ]
     },
     {
-     "id": 196,
+     "id": 199,
      "name": "alfombra_palacio",
      "type": "deco",
      "x": 2704,
@@ -59115,7 +59172,7 @@
      ]
     },
     {
-     "id": 197,
+     "id": 200,
      "name": "alfombra_palacio",
      "type": "deco",
      "x": 2704,
@@ -59134,7 +59191,7 @@
      ]
     },
     {
-     "id": 198,
+     "id": 201,
      "name": "alfombra_palacio",
      "type": "deco",
      "x": 2704,
@@ -59153,7 +59210,7 @@
      ]
     },
     {
-     "id": 199,
+     "id": 202,
      "name": "alfombra_palacio",
      "type": "deco",
      "x": 2704,
@@ -59172,7 +59229,7 @@
      ]
     },
     {
-     "id": 200,
+     "id": 203,
      "name": "columna_palacio_0",
      "type": "deco",
      "x": 2320,
@@ -59191,7 +59248,7 @@
      ]
     },
     {
-     "id": 201,
+     "id": 204,
      "name": "columna_palacio_1_b",
      "type": "deco",
      "x": 3088,
@@ -59210,7 +59267,7 @@
      ]
     },
     {
-     "id": 202,
+     "id": 205,
      "name": "columna_palacio_1",
      "type": "deco",
      "x": 2320,
@@ -59229,7 +59286,7 @@
      ]
     },
     {
-     "id": 203,
+     "id": 206,
      "name": "columna_palacio_0_b",
      "type": "deco",
      "x": 3088,
@@ -59248,7 +59305,7 @@
      ]
     },
     {
-     "id": 204,
+     "id": 207,
      "name": "balcon_palacio",
      "type": "deco",
      "x": 2448,
@@ -59267,7 +59324,64 @@
      ]
     },
     {
-     "id": 205,
+     "id": 208,
+     "name": "estandarte_palacio_0",
+     "type": "deco",
+     "x": 2576,
+     "y": 2558,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "estandarte_palacio_0"
+      }
+     ]
+    },
+    {
+     "id": 209,
+     "name": "estandarte_palacio_1",
+     "type": "deco",
+     "x": 2832,
+     "y": 2558,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "estandarte_palacio_1"
+      }
+     ]
+    },
+    {
+     "id": 210,
+     "name": "estandarte_palacio_2",
+     "type": "deco",
+     "x": 2960,
+     "y": 2558,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "estandarte_palacio_2"
+      }
+     ]
+    },
+    {
+     "id": 211,
      "name": "maceta_piedra_0",
      "type": "deco",
      "x": 2256,
@@ -59286,7 +59400,7 @@
      ]
     },
     {
-     "id": 206,
+     "id": 212,
      "name": "maceta_piedra_1_b",
      "type": "deco",
      "x": 3152,
@@ -59305,7 +59419,7 @@
      ]
     },
     {
-     "id": 207,
+     "id": 213,
      "name": "arbol_piedra_1",
      "type": "deco",
      "x": 2256,
@@ -59324,7 +59438,7 @@
      ]
     },
     {
-     "id": 208,
+     "id": 214,
      "name": "arbol_piedra_2_b",
      "type": "deco",
      "x": 3152,
@@ -59343,7 +59457,7 @@
      ]
     },
     {
-     "id": 209,
+     "id": 215,
      "name": "banco_piedra",
      "type": "deco",
      "x": 2416,
@@ -59362,7 +59476,7 @@
      ]
     },
     {
-     "id": 210,
+     "id": 216,
      "name": "cantaro_b",
      "type": "deco",
      "x": 2992,
@@ -59381,7 +59495,7 @@
      ]
     },
     {
-     "id": 211,
+     "id": 217,
      "name": "maceta_piedra_0_b",
      "type": "deco",
      "x": 685,
@@ -59400,7 +59514,7 @@
      ]
     },
     {
-     "id": 212,
+     "id": 218,
      "name": "arbol_piedra_1_b",
      "type": "deco",
      "x": 405,
@@ -59419,7 +59533,7 @@
      ]
     },
     {
-     "id": 213,
+     "id": 219,
      "name": "flor_piedra_1_b",
      "type": "deco",
      "x": 400,
@@ -59438,7 +59552,7 @@
      ]
     },
     {
-     "id": 214,
+     "id": 220,
      "name": "maceta_piedra_1",
      "type": "deco",
      "x": 485,
@@ -59457,7 +59571,7 @@
      ]
     },
     {
-     "id": 215,
+     "id": 221,
      "name": "flor_piedra_1",
      "type": "deco",
      "x": 573,
@@ -59476,7 +59590,7 @@
      ]
     },
     {
-     "id": 216,
+     "id": 222,
      "name": "arbol_piedra_2",
      "type": "deco",
      "x": 403,
@@ -59495,7 +59609,7 @@
      ]
     },
     {
-     "id": 217,
+     "id": 223,
      "name": "arbol_piedra_1",
      "type": "deco",
      "x": 161,
@@ -59514,7 +59628,7 @@
      ]
     },
     {
-     "id": 218,
+     "id": 224,
      "name": "arbol_piedra_1_b",
      "type": "deco",
      "x": 434,
@@ -59533,7 +59647,7 @@
      ]
     },
     {
-     "id": 219,
+     "id": 225,
      "name": "flor_piedra_2_b",
      "type": "deco",
      "x": 674,
@@ -59552,7 +59666,7 @@
      ]
     },
     {
-     "id": 220,
+     "id": 226,
      "name": "maceta_piedra_0",
      "type": "deco",
      "x": 397,
@@ -59571,7 +59685,7 @@
      ]
     },
     {
-     "id": 221,
+     "id": 227,
      "name": "flor_piedra_2",
      "type": "deco",
      "x": 527,
@@ -59590,7 +59704,7 @@
      ]
     },
     {
-     "id": 222,
+     "id": 228,
      "name": "cantaro",
      "type": "deco",
      "x": 153,
@@ -59609,7 +59723,7 @@
      ]
     },
     {
-     "id": 223,
+     "id": 229,
      "name": "cantaro_b",
      "type": "deco",
      "x": 274,
@@ -59628,7 +59742,7 @@
      ]
     },
     {
-     "id": 224,
+     "id": 230,
      "name": "maceta_piedra_1_b",
      "type": "deco",
      "x": 1131,
@@ -59647,7 +59761,7 @@
      ]
     },
     {
-     "id": 225,
+     "id": 231,
      "name": "cajon_pan_b",
      "type": "deco",
      "x": 1470,
@@ -59666,7 +59780,7 @@
      ]
     },
     {
-     "id": 226,
+     "id": 232,
      "name": "banco_piedra_b",
      "type": "deco",
      "x": 1095,
@@ -59685,7 +59799,7 @@
      ]
     },
     {
-     "id": 227,
+     "id": 233,
      "name": "cantaro_b",
      "type": "deco",
      "x": 1164,
@@ -59704,7 +59818,7 @@
      ]
     },
     {
-     "id": 228,
+     "id": 234,
      "name": "cantaro",
      "type": "deco",
      "x": 853,
@@ -59723,7 +59837,7 @@
      ]
     },
     {
-     "id": 229,
+     "id": 235,
      "name": "banco_piedra",
      "type": "deco",
      "x": 1368,
@@ -59742,7 +59856,7 @@
      ]
     },
     {
-     "id": 230,
+     "id": 236,
      "name": "maceta_piedra_0",
      "type": "deco",
      "x": 1403,
@@ -59761,7 +59875,7 @@
      ]
     },
     {
-     "id": 231,
+     "id": 237,
      "name": "arbol_piedra_1",
      "type": "deco",
      "x": 1884,
@@ -59780,7 +59894,7 @@
      ]
     },
     {
-     "id": 232,
+     "id": 238,
      "name": "arbol_piedra_1_b",
      "type": "deco",
      "x": 1923,
@@ -59799,7 +59913,7 @@
      ]
     },
     {
-     "id": 233,
+     "id": 239,
      "name": "arbol_piedra_0",
      "type": "deco",
      "x": 1571,
@@ -59818,7 +59932,7 @@
      ]
     },
     {
-     "id": 234,
+     "id": 240,
      "name": "farol_puente_0",
      "type": "deco",
      "x": 1787,
@@ -59837,7 +59951,7 @@
      ]
     },
     {
-     "id": 235,
+     "id": 241,
      "name": "maceta_piedra_0_b",
      "type": "deco",
      "x": 1919,
@@ -59856,7 +59970,7 @@
      ]
     },
     {
-     "id": 236,
+     "id": 242,
      "name": "carretilla_pan",
      "type": "deco",
      "x": 2295,
@@ -59875,7 +59989,7 @@
      ]
     },
     {
-     "id": 237,
+     "id": 243,
      "name": "cantaro_b",
      "type": "deco",
      "x": 2349,
@@ -59894,7 +60008,7 @@
      ]
     },
     {
-     "id": 238,
+     "id": 244,
      "name": "farol_puente_0_b",
      "type": "deco",
      "x": 1840,
@@ -59913,7 +60027,7 @@
      ]
     },
     {
-     "id": 239,
+     "id": 245,
      "name": "arbol_piedra_2_b",
      "type": "deco",
      "x": 1738,
@@ -59932,7 +60046,7 @@
      ]
     },
     {
-     "id": 240,
+     "id": 246,
      "name": "arbol_piedra_0_b",
      "type": "deco",
      "x": 2408,
@@ -59951,7 +60065,7 @@
      ]
     },
     {
-     "id": 241,
+     "id": 247,
      "name": "cantaro",
      "type": "deco",
      "x": 1895,
@@ -59970,7 +60084,7 @@
      ]
     },
     {
-     "id": 242,
+     "id": 248,
      "name": "carretilla_pan_b",
      "type": "deco",
      "x": 2215,
@@ -59989,7 +60103,7 @@
      ]
     },
     {
-     "id": 243,
+     "id": 249,
      "name": "banco_piedra",
      "type": "deco",
      "x": 2488,
@@ -60008,7 +60122,7 @@
      ]
     },
     {
-     "id": 244,
+     "id": 250,
      "name": "maceta_piedra_0",
      "type": "deco",
      "x": 2433,
@@ -60027,7 +60141,7 @@
      ]
     },
     {
-     "id": 245,
+     "id": 251,
      "name": "maceta_piedra_1",
      "type": "deco",
      "x": 1814,
@@ -60046,7 +60160,7 @@
      ]
     },
     {
-     "id": 246,
+     "id": 252,
      "name": "arbol_piedra_2",
      "type": "deco",
      "x": 2296,
@@ -60065,7 +60179,7 @@
      ]
     },
     {
-     "id": 247,
+     "id": 253,
      "name": "cajon_pan",
      "type": "deco",
      "x": 2445,
@@ -60084,7 +60198,7 @@
      ]
     },
     {
-     "id": 248,
+     "id": 254,
      "name": "maceta_piedra_1_b",
      "type": "deco",
      "x": 2507,
@@ -60103,7 +60217,7 @@
      ]
     },
     {
-     "id": 249,
+     "id": 255,
      "name": "cantaro",
      "type": "deco",
      "x": 3056,
@@ -60122,7 +60236,7 @@
      ]
     },
     {
-     "id": 250,
+     "id": 256,
      "name": "arbol_piedra_2_b",
      "type": "deco",
      "x": 3091,
@@ -60141,7 +60255,7 @@
      ]
     },
     {
-     "id": 251,
+     "id": 257,
      "name": "maceta_piedra_0",
      "type": "deco",
      "x": 2829,
@@ -60160,7 +60274,7 @@
      ]
     },
     {
-     "id": 252,
+     "id": 258,
      "name": "maceta_piedra_1",
      "type": "deco",
      "x": 3253,
@@ -60179,26 +60293,7 @@
      ]
     },
     {
-     "id": 253,
-     "name": "arbol_piedra_0",
-     "type": "deco",
-     "x": 2930,
-     "y": 454,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "arbol_piedra_0"
-      }
-     ]
-    },
-    {
-     "id": 254,
+     "id": 259,
      "name": "arbol_piedra_1",
      "type": "deco",
      "x": 3153,
@@ -60217,7 +60312,7 @@
      ]
     },
     {
-     "id": 255,
+     "id": 260,
      "name": "farol_puente_1",
      "type": "deco",
      "x": 2708,
@@ -60236,7 +60331,7 @@
      ]
     },
     {
-     "id": 256,
+     "id": 261,
      "name": "aljibe",
      "type": "deco",
      "x": 2747,
@@ -60255,7 +60350,7 @@
      ]
     },
     {
-     "id": 257,
+     "id": 262,
      "name": "farol_puente_1_b",
      "type": "deco",
      "x": 2894,
@@ -60274,7 +60369,7 @@
      ]
     },
     {
-     "id": 258,
+     "id": 263,
      "name": "maceta_piedra_0_b",
      "type": "deco",
      "x": 3106,
@@ -60293,11 +60388,11 @@
      ]
     },
     {
-     "id": 259,
-     "name": "banco_piedra",
+     "id": 264,
+     "name": "arbol_piedra_0",
      "type": "deco",
-     "x": 2954,
-     "y": 345,
+     "x": 2968,
+     "y": 382,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -60307,12 +60402,12 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "banco_piedra"
+       "value": "arbol_piedra_0"
       }
      ]
     },
     {
-     "id": 260,
+     "id": 265,
      "name": "maceta_piedra_0_b",
      "type": "deco",
      "x": 2648,
@@ -60331,7 +60426,7 @@
      ]
     },
     {
-     "id": 261,
+     "id": 266,
      "name": "arbol_piedra_1_b",
      "type": "deco",
      "x": 3074,
@@ -60350,7 +60445,7 @@
      ]
     },
     {
-     "id": 262,
+     "id": 267,
      "name": "arbol_piedra_1_b",
      "type": "deco",
      "x": 3355,
@@ -60369,7 +60464,26 @@
      ]
     },
     {
-     "id": 263,
+     "id": 268,
+     "name": "banco_piedra",
+     "type": "deco",
+     "x": 2807,
+     "y": 336,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "banco_piedra"
+      }
+     ]
+    },
+    {
+     "id": 269,
      "name": "cantaro_b",
      "type": "deco",
      "x": 3379,
@@ -60388,125 +60502,11 @@
      ]
     },
     {
-     "id": 264,
-     "name": "aljibe",
-     "type": "deco",
-     "x": 2788,
-     "y": 346,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "aljibe"
-      }
-     ]
-    },
-    {
-     "id": 265,
-     "name": "flor_piedra_0",
-     "type": "deco",
-     "x": 1690,
-     "y": 1788,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "flor_piedra_0"
-      }
-     ]
-    },
-    {
-     "id": 266,
-     "name": "maceta_piedra_0",
-     "type": "deco",
-     "x": 1408,
-     "y": 1851,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "maceta_piedra_0"
-      }
-     ]
-    },
-    {
-     "id": 267,
-     "name": "cantaro_b",
-     "type": "deco",
-     "x": 1625,
-     "y": 1591,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "cantaro_b"
-      }
-     ]
-    },
-    {
-     "id": 268,
-     "name": "flor_piedra_0_b",
-     "type": "deco",
-     "x": 1216,
-     "y": 1519,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "flor_piedra_0_b"
-      }
-     ]
-    },
-    {
-     "id": 269,
-     "name": "arbol_piedra_1",
-     "type": "deco",
-     "x": 1712,
-     "y": 1908,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "arbol_piedra_1"
-      }
-     ]
-    },
-    {
      "id": 270,
-     "name": "cantaro",
+     "name": "arbol_piedra_2",
      "type": "deco",
-     "x": 1452,
-     "y": 1543,
+     "x": 3275,
+     "y": 575,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -60516,7 +60516,7 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "cantaro"
+       "value": "arbol_piedra_2"
       }
      ]
     },
@@ -60524,8 +60524,8 @@
      "id": 271,
      "name": "maceta_piedra_0_b",
      "type": "deco",
-     "x": 1386,
-     "y": 1680,
+     "x": 1261,
+     "y": 1425,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -60541,44 +60541,6 @@
     },
     {
      "id": 272,
-     "name": "maceta_piedra_1",
-     "type": "deco",
-     "x": 1168,
-     "y": 1380,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "maceta_piedra_1"
-      }
-     ]
-    },
-    {
-     "id": 273,
-     "name": "arbol_piedra_2",
-     "type": "deco",
-     "x": 1689,
-     "y": 1587,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "arbol_piedra_2"
-      }
-     ]
-    },
-    {
-     "id": 274,
      "name": "aljibe",
      "type": "deco",
      "x": 1376,
@@ -60597,7 +60559,26 @@
      ]
     },
     {
-     "id": 275,
+     "id": 273,
+     "name": "cantaro_b",
+     "type": "deco",
+     "x": 1770,
+     "y": 1390,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "cantaro_b"
+      }
+     ]
+    },
+    {
+     "id": 274,
      "name": "maceta_piedra_1_b",
      "type": "deco",
      "x": 1578,
@@ -60616,7 +60597,7 @@
      ]
     },
     {
-     "id": 276,
+     "id": 275,
      "name": "arbol_piedra_1_b",
      "type": "deco",
      "x": 1353,
@@ -60635,7 +60616,7 @@
      ]
     },
     {
-     "id": 277,
+     "id": 276,
      "name": "arbol_piedra_0",
      "type": "deco",
      "x": 1544,
@@ -60654,11 +60635,11 @@
      ]
     },
     {
-     "id": 278,
-     "name": "banco_piedra_b",
+     "id": 277,
+     "name": "cantaro_b",
      "type": "deco",
-     "x": 1491,
-     "y": 1944,
+     "x": 1455,
+     "y": 1941,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -60668,16 +60649,92 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "banco_piedra_b"
+       "value": "cantaro_b"
+      }
+     ]
+    },
+    {
+     "id": 278,
+     "name": "maceta_piedra_1",
+     "type": "deco",
+     "x": 1252,
+     "y": 1539,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "maceta_piedra_1"
       }
      ]
     },
     {
      "id": 279,
+     "name": "flor_piedra_0_b",
+     "type": "deco",
+     "x": 1593,
+     "y": 1425,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "flor_piedra_0_b"
+      }
+     ]
+    },
+    {
+     "id": 280,
+     "name": "cantaro",
+     "type": "deco",
+     "x": 1322,
+     "y": 1493,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "cantaro"
+      }
+     ]
+    },
+    {
+     "id": 281,
+     "name": "flor_piedra_0",
+     "type": "deco",
+     "x": 1673,
+     "y": 1374,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "flor_piedra_0"
+      }
+     ]
+    },
+    {
+     "id": 282,
      "name": "banco_piedra",
      "type": "deco",
-     "x": 2858,
-     "y": 1880,
+     "x": 1260,
+     "y": 1662,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -60692,68 +60749,30 @@
      ]
     },
     {
-     "id": 280,
-     "name": "arbol_piedra_0",
-     "type": "deco",
-     "x": 3184,
-     "y": 1794,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "arbol_piedra_0"
-      }
-     ]
-    },
-    {
-     "id": 281,
-     "name": "maceta_piedra_0_b",
-     "type": "deco",
-     "x": 2706,
-     "y": 1819,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "maceta_piedra_0_b"
-      }
-     ]
-    },
-    {
-     "id": 282,
-     "name": "arbol_piedra_1_b",
-     "type": "deco",
-     "x": 2781,
-     "y": 1876,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "arbol_piedra_1_b"
-      }
-     ]
-    },
-    {
      "id": 283,
+     "name": "arbol_piedra_1",
+     "type": "deco",
+     "x": 1434,
+     "y": 1529,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "arbol_piedra_1"
+      }
+     ]
+    },
+    {
+     "id": 284,
      "name": "maceta_piedra_0",
      "type": "deco",
-     "x": 2596,
-     "y": 1927,
+     "x": 1675,
+     "y": 1442,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -60768,7 +60787,26 @@
      ]
     },
     {
-     "id": 284,
+     "id": 285,
+     "name": "maceta_piedra_0_b",
+     "type": "deco",
+     "x": 2839,
+     "y": 1882,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "maceta_piedra_0_b"
+      }
+     ]
+    },
+    {
+     "id": 286,
      "name": "arbol_piedra_0_b",
      "type": "deco",
      "x": 2979,
@@ -60787,7 +60825,7 @@
      ]
     },
     {
-     "id": 285,
+     "id": 287,
      "name": "arbol_piedra_2_b",
      "type": "deco",
      "x": 3289,
@@ -60806,49 +60844,68 @@
      ]
     },
     {
-     "id": 286,
-     "name": "cantaro",
-     "type": "deco",
-     "x": 2174,
-     "y": 2091,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "cantaro"
-      }
-     ]
-    },
-    {
-     "id": 287,
-     "name": "arbol_piedra_2",
-     "type": "deco",
-     "x": 2326,
-     "y": 2192,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "arbol_piedra_2"
-      }
-     ]
-    },
-    {
      "id": 288,
+     "name": "banco_piedra_b",
+     "type": "deco",
+     "x": 2462,
+     "y": 1830,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "banco_piedra_b"
+      }
+     ]
+    },
+    {
+     "id": 289,
+     "name": "maceta_piedra_1_b",
+     "type": "deco",
+     "x": 2547,
+     "y": 1770,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "maceta_piedra_1_b"
+      }
+     ]
+    },
+    {
+     "id": 290,
+     "name": "arbol_piedra_1_b",
+     "type": "deco",
+     "x": 2646,
+     "y": 1784,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "arbol_piedra_1_b"
+      }
+     ]
+    },
+    {
+     "id": 291,
      "name": "cantaro_b",
      "type": "deco",
-     "x": 2293,
-     "y": 2386,
+     "x": 2766,
+     "y": 1881,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -60863,68 +60920,11 @@
      ]
     },
     {
-     "id": 289,
-     "name": "flor_piedra_2_b",
-     "type": "deco",
-     "x": 2421,
-     "y": 2099,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "flor_piedra_2_b"
-      }
-     ]
-    },
-    {
-     "id": 290,
-     "name": "maceta_piedra_0_b",
-     "type": "deco",
-     "x": 2619,
-     "y": 2428,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "maceta_piedra_0_b"
-      }
-     ]
-    },
-    {
-     "id": 291,
-     "name": "flor_piedra_1_b",
-     "type": "deco",
-     "x": 323,
-     "y": 1788,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "flor_piedra_1_b"
-      }
-     ]
-    },
-    {
      "id": 292,
-     "name": "flor_piedra_3",
+     "name": "arbol_piedra_0_b",
      "type": "deco",
-     "x": 570,
-     "y": 1482,
+     "x": 3030,
+     "y": 2394,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -60934,16 +60934,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "flor_piedra_3"
+       "value": "arbol_piedra_0_b"
       }
      ]
     },
     {
      "id": 293,
-     "name": "flor_piedra_1",
+     "name": "flor_piedra_2",
      "type": "deco",
-     "x": 658,
-     "y": 1238,
+     "x": 2631,
+     "y": 2220,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -60953,16 +60953,54 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "flor_piedra_1"
+       "value": "flor_piedra_2"
       }
      ]
     },
     {
      "id": 294,
+     "name": "cantaro",
+     "type": "deco",
+     "x": 2727,
+     "y": 2233,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "cantaro"
+      }
+     ]
+    },
+    {
+     "id": 295,
+     "name": "arbol_piedra_2",
+     "type": "deco",
+     "x": 2364,
+     "y": 2089,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "arbol_piedra_2"
+      }
+     ]
+    },
+    {
+     "id": 296,
      "name": "flor_piedra_2_b",
      "type": "deco",
-     "x": 820,
-     "y": 1332,
+     "x": 2573,
+     "y": 2304,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -60977,7 +61015,7 @@
      ]
     },
     {
-     "id": 295,
+     "id": 297,
      "name": "flor_piedra_0",
      "type": "deco",
      "x": 186,
@@ -60996,7 +61034,64 @@
      ]
     },
     {
-     "id": 296,
+     "id": 298,
+     "name": "flor_piedra_1_b",
+     "type": "deco",
+     "x": 789,
+     "y": 1348,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "flor_piedra_1_b"
+      }
+     ]
+    },
+    {
+     "id": 299,
+     "name": "flor_piedra_1",
+     "type": "deco",
+     "x": 219,
+     "y": 1352,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "flor_piedra_1"
+      }
+     ]
+    },
+    {
+     "id": 300,
+     "name": "flor_piedra_3",
+     "type": "deco",
+     "x": 591,
+     "y": 1268,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "flor_piedra_3"
+      }
+     ]
+    },
+    {
+     "id": 301,
      "name": "flor_piedra_3_b",
      "type": "deco",
      "x": 683,
@@ -61015,7 +61110,7 @@
      ]
     },
     {
-     "id": 297,
+     "id": 302,
      "name": "flor_piedra_2",
      "type": "deco",
      "x": 813,
@@ -61034,11 +61129,11 @@
      ]
     },
     {
-     "id": 298,
-     "name": "flor_piedra_0",
+     "id": 303,
+     "name": "flor_piedra_0_b",
      "type": "deco",
-     "x": 770,
-     "y": 1218,
+     "x": 588,
+     "y": 1772,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -61048,12 +61143,12 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "flor_piedra_0"
+       "value": "flor_piedra_0_b"
       }
      ]
     },
     {
-     "id": 299,
+     "id": 304,
      "name": "flor_piedra_3_b",
      "type": "deco",
      "x": 953,
@@ -61072,49 +61167,11 @@
      ]
     },
     {
-     "id": 300,
-     "name": "flor_piedra_1",
-     "type": "deco",
-     "x": 247,
-     "y": 1863,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "flor_piedra_1"
-      }
-     ]
-    },
-    {
-     "id": 301,
-     "name": "flor_piedra_0_b",
-     "type": "deco",
-     "x": 177,
-     "y": 1697,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "flor_piedra_0_b"
-      }
-     ]
-    },
-    {
-     "id": 302,
+     "id": 305,
      "name": "flor_piedra_2_b",
      "type": "deco",
-     "x": 674,
-     "y": 1877,
+     "x": 393,
+     "y": 1478,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -61129,11 +61186,49 @@
      ]
     },
     {
-     "id": 303,
+     "id": 306,
+     "name": "flor_piedra_3",
+     "type": "deco",
+     "x": 659,
+     "y": 1860,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "flor_piedra_3"
+      }
+     ]
+    },
+    {
+     "id": 307,
+     "name": "flor_piedra_1",
+     "type": "deco",
+     "x": 356,
+     "y": 1896,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "flor_piedra_1"
+      }
+     ]
+    },
+    {
+     "id": 308,
      "name": "flor_piedra_1_b",
      "type": "deco",
-     "x": 515,
-     "y": 1248,
+     "x": 828,
+     "y": 1915,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -61148,7 +61243,7 @@
      ]
     },
     {
-     "id": 304,
+     "id": 309,
      "name": "polvo_sueno_2",
      "type": "deco",
      "x": 104,
@@ -61167,7 +61262,7 @@
      ]
     },
     {
-     "id": 305,
+     "id": 310,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 123,
@@ -61186,7 +61281,7 @@
      ]
     },
     {
-     "id": 306,
+     "id": 311,
      "name": "polvo_sueno_0",
      "type": "deco",
      "x": 106,
@@ -61205,7 +61300,7 @@
      ]
     },
     {
-     "id": 307,
+     "id": 312,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 108,
@@ -61224,7 +61319,7 @@
      ]
     },
     {
-     "id": 308,
+     "id": 313,
      "name": "adoquines_rotos_0",
      "type": "deco",
      "x": 498,
@@ -61243,7 +61338,7 @@
      ]
     },
     {
-     "id": 309,
+     "id": 314,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 488,
@@ -61262,7 +61357,7 @@
      ]
     },
     {
-     "id": 310,
+     "id": 315,
      "name": "petalos_piedra_0",
      "type": "deco",
      "x": 373,
@@ -61281,7 +61376,7 @@
      ]
     },
     {
-     "id": 311,
+     "id": 316,
      "name": "adoquines_rotos_1",
      "type": "deco",
      "x": 490,
@@ -61300,7 +61395,7 @@
      ]
     },
     {
-     "id": 312,
+     "id": 317,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 716,
@@ -61319,7 +61414,7 @@
      ]
     },
     {
-     "id": 313,
+     "id": 318,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 613,
@@ -61338,7 +61433,7 @@
      ]
     },
     {
-     "id": 314,
+     "id": 319,
      "name": "charco_seco_0",
      "type": "deco",
      "x": 617,
@@ -61357,7 +61452,7 @@
      ]
     },
     {
-     "id": 315,
+     "id": 320,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 1210,
@@ -61376,7 +61471,7 @@
      ]
     },
     {
-     "id": 316,
+     "id": 321,
      "name": "polvo_sueno_2",
      "type": "deco",
      "x": 1207,
@@ -61395,7 +61490,7 @@
      ]
     },
     {
-     "id": 317,
+     "id": 322,
      "name": "adoquines_rotos_0",
      "type": "deco",
      "x": 1273,
@@ -61414,7 +61509,7 @@
      ]
     },
     {
-     "id": 318,
+     "id": 323,
      "name": "charco_seco_0",
      "type": "deco",
      "x": 1273,
@@ -61433,7 +61528,7 @@
      ]
     },
     {
-     "id": 319,
+     "id": 324,
      "name": "adoquines_rotos_1",
      "type": "deco",
      "x": 1426,
@@ -61452,7 +61547,7 @@
      ]
     },
     {
-     "id": 320,
+     "id": 325,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 1515,
@@ -61471,7 +61566,7 @@
      ]
     },
     {
-     "id": 321,
+     "id": 326,
      "name": "petalos_piedra_0",
      "type": "deco",
      "x": 1303,
@@ -61490,7 +61585,7 @@
      ]
     },
     {
-     "id": 322,
+     "id": 327,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 1318,
@@ -61509,7 +61604,7 @@
      ]
     },
     {
-     "id": 323,
+     "id": 328,
      "name": "petalos_piedra_0",
      "type": "deco",
      "x": 2278,
@@ -61528,7 +61623,7 @@
      ]
     },
     {
-     "id": 324,
+     "id": 329,
      "name": "charco_seco_0",
      "type": "deco",
      "x": 2226,
@@ -61547,7 +61642,7 @@
      ]
     },
     {
-     "id": 325,
+     "id": 330,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 2258,
@@ -61566,7 +61661,7 @@
      ]
     },
     {
-     "id": 326,
+     "id": 331,
      "name": "polvo_sueno_2",
      "type": "deco",
      "x": 2212,
@@ -61585,7 +61680,7 @@
      ]
     },
     {
-     "id": 327,
+     "id": 332,
      "name": "adoquines_rotos_0",
      "type": "deco",
      "x": 2310,
@@ -61604,7 +61699,7 @@
      ]
     },
     {
-     "id": 328,
+     "id": 333,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 2511,
@@ -61623,7 +61718,7 @@
      ]
     },
     {
-     "id": 329,
+     "id": 334,
      "name": "adoquines_rotos_1",
      "type": "deco",
      "x": 2541,
@@ -61642,7 +61737,7 @@
      ]
     },
     {
-     "id": 330,
+     "id": 335,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 2453,
@@ -61661,7 +61756,7 @@
      ]
     },
     {
-     "id": 331,
+     "id": 336,
      "name": "polvo_sueno_2",
      "type": "deco",
      "x": 2957,
@@ -61680,7 +61775,7 @@
      ]
     },
     {
-     "id": 332,
+     "id": 337,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 2966,
@@ -61699,7 +61794,7 @@
      ]
     },
     {
-     "id": 333,
+     "id": 338,
      "name": "charco_seco_0",
      "type": "deco",
      "x": 2970,
@@ -61718,7 +61813,7 @@
      ]
     },
     {
-     "id": 334,
+     "id": 339,
      "name": "petalos_piedra_0",
      "type": "deco",
      "x": 2999,
@@ -61737,7 +61832,7 @@
      ]
     },
     {
-     "id": 335,
+     "id": 340,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 3177,
@@ -61756,7 +61851,7 @@
      ]
     },
     {
-     "id": 336,
+     "id": 341,
      "name": "polvo_sueno_0",
      "type": "deco",
      "x": 3182,
@@ -61775,7 +61870,7 @@
      ]
     },
     {
-     "id": 337,
+     "id": 342,
      "name": "adoquines_rotos_1",
      "type": "deco",
      "x": 3237,
@@ -61794,7 +61889,7 @@
      ]
     },
     {
-     "id": 338,
+     "id": 343,
      "name": "adoquines_rotos_0",
      "type": "deco",
      "x": 3218,
@@ -61813,7 +61908,7 @@
      ]
     },
     {
-     "id": 339,
+     "id": 344,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 3411,
@@ -61832,7 +61927,7 @@
      ]
     },
     {
-     "id": 340,
+     "id": 345,
      "name": "charco_seco_0",
      "type": "deco",
      "x": 103,
@@ -61851,7 +61946,7 @@
      ]
     },
     {
-     "id": 341,
+     "id": 346,
      "name": "polvo_sueno_0",
      "type": "deco",
      "x": 631,
@@ -61870,7 +61965,7 @@
      ]
     },
     {
-     "id": 342,
+     "id": 347,
      "name": "polvo_sueno_2",
      "type": "deco",
      "x": 695,
@@ -61889,7 +61984,7 @@
      ]
     },
     {
-     "id": 343,
+     "id": 348,
      "name": "polvo_sueno_0",
      "type": "deco",
      "x": 1227,
@@ -61908,7 +62003,7 @@
      ]
     },
     {
-     "id": 344,
+     "id": 349,
      "name": "petalos_piedra_0",
      "type": "deco",
      "x": 1228,
@@ -61927,7 +62022,7 @@
      ]
     },
     {
-     "id": 345,
+     "id": 350,
      "name": "polvo_sueno_0",
      "type": "deco",
      "x": 1775,
@@ -61946,7 +62041,7 @@
      ]
     },
     {
-     "id": 346,
+     "id": 351,
      "name": "adoquines_rotos_0",
      "type": "deco",
      "x": 1779,
@@ -61965,7 +62060,7 @@
      ]
     },
     {
-     "id": 347,
+     "id": 352,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 1750,
@@ -61984,7 +62079,7 @@
      ]
     },
     {
-     "id": 348,
+     "id": 353,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 1934,
@@ -62003,7 +62098,7 @@
      ]
     },
     {
-     "id": 349,
+     "id": 354,
      "name": "adoquines_rotos_1",
      "type": "deco",
      "x": 1936,
@@ -62022,7 +62117,7 @@
      ]
     },
     {
-     "id": 350,
+     "id": 355,
      "name": "polvo_sueno_0",
      "type": "deco",
      "x": 2331,
@@ -62041,7 +62136,7 @@
      ]
     },
     {
-     "id": 351,
+     "id": 356,
      "name": "polvo_sueno_0",
      "type": "deco",
      "x": 230,
@@ -62060,7 +62155,7 @@
      ]
     },
     {
-     "id": 352,
+     "id": 357,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 123,
@@ -62079,7 +62174,7 @@
      ]
     },
     {
-     "id": 353,
+     "id": 358,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 116,
@@ -62098,7 +62193,7 @@
      ]
     },
     {
-     "id": 354,
+     "id": 359,
      "name": "adoquines_rotos_1",
      "type": "deco",
      "x": 201,
@@ -62117,7 +62212,7 @@
      ]
     },
     {
-     "id": 355,
+     "id": 360,
      "name": "adoquines_rotos_0",
      "type": "deco",
      "x": 371,
@@ -62136,7 +62231,7 @@
      ]
     },
     {
-     "id": 356,
+     "id": 361,
      "name": "petalos_piedra_0",
      "type": "deco",
      "x": 409,
@@ -62155,7 +62250,7 @@
      ]
     },
     {
-     "id": 357,
+     "id": 362,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 379,
@@ -62174,7 +62269,7 @@
      ]
     },
     {
-     "id": 358,
+     "id": 363,
      "name": "polvo_sueno_2",
      "type": "deco",
      "x": 471,
@@ -62193,7 +62288,7 @@
      ]
     },
     {
-     "id": 359,
+     "id": 364,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 633,
@@ -62212,7 +62307,7 @@
      ]
     },
     {
-     "id": 360,
+     "id": 365,
      "name": "charco_seco_0",
      "type": "deco",
      "x": 654,
@@ -62231,7 +62326,7 @@
      ]
     },
     {
-     "id": 361,
+     "id": 366,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 730,
@@ -62250,7 +62345,7 @@
      ]
     },
     {
-     "id": 362,
+     "id": 367,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 1015,
@@ -62269,7 +62364,7 @@
      ]
     },
     {
-     "id": 363,
+     "id": 368,
      "name": "polvo_sueno_0",
      "type": "deco",
      "x": 919,
@@ -62288,7 +62383,7 @@
      ]
     },
     {
-     "id": 364,
+     "id": 369,
      "name": "adoquines_rotos_0",
      "type": "deco",
      "x": 967,
@@ -62307,7 +62402,7 @@
      ]
     },
     {
-     "id": 365,
+     "id": 370,
      "name": "charco_seco_0",
      "type": "deco",
      "x": 1178,
@@ -62326,7 +62421,7 @@
      ]
     },
     {
-     "id": 366,
+     "id": 371,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 1207,
@@ -62345,7 +62440,7 @@
      ]
     },
     {
-     "id": 367,
+     "id": 372,
      "name": "polvo_sueno_2",
      "type": "deco",
      "x": 1196,
@@ -62364,7 +62459,7 @@
      ]
     },
     {
-     "id": 368,
+     "id": 373,
      "name": "adoquines_rotos_1",
      "type": "deco",
      "x": 1189,
@@ -62383,7 +62478,7 @@
      ]
     },
     {
-     "id": 369,
+     "id": 374,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 1367,
@@ -62402,7 +62497,7 @@
      ]
     },
     {
-     "id": 370,
+     "id": 375,
      "name": "charco_seco_0",
      "type": "deco",
      "x": 1732,
@@ -62421,7 +62516,7 @@
      ]
     },
     {
-     "id": 371,
+     "id": 376,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 1715,
@@ -62440,7 +62535,7 @@
      ]
     },
     {
-     "id": 372,
+     "id": 377,
      "name": "polvo_sueno_2",
      "type": "deco",
      "x": 1705,
@@ -62459,7 +62554,7 @@
      ]
     },
     {
-     "id": 373,
+     "id": 378,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 1776,
@@ -62478,7 +62573,7 @@
      ]
     },
     {
-     "id": 374,
+     "id": 379,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 2039,
@@ -62497,7 +62592,7 @@
      ]
     },
     {
-     "id": 375,
+     "id": 380,
      "name": "petalos_piedra_0",
      "type": "deco",
      "x": 1863,
@@ -62516,7 +62611,7 @@
      ]
     },
     {
-     "id": 376,
+     "id": 381,
      "name": "adoquines_rotos_1",
      "type": "deco",
      "x": 1993,
@@ -62535,7 +62630,7 @@
      ]
     },
     {
-     "id": 377,
+     "id": 382,
      "name": "polvo_sueno_2",
      "type": "deco",
      "x": 2233,
@@ -62554,7 +62649,7 @@
      ]
     },
     {
-     "id": 378,
+     "id": 383,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 2296,
@@ -62573,7 +62668,7 @@
      ]
     },
     {
-     "id": 379,
+     "id": 384,
      "name": "charco_seco_0",
      "type": "deco",
      "x": 2263,
@@ -62592,7 +62687,7 @@
      ]
     },
     {
-     "id": 380,
+     "id": 385,
      "name": "petalos_piedra_0",
      "type": "deco",
      "x": 2438,
@@ -62611,7 +62706,7 @@
      ]
     },
     {
-     "id": 381,
+     "id": 386,
      "name": "adoquines_rotos_1",
      "type": "deco",
      "x": 2518,
@@ -62630,7 +62725,7 @@
      ]
     },
     {
-     "id": 382,
+     "id": 387,
      "name": "adoquines_rotos_0",
      "type": "deco",
      "x": 2425,
@@ -62649,7 +62744,7 @@
      ]
     },
     {
-     "id": 383,
+     "id": 388,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 2582,
@@ -62668,7 +62763,7 @@
      ]
     },
     {
-     "id": 384,
+     "id": 389,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 2731,
@@ -62687,7 +62782,7 @@
      ]
     },
     {
-     "id": 385,
+     "id": 390,
      "name": "charco_seco_0",
      "type": "deco",
      "x": 2805,
@@ -62706,7 +62801,7 @@
      ]
     },
     {
-     "id": 386,
+     "id": 391,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 2805,
@@ -62725,7 +62820,7 @@
      ]
     },
     {
-     "id": 387,
+     "id": 392,
      "name": "polvo_sueno_2",
      "type": "deco",
      "x": 2928,
@@ -62744,7 +62839,7 @@
      ]
     },
     {
-     "id": 388,
+     "id": 393,
      "name": "polvo_sueno_0",
      "type": "deco",
      "x": 3025,
@@ -62763,7 +62858,7 @@
      ]
     },
     {
-     "id": 389,
+     "id": 394,
      "name": "adoquines_rotos_0",
      "type": "deco",
      "x": 3049,
@@ -62782,10 +62877,10 @@
      ]
     },
     {
-     "id": 390,
+     "id": 395,
      "name": "adoquines_rotos_1",
      "type": "deco",
-     "x": 3058,
+     "x": 3185,
      "y": 568,
      "width": 0,
      "height": 0,
@@ -62801,11 +62896,11 @@
      ]
     },
     {
-     "id": 391,
+     "id": 396,
      "name": "polvo_sueno_1",
      "type": "deco",
-     "x": 3285,
-     "y": 556,
+     "x": 3239,
+     "y": 437,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -62820,11 +62915,11 @@
      ]
     },
     {
-     "id": 392,
+     "id": 397,
      "name": "petalos_piedra_0",
      "type": "deco",
-     "x": 3275,
-     "y": 438,
+     "x": 3148,
+     "y": 526,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -62839,106 +62934,11 @@
      ]
     },
     {
-     "id": 393,
-     "name": "charco_seco_1",
-     "type": "deco",
-     "x": 3177,
-     "y": 558,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_1"
-      }
-     ]
-    },
-    {
-     "id": 394,
-     "name": "charco_seco_0",
-     "type": "deco",
-     "x": 3308,
-     "y": 531,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_0"
-      }
-     ]
-    },
-    {
-     "id": 395,
-     "name": "adoquines_rotos_2",
-     "type": "deco",
-     "x": 3368,
-     "y": 495,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_2"
-      }
-     ]
-    },
-    {
-     "id": 396,
-     "name": "charco_seco_0",
-     "type": "deco",
-     "x": 154,
-     "y": 676,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_0"
-      }
-     ]
-    },
-    {
-     "id": 397,
-     "name": "charco_seco_1",
-     "type": "deco",
-     "x": 199,
-     "y": 740,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_1"
-      }
-     ]
-    },
-    {
      "id": 398,
-     "name": "adoquines_rotos_2",
+     "name": "charco_seco_1",
      "type": "deco",
-     "x": 324,
-     "y": 747,
+     "x": 3182,
+     "y": 569,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -62948,7 +62948,7 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "adoquines_rotos_2"
+       "value": "charco_seco_1"
       }
      ]
     },
@@ -62956,8 +62956,8 @@
      "id": 399,
      "name": "adoquines_rotos_2",
      "type": "deco",
-     "x": 826,
-     "y": 756,
+     "x": 3396,
+     "y": 457,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -62973,10 +62973,10 @@
     },
     {
      "id": 400,
-     "name": "petalos_piedra_0",
+     "name": "charco_seco_0",
      "type": "deco",
-     "x": 1065,
-     "y": 681,
+     "x": 3418,
+     "y": 500,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -62986,16 +62986,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "petalos_piedra_0"
+       "value": "charco_seco_0"
       }
      ]
     },
     {
      "id": 401,
-     "name": "adoquines_rotos_0",
+     "name": "adoquines_rotos_2",
      "type": "deco",
-     "x": 1487,
-     "y": 680,
+     "x": 166,
+     "y": 745,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63005,35 +63005,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "adoquines_rotos_0"
+       "value": "adoquines_rotos_2"
       }
      ]
     },
     {
      "id": 402,
-     "name": "polvo_sueno_0",
-     "type": "deco",
-     "x": 1682,
-     "y": 687,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_0"
-      }
-     ]
-    },
-    {
-     "id": 403,
      "name": "charco_seco_1",
      "type": "deco",
-     "x": 2025,
-     "y": 754,
+     "x": 210,
+     "y": 740,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63048,49 +63029,11 @@
      ]
     },
     {
-     "id": 404,
-     "name": "polvo_sueno_0",
-     "type": "deco",
-     "x": 2225,
-     "y": 664,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_0"
-      }
-     ]
-    },
-    {
-     "id": 405,
-     "name": "polvo_sueno_2",
-     "type": "deco",
-     "x": 2404,
-     "y": 743,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_2"
-      }
-     ]
-    },
-    {
-     "id": 406,
+     "id": 403,
      "name": "petalos_piedra_0",
      "type": "deco",
-     "x": 3279,
-     "y": 756,
+     "x": 955,
+     "y": 679,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63105,11 +63048,49 @@
      ]
     },
     {
-     "id": 407,
+     "id": 404,
+     "name": "adoquines_rotos_2",
+     "type": "deco",
+     "x": 818,
+     "y": 761,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_2"
+      }
+     ]
+    },
+    {
+     "id": 405,
+     "name": "polvo_sueno_0",
+     "type": "deco",
+     "x": 1447,
+     "y": 635,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_0"
+      }
+     ]
+    },
+    {
+     "id": 406,
      "name": "adoquines_rotos_0",
      "type": "deco",
-     "x": 135,
-     "y": 937,
+     "x": 1710,
+     "y": 635,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63124,11 +63105,11 @@
      ]
     },
     {
-     "id": 408,
-     "name": "adoquines_rotos_1",
+     "id": 407,
+     "name": "polvo_sueno_0",
      "type": "deco",
-     "x": 202,
-     "y": 949,
+     "x": 1995,
+     "y": 633,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63138,16 +63119,35 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "adoquines_rotos_1"
+       "value": "polvo_sueno_0"
+      }
+     ]
+    },
+    {
+     "id": 408,
+     "name": "charco_seco_1",
+     "type": "deco",
+     "x": 1958,
+     "y": 760,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "charco_seco_1"
       }
      ]
     },
     {
      "id": 409,
-     "name": "polvo_sueno_1",
+     "name": "polvo_sueno_2",
      "type": "deco",
-     "x": 109,
-     "y": 934,
+     "x": 2409,
+     "y": 717,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63157,7 +63157,7 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "polvo_sueno_1"
+       "value": "polvo_sueno_2"
       }
      ]
     },
@@ -63165,8 +63165,8 @@
      "id": 410,
      "name": "polvo_sueno_0",
      "type": "deco",
-     "x": 244,
-     "y": 881,
+     "x": 2520,
+     "y": 691,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63182,10 +63182,48 @@
     },
     {
      "id": 411,
+     "name": "polvo_sueno_1",
+     "type": "deco",
+     "x": 3308,
+     "y": 755,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_1"
+      }
+     ]
+    },
+    {
+     "id": 412,
+     "name": "adoquines_rotos_1",
+     "type": "deco",
+     "x": 241,
+     "y": 846,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_1"
+      }
+     ]
+    },
+    {
+     "id": 413,
      "name": "polvo_sueno_2",
      "type": "deco",
-     "x": 467,
-     "y": 946,
+     "x": 116,
+     "y": 904,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63200,11 +63238,11 @@
      ]
     },
     {
-     "id": 412,
-     "name": "petalos_piedra_0",
+     "id": 414,
+     "name": "polvo_sueno_1",
      "type": "deco",
-     "x": 399,
-     "y": 886,
+     "x": 140,
+     "y": 840,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63214,16 +63252,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "petalos_piedra_0"
+       "value": "polvo_sueno_1"
       }
      ]
     },
     {
-     "id": 413,
+     "id": 415,
      "name": "charco_seco_0",
      "type": "deco",
-     "x": 726,
-     "y": 846,
+     "x": 242,
+     "y": 855,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63238,11 +63276,11 @@
      ]
     },
     {
-     "id": 414,
+     "id": 416,
      "name": "adoquines_rotos_0",
      "type": "deco",
-     "x": 692,
-     "y": 869,
+     "x": 425,
+     "y": 889,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63257,7 +63295,45 @@
      ]
     },
     {
-     "id": 415,
+     "id": 417,
+     "name": "polvo_sueno_0",
+     "type": "deco",
+     "x": 305,
+     "y": 947,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_0"
+      }
+     ]
+    },
+    {
+     "id": 418,
+     "name": "polvo_sueno_2",
+     "type": "deco",
+     "x": 653,
+     "y": 874,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_2"
+      }
+     ]
+    },
+    {
+     "id": 419,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 719,
@@ -63276,87 +63352,30 @@
      ]
     },
     {
-     "id": 416,
-     "name": "polvo_sueno_1",
-     "type": "deco",
-     "x": 628,
-     "y": 875,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_1"
-      }
-     ]
-    },
-    {
-     "id": 417,
-     "name": "polvo_sueno_1",
-     "type": "deco",
-     "x": 1752,
-     "y": 934,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_1"
-      }
-     ]
-    },
-    {
-     "id": 418,
-     "name": "petalos_piedra_0",
-     "type": "deco",
-     "x": 1605,
-     "y": 901,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "petalos_piedra_0"
-      }
-     ]
-    },
-    {
-     "id": 419,
-     "name": "charco_seco_0",
-     "type": "deco",
-     "x": 1775,
-     "y": 841,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_0"
-      }
-     ]
-    },
-    {
      "id": 420,
+     "name": "polvo_sueno_1",
+     "type": "deco",
+     "x": 711,
+     "y": 914,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_1"
+      }
+     ]
+    },
+    {
+     "id": 421,
      "name": "adoquines_rotos_2",
      "type": "deco",
-     "x": 1745,
-     "y": 939,
+     "x": 1646,
+     "y": 943,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63371,11 +63390,11 @@
      ]
     },
     {
-     "id": 421,
-     "name": "polvo_sueno_2",
+     "id": 422,
+     "name": "polvo_sueno_1",
      "type": "deco",
-     "x": 1809,
-     "y": 804,
+     "x": 1722,
+     "y": 947,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63385,16 +63404,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "polvo_sueno_2"
+       "value": "polvo_sueno_1"
       }
      ]
     },
     {
-     "id": 422,
+     "id": 423,
      "name": "adoquines_rotos_1",
      "type": "deco",
-     "x": 1968,
-     "y": 921,
+     "x": 1705,
+     "y": 948,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63409,7 +63428,64 @@
      ]
     },
     {
-     "id": 423,
+     "id": 424,
+     "name": "polvo_sueno_2",
+     "type": "deco",
+     "x": 1581,
+     "y": 921,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_2"
+      }
+     ]
+    },
+    {
+     "id": 425,
+     "name": "charco_seco_0",
+     "type": "deco",
+     "x": 1870,
+     "y": 821,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "charco_seco_0"
+      }
+     ]
+    },
+    {
+     "id": 426,
+     "name": "petalos_piedra_0",
+     "type": "deco",
+     "x": 1960,
+     "y": 888,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "petalos_piedra_0"
+      }
+     ]
+    },
+    {
+     "id": 427,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 2294,
@@ -63428,11 +63504,11 @@
      ]
     },
     {
-     "id": 424,
-     "name": "adoquines_rotos_0",
+     "id": 428,
+     "name": "adoquines_rotos_1",
      "type": "deco",
-     "x": 2127,
-     "y": 939,
+     "x": 2299,
+     "y": 870,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63442,16 +63518,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "adoquines_rotos_0"
+       "value": "adoquines_rotos_1"
       }
      ]
     },
     {
-     "id": 425,
-     "name": "petalos_piedra_0",
+     "id": 429,
+     "name": "charco_seco_0",
      "type": "deco",
-     "x": 2555,
-     "y": 943,
+     "x": 2554,
+     "y": 859,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63461,31 +63537,12 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "petalos_piedra_0"
+       "value": "charco_seco_0"
       }
      ]
     },
     {
-     "id": 426,
-     "name": "charco_seco_1",
-     "type": "deco",
-     "x": 2533,
-     "y": 901,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_1"
-      }
-     ]
-    },
-    {
-     "id": 427,
+     "id": 430,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 2459,
@@ -63504,49 +63561,11 @@
      ]
     },
     {
-     "id": 428,
-     "name": "charco_seco_0",
-     "type": "deco",
-     "x": 2612,
-     "y": 908,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_0"
-      }
-     ]
-    },
-    {
-     "id": 429,
-     "name": "adoquines_rotos_1",
-     "type": "deco",
-     "x": 2676,
-     "y": 900,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_1"
-      }
-     ]
-    },
-    {
-     "id": 430,
+     "id": 431,
      "name": "adoquines_rotos_0",
      "type": "deco",
-     "x": 2761,
-     "y": 907,
+     "x": 2545,
+     "y": 901,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63561,11 +63580,68 @@
      ]
     },
     {
-     "id": 431,
+     "id": 432,
+     "name": "charco_seco_1",
+     "type": "deco",
+     "x": 2491,
+     "y": 915,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "charco_seco_1"
+      }
+     ]
+    },
+    {
+     "id": 433,
+     "name": "petalos_piedra_0",
+     "type": "deco",
+     "x": 2584,
+     "y": 822,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "petalos_piedra_0"
+      }
+     ]
+    },
+    {
+     "id": 434,
+     "name": "adoquines_rotos_1",
+     "type": "deco",
+     "x": 2804,
+     "y": 876,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_1"
+      }
+     ]
+    },
+    {
+     "id": 435,
      "name": "polvo_sueno_0",
      "type": "deco",
-     "x": 2739,
-     "y": 826,
+     "x": 3061,
+     "y": 912,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63580,26 +63656,7 @@
      ]
     },
     {
-     "id": 432,
-     "name": "adoquines_rotos_2",
-     "type": "deco",
-     "x": 2907,
-     "y": 876,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_2"
-      }
-     ]
-    },
-    {
-     "id": 433,
+     "id": 436,
      "name": "charco_seco_1",
      "type": "deco",
      "x": 3063,
@@ -63618,7 +63675,7 @@
      ]
     },
     {
-     "id": 434,
+     "id": 437,
      "name": "polvo_sueno_2",
      "type": "deco",
      "x": 2982,
@@ -63637,11 +63694,11 @@
      ]
     },
     {
-     "id": 435,
-     "name": "adoquines_rotos_1",
+     "id": 438,
+     "name": "adoquines_rotos_2",
      "type": "deco",
-     "x": 3194,
-     "y": 901,
+     "x": 2971,
+     "y": 883,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63651,35 +63708,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "adoquines_rotos_1"
+       "value": "adoquines_rotos_2"
       }
      ]
     },
     {
-     "id": 436,
-     "name": "polvo_sueno_1",
-     "type": "deco",
-     "x": 3126,
-     "y": 857,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_1"
-      }
-     ]
-    },
-    {
-     "id": 437,
+     "id": 439,
      "name": "adoquines_rotos_0",
      "type": "deco",
-     "x": 3307,
-     "y": 916,
+     "x": 3161,
+     "y": 910,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63694,11 +63732,11 @@
      ]
     },
     {
-     "id": 438,
+     "id": 440,
      "name": "charco_seco_0",
      "type": "deco",
-     "x": 3129,
-     "y": 857,
+     "x": 3258,
+     "y": 923,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63713,49 +63751,11 @@
      ]
     },
     {
-     "id": 439,
-     "name": "polvo_sueno_0",
-     "type": "deco",
-     "x": 3396,
-     "y": 818,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_0"
-      }
-     ]
-    },
-    {
-     "id": 440,
-     "name": "adoquines_rotos_2",
-     "type": "deco",
-     "x": 3408,
-     "y": 848,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_2"
-      }
-     ]
-    },
-    {
      "id": 441,
-     "name": "charco_seco_1",
+     "name": "petalos_piedra_0",
      "type": "deco",
-     "x": 134,
-     "y": 1145,
+     "x": 3323,
+     "y": 911,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63765,16 +63765,35 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "charco_seco_1"
+       "value": "petalos_piedra_0"
       }
      ]
     },
     {
      "id": 442,
+     "name": "petalos_piedra_0",
+     "type": "deco",
+     "x": 216,
+     "y": 1139,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "petalos_piedra_0"
+      }
+     ]
+    },
+    {
+     "id": 443,
      "name": "adoquines_rotos_2",
      "type": "deco",
-     "x": 314,
-     "y": 1109,
+     "x": 267,
+     "y": 1107,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63789,11 +63808,11 @@
      ]
     },
     {
-     "id": 443,
+     "id": 444,
      "name": "petalos_piedra_1",
      "type": "deco",
-     "x": 298,
-     "y": 1124,
+     "x": 295,
+     "y": 1146,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63808,11 +63827,11 @@
      ]
     },
     {
-     "id": 444,
-     "name": "polvo_sueno_0",
+     "id": 445,
+     "name": "petalos_piedra_0",
      "type": "deco",
-     "x": 882,
-     "y": 1133,
+     "x": 749,
+     "y": 1131,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63822,12 +63841,12 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "polvo_sueno_0"
+       "value": "petalos_piedra_0"
       }
      ]
     },
     {
-     "id": 445,
+     "id": 446,
      "name": "petalos_piedra_1",
      "type": "deco",
      "x": 852,
@@ -63846,11 +63865,30 @@
      ]
     },
     {
-     "id": 446,
+     "id": 447,
+     "name": "polvo_sueno_0",
+     "type": "deco",
+     "x": 857,
+     "y": 1129,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_0"
+      }
+     ]
+    },
+    {
+     "id": 448,
      "name": "petalos_piedra_0",
      "type": "deco",
-     "x": 981,
-     "y": 1147,
+     "x": 1361,
+     "y": 1140,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63865,49 +63903,11 @@
      ]
     },
     {
-     "id": 447,
-     "name": "polvo_sueno_2",
-     "type": "deco",
-     "x": 973,
-     "y": 1130,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_2"
-      }
-     ]
-    },
-    {
-     "id": 448,
-     "name": "adoquines_rotos_2",
-     "type": "deco",
-     "x": 1083,
-     "y": 1144,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_2"
-      }
-     ]
-    },
-    {
      "id": 449,
      "name": "charco_seco_1",
      "type": "deco",
-     "x": 1428,
-     "y": 1137,
+     "x": 1350,
+     "y": 1133,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63923,67 +63923,10 @@
     },
     {
      "id": 450,
-     "name": "polvo_sueno_2",
-     "type": "deco",
-     "x": 1817,
-     "y": 1132,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_2"
-      }
-     ]
-    },
-    {
-     "id": 451,
-     "name": "petalos_piedra_0",
-     "type": "deco",
-     "x": 3354,
-     "y": 1075,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "petalos_piedra_0"
-      }
-     ]
-    },
-    {
-     "id": 452,
-     "name": "petalos_piedra_0",
-     "type": "deco",
-     "x": 243,
-     "y": 1240,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "petalos_piedra_0"
-      }
-     ]
-    },
-    {
-     "id": 453,
      "name": "polvo_sueno_0",
      "type": "deco",
-     "x": 177,
-     "y": 1230,
+     "x": 1364,
+     "y": 1134,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -63998,11 +63941,68 @@
      ]
     },
     {
+     "id": 451,
+     "name": "charco_seco_0",
+     "type": "deco",
+     "x": 1354,
+     "y": 1129,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "charco_seco_0"
+      }
+     ]
+    },
+    {
+     "id": 452,
+     "name": "adoquines_rotos_0",
+     "type": "deco",
+     "x": 1710,
+     "y": 979,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_0"
+      }
+     ]
+    },
+    {
+     "id": 453,
+     "name": "adoquines_rotos_1",
+     "type": "deco",
+     "x": 3403,
+     "y": 1037,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_1"
+      }
+     ]
+    },
+    {
      "id": 454,
      "name": "polvo_sueno_2",
      "type": "deco",
-     "x": 369,
-     "y": 1253,
+     "x": 166,
+     "y": 1228,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64020,8 +64020,8 @@
      "id": 455,
      "name": "charco_seco_1",
      "type": "deco",
-     "x": 719,
-     "y": 1224,
+     "x": 168,
+     "y": 1256,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64037,86 +64037,10 @@
     },
     {
      "id": 456,
-     "name": "charco_seco_0",
-     "type": "deco",
-     "x": 1128,
-     "y": 1304,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_0"
-      }
-     ]
-    },
-    {
-     "id": 457,
-     "name": "polvo_sueno_1",
-     "type": "deco",
-     "x": 1190,
-     "y": 1295,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_1"
-      }
-     ]
-    },
-    {
-     "id": 458,
-     "name": "adoquines_rotos_1",
-     "type": "deco",
-     "x": 1068,
-     "y": 1271,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_1"
-      }
-     ]
-    },
-    {
-     "id": 459,
-     "name": "adoquines_rotos_0",
-     "type": "deco",
-     "x": 1401,
-     "y": 1253,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_0"
-      }
-     ]
-    },
-    {
-     "id": 460,
      "name": "polvo_sueno_0",
      "type": "deco",
-     "x": 1523,
-     "y": 1328,
+     "x": 324,
+     "y": 1252,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64131,11 +64055,11 @@
      ]
     },
     {
-     "id": 461,
-     "name": "petalos_piedra_0",
+     "id": 457,
+     "name": "charco_seco_1",
      "type": "deco",
-     "x": 1508,
-     "y": 1288,
+     "x": 680,
+     "y": 1240,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64145,16 +64069,111 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "petalos_piedra_0"
+       "value": "charco_seco_1"
+      }
+     ]
+    },
+    {
+     "id": 458,
+     "name": "polvo_sueno_2",
+     "type": "deco",
+     "x": 696,
+     "y": 1235,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_2"
+      }
+     ]
+    },
+    {
+     "id": 459,
+     "name": "polvo_sueno_1",
+     "type": "deco",
+     "x": 1164,
+     "y": 1339,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_1"
+      }
+     ]
+    },
+    {
+     "id": 460,
+     "name": "adoquines_rotos_0",
+     "type": "deco",
+     "x": 1225,
+     "y": 1316,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_0"
+      }
+     ]
+    },
+    {
+     "id": 461,
+     "name": "adoquines_rotos_2",
+     "type": "deco",
+     "x": 1100,
+     "y": 1328,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_2"
       }
      ]
     },
     {
      "id": 462,
+     "name": "polvo_sueno_2",
+     "type": "deco",
+     "x": 1389,
+     "y": 1268,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_2"
+      }
+     ]
+    },
+    {
+     "id": 463,
      "name": "adoquines_rotos_1",
      "type": "deco",
-     "x": 1777,
-     "y": 1222,
+     "x": 1419,
+     "y": 1272,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64169,11 +64188,11 @@
      ]
     },
     {
-     "id": 463,
-     "name": "charco_seco_0",
+     "id": 464,
+     "name": "adoquines_rotos_0",
      "type": "deco",
-     "x": 1748,
-     "y": 1202,
+     "x": 1735,
+     "y": 1328,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64183,12 +64202,12 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "charco_seco_0"
+       "value": "adoquines_rotos_0"
       }
      ]
     },
     {
-     "id": 464,
+     "id": 465,
      "name": "adoquines_rotos_2",
      "type": "deco",
      "x": 1743,
@@ -64207,7 +64226,7 @@
      ]
     },
     {
-     "id": 465,
+     "id": 466,
      "name": "polvo_sueno_1",
      "type": "deco",
      "x": 1779,
@@ -64226,11 +64245,11 @@
      ]
     },
     {
-     "id": 466,
-     "name": "charco_seco_1",
+     "id": 467,
+     "name": "petalos_piedra_0",
      "type": "deco",
-     "x": 199,
-     "y": 1518,
+     "x": 183,
+     "y": 1523,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64240,12 +64259,12 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "charco_seco_1"
+       "value": "petalos_piedra_0"
       }
      ]
     },
     {
-     "id": 467,
+     "id": 468,
      "name": "petalos_piedra_1",
      "type": "deco",
      "x": 168,
@@ -64264,29 +64283,10 @@
      ]
     },
     {
-     "id": 468,
-     "name": "polvo_sueno_0",
-     "type": "deco",
-     "x": 710,
-     "y": 1529,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_0"
-      }
-     ]
-    },
-    {
      "id": 469,
      "name": "petalos_piedra_0",
      "type": "deco",
-     "x": 763,
+     "x": 726,
      "y": 1510,
      "width": 0,
      "height": 0,
@@ -64322,10 +64322,10 @@
     },
     {
      "id": 471,
-     "name": "polvo_sueno_2",
+     "name": "polvo_sueno_0",
      "type": "deco",
-     "x": 975,
-     "y": 1496,
+     "x": 843,
+     "y": 1494,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64335,16 +64335,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "polvo_sueno_2"
+       "value": "polvo_sueno_0"
       }
      ]
     },
     {
      "id": 472,
-     "name": "charco_seco_1",
+     "name": "charco_seco_0",
      "type": "deco",
-     "x": 909,
-     "y": 1524,
+     "x": 1141,
+     "y": 1449,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64354,54 +64354,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "charco_seco_1"
+       "value": "charco_seco_0"
       }
      ]
     },
     {
      "id": 473,
-     "name": "adoquines_rotos_2",
-     "type": "deco",
-     "x": 1127,
-     "y": 1516,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_2"
-      }
-     ]
-    },
-    {
-     "id": 474,
-     "name": "polvo_sueno_2",
-     "type": "deco",
-     "x": 1509,
-     "y": 1458,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_2"
-      }
-     ]
-    },
-    {
-     "id": 475,
      "name": "charco_seco_1",
      "type": "deco",
-     "x": 1435,
-     "y": 1525,
+     "x": 1231,
+     "y": 1499,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64412,6 +64374,44 @@
        "name": "sprite",
        "type": "string",
        "value": "charco_seco_1"
+      }
+     ]
+    },
+    {
+     "id": 474,
+     "name": "polvo_sueno_0",
+     "type": "deco",
+     "x": 1446,
+     "y": 1481,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_0"
+      }
+     ]
+    },
+    {
+     "id": 475,
+     "name": "petalos_piedra_0",
+     "type": "deco",
+     "x": 1338,
+     "y": 1526,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "petalos_piedra_0"
       }
      ]
     },
@@ -64419,8 +64419,8 @@
      "id": 476,
      "name": "charco_seco_0",
      "type": "deco",
-     "x": 1772,
-     "y": 1512,
+     "x": 1679,
+     "y": 1515,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64474,10 +64474,10 @@
     },
     {
      "id": 479,
-     "name": "petalos_piedra_0",
+     "name": "charco_seco_1",
      "type": "deco",
-     "x": 175,
-     "y": 1648,
+     "x": 183,
+     "y": 1584,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64487,16 +64487,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "petalos_piedra_0"
+       "value": "charco_seco_1"
       }
      ]
     },
     {
      "id": 480,
-     "name": "polvo_sueno_1",
+     "name": "polvo_sueno_2",
      "type": "deco",
-     "x": 1066,
-     "y": 1647,
+     "x": 721,
+     "y": 1584,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64506,16 +64506,35 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "polvo_sueno_1"
+       "value": "polvo_sueno_2"
       }
      ]
     },
     {
      "id": 481,
+     "name": "charco_seco_1",
+     "type": "deco",
+     "x": 695,
+     "y": 1713,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "charco_seco_1"
+      }
+     ]
+    },
+    {
+     "id": 482,
      "name": "adoquines_rotos_1",
      "type": "deco",
-     "x": 1199,
-     "y": 1579,
+     "x": 1226,
+     "y": 1584,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64530,87 +64549,11 @@
      ]
     },
     {
-     "id": 482,
-     "name": "adoquines_rotos_0",
-     "type": "deco",
-     "x": 1210,
-     "y": 1561,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_0"
-      }
-     ]
-    },
-    {
      "id": 483,
-     "name": "charco_seco_0",
-     "type": "deco",
-     "x": 1137,
-     "y": 1650,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_0"
-      }
-     ]
-    },
-    {
-     "id": 484,
-     "name": "polvo_sueno_0",
-     "type": "deco",
-     "x": 1395,
-     "y": 1648,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_0"
-      }
-     ]
-    },
-    {
-     "id": 485,
-     "name": "petalos_piedra_0",
-     "type": "deco",
-     "x": 1302,
-     "y": 1703,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "petalos_piedra_0"
-      }
-     ]
-    },
-    {
-     "id": 486,
      "name": "adoquines_rotos_2",
      "type": "deco",
-     "x": 1680,
-     "y": 1683,
+     "x": 1241,
+     "y": 1719,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64625,11 +64568,68 @@
      ]
     },
     {
+     "id": 484,
+     "name": "polvo_sueno_1",
+     "type": "deco",
+     "x": 1272,
+     "y": 1673,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_1"
+      }
+     ]
+    },
+    {
+     "id": 485,
+     "name": "polvo_sueno_2",
+     "type": "deco",
+     "x": 1232,
+     "y": 1676,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_2"
+      }
+     ]
+    },
+    {
+     "id": 486,
+     "name": "adoquines_rotos_0",
+     "type": "deco",
+     "x": 1364,
+     "y": 1650,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_0"
+      }
+     ]
+    },
+    {
      "id": 487,
      "name": "adoquines_rotos_1",
      "type": "deco",
-     "x": 1784,
-     "y": 1560,
+     "x": 1780,
+     "y": 1682,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64645,124 +64645,10 @@
     },
     {
      "id": 488,
-     "name": "polvo_sueno_1",
-     "type": "deco",
-     "x": 1622,
-     "y": 1618,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_1"
-      }
-     ]
-    },
-    {
-     "id": 489,
-     "name": "adoquines_rotos_0",
-     "type": "deco",
-     "x": 1819,
-     "y": 1672,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_0"
-      }
-     ]
-    },
-    {
-     "id": 490,
-     "name": "petalos_piedra_1",
-     "type": "deco",
-     "x": 218,
-     "y": 1787,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "petalos_piedra_1"
-      }
-     ]
-    },
-    {
-     "id": 491,
-     "name": "charco_seco_1",
-     "type": "deco",
-     "x": 180,
-     "y": 1843,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_1"
-      }
-     ]
-    },
-    {
-     "id": 492,
-     "name": "petalos_piedra_0",
-     "type": "deco",
-     "x": 745,
-     "y": 1867,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "petalos_piedra_0"
-      }
-     ]
-    },
-    {
-     "id": 493,
-     "name": "charco_seco_1",
-     "type": "deco",
-     "x": 754,
-     "y": 1895,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_1"
-      }
-     ]
-    },
-    {
-     "id": 494,
      "name": "polvo_sueno_2",
      "type": "deco",
-     "x": 755,
-     "y": 1898,
+     "x": 1780,
+     "y": 1709,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64777,11 +64663,68 @@
      ]
     },
     {
-     "id": 495,
+     "id": 489,
+     "name": "charco_seco_1",
+     "type": "deco",
+     "x": 1767,
+     "y": 1715,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "charco_seco_1"
+      }
+     ]
+    },
+    {
+     "id": 490,
+     "name": "polvo_sueno_1",
+     "type": "deco",
+     "x": 1806,
+     "y": 1706,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_1"
+      }
+     ]
+    },
+    {
+     "id": 491,
+     "name": "adoquines_rotos_2",
+     "type": "deco",
+     "x": 1811,
+     "y": 1712,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_2"
+      }
+     ]
+    },
+    {
+     "id": 492,
      "name": "petalos_piedra_1",
      "type": "deco",
-     "x": 810,
-     "y": 1898,
+     "x": 179,
+     "y": 1811,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64796,11 +64739,11 @@
      ]
     },
     {
-     "id": 496,
-     "name": "polvo_sueno_0",
+     "id": 493,
+     "name": "petalos_piedra_0",
      "type": "deco",
-     "x": 882,
-     "y": 1880,
+     "x": 166,
+     "y": 1849,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64810,7 +64753,64 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "polvo_sueno_0"
+       "value": "petalos_piedra_0"
+      }
+     ]
+    },
+    {
+     "id": 494,
+     "name": "charco_seco_1",
+     "type": "deco",
+     "x": 172,
+     "y": 1899,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "charco_seco_1"
+      }
+     ]
+    },
+    {
+     "id": 495,
+     "name": "petalos_piedra_0",
+     "type": "deco",
+     "x": 677,
+     "y": 1877,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "petalos_piedra_0"
+      }
+     ]
+    },
+    {
+     "id": 496,
+     "name": "petalos_piedra_1",
+     "type": "deco",
+     "x": 692,
+     "y": 1870,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "petalos_piedra_1"
       }
      ]
     },
@@ -64818,8 +64818,8 @@
      "id": 497,
      "name": "polvo_sueno_2",
      "type": "deco",
-     "x": 1275,
-     "y": 1817,
+     "x": 694,
+     "y": 1912,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -64835,181 +64835,10 @@
     },
     {
      "id": 498,
-     "name": "adoquines_rotos_0",
-     "type": "deco",
-     "x": 1190,
-     "y": 1861,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_0"
-      }
-     ]
-    },
-    {
-     "id": 499,
-     "name": "charco_seco_1",
-     "type": "deco",
-     "x": 1264,
-     "y": 1908,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_1"
-      }
-     ]
-    },
-    {
-     "id": 500,
-     "name": "adoquines_rotos_2",
-     "type": "deco",
-     "x": 1113,
-     "y": 1902,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_2"
-      }
-     ]
-    },
-    {
-     "id": 501,
-     "name": "adoquines_rotos_1",
-     "type": "deco",
-     "x": 1329,
-     "y": 1901,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_1"
-      }
-     ]
-    },
-    {
-     "id": 502,
-     "name": "charco_seco_0",
-     "type": "deco",
-     "x": 1705,
-     "y": 1847,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_0"
-      }
-     ]
-    },
-    {
-     "id": 503,
-     "name": "petalos_piedra_0",
-     "type": "deco",
-     "x": 1805,
-     "y": 1819,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "petalos_piedra_0"
-      }
-     ]
-    },
-    {
-     "id": 504,
-     "name": "polvo_sueno_2",
-     "type": "deco",
-     "x": 1804,
-     "y": 1814,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_2"
-      }
-     ]
-    },
-    {
-     "id": 505,
-     "name": "polvo_sueno_1",
-     "type": "deco",
-     "x": 2280,
-     "y": 1862,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_1"
-      }
-     ]
-    },
-    {
-     "id": 506,
-     "name": "charco_seco_1",
-     "type": "deco",
-     "x": 2232,
-     "y": 1911,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_1"
-      }
-     ]
-    },
-    {
-     "id": 507,
      "name": "polvo_sueno_0",
      "type": "deco",
-     "x": 2248,
-     "y": 1860,
+     "x": 935,
+     "y": 1831,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65024,11 +64853,11 @@
      ]
     },
     {
-     "id": 508,
-     "name": "adoquines_rotos_2",
+     "id": 499,
+     "name": "charco_seco_0",
      "type": "deco",
-     "x": 2258,
-     "y": 1766,
+     "x": 1110,
+     "y": 1883,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65038,15 +64867,91 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "adoquines_rotos_2"
+       "value": "charco_seco_0"
       }
      ]
     },
     {
-     "id": 509,
-     "name": "polvo_sueno_2",
+     "id": 500,
+     "name": "charco_seco_1",
      "type": "deco",
-     "x": 2358,
+     "x": 1224,
+     "y": 1800,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "charco_seco_1"
+      }
+     ]
+    },
+    {
+     "id": 501,
+     "name": "petalos_piedra_0",
+     "type": "deco",
+     "x": 1189,
+     "y": 1850,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "petalos_piedra_0"
+      }
+     ]
+    },
+    {
+     "id": 502,
+     "name": "polvo_sueno_0",
+     "type": "deco",
+     "x": 1511,
+     "y": 1786,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_0"
+      }
+     ]
+    },
+    {
+     "id": 503,
+     "name": "charco_seco_0",
+     "type": "deco",
+     "x": 1745,
+     "y": 1896,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "charco_seco_0"
+      }
+     ]
+    },
+    {
+     "id": 504,
+     "name": "petalos_piedra_0",
+     "type": "deco",
+     "x": 1766,
      "y": 1871,
      "width": 0,
      "height": 0,
@@ -65057,7 +64962,102 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "polvo_sueno_2"
+       "value": "petalos_piedra_0"
+      }
+     ]
+    },
+    {
+     "id": 505,
+     "name": "adoquines_rotos_0",
+     "type": "deco",
+     "x": 2256,
+     "y": 1749,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_0"
+      }
+     ]
+    },
+    {
+     "id": 506,
+     "name": "polvo_sueno_0",
+     "type": "deco",
+     "x": 2134,
+     "y": 1800,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_0"
+      }
+     ]
+    },
+    {
+     "id": 507,
+     "name": "adoquines_rotos_1",
+     "type": "deco",
+     "x": 2280,
+     "y": 1850,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_1"
+      }
+     ]
+    },
+    {
+     "id": 508,
+     "name": "charco_seco_0",
+     "type": "deco",
+     "x": 2277,
+     "y": 1845,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "charco_seco_0"
+      }
+     ]
+    },
+    {
+     "id": 509,
+     "name": "polvo_sueno_1",
+     "type": "deco",
+     "x": 2538,
+     "y": 1912,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_1"
       }
      ]
     },
@@ -65065,8 +65065,8 @@
      "id": 510,
      "name": "petalos_piedra_0",
      "type": "deco",
-     "x": 2355,
-     "y": 1735,
+     "x": 2482,
+     "y": 1752,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65082,10 +65082,10 @@
     },
     {
      "id": 511,
-     "name": "charco_seco_0",
+     "name": "polvo_sueno_2",
      "type": "deco",
-     "x": 2384,
-     "y": 1903,
+     "x": 2354,
+     "y": 1908,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65095,54 +65095,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "charco_seco_0"
+       "value": "polvo_sueno_2"
       }
      ]
     },
     {
      "id": 512,
-     "name": "adoquines_rotos_0",
-     "type": "deco",
-     "x": 2358,
-     "y": 1870,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_0"
-      }
-     ]
-    },
-    {
-     "id": 513,
-     "name": "adoquines_rotos_1",
-     "type": "deco",
-     "x": 2725,
-     "y": 1770,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_1"
-      }
-     ]
-    },
-    {
-     "id": 514,
      "name": "adoquines_rotos_2",
      "type": "deco",
-     "x": 2760,
-     "y": 1740,
+     "x": 2447,
+     "y": 1778,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65157,11 +65119,11 @@
      ]
     },
     {
-     "id": 515,
+     "id": 513,
      "name": "charco_seco_1",
      "type": "deco",
-     "x": 2808,
-     "y": 1900,
+     "x": 2635,
+     "y": 1809,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65176,68 +65138,11 @@
      ]
     },
     {
-     "id": 516,
-     "name": "polvo_sueno_0",
-     "type": "deco",
-     "x": 2799,
-     "y": 1753,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_0"
-      }
-     ]
-    },
-    {
-     "id": 517,
-     "name": "charco_seco_0",
-     "type": "deco",
-     "x": 3045,
-     "y": 1869,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "charco_seco_0"
-      }
-     ]
-    },
-    {
-     "id": 518,
-     "name": "polvo_sueno_1",
-     "type": "deco",
-     "x": 2889,
-     "y": 1831,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_1"
-      }
-     ]
-    },
-    {
-     "id": 519,
+     "id": 514,
      "name": "adoquines_rotos_0",
      "type": "deco",
-     "x": 2868,
-     "y": 1805,
+     "x": 2792,
+     "y": 1785,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65252,11 +65157,106 @@
      ]
     },
     {
+     "id": 515,
+     "name": "adoquines_rotos_1",
+     "type": "deco",
+     "x": 2799,
+     "y": 1797,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_1"
+      }
+     ]
+    },
+    {
+     "id": 516,
+     "name": "charco_seco_0",
+     "type": "deco",
+     "x": 2797,
+     "y": 1883,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "charco_seco_0"
+      }
+     ]
+    },
+    {
+     "id": 517,
+     "name": "petalos_piedra_0",
+     "type": "deco",
+     "x": 3045,
+     "y": 1901,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "petalos_piedra_0"
+      }
+     ]
+    },
+    {
+     "id": 518,
+     "name": "polvo_sueno_0",
+     "type": "deco",
+     "x": 2930,
+     "y": 1801,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "polvo_sueno_0"
+      }
+     ]
+    },
+    {
+     "id": 519,
+     "name": "adoquines_rotos_2",
+     "type": "deco",
+     "x": 2948,
+     "y": 1744,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_2"
+      }
+     ]
+    },
+    {
      "id": 520,
      "name": "polvo_sueno_2",
      "type": "deco",
-     "x": 3020,
-     "y": 1778,
+     "x": 2921,
+     "y": 1900,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65274,8 +65274,8 @@
      "id": 521,
      "name": "adoquines_rotos_1",
      "type": "deco",
-     "x": 3254,
-     "y": 1844,
+     "x": 3308,
+     "y": 1753,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65291,10 +65291,10 @@
     },
     {
      "id": 522,
-     "name": "adoquines_rotos_2",
+     "name": "charco_seco_0",
      "type": "deco",
-     "x": 3285,
-     "y": 1864,
+     "x": 3307,
+     "y": 1753,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65304,16 +65304,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "adoquines_rotos_2"
+       "value": "charco_seco_0"
       }
      ]
     },
     {
      "id": 523,
-     "name": "petalos_piedra_0",
+     "name": "polvo_sueno_1",
      "type": "deco",
-     "x": 3158,
-     "y": 1870,
+     "x": 3117,
+     "y": 1834,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65323,16 +65323,16 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "petalos_piedra_0"
+       "value": "polvo_sueno_1"
       }
      ]
     },
     {
      "id": 524,
-     "name": "charco_seco_1",
+     "name": "adoquines_rotos_0",
      "type": "deco",
-     "x": 3323,
-     "y": 1799,
+     "x": 3302,
+     "y": 1895,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65342,7 +65342,7 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "charco_seco_1"
+       "value": "adoquines_rotos_0"
       }
      ]
     },
@@ -65350,8 +65350,8 @@
      "id": 525,
      "name": "polvo_sueno_0",
      "type": "deco",
-     "x": 217,
-     "y": 1992,
+     "x": 148,
+     "y": 2002,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65367,10 +65367,10 @@
     },
     {
      "id": 526,
-     "name": "polvo_sueno_1",
+     "name": "adoquines_rotos_0",
      "type": "deco",
      "x": 1189,
-     "y": 1973,
+     "y": 1966,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65380,16 +65380,35 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "polvo_sueno_1"
+       "value": "adoquines_rotos_0"
       }
      ]
     },
     {
      "id": 527,
+     "name": "adoquines_rotos_1",
+     "type": "deco",
+     "x": 1177,
+     "y": 1937,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "adoquines_rotos_1"
+      }
+     ]
+    },
+    {
+     "id": 528,
      "name": "polvo_sueno_1",
      "type": "deco",
-     "x": 1754,
-     "y": 1963,
+     "x": 1127,
+     "y": 1977,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65400,25 +65419,6 @@
        "name": "sprite",
        "type": "string",
        "value": "polvo_sueno_1"
-      }
-     ]
-    },
-    {
-     "id": 528,
-     "name": "polvo_sueno_0",
-     "type": "deco",
-     "x": 1645,
-     "y": 1961,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_0"
       }
      ]
     },
@@ -65426,8 +65426,8 @@
      "id": 529,
      "name": "adoquines_rotos_0",
      "type": "deco",
-     "x": 1737,
-     "y": 1976,
+     "x": 1706,
+     "y": 1970,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65443,10 +65443,10 @@
     },
     {
      "id": 530,
-     "name": "adoquines_rotos_1",
+     "name": "charco_seco_1",
      "type": "deco",
-     "x": 2744,
-     "y": 2071,
+     "x": 3238,
+     "y": 1973,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -65456,45 +65456,7 @@
       {
        "name": "sprite",
        "type": "string",
-       "value": "adoquines_rotos_1"
-      }
-     ]
-    },
-    {
-     "id": 531,
-     "name": "adoquines_rotos_2",
-     "type": "deco",
-     "x": 2729,
-     "y": 2075,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "adoquines_rotos_2"
-      }
-     ]
-    },
-    {
-     "id": 532,
-     "name": "polvo_sueno_0",
-     "type": "deco",
-     "x": 3311,
-     "y": 1975,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": [
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "polvo_sueno_0"
+       "value": "charco_seco_1"
       }
      ]
     }
@@ -65511,7 +65473,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 533,
+     "id": 531,
      "name": "portal_llegada",
      "type": "portal_llegada",
      "x": 208,
@@ -65535,7 +65497,7 @@
      ]
     },
     {
-     "id": 534,
+     "id": 532,
      "name": "portal_volver",
      "type": "portal_volver",
      "x": 208,
@@ -65554,7 +65516,7 @@
      ]
     },
     {
-     "id": 535,
+     "id": 533,
      "name": "jugador_inicio",
      "type": "jugador_inicio",
      "x": 304,
@@ -65567,7 +65529,7 @@
      "properties": []
     },
     {
-     "id": 536,
+     "id": 534,
      "name": "thor_inicio",
      "type": "thor_inicio",
      "x": 304,
@@ -65580,7 +65542,7 @@
      "properties": []
     },
     {
-     "id": 537,
+     "id": 535,
      "name": "estatua",
      "type": "estatua",
      "x": 336,
@@ -65609,7 +65571,7 @@
      ]
     },
     {
-     "id": 538,
+     "id": 536,
      "name": "estatua",
      "type": "estatua",
      "x": 504,
@@ -65638,7 +65600,7 @@
      ]
     },
     {
-     "id": 539,
+     "id": 537,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 592,
@@ -65677,7 +65639,7 @@
      ]
     },
     {
-     "id": 540,
+     "id": 538,
      "name": "farol_plaza",
      "type": "farol_plaza",
      "x": 592,
@@ -65706,7 +65668,7 @@
      ]
     },
     {
-     "id": 541,
+     "id": 539,
      "name": "estatua",
      "type": "estatua",
      "x": 240,
@@ -65735,7 +65697,7 @@
      ]
     },
     {
-     "id": 542,
+     "id": 540,
      "name": "cofre",
      "type": "cofre",
      "x": 144,
@@ -65754,7 +65716,7 @@
      ]
     },
     {
-     "id": 543,
+     "id": 541,
      "name": "enemigo",
      "type": "enemigo",
      "x": 624,
@@ -65778,7 +65740,7 @@
      ]
     },
     {
-     "id": 544,
+     "id": 542,
      "name": "figura",
      "type": "figura",
      "x": 656,
@@ -65802,7 +65764,7 @@
      ]
     },
     {
-     "id": 545,
+     "id": 543,
      "name": "estatua",
      "type": "estatua",
      "x": 976,
@@ -65831,7 +65793,7 @@
      ]
     },
     {
-     "id": 546,
+     "id": 544,
      "name": "estatua",
      "type": "estatua",
      "x": 1296,
@@ -65860,7 +65822,7 @@
      ]
     },
     {
-     "id": 547,
+     "id": 545,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1072,
@@ -65884,7 +65846,7 @@
      ]
     },
     {
-     "id": 548,
+     "id": 546,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1456,
@@ -65908,7 +65870,7 @@
      ]
     },
     {
-     "id": 549,
+     "id": 547,
      "name": "figura",
      "type": "figura",
      "x": 1488,
@@ -65932,7 +65894,7 @@
      ]
     },
     {
-     "id": 550,
+     "id": 548,
      "name": "cofre",
      "type": "cofre",
      "x": 1072,
@@ -65951,7 +65913,7 @@
      ]
     },
     {
-     "id": 551,
+     "id": 549,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1232,
@@ -65975,7 +65937,7 @@
      ]
     },
     {
-     "id": 552,
+     "id": 550,
      "name": "fuente",
      "type": "fuente",
      "x": 2048,
@@ -66004,7 +65966,7 @@
      ]
     },
     {
-     "id": 553,
+     "id": 551,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 1808,
@@ -66038,7 +66000,7 @@
      ]
     },
     {
-     "id": 554,
+     "id": 552,
      "name": "farol_plaza",
      "type": "farol_plaza",
      "x": 1808,
@@ -66067,7 +66029,7 @@
      ]
     },
     {
-     "id": 555,
+     "id": 553,
      "name": "estatua",
      "type": "estatua",
      "x": 2192,
@@ -66096,7 +66058,7 @@
      ]
     },
     {
-     "id": 556,
+     "id": 554,
      "name": "estatua",
      "type": "estatua",
      "x": 2260,
@@ -66125,7 +66087,7 @@
      ]
     },
     {
-     "id": 557,
+     "id": 555,
      "name": "estatua",
      "type": "estatua",
      "x": 1680,
@@ -66154,7 +66116,7 @@
      ]
     },
     {
-     "id": 558,
+     "id": 556,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1872,
@@ -66178,7 +66140,7 @@
      ]
     },
     {
-     "id": 559,
+     "id": 557,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2288,
@@ -66202,7 +66164,7 @@
      ]
     },
     {
-     "id": 560,
+     "id": 558,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2128,
@@ -66226,7 +66188,7 @@
      ]
     },
     {
-     "id": 561,
+     "id": 559,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2480,
@@ -66250,7 +66212,7 @@
      ]
     },
     {
-     "id": 562,
+     "id": 560,
      "name": "cofre",
      "type": "cofre",
      "x": 2512,
@@ -66269,7 +66231,7 @@
      ]
     },
     {
-     "id": 563,
+     "id": 561,
      "name": "figura",
      "type": "figura",
      "x": 2128,
@@ -66293,7 +66255,7 @@
      ]
     },
     {
-     "id": 564,
+     "id": 562,
      "name": "mural",
      "type": "mural",
      "x": 2752,
@@ -66312,7 +66274,7 @@
      ]
     },
     {
-     "id": 565,
+     "id": 563,
      "name": "cajita_musica",
      "type": "cajita_musica",
      "x": 3024,
@@ -66336,7 +66298,7 @@
      ]
     },
     {
-     "id": 566,
+     "id": 564,
      "name": "estatua",
      "type": "estatua",
      "x": 2864,
@@ -66365,7 +66327,7 @@
      ]
     },
     {
-     "id": 567,
+     "id": 565,
      "name": "estatua",
      "type": "estatua",
      "x": 3184,
@@ -66394,7 +66356,7 @@
      ]
     },
     {
-     "id": 568,
+     "id": 566,
      "name": "estatua",
      "type": "estatua",
      "x": 2704,
@@ -66423,7 +66385,7 @@
      ]
     },
     {
-     "id": 569,
+     "id": 567,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 3248,
@@ -66457,7 +66419,7 @@
      ]
     },
     {
-     "id": 570,
+     "id": 568,
      "name": "farol_plaza",
      "type": "farol_plaza",
      "x": 3248,
@@ -66486,7 +66448,7 @@
      ]
     },
     {
-     "id": 571,
+     "id": 569,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2736,
@@ -66510,7 +66472,7 @@
      ]
     },
     {
-     "id": 572,
+     "id": 570,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3280,
@@ -66534,7 +66496,7 @@
      ]
     },
     {
-     "id": 573,
+     "id": 571,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3024,
@@ -66558,7 +66520,7 @@
      ]
     },
     {
-     "id": 574,
+     "id": 572,
      "name": "figura",
      "type": "figura",
      "x": 3344,
@@ -66582,7 +66544,7 @@
      ]
     },
     {
-     "id": 575,
+     "id": 573,
      "name": "figura",
      "type": "figura",
      "x": 2576,
@@ -66606,7 +66568,7 @@
      ]
     },
     {
-     "id": 576,
+     "id": 574,
      "name": "cofre",
      "type": "cofre",
      "x": 3248,
@@ -66635,7 +66597,7 @@
      ]
     },
     {
-     "id": 577,
+     "id": 575,
      "name": "cofre",
      "type": "cofre",
      "x": 592,
@@ -66664,7 +66626,7 @@
      ]
     },
     {
-     "id": 578,
+     "id": 576,
      "name": "estatua",
      "type": "estatua",
      "x": 208,
@@ -66693,7 +66655,7 @@
      ]
     },
     {
-     "id": 579,
+     "id": 577,
      "name": "enemigo",
      "type": "enemigo",
      "x": 304,
@@ -66717,7 +66679,7 @@
      ]
     },
     {
-     "id": 580,
+     "id": 578,
      "name": "enemigo",
      "type": "enemigo",
      "x": 720,
@@ -66741,7 +66703,7 @@
      ]
     },
     {
-     "id": 581,
+     "id": 579,
      "name": "enemigo",
      "type": "enemigo",
      "x": 464,
@@ -66765,7 +66727,7 @@
      ]
     },
     {
-     "id": 582,
+     "id": 580,
      "name": "cofre",
      "type": "cofre",
      "x": 176,
@@ -66784,7 +66746,7 @@
      ]
     },
     {
-     "id": 583,
+     "id": 581,
      "name": "torre_reloj",
      "type": "torre_reloj",
      "x": 1424,
@@ -66808,7 +66770,7 @@
      ]
     },
     {
-     "id": 584,
+     "id": 582,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1456,
@@ -66837,7 +66799,7 @@
      ]
     },
     {
-     "id": 585,
+     "id": 583,
      "name": "cofre",
      "type": "cofre",
      "x": 1232,
@@ -66861,7 +66823,7 @@
      ]
     },
     {
-     "id": 586,
+     "id": 584,
      "name": "estatua",
      "type": "estatua",
      "x": 1168,
@@ -66890,7 +66852,7 @@
      ]
     },
     {
-     "id": 587,
+     "id": 585,
      "name": "estatua",
      "type": "estatua",
      "x": 1744,
@@ -66919,7 +66881,7 @@
      ]
     },
     {
-     "id": 588,
+     "id": 586,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1616,
@@ -66943,7 +66905,7 @@
      ]
     },
     {
-     "id": 589,
+     "id": 587,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1200,
@@ -66967,7 +66929,7 @@
      ]
     },
     {
-     "id": 590,
+     "id": 588,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2800,
@@ -66991,7 +66953,7 @@
      ]
     },
     {
-     "id": 591,
+     "id": 589,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2832,
@@ -67015,7 +66977,7 @@
      ]
     },
     {
-     "id": 592,
+     "id": 590,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2800,
@@ -67039,7 +67001,7 @@
      ]
     },
     {
-     "id": 593,
+     "id": 591,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 2384,
@@ -67073,7 +67035,7 @@
      ]
     },
     {
-     "id": 594,
+     "id": 592,
      "name": "farol_plaza",
      "type": "farol_plaza",
      "x": 2384,
@@ -67102,7 +67064,7 @@
      ]
     },
     {
-     "id": 595,
+     "id": 593,
      "name": "estatua",
      "type": "estatua",
      "x": 3088,
@@ -67131,7 +67093,7 @@
      ]
     },
     {
-     "id": 596,
+     "id": 594,
      "name": "estatua",
      "type": "estatua",
      "x": 2224,
@@ -67160,7 +67122,7 @@
      ]
     },
     {
-     "id": 597,
+     "id": 595,
      "name": "cofre",
      "type": "cofre",
      "x": 3312,
@@ -67179,7 +67141,7 @@
      ]
     },
     {
-     "id": 598,
+     "id": 596,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2960,
@@ -67203,7 +67165,7 @@
      ]
     },
     {
-     "id": 599,
+     "id": 597,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3184,
@@ -67227,7 +67189,7 @@
      ]
     },
     {
-     "id": 600,
+     "id": 598,
      "name": "figura",
      "type": "figura",
      "x": 2896,
@@ -67251,7 +67213,7 @@
      ]
     },
     {
-     "id": 601,
+     "id": 599,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 2256,
@@ -67285,7 +67247,7 @@
      ]
     },
     {
-     "id": 602,
+     "id": 600,
      "name": "farol_plaza",
      "type": "farol_plaza",
      "x": 2256,
@@ -67314,7 +67276,7 @@
      ]
     },
     {
-     "id": 603,
+     "id": 601,
      "name": "estatua",
      "type": "estatua",
      "x": 2544,
@@ -67343,7 +67305,7 @@
      ]
     },
     {
-     "id": 604,
+     "id": 602,
      "name": "estatua",
      "type": "estatua",
      "x": 2860,
@@ -67372,7 +67334,7 @@
      ]
     },
     {
-     "id": 605,
+     "id": 603,
      "name": "estatua",
      "type": "estatua",
      "x": 2128,
@@ -67401,7 +67363,7 @@
      ]
     },
     {
-     "id": 606,
+     "id": 604,
      "name": "estatua",
      "type": "estatua",
      "x": 3184,
@@ -67430,7 +67392,7 @@
      ]
     },
     {
-     "id": 607,
+     "id": 605,
      "name": "cofre",
      "type": "cofre",
      "x": 3280,
@@ -67449,7 +67411,7 @@
      ]
     },
     {
-     "id": 608,
+     "id": 606,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2448,
@@ -67473,7 +67435,7 @@
      ]
     },
     {
-     "id": 609,
+     "id": 607,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2960,
@@ -67497,7 +67459,7 @@
      ]
     },
     {
-     "id": 610,
+     "id": 608,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3088,
@@ -67521,7 +67483,7 @@
      ]
     },
     {
-     "id": 611,
+     "id": 609,
      "name": "figura",
      "type": "figura",
      "x": 2800,
@@ -67545,7 +67507,7 @@
      ]
     },
     {
-     "id": 612,
+     "id": 610,
      "name": "arena_jefe",
      "type": "arena_jefe",
      "x": 2704,
@@ -67574,7 +67536,7 @@
      ]
     },
     {
-     "id": 613,
+     "id": 611,
      "name": "jefe",
      "type": "jefe",
      "x": 2704,
@@ -67603,7 +67565,7 @@
      ]
     },
     {
-     "id": 614,
+     "id": 612,
      "name": "lampara_trono",
      "type": "lampara_trono",
      "x": 2598,
@@ -67627,7 +67589,7 @@
      ]
     },
     {
-     "id": 615,
+     "id": 613,
      "name": "lampara_trono",
      "type": "lampara_trono",
      "x": 2810,
@@ -67651,7 +67613,7 @@
      ]
     },
     {
-     "id": 616,
+     "id": 614,
      "name": "lampara_trono",
      "type": "lampara_trono",
      "x": 2598,
@@ -67675,7 +67637,7 @@
      ]
     },
     {
-     "id": 617,
+     "id": 615,
      "name": "lampara_trono",
      "type": "lampara_trono",
      "x": 2810,
@@ -67699,7 +67661,7 @@
      ]
     },
     {
-     "id": 618,
+     "id": 616,
      "name": "figura",
      "type": "figura",
      "x": 2448,
@@ -67728,7 +67690,7 @@
      ]
     },
     {
-     "id": 619,
+     "id": 617,
      "name": "portal_jefe",
      "type": "portal_jefe",
      "x": 2704,
@@ -67757,7 +67719,7 @@
      ]
     },
     {
-     "id": 620,
+     "id": 618,
      "name": "cofre",
      "type": "cofre",
      "x": 2928,
@@ -67781,7 +67743,7 @@
      ]
     },
     {
-     "id": 621,
+     "id": 619,
      "name": "chispa",
      "type": "chispa",
      "x": 688,
@@ -67805,7 +67767,7 @@
      ]
     },
     {
-     "id": 622,
+     "id": 620,
      "name": "chispa",
      "type": "chispa",
      "x": 592,
@@ -67829,7 +67791,7 @@
      ]
     },
     {
-     "id": 623,
+     "id": 621,
      "name": "chispa",
      "type": "chispa",
      "x": 496,
@@ -67853,7 +67815,7 @@
      ]
     },
     {
-     "id": 624,
+     "id": 622,
      "name": "chispa",
      "type": "chispa",
      "x": 336,
@@ -67877,7 +67839,7 @@
      ]
     },
     {
-     "id": 625,
+     "id": 623,
      "name": "chispa",
      "type": "chispa",
      "x": 624,
@@ -67901,7 +67863,7 @@
      ]
     },
     {
-     "id": 626,
+     "id": 624,
      "name": "chispa",
      "type": "chispa",
      "x": 176,
@@ -67925,7 +67887,7 @@
      ]
     },
     {
-     "id": 627,
+     "id": 625,
      "name": "chispa",
      "type": "chispa",
      "x": 208,
@@ -67949,7 +67911,7 @@
      ]
     },
     {
-     "id": 628,
+     "id": 626,
      "name": "chispa",
      "type": "chispa",
      "x": 688,
@@ -67973,7 +67935,7 @@
      ]
     },
     {
-     "id": 629,
+     "id": 627,
      "name": "chispa",
      "type": "chispa",
      "x": 2192,
@@ -67997,7 +67959,7 @@
      ]
     },
     {
-     "id": 630,
+     "id": 628,
      "name": "chispa",
      "type": "chispa",
      "x": 1776,
@@ -68021,7 +67983,7 @@
      ]
     },
     {
-     "id": 631,
+     "id": 629,
      "name": "chispa",
      "type": "chispa",
      "x": 1584,
@@ -68045,7 +68007,7 @@
      ]
     },
     {
-     "id": 632,
+     "id": 630,
      "name": "chispa",
      "type": "chispa",
      "x": 2064,
@@ -68069,7 +68031,7 @@
      ]
     },
     {
-     "id": 633,
+     "id": 631,
      "name": "chispa",
      "type": "chispa",
      "x": 1968,
@@ -68093,7 +68055,7 @@
      ]
     },
     {
-     "id": 634,
+     "id": 632,
      "name": "chispa",
      "type": "chispa",
      "x": 2160,
@@ -68117,7 +68079,7 @@
      ]
     },
     {
-     "id": 635,
+     "id": 633,
      "name": "chispa",
      "type": "chispa",
      "x": 2320,
@@ -68141,7 +68103,7 @@
      ]
     },
     {
-     "id": 636,
+     "id": 634,
      "name": "chispa",
      "type": "chispa",
      "x": 2288,
@@ -68165,10 +68127,10 @@
      ]
     },
     {
-     "id": 637,
+     "id": 635,
      "name": "chispa",
      "type": "chispa",
-     "x": 2768,
+     "x": 3120,
      "y": 592,
      "width": 0,
      "height": 0,
@@ -68189,10 +68151,10 @@
      ]
     },
     {
-     "id": 638,
+     "id": 636,
      "name": "chispa",
      "type": "chispa",
-     "x": 3184,
+     "x": 2672,
      "y": 304,
      "width": 0,
      "height": 0,
@@ -68213,11 +68175,11 @@
      ]
     },
     {
-     "id": 639,
+     "id": 637,
      "name": "chispa",
      "type": "chispa",
-     "x": 3376,
-     "y": 144,
+     "x": 3024,
+     "y": 272,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68237,11 +68199,11 @@
      ]
     },
     {
-     "id": 640,
+     "id": 638,
      "name": "chispa",
      "type": "chispa",
-     "x": 2640,
-     "y": 368,
+     "x": 3216,
+     "y": 336,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68261,10 +68223,10 @@
      ]
     },
     {
-     "id": 641,
+     "id": 639,
      "name": "chispa",
      "type": "chispa",
-     "x": 2576,
+     "x": 2672,
      "y": 560,
      "width": 0,
      "height": 0,
@@ -68285,11 +68247,11 @@
      ]
     },
     {
-     "id": 642,
+     "id": 640,
      "name": "chispa",
      "type": "chispa",
-     "x": 3376,
-     "y": 816,
+     "x": 2608,
+     "y": 848,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68309,10 +68271,10 @@
      ]
     },
     {
-     "id": 643,
+     "id": 641,
      "name": "chispa",
      "type": "chispa",
-     "x": 2992,
+     "x": 3344,
      "y": 848,
      "width": 0,
      "height": 0,
@@ -68333,7 +68295,7 @@
      ]
     },
     {
-     "id": 644,
+     "id": 642,
      "name": "chispa",
      "type": "chispa",
      "x": 3376,
@@ -68357,11 +68319,11 @@
      ]
     },
     {
-     "id": 645,
+     "id": 643,
      "name": "chispa",
      "type": "chispa",
-     "x": 2544,
-     "y": 1840,
+     "x": 2224,
+     "y": 1872,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68381,11 +68343,11 @@
      ]
     },
     {
-     "id": 646,
+     "id": 644,
      "name": "chispa",
      "type": "chispa",
-     "x": 2800,
-     "y": 1744,
+     "x": 3184,
+     "y": 1904,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68405,11 +68367,11 @@
      ]
     },
     {
-     "id": 647,
+     "id": 645,
      "name": "chispa",
      "type": "chispa",
      "x": 2800,
-     "y": 1584,
+     "y": 1232,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68429,10 +68391,10 @@
      ]
     },
     {
-     "id": 648,
+     "id": 646,
      "name": "chispa",
      "type": "chispa",
-     "x": 2320,
+     "x": 2704,
      "y": 1776,
      "width": 0,
      "height": 0,
@@ -68453,11 +68415,11 @@
      ]
     },
     {
-     "id": 649,
+     "id": 647,
      "name": "chispa",
      "type": "chispa",
-     "x": 2800,
-     "y": 1936,
+     "x": 2544,
+     "y": 1840,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68477,11 +68439,11 @@
      ]
     },
     {
-     "id": 650,
+     "id": 648,
      "name": "chispa",
      "type": "chispa",
-     "x": 2832,
-     "y": 1424,
+     "x": 2896,
+     "y": 1904,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68501,11 +68463,11 @@
      ]
     },
     {
-     "id": 651,
+     "id": 649,
      "name": "chispa",
      "type": "chispa",
-     "x": 3056,
-     "y": 1936,
+     "x": 2800,
+     "y": 1520,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68525,11 +68487,11 @@
      ]
     },
     {
-     "id": 652,
+     "id": 650,
      "name": "chispa",
      "type": "chispa",
-     "x": 2160,
-     "y": 1808,
+     "x": 3024,
+     "y": 1776,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68549,7 +68511,7 @@
      ]
     },
     {
-     "id": 653,
+     "id": 651,
      "name": "chispa",
      "type": "chispa",
      "x": 2960,
@@ -68573,10 +68535,10 @@
      ]
     },
     {
-     "id": 654,
+     "id": 652,
      "name": "chispa",
      "type": "chispa",
-     "x": 2064,
+     "x": 2352,
      "y": 2416,
      "width": 0,
      "height": 0,
@@ -68597,10 +68559,10 @@
      ]
     },
     {
-     "id": 655,
+     "id": 653,
      "name": "chispa",
      "type": "chispa",
-     "x": 2448,
+     "x": 2480,
      "y": 3024,
      "width": 0,
      "height": 0,
@@ -68621,11 +68583,11 @@
      ]
     },
     {
-     "id": 656,
+     "id": 654,
      "name": "chispa",
      "type": "chispa",
-     "x": 2352,
-     "y": 2416,
+     "x": 3216,
+     "y": 2224,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68645,10 +68607,10 @@
      ]
     },
     {
-     "id": 657,
+     "id": 655,
      "name": "chispa",
      "type": "chispa",
-     "x": 2576,
+     "x": 2832,
      "y": 2672,
      "width": 0,
      "height": 0,
@@ -68669,7 +68631,7 @@
      ]
     },
     {
-     "id": 658,
+     "id": 656,
      "name": "chispa",
      "type": "chispa",
      "x": 2128,
@@ -68693,11 +68655,11 @@
      ]
     },
     {
-     "id": 659,
+     "id": 657,
      "name": "chispa",
      "type": "chispa",
-     "x": 3152,
-     "y": 2224,
+     "x": 2000,
+     "y": 2256,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68717,11 +68679,11 @@
      ]
     },
     {
-     "id": 660,
+     "id": 658,
      "name": "chispa",
      "type": "chispa",
-     "x": 2832,
-     "y": 2352,
+     "x": 2192,
+     "y": 2384,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -68753,7 +68715,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 661,
+     "id": 659,
      "name": "La Puerta de la Ciudad",
      "type": "zona",
      "x": 64,
@@ -68806,7 +68768,7 @@
      ]
     },
     {
-     "id": 662,
+     "id": 660,
      "name": "La Calle de los Panaderos",
      "type": "zona",
      "x": 736,
@@ -68859,7 +68821,7 @@
      ]
     },
     {
-     "id": 663,
+     "id": 661,
      "name": "La Plaza de la Fuente",
      "type": "zona",
      "x": 1536,
@@ -68912,7 +68874,7 @@
      ]
     },
     {
-     "id": 664,
+     "id": 662,
      "name": "El Barrio de los Músicos",
      "type": "zona",
      "x": 2560,
@@ -68965,7 +68927,7 @@
      ]
     },
     {
-     "id": 665,
+     "id": 663,
      "name": "Los Jardines de Piedra",
      "type": "zona",
      "x": 64,
@@ -69018,7 +68980,7 @@
      ]
     },
     {
-     "id": 666,
+     "id": 664,
      "name": "La Torre del Reloj",
      "type": "zona",
      "x": 1056,
@@ -69076,7 +69038,7 @@
      ]
     },
     {
-     "id": 667,
+     "id": 665,
      "name": "El Puente de los Faroles",
      "type": "zona",
      "x": 1824,
@@ -69129,7 +69091,7 @@
      ]
     },
     {
-     "id": 668,
+     "id": 666,
      "name": "El Palacio Dormido",
      "type": "zona",
      "x": 1824,
@@ -69187,7 +69149,7 @@
      ]
     },
     {
-     "id": 669,
+     "id": 667,
      "name": "El Corazón del Jardín",
      "type": "zona",
      "x": 480,
@@ -69240,7 +69202,7 @@
      ]
     },
     {
-     "id": 670,
+     "id": 668,
      "name": "El Desván del Organillero",
      "type": "zona",
      "x": 3104,
@@ -69305,7 +69267,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 671,
+     "id": 669,
      "name": "puerta_de_la_ciudad",
      "type": "postal",
      "x": 432,
@@ -69318,7 +69280,7 @@
      "properties": []
     },
     {
-     "id": 672,
+     "id": 670,
      "name": "calle_de_los_panaderos",
      "type": "postal",
      "x": 1136,
@@ -69331,7 +69293,7 @@
      "properties": []
     },
     {
-     "id": 673,
+     "id": 671,
      "name": "plaza_de_la_fuente",
      "type": "postal",
      "x": 2064,
@@ -69344,7 +69306,7 @@
      "properties": []
     },
     {
-     "id": 674,
+     "id": 672,
      "name": "barrio_de_los_musicos",
      "type": "postal",
      "x": 2992,
@@ -69357,7 +69319,7 @@
      "properties": []
     },
     {
-     "id": 675,
+     "id": 673,
      "name": "jardines_de_piedra",
      "type": "postal",
      "x": 560,
@@ -69370,7 +69332,7 @@
      "properties": []
     },
     {
-     "id": 676,
+     "id": 674,
      "name": "torre_del_reloj",
      "type": "postal",
      "x": 1456,
@@ -69383,7 +69345,7 @@
      "properties": []
     },
     {
-     "id": 677,
+     "id": 675,
      "name": "puente_de_los_faroles",
      "type": "postal",
      "x": 2704,
@@ -69396,7 +69358,7 @@
      "properties": []
     },
     {
-     "id": 678,
+     "id": 676,
      "name": "palacio_dormido",
      "type": "postal",
      "x": 2704,
@@ -69412,5 +69374,5 @@
   }
  ],
  "nextlayerid": 200,
- "nextobjectid": 679
+ "nextobjectid": 677
 }
