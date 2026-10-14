@@ -36,7 +36,7 @@ describe('el Ciclo 2', () => {
     p.mundo = 'mundo7'
     p.jefeVencido = true
     p.cofres.push('c1')
-    p.otrosMundos = { mundo1: { posicion: { x: 1, y: 1 }, ultimaFogata: 'f', zonas: ['z'], secretos: [], cofres: ['x'], rompibles: [], presentacionVista: true, jefeVencido: true, brasas: [], niebla: 'n', cristales: [], faroles: [] } }
+    p.otrosMundos = { mundo1: { posicion: { x: 1, y: 1 }, ultimaFogata: 'f', zonas: ['z'], secretos: [], cofres: ['x'], rompibles: [], presentacionVista: true, jefeVencido: true, brasas: [], niebla: 'n', cristales: [], faroles: [], vencidos: [] } }
     empezarCiclo(p)
     expect(p.ciclo).toBe(2)
     expect(p.celestial).toBe(true)

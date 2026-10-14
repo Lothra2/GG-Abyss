@@ -120,27 +120,83 @@ test.describe('El minotauro', () => {
     expect(max).toBeLessThanOrEqual(4)
   })
 
-  test('si la heroína cae, Thor la rescata, el jefe se duerme sin curarse y al volver sigue donde quedó', async ({ page }) => {
+  test('la arena está sellada hasta vencer al Trol del Puente: rebota, la flecha lleva al trol y al vencerlo se abre', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'saltarPresentacion')
+    await gancho(page, 'ponerNivel', 12)
+    const l = await gancho<{ llave: { id: number; nombre: string } | null; sellada: boolean }>(page, 'llave')
+    expect(l.llave?.nombre).toBe('Trol del Puente')
+    expect(l.sellada).toBe(true)
+    // se mete a la arena: rebota afuera y el jefe sigue dormido
+    const j0 = await jefe(page)
+    await gancho(page, 'teleport', j0.x - 60, j0.y + 30)
+    await avanzar(page, 0.5)
+    const p = await gancho<{ x: number; y: number }>(page, 'pos')
+    expect(Math.hypot(p.x - j0.x, p.y - j0.y)).toBeGreaterThan(150)
+    expect((await jefe(page)).peleando).toBe(false)
+    // vence al trol: se abre y queda guardado
+    const t = (await gancho<{ id: number; tipo: string; elite: boolean }[]>(page, 'enemigos')).find((e) => e.elite)!
+    await gancho(page, 'danarEnemigo', t.id, 99999)
+    await avanzar(page, 0.3)
+    expect((await gancho<{ sellada: boolean }>(page, 'llave')).sellada).toBe(false)
+    await gancho(page, 'guardarAhora')
+    await page.reload()
+    await abrirMundo(page, 'sophie')
+    expect((await gancho<{ sellada: boolean }>(page, 'llave')).sellada).toBe(false)
+    // y ahora sí se entra caminando
+    await gancho(page, 'curarTodo')
+    await gancho(page, 'teleport', j0.x - 60, j0.y + 30)
+    await expect.poll(async () => { await avanzar(page, 0.2); return (await jefe(page)).peleando }, { timeout: 20_000 }).toBe(true)
+    await sinErrores(errores)
+  })
+
+  test('si la heroína cae, Thor la rescata y el jefe se duerme: en modo normal vuelve al inicio de su fase, y lo ganado no se pierde', async ({ page }) => {
     await empezar(page)
     await hasta(page, (j) => j.estado !== 'intro', 10)
+    // fase 1: cae y el jefe vuelve lleno
     await gancho(page, 'danarJefe', 300)
-    const vida = (await jefe(page)).vida
     await gancho(page, 'danar', 9999)
     await expect.poll(async () => (await combate(page)).rescates, { timeout: 40_000, intervals: [500] }).toBe(1)
     const j = await jefe(page)
     expect(j.peleando).toBe(false)
     expect(j.anillo).toBe(false)
-    expect(j.vida).toBe(vida)
+    expect(j.vida).toBe(VIDA)
     expect(j.piedras).toBe(0)
-    // al volver a entrar, retoma con la misma vida
+    // fase 2: cae y vuelve al 60 %, no a la fase 1
+    await gancho(page, 'curarTodo')
+    await gancho(page, 'entrarArena')
+    await avanzar(page, 0.3)
+    expect((await jefe(page)).peleando).toBe(true)
+    await gancho(page, 'danarJefe', VIDA * 0.5)
+    await hasta(page, (q) => q.estado !== 'intro', 10)
+    expect((await jefe(page)).fase).toBe(2)
+    await gancho(page, 'danar', 9999)
+    await expect.poll(async () => (await combate(page)).rescates, { timeout: 40_000, intervals: [500] }).toBe(2)
+    const k = await jefe(page)
+    expect(k.fase).toBe(2)
+    expect(k.vida).toBe(Math.round(VIDA * 0.6))
+    // y su vida quedó guardada
+    await gancho(page, 'guardarAhora')
+    expect((await gancho<{ jefeVida?: number }>(page, 'estado')).jefeVida).toBe(k.vida)
+  })
+
+  test('en modo peque el jefe no se cura: al volver sigue donde quedó', async ({ page }) => {
+    await empezar(page, 'alana')
+    await hasta(page, (j) => j.estado !== 'intro', 10)
+    await gancho(page, 'danarJefe', 300)
+    const vida = (await jefe(page)).vida
+    await gancho(page, 'danar', 9999)
+    await expect.poll(async () => (await combate(page)).rescates, { timeout: 40_000, intervals: [500] }).toBe(1)
+    // nunca sube (Thor o su invocación pueden haberle pegado un poco más antes de caer)
+    const despues = (await jefe(page)).vida
+    expect(despues).toBeLessThanOrEqual(vida)
+    expect(despues).toBeGreaterThan(vida - 60)
     await gancho(page, 'entrarArena')
     await avanzar(page, 0.3)
     const k = await jefe(page)
     expect(k.peleando).toBe(true)
-    expect(k.vida).toBe(vida)
-    // y su vida quedó guardada
-    await gancho(page, 'guardarAhora')
-    expect((await gancho<{ jefeVida?: number }>(page, 'estado')).jefeVida).toBe(vida)
+    expect(k.vida).toBeLessThanOrEqual(despues)
   })
 
   test('victoria: cae el jefe, llueve oro, se abre el portal y aparece el cofre legendario; el portal baja a la Catedral y se puede volver', async ({ page }) => {

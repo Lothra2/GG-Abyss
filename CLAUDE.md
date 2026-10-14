@@ -11,12 +11,12 @@ Juego tipo Diablo de la familia GG (Sophie 8, Alana 5). Cada jefe abre un portal
 - Personajes editados en el estudio: exportar la ficha a fichas/<id>.ficha.json y correr `npm run kit`.
 
 ## Reglas del juego
-- Nadie pierde: al caer, Thor rescata a la heroína en la última fogata y no se pierde nada. El jefe no se cura.
+- Nadie pierde: al caer, Thor rescata a la heroína en la última fogata y no se pierde nada. En modo peque el jefe no se cura. En modo normal vuelve a la vida con la que empezó su fase (F13, decisión de Rick: "sigue muy fácil"). La arena de cada jefe se abre al vencer al minijefe del piso, el élite más cerca de ella.
 - Sin IA y sin red. La partida vive en localStorage (ggabyss:v1:perfil:<id>).
 - Para Alana todo con ícono y sonido. Textos en español.
 - El mundo tiene que verse increíble: dirección de arte en PLAN.md, postales en docs/capturas/.
 - El descenso (pisos 4 a 7): PLAN.md F12 manda. Cada piso más terrorífico que el anterior hasta el Diablo (terror de cuento, sin sangre ni sustos de golpe), con una mecánica de luz nueva, sombras con sentido e inmersión completa, sin perder nada de lo ya hecho.
-- El final (Mundo 7, el Diablo, cinemáticas, heroína celestial, Ciclo 2): PLAN.md F13 manda. Decisión de Rick: el Mundo 7 es lo más oscuro del juego para todos, con demonios que dan miedo de verdad. Se mantiene sin sangre ni sustos de golpe.
+- El final (Mundo 7, el Diablo, cinemáticas, heroína celestial, Ciclo 2): PLAN.md F13 manda. Decisión de Rick: el Mundo 7 es lo más oscuro del juego para todos, con demonios que dan miedo de verdad. Sin sustos de golpe. Sin sangre en todo el juego, salvo las alas del Diablo (pedido de Sophie, decisión de Rick): espinas y sangre oscura que gotea, nada más.
 - Créditos LPC visibles en el juego. Los repos gg-abyss y pixel_forja son públicos (Netlify clona el submódulo sin llaves). Ninguna foto de la familia entra a ningún repo: las fotos van solo en `private/`, que git ignora.
 
 ## Código

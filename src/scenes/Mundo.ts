@@ -22,6 +22,7 @@ import { pisoDe, thorBrilla, topeOscuridad } from '../logic/abismo'
 import { ABISMO, PUERTO } from '../config/balance'
 import { aspectoDe, claveAspecto } from '../logic/aspecto'
 import { posicionSegura, puntosDeCaida, regionCaminable } from '../logic/lugar'
+import { arenaSellada, claveLlave, llaveDeArena, type Elite } from '../logic/llave'
 import { RADIO_HEROINA } from '../logic/camino'
 import { familiaDeArma, NOMBRE_FAMILIA } from '../logic/armas'
 import { crearAnimFx, crearAnimsPersonaje } from '../kit/anims'
@@ -123,7 +124,7 @@ const NOMBRES_GANCHOS = [
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
   'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable', 'puerto', 'adelantarMarea', 'alzarFarol', 'apagarFarol', 'misterio', 'ciudad', 'robarYa', 'bostezando', 'enLuzFija', 'gargolas', 'relojero', 'decosDespiertos',
   'fragua', 'sacudirThor', 'mojarThor', 'tirarPalanca', 'abrirJaula', 'relojFragua', 'pegarHollin', 'salamandras', 'faroleros', 'lavaApagada',
-  'texturas', 'ciclo', 'verCine', 'probarFinal', 'alas', 'lanza', 'hacerCelestial', 'corazon', 'ventisca', 'devorarLuz', 'prenderBrasero', 'frioA',
+  'texturas', 'llave', 'ciclo', 'verCine', 'probarFinal', 'alas', 'lanza', 'hacerCelestial', 'corazon', 'ventisca', 'devorarLuz', 'prenderBrasero', 'frioA',
 ]
 
 /**
@@ -197,6 +198,10 @@ export class Mundo extends Phaser.Scene {
   corazon: Corazon | null = null
   /** F13: la jaula de huesos del Diablo, mientras la tiene encerrada */
   jaulaHuesos: JaulaHuesos | null = null
+  /** F13: el minijefe que guarda la arena del jefe (la llave) y el aro rojo que se ve mientras está sellada */
+  llave: Elite | null = null
+  private aroSello: Phaser.GameObjects.Graphics | null = null
+  private avisoSelloS = 0
   /** F13: el aura dorada al pie de la celestial */
   private auraCel: Phaser.GameObjects.Sprite | null = null
   /** F12: el chorro de un surtidor o la sacudida de Thor le llegan a la Dragona en el próximo paso del jefe */
@@ -605,6 +610,8 @@ export class Mundo extends Phaser.Scene {
       },
       alMorir: (e) => {
         this.combate.alMorirEnemigo(e)
+        // F13: era el minijefe que guardaba la arena: se abre
+        if (this.llave && e.ent.id === this.llave.id) this.abrirSello(true)
         // F12: el Carcelero abre su cárcel entera; el farolero suelta la luz que cargaba
         if (e.tipo === 'carcelero' && this.fragua) {
           const n = this.fragua.abrirCarcel()
@@ -1032,6 +1039,10 @@ export class Mundo extends Phaser.Scene {
     }
     this.jefe = new JefeSprite(this, this.m, this.grilla, ent, this.arena, this.partida.jefeVida ?? perfilDe(tipoJefe, this.partida.ciclo).vida, ev, this.partida.ciclo)
     this.enemigos.adicionales.push(this.jefe)
+    // F13: la llave de la arena: el élite más cerca de ella
+    this.llave = llaveDeArena(this.enemigos.lista.filter((e) => e.elite && e.ent.props.refuerzo !== true).map((e) => ({ id: e.ent.id, x: e.ent.x, y: e.ent.y, nombre: e.nombre })), this.arena)
+    this.aroSello?.destroy()
+    this.aroSello = this.llave ? this.add.graphics().setDepth(PROF.SOMBRAS + 1) : null
     this.game.events.on('heroina-cae', this.alCaerEnArena, this)
     if (this.partida.jefeVencido) {
       this.jefe.quitar()
@@ -1052,6 +1063,52 @@ export class Mundo extends Phaser.Scene {
       this.auraCel.play(k)
     }
     this.auraCel.setVisible(this.heroina.sprite.visible).setPosition(Math.round(this.heroina.x), Math.round(this.heroina.y)).setDepth(PROF.OBJETOS + this.heroina.y - 0.5)
+  }
+
+  /** F13: ¿la arena del jefe sigue sellada? (falta vencer al minijefe) */
+  get sellada(): boolean {
+    return arenaSellada(this.llave, this.partida.vencidos, this.partida.jefeVencido)
+  }
+
+  /** El minijefe cayó: la arena se abre (con su sonido y su destello), y queda guardado */
+  private abrirSello(animar: boolean): void {
+    if (!this.llave || !this.sellada) return
+    this.partida.vencidos = [...this.partida.vencidos, claveLlave(this.llave.id)]
+    this.guardar()
+    this.relojGuia.progreso()
+    if (!animar) return
+    this.sonido.efecto('portal', { volumen: 0.7, rate: 0.8 })
+    this.game.events.emit('destello', { color: 0xffd890, alfa: this.suave ? 0.1 : 0.3, ms: 420 })
+    this.time.delayedCall(700, () => this.entidades.flotante(this.heroina.x, this.heroina.y - 62, '¡Se abrió la arena del jefe!', 'icono_calavera', 0xffd890))
+  }
+
+  /** Se acercó con la arena sellada: rebota afuera y se le dice a quién tiene que vencer primero */
+  private rebotarDelSello(): void {
+    const a = this.arena
+    if (!a || !this.llave) return
+    const h = this.heroina
+    const d = Math.hypot(h.x - a.x, h.y - a.y) || 1
+    const fuera = posicionSegura(this.grilla, { x: a.x + ((h.x - a.x) / d) * (a.radio + 24), y: a.y + ((h.y - a.y) / d) * (a.radio + 24) }, entidadesDeTipo(this.mapa, 'jugador_inicio')[0] ?? { x: h.x, y: h.y }, RADIO_HEROINA + 1)
+    h.teleport(fuera.x, fuera.y)
+    this.atmosfera.particulas.estallido(fuera.x, fuera.y, 'polvo', 4)
+    if (this.avisoSelloS > 0) return
+    this.avisoSelloS = 3
+    this.sonido.efecto('bloqueo', { volumen: 0.6, rate: 0.7 })
+    this.entidades.flotante(fuera.x, fuera.y - 62, `Primero vence a ${this.llave.nombre}`, 'icono_calavera', 0xff9a7a)
+  }
+
+  /** El aro rojo de la arena sellada: late cuando ella anda cerca */
+  private dibujarSello(dt: number): void {
+    this.avisoSelloS = Math.max(0, this.avisoSelloS - dt)
+    const g = this.aroSello
+    const a = this.arena
+    if (!g || !a) return
+    g.clear()
+    if (!this.sellada) return
+    const cerca = Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) - a.radio
+    if (cerca > 260) return
+    const k = 0.5 + 0.5 * Math.sin(this.time.now / 260)
+    g.lineStyle(2, 0xff3a2a, (0.35 + 0.4 * k) * Math.min(1, (260 - cerca) / 120)).strokeEllipse(a.x, a.y, a.radio * 2, a.radio * 1.2)
   }
 
   /** F13: la música del Diablo según su fase: 1 a 3 cada vez más fuerte y la final en la desesperada */
@@ -1132,8 +1189,12 @@ export class Mundo extends Phaser.Scene {
       if (c.resta <= 0 && j.peleando && this.fragua?.chorroA(c.s as never, j)) this.chorroPendiente = true
     }
     this.chorros = this.chorros.filter((c) => c.resta > 0)
+    this.dibujarSello(dt)
     if (!j.peleando && j.vivo && !this.partida.jefeVencido && !this.combate.caido) {
-      if (Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) <= a.radio - JEFE.entradaMargen) this.empezarJefe()
+      if (Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) <= a.radio - JEFE.entradaMargen) {
+        if (this.sellada) this.rebotarDelSello()
+        else this.empezarJefe()
+      }
     }
     // si la heroína se va lejos de la arena (un salto de prueba, por ejemplo) la pelea se corta sin curar al jefe
     if (j.peleando && Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) > a.radio + 60) this.alCaerEnArena()
@@ -1231,7 +1292,10 @@ export class Mundo extends Phaser.Scene {
     if (!this.jefe || !this.jefe.peleando) return
     this.soltarJaula()
     this.director.cortar()
-    this.jefe.reposar()
+    // F13: en modo normal el jefe vuelve a la vida con la que empezó su fase (en modo peque se queda como estaba)
+    const antes = this.jefe.vida
+    this.jefe.reposar(!this.combate.modoPeque)
+    if (this.jefe.vida > antes) this.time.delayedCall(1800, () => this.jefe && this.textoFlotante(this.heroina.x, this.heroina.y - 60, `¡${this.jefe.nombre} recuperó fuerzas!`, 0xff9a7a))
     this.ciudad?.limpiarChispasJefe()
     this.enemigos.quitarInvocadas()
     for (const r of [...this.raicesActivas]) r.quitar()
@@ -1898,7 +1962,9 @@ export class Mundo extends Phaser.Scene {
     if (!this.relojGuia.visible) return
     // F8: mientras falten brasas, la flecha apunta a la más cercana a la que se llega caminando
     const brasa = this.brasaAlcanzable()
-    const destino = brasa ? { tipo: 'zona' as const, nombre: 'Brasa', x: brasa.x, y: brasa.y } : elegirDestino({
+    // F13: con la arena sellada, la flecha lleva al minijefe que tiene la llave
+    const mj = this.sellada && this.llave ? this.enemigos.lista.find((e) => e.ent.id === this.llave!.id && e.vivo) : undefined
+    const destino = brasa ? { tipo: 'zona' as const, nombre: 'Brasa', x: brasa.x, y: brasa.y } : mj ? { tipo: 'zona' as const, nombre: mj.nombre, x: mj.x, y: mj.y } : elegirDestino({
       heroe: { x: this.heroina.x, y: this.heroina.y },
       nivel: p.nivel,
       zonas: this.mapa.zonas,
@@ -2708,6 +2774,7 @@ export class Mundo extends Phaser.Scene {
       thorInfo: () => ({ x: this.thor.x, y: this.thor.y, estado: this.thor.estado, ...this.thor.infoAnim }),
       hudLayout: () => (this.scene.isActive('HUD') ? (this.scene.get('HUD') as unknown as { layout(): unknown }).layout() : null),
       noEsperar: () => this.listo,
+      llave: () => ({ llave: this.llave, sellada: this.sellada, vencidos: [...this.partida.vencidos] }),
       // cuántas texturas hay en memoria y cuántos megapíxeles suman (el iPad cierra la pestaña si se pasa)
       texturas: () => {
         let px = 0
@@ -2787,6 +2854,8 @@ export class Mundo extends Phaser.Scene {
       entrarArena: (() => {
         const a = this.arena
         if (!a) return null
+        // para las pruebas del jefe: como si ya hubiera vencido al minijefe (la llave se prueba aparte)
+        this.abrirSello(false)
         const p = this.grilla.puntoLibreCerca(a.x - 110, a.y + 70, 8, 80) ?? { x: a.x - 110, y: a.y + 70 }
         this.heroina.teleport(p.x, p.y)
         this.camara.manual = false

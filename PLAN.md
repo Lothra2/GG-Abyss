@@ -1137,6 +1137,13 @@ Los créditos LPC corren al final.
 - La celestial: +25 % de vida y daño, farol más grande, y dos botones nuevos: las alas (R) y la lanza de luz (X).
 - Falta del taller: el mapa y el arte del Mundo 7, el Diablo, los paneles de las cinemáticas, las capas `alas` y `aura` de las heroínas y los íconos `hab_alas`, `hab_lanza`, `hab_frio`.
 
+**Dificultad, segunda vuelta (Rick: "Sophie pasa todo llegando al boss directo y mata con cualquier arma").** Se medía bien el daño, pero se ganaba igual porque al caer el jefe no se curaba: se lo podía gastar cayendo diez veces. Decisiones de Rick:
+- En modo normal, si cae, el jefe vuelve a la vida con la que empezó su fase. Lo de las fases ganadas no se pierde. En modo peque (Alana) sigue sin curarse.
+- La arena del jefe queda sellada hasta vencer al minijefe del piso, el élite más cerca de la arena: el Trol del Puente, el Capitán Ahogado, el Relojero, el Carcelero y el Guardián de la Puerta. La Catedral y las Galerías ya obligan a recorrer con las brasas y los cristales. Se ve un aro rojo, rebota con su aviso e ícono y la flecha de la guía lleva al minijefe. Queda guardado por mundo (`vencidos`).
+- Las alas del Diablo (pedido de Sophie): espinas en cada hueso y garras, y sangre oscura que gotea de los desgarrones. Es la única sangre del juego.
+
+**Arreglos del iPad.** Al pasar al Mundo 6 el juego se cerraba: las texturas de cada mundo se quedaban en memoria y al llegar al 6 sumaban 288 megapíxeles (más de 1 GB). Ahora, al cambiar de mundo, se suelta lo del anterior y queda entre 80 y 110. Y al volver por un portal la heroína aparecía pegada al borde de abajo del mapa (el portal del Rey está a 112 px del borde): ahora el punto de regreso y la posición guardada se corrigen siempre al lugar bueno más cerca desde donde se llega caminando.
+
 ## 6. Riesgos y mitigación
 
 | Riesgo | Mitigación |

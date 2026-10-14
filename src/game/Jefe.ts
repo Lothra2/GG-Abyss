@@ -324,8 +324,8 @@ export class JefeSprite implements Atacable {
   }
 
   /** La heroína cayó y Thor la rescató: se queda dormido donde empezó, con la vida que tenía */
-  reposar(): void {
-    reposar(this.logica)
+  reposar(recuperarFase = false): void {
+    reposar(this.logica, recuperarFase)
     this.peleando = false
     this.limpiarTelegrafos()
     this.estandarte?.setVisible(false)

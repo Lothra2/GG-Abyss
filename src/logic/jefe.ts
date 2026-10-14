@@ -172,12 +172,23 @@ export function despertar(j: Jefe): boolean {
   return true
 }
 
+/** La vida con la que empezó su fase de ahora (la fase 1 empieza llena) */
+export function vidaInicioFase(j: Jefe): number {
+  let pct = 100
+  if (j.perfil === 'diablo') pct = j.fase <= 1 ? 100 : JEFE_DIABLO.fases[Math.min(3, j.fase - 2)]!
+  else if (j.fase >= 3) pct = j.perfil === 'rey' ? JEFE_REY.fase3Pct : j.perfil === 'dragona' ? JEFE_DRAGONA.fase3Pct : JEFE_PEZ.fase3Pct
+  else if (j.fase === 2) pct = JEFE.fase2Pct
+  return Math.round((j.vidaMax * pct) / 100)
+}
+
 /**
- * La heroína cayó y Thor la rescató: el jefe vuelve al centro de la arena y se duerme, con la vida que tenía.
- * No se cura (PLAN.md F4): cuando ella vuelva a entrar, sigue donde quedó.
+ * La heroína cayó y Thor la rescató: el jefe vuelve al centro de la arena y se duerme. En modo peque, con la vida que
+ * tenía (PLAN.md F4). En modo normal (F13, decisión de Rick: "sigue siendo muy fácil"), vuelve a la vida con la que
+ * empezó su fase: lo de las fases ya ganadas no se pierde, pero cada fase hay que ganarla de una.
  */
-export function reposar(j: Jefe): void {
+export function reposar(j: Jefe, recuperarFase = false): void {
   if (j.estado === 'muerto') return
+  if (recuperarFase) j.vida = Math.max(j.vida, vidaInicioFase(j))
   j.estado = 'dormido'
   j.ataque = null
   j.t = 0

@@ -64,6 +64,8 @@ export interface Partida {
   cristales: string[]
   /** F12: los faroles del muelle que ya prendió Thor (Mundo 4), son del mundo */
   faroles: string[]
+  /** F13: los minijefes que ya venció (la llave de la arena del jefe), son del mundo */
+  vencidos: string[]
   /** F13: en qué ciclo va (1 la primera vez; al terminar puede bajar otra vez, más duro) */
   ciclo: number
   /** F13: terminó el juego: la heroína es celestial para siempre en este perfil */
@@ -87,6 +89,7 @@ export interface EstadoMundo {
   niebla: string
   cristales: string[]
   faroles: string[]
+  vencidos: string[]
 }
 
 export const MUNDO_INICIAL = 'mundo1'
@@ -134,6 +137,7 @@ export function partidaNueva(id: string, ahora: number = Date.now()): Partida {
     brasas: [],
     niebla: '',
     cristales: [],
+    vencidos: [],
     faroles: [],
     ciclo: 1,
     celestial: false,
@@ -160,6 +164,7 @@ export function empezarCiclo(p: Partida): Partida {
   poner(p.rompibles, [])
   poner(p.brasas, [])
   poner(p.cristales, [])
+  poner(p.vencidos, [])
   poner(p.faroles, [])
   // la presentación ya la vio: el ciclo nuevo arranca jugando
   p.presentacionVista = true
@@ -183,6 +188,7 @@ export function estadoDeMundo(p: Partida): EstadoMundo {
     brasas: [...p.brasas],
     niebla: p.niebla,
     cristales: [...p.cristales],
+    vencidos: [...p.vencidos],
     faroles: [...p.faroles],
   }
   if (p.jefeVida !== undefined) e.jefeVida = p.jefeVida
@@ -191,7 +197,7 @@ export function estadoDeMundo(p: Partida): EstadoMundo {
 
 /** Un mundo al que nunca fue: empieza en el inicio del mapa */
 export function mundoNuevo(): EstadoMundo {
-  return { posicion: { x: 0, y: 0 }, ultimaFogata: '', zonas: [], secretos: [], cofres: [], rompibles: [], presentacionVista: false, jefeVencido: false, brasas: [], niebla: '', cristales: [], faroles: [] }
+  return { posicion: { x: 0, y: 0 }, ultimaFogata: '', zonas: [], secretos: [], cofres: [], rompibles: [], presentacionVista: false, jefeVencido: false, brasas: [], niebla: '', cristales: [], faroles: [], vencidos: [] }
 }
 
 /**
@@ -215,6 +221,7 @@ export function cambiarDeMundo(p: Partida, destino: string, posicionAlVolver?: {
   poner(p.rompibles, llega.rompibles)
   poner(p.brasas, llega.brasas)
   poner(p.cristales, llega.cristales)
+  poner(p.vencidos, llega.vencidos ?? [])
   poner(p.faroles, llega.faroles)
   p.presentacionVista = llega.presentacionVista
   p.jefeVencido = llega.jefeVencido
@@ -243,6 +250,7 @@ function leerEstadoMundo(v: unknown): EstadoMundo | null {
     brasas: textos(o.brasas),
     niebla: typeof o.niebla === 'string' ? o.niebla : '',
     cristales: textos(o.cristales),
+    vencidos: textos(o.vencidos),
     faroles: textos(o.faroles),
   }
   if (esNum(o.jefeVida)) e.jefeVida = Math.max(0, o.jefeVida)
@@ -342,6 +350,7 @@ export function migrar(json: unknown, idEsperado?: string): Partida | null {
     brasas: textos(j.brasas),
     niebla: typeof j.niebla === 'string' ? j.niebla : '',
     cristales: textos(j.cristales),
+    vencidos: textos(j.vencidos),
     faroles: textos(j.faroles),
     ciclo: esNum(j.ciclo) ? Math.max(1, Math.floor(j.ciclo)) : 1,
     celestial: j.celestial === true,
