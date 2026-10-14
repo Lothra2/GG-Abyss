@@ -95,8 +95,8 @@ function fxDeCombate(dirs: readonly string[]): string[] {
   const out = ['aura_nivel', 'curar', 'escudo_de_thor', 'grito_de_guerra', 'nova_fuego', 'tajo', 'impacto_flecha', 'impacto_naturaleza', 'impacto_arcano', 'impacto_fuego', 'impacto_sagrado', 'impacto_veneno', 'onda_pisoton', 'aviso_polvo', 'nube_polvo', 'aviso_mordida', 'aviso_ola', 'ola', 'sombra_picada', 'impacto_arena', 'aviso_aguja', 'aviso_puno', 'grieta_luz', 'nota_cuna',
     'impacto_brasa', 'rastro_brasa', 'aviso_cadena', 'aviso_linea_cadena', 'vapor', 'aviso_aliento', 'fuego_piso', 'aviso_cola', 'vapor_grande',
     // F13: la celestial y el Diablo (lo que el kit no traiga, no se carga)
-    'lanza_luz', 'impacto_luz', 'estela_alas', 'aura_celestial', 'impacto_hielo', 'nova_fuego_diablo', 'aviso_nova', 'rayo_rojo', 'aviso_rayo', 'pilar_fuego', 'aviso_pilar', 'jaula_huesos', 'jaula_huesos_romper', 'aviso_carga_diablo', 'aviso_lanza_hielo', 'aviso_cruz']
-  for (const base of ['proyectil_flecha', 'proyectil_naturaleza', 'proyectil_arcano', 'proyectil_fuego', 'proyectil_arena', 'proyectil_brasa', 'proyectil_hielo', 'proyectil_fuego_chico']) for (const d of dirs) out.push(`${base}_${d}`)
+    'lanza_luz', 'impacto_luz', 'estela_alas', 'aura_celestial', 'impacto_hielo', 'nova_fuego_diablo', 'aviso_nova', 'rayo_rojo', 'aviso_rayo', 'pilar_fuego', 'aviso_pilar', 'jaula_huesos_subir', 'jaula_huesos_quieta', 'jaula_huesos_romper', 'impacto_rayo_hielo', 'aviso_carga_diablo', 'aviso_lanza_hielo', 'aviso_cruz']
+  for (const base of ['proyectil_flecha', 'proyectil_naturaleza', 'proyectil_arcano', 'proyectil_fuego', 'proyectil_arena', 'proyectil_brasa', 'proyectil_hielo', 'proyectil_rayo_hielo', 'proyectil_fuego_chico']) for (const d of dirs) out.push(`${base}_${d}`)
   return out
 }
 

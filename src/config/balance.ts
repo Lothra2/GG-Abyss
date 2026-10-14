@@ -233,13 +233,13 @@ export const ENEMIGOS: Record<string, EnemigoBalance> = {
   // F13, el Corazón Helado: el piso más duro, en grupos grandes. El lobo de escarcha va en manada y rodea
   lobo_escarcha: { vida: 34, dano: [5, 8], anim: 'attack', ataquesPorSeg: 0.8, alcance: 26, velocidad: 88, ve: 230, xp: 22, oro: [3, 7], rodea: true },
   // flota y tira su rayo de hielo de lejos (se ve venir)
-  espectro_helado: { vida: 32, dano: [5, 8], anim: 'cast', ataquesPorSeg: 0.5, alcance: 220, velocidad: 46, ve: 250, xp: 24, oro: [4, 8], proyectil: 'proyectil_hielo', impacto: 'impacto_hielo', huyeSi: 90 },
+  espectro_helado: { vida: 32, dano: [5, 8], anim: 'cast', ataquesPorSeg: 0.5, alcance: 220, velocidad: 46, ve: 250, xp: 24, oro: [4, 8], proyectil: 'proyectil_rayo_hielo', impacto: 'impacto_rayo_hielo', huyeSi: 90 },
   // chiquitos, de a muchos: tiran bolitas de fuego y se reparten alrededor
   diablillo: { vida: 18, dano: [3, 5], anim: 'attack', ataquesPorSeg: 0.7, alcance: 150, velocidad: 78, ve: 220, xp: 10, oro: [2, 4], proyectil: 'proyectil_fuego_chico', impacto: 'impacto_brasa', huyeSi: 60, rodea: true },
   // el escudo de frente para casi todo: hay que rodearlo (o pegarle cuando ataca). Su golpe grande avisa
   caballero_congelado: { vida: 46, dano: [6, 9], anim: 'attack', ataquesPorSeg: 0.5, alcance: 34, velocidad: 34, ve: 210, xp: 50, oro: [8, 14], escudoFrente: { mult: 0.25, grados: 70 }, pesado: { cadaS: 5, radio: 52, avisoS: 1.5, dano: [12, 16] } },
   // se queda atrás y cura a los suyos: hay que ir por ella primero
-  bruja_escarcha: { vida: 40, dano: [4, 7], anim: 'cast', ataquesPorSeg: 0.45, alcance: 200, velocidad: 40, ve: 240, xp: 28, oro: [5, 9], proyectil: 'proyectil_hielo', impacto: 'impacto_hielo', huyeSi: 110, curaAliados: { cadaS: 6, radio: 150, pct: 25 } },
+  bruja_escarcha: { vida: 40, dano: [4, 7], anim: 'cast', ataquesPorSeg: 0.45, alcance: 200, velocidad: 40, ve: 240, xp: 28, oro: [5, 9], proyectil: 'proyectil_rayo_hielo', impacto: 'impacto_rayo_hielo', huyeSi: 110, curaAliados: { cadaS: 6, radio: 150, pct: 25 } },
   // sin cuerpo claro: se come las luces compañeras. Solo se ve (y se le pega) en la luz, como la sombra de las Galerías
   sombra_devoradora: { vida: 44, dano: [5, 8], anim: 'attack', ataquesPorSeg: 0.6, alcance: 26, velocidad: 62, ve: 210, xp: 26, oro: [4, 8], soloEnLuz: true, devoraLuz: true },
   // los minijefes: la Reina Escarcha (sus lanzas de hielo caen con aviso en anillo) y el Guardián de la Puerta (golpe en cruz)

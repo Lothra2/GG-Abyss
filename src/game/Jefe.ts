@@ -950,8 +950,10 @@ export class JefeSprite implements Atacable {
     const a = (r.grados * Math.PI) / 180
     const dx = Math.cos(a)
     const dy = Math.sin(a)
-    r.x = this.x
-    r.y = this.y - 30
+    // sale de la boca (el kit trae el punto por dirección y cuadro); si no, a la altura del pecho
+    const b = this.punto('boca')
+    r.x = b?.x ?? this.x
+    r.y = b?.y ?? this.y - 30
     for (const s2 of r.s) {
       const d = Number(s2.getData('d'))
       s2.setPosition(Math.round(r.x + dx * d), Math.round(r.y + dy * d * 0.6)).setRotation(a).setDepth(PROF.OBJETOS + r.y + dy * d * 0.6 + 2)
@@ -1086,7 +1088,8 @@ export class JefeSprite implements Atacable {
   antena(): { x: number; y: number } | null {
     if (!this.luzAntena) return null
     const def = this.m.personajes[this.tipo]?.anims[this.animNombre]
-    const puntos = def?.antena ?? def?.corona ?? def?.boca ?? def?.ojos
+    // la luz del Diablo va en los ojos (su boca es de donde sale el rayo)
+    const puntos = this.logica.perfil === 'diablo' ? (def?.ojos ?? def?.boca) : (def?.antena ?? def?.corona ?? def?.boca ?? def?.ojos)
     if (!puntos) {
       const p = { x: this.x, y: this.y - JEFE_PEZ.antenaAlto }
       this.ultimaAntena = p
@@ -1098,6 +1101,14 @@ export class JefeSprite implements Atacable {
     const p = { x: this.sprite.x + pt[0], y: this.sprite.y + pt[1] }
     this.ultimaAntena = p
     return p
+  }
+
+  /** Un punto que el kit trae por dirección y cuadro en la animación de ahora (`boca`, `ojos`), en el mundo */
+  private punto(nombre: 'boca' | 'ojos'): { x: number; y: number } | null {
+    const def = this.m.personajes[this.tipo]?.anims[this.animNombre]
+    const f = Math.max(0, (this.sprite.anims.currentFrame?.index ?? 1) - 1)
+    const pt = def?.[nombre]?.[this.dir]?.[f]
+    return pt ? { x: this.sprite.x + pt[0], y: this.sprite.y + pt[1] } : null
   }
 
   /** Cuánto sube el sprite en este cuadro (el `leap` del minotauro o el salto del Pez Farol traen `elevacion`), o 0 */

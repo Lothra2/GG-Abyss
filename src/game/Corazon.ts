@@ -42,6 +42,8 @@ interface Brasero {
   objeto: string
   estado: 'apagado' | 'prendido' | 'congelado'
   s: Phaser.GameObjects.Sprite | null
+  /** para Alana: la mano que prende, arriba del brasero apagado */
+  icono: Phaser.GameObjects.Image | null
 }
 
 /** Los colores de las luces compañeras: una por cada piso que ya alumbró */
@@ -105,7 +107,8 @@ export class Corazon {
     }
     for (const e of entidadesDeTipo(mapa, 'brasero_hueso')) {
       const objeto = String(e.props.objeto ?? 'brasero_hueso')
-      this.braseros.push({ x: e.x, y: e.y, objeto, estado: 'apagado', s: this.sprite(objeto, 'apagado', e.x, e.y, e.y) })
+      const icono = escena.textures.exists(K.ui('hab_brasero')) ? escena.add.image(e.x, e.y - 100, K.ui('hab_brasero')).setScale(0.5).setDepth(PROF.OBJETOS + e.y + 500).setVisible(false) : null
+      this.braseros.push({ x: e.x, y: e.y, objeto, estado: 'apagado', s: this.sprite(objeto, 'apagado', e.x, e.y, e.y), icono })
     }
     // las luces compañeras: luz técnica (el degradado), cada una de su color
     if (escena.textures.exists(K.luz)) {
@@ -281,6 +284,8 @@ export class Corazon {
     for (const y of this.yendose.filter((q) => q.s.alpha <= 0)) y.s.destroy()
     this.yendose = this.yendose.filter((q) => q.s.alpha > 0)
 
+    // para Alana: sobre cada brasero apagado o congelado, la mano que lo prende (cuando ella anda cerca)
+    for (const b of this.braseros) b.icono?.setVisible(!this.apagado && b.estado !== 'prendido' && heroe.vivo && Math.hypot(b.x - heroe.x, b.y - heroe.y) < 420).setY(Math.round(b.y - 100 + Math.sin(this.t * 5) * 3))
     // los braseros prendidos alumbran grande y calientan
     for (const b of this.braseros) {
       if (b.estado !== 'prendido' || !enVista(b.x, b.y)) continue
@@ -384,7 +389,10 @@ export class Corazon {
 
   destruir(): void {
     for (const p of this.hielos) for (const q of p.s) q.s.destroy()
-    for (const b of this.braseros) b.s?.destroy()
+    for (const b of this.braseros) {
+      b.s?.destroy()
+      b.icono?.destroy()
+    }
     for (const s of this.luces) s.destroy()
     for (const y of this.yendose) y.s.destroy()
     this.iconoFrio?.destroy()
