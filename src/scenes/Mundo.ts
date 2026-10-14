@@ -21,7 +21,7 @@ import { haloCelestial } from '../logic/celestial'
 import { pisoDe, thorBrilla, topeOscuridad } from '../logic/abismo'
 import { ABISMO, PUERTO } from '../config/balance'
 import { aspectoDe, claveAspecto } from '../logic/aspecto'
-import { puntosDeCaida, regionCaminable } from '../logic/lugar'
+import { posicionSegura, puntosDeCaida, regionCaminable } from '../logic/lugar'
 import { RADIO_HEROINA } from '../logic/camino'
 import { familiaDeArma, NOMBRE_FAMILIA } from '../logic/armas'
 import { crearAnimFx, crearAnimsPersonaje } from '../kit/anims'
@@ -99,6 +99,19 @@ function fxDeCombate(dirs: readonly string[]): string[] {
   return out
 }
 
+/**
+ * Suelta de la memoria lo que es de un mundo (objetos, suelo, agua, criaturas, postales, sus enemigos y su jefe) y las
+ * animaciones que lo usan. La heroína, Thor, la interfaz, los efectos y el botín se quedan. Si se vuelve, se cargan otra vez.
+ */
+export function liberarTexturasDeMundo(tex: Phaser.Textures.TextureManager, anims: Phaser.Animations.AnimationManager, claves: readonly string[], heroe: string): number {
+  const propias = (k: string) => /^(o_|suelo_|agua|c_|postal_|espuma_)/.test(k) || (k.startsWith('p_') && !k.startsWith(`p_${heroe}_`) && !k.startsWith('p_thor_') && !k.startsWith('p_mercader_'))
+  const fuera = new Set(claves.filter((k) => propias(k) && tex.exists(k)))
+  if (!fuera.size) return 0
+  for (const k of fuera) for (const a of anims.getAnimsFromTexture(k)) if (anims.exists(a)) anims.remove(a)
+  for (const k of fuera) tex.remove(k)
+  return fuera.size
+}
+
 /** Objetos del manifest que el mapa usa sin ponerlos en la capa `objetos` */
 const EXTRAS_MUNDO = ['portal_azul', 'portal_rojo', 'aviso_jefe', ...OBJETOS_MECANISMOS]
 
@@ -110,7 +123,7 @@ const NOMBRES_GANCHOS = [
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
   'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable', 'puerto', 'adelantarMarea', 'alzarFarol', 'apagarFarol', 'misterio', 'ciudad', 'robarYa', 'bostezando', 'enLuzFija', 'gargolas', 'relojero', 'decosDespiertos',
   'fragua', 'sacudirThor', 'mojarThor', 'tirarPalanca', 'abrirJaula', 'relojFragua', 'pegarHollin', 'salamandras', 'faroleros', 'lavaApagada',
-  'ciclo', 'verCine', 'probarFinal', 'alas', 'lanza', 'hacerCelestial', 'corazon', 'ventisca', 'devorarLuz', 'prenderBrasero', 'frioA',
+  'texturas', 'ciclo', 'verCine', 'probarFinal', 'alas', 'lanza', 'hacerCelestial', 'corazon', 'ventisca', 'devorarLuz', 'prenderBrasero', 'frioA',
 ]
 
 /**
@@ -272,6 +285,9 @@ export class Mundo extends Phaser.Scene {
   private ultimoImpacto: { tipo: TipoImpacto; pausa: number; sacude: boolean } | null = null
   /** cámara lenta (la muerte del jefe): el mundo corre a `factor` durante `resta` segundos reales */
   private lento = { factor: 1, resta: 0 }
+  /** las texturas que había antes de cargar este mundo, y si al cerrarse hay que soltar las suyas */
+  private texturasAntes = new Set<string>()
+  private liberarAlSalir = false
 
   constructor() {
     super('Mundo')
@@ -280,6 +296,9 @@ export class Mundo extends Phaser.Scene {
   /* ---------- carga ---------- */
 
   preload(): void {
+    // lo que ya estaba en memoria antes de cargar este mundo (al irse a otro mundo se suelta solo lo de este)
+    this.texturasAntes = new Set(this.textures.getTextureKeys())
+    this.liberarAlSalir = false
     const id = (this.registry.get('heroeId') as string | undefined) ?? params.heroe ?? 'sophie'
     this.registry.set('heroeId', id)
     // F8: la partida se lee antes de cargar para saber en qué mundo está; mientras esta escena corre, el manifest
@@ -342,6 +361,15 @@ export class Mundo extends Phaser.Scene {
   }
 
   create(): void {
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      if (!this.liberarAlSalir) return
+      const nuevas = this.textures.getTextureKeys().filter((k) => !this.texturasAntes.has(k))
+      const heroe = this.heroina?.id ?? ''
+      // después de que la escena terminó de cerrarse (sus sprites ya no existen)
+      const tex = this.game.textures
+      const anims = this.game.anims
+      setTimeout(() => liberarTexturasDeMundo(tex, anims, nuevas, heroe), 0)
+    })
     const mapa = this.mapaDelMundo()
     encolarObjetosMundo(this, this.m, new Set([...mapa.decos.map((d) => d.sprite), ...EXTRAS_MUNDO, ...(this.m.mundo.portal ? [this.m.mundo.portal] : []), ...objetosDeFondo(this.m), ...objetosDeFrente(this.m)]))
     // enemigos del mapa y los efectos de combate
@@ -452,7 +480,9 @@ export class Mundo extends Phaser.Scene {
 
     const inicio = entidadesDeTipo(this.mapa, 'jugador_inicio')[0]!
     const thorIni = entidadesDeTipo(this.mapa, 'thor_inicio')[0]
-    const pos = this.partida.posicion.x > 0 ? this.partida.posicion : { x: inicio.x, y: inicio.y }
+    // nunca dentro de una pared, fuera del mapa o en un hueco encerrado (si el guardado quedó mal, al lugar bueno más cerca)
+    const pos = posicionSegura(this.grilla, this.partida.posicion.x > 0 ? this.partida.posicion : { x: inicio.x, y: inicio.y }, inicio, RADIO_HEROINA + 1)
+    this.partida.posicion = { ...pos }
     this.sonido = new Sonido(this, () => ({ musica: this.partida.ajustes.musica, efectos: this.partida.ajustes.efectos }))
     this.heroina = new Heroina(this, m, this.grilla, id, pos.x, pos.y, { paso: (x, y, corre) => this.alPaso(x, y, corre) })
     this.thor = new ThorSprite(this, m, this.grilla, thorIni?.x ?? pos.x + 30, thorIni?.y ?? pos.y + 10)
@@ -1428,17 +1458,27 @@ export class Mundo extends Phaser.Scene {
     this.portalesFx.push(new PortalFx(this, ent.x, ent.y, this.colorDePortal(color), def))
   }
 
+  /**
+   * Dónde se para al volver de un portal: debajo de él si se puede (para no caer adentro otra vez); si ahí no se camina
+   * (el portal del Rey está pegado al borde de abajo del mapa), el lugar bueno más cerca
+   */
+  private alLadoDelPortal(x: number, y: number): { x: number; y: number } {
+    const inicio = entidadesDeTipo(this.mapa, 'jugador_inicio')[0] ?? { x, y }
+    const p = posicionSegura(this.grilla, { x: Math.round(x), y: Math.round(y + 110) }, inicio, RADIO_HEROINA + 1)
+    return { x: Math.round(p.x), y: Math.round(p.y) }
+  }
+
   /** El portal del jefe baja al mundo siguiente si el kit lo trae; si no, "Continuará" */
   irAContinuara(): void {
     const p = this.portalJefe
     if (!p || this.saliendoAContinuara) return
     const destino = String(entidadesDeTipo(this.mapa, 'portal_jefe')[0]?.props.destino ?? '')
     const base = (this.registry.get('manifestBase') as Manifest | undefined) ?? this.m
-    if (destino && mundoJugable(base, destino)) return this.irAMundo(destino, { x: Math.round(p.x), y: Math.round(p.y + 110) }, false)
+    if (destino && mundoJugable(base, destino)) return this.irAMundo(destino, this.alLadoDelPortal(p.x, p.y), false)
     this.saliendoAContinuara = true
     this.entrada.pausada = true
     this.heroina.parar()
-    this.partida.posicion = { x: Math.round(p.x), y: Math.round(p.y + 110) }
+    this.partida.posicion = this.alLadoDelPortal(p.x, p.y)
     this.guardar()
     this.sonido.efecto('portal', { volumen: 0.8 })
     this.cameras.main.fadeOut(700, 5, 6, 12)
@@ -1461,6 +1501,8 @@ export class Mundo extends Phaser.Scene {
   irAMundo(destino: string, volverEn: { x: number; y: number }, subir: boolean): void {
     if (this.saliendoAContinuara) return
     this.saliendoAContinuara = true
+    // el iPad no aguanta los siete mundos en memoria: al cambiar de mundo se sueltan las texturas de este
+    this.liberarAlSalir = true
     this.entrada.pausada = true
     this.heroina.parar()
     this.guardar()
@@ -2666,6 +2708,16 @@ export class Mundo extends Phaser.Scene {
       thorInfo: () => ({ x: this.thor.x, y: this.thor.y, estado: this.thor.estado, ...this.thor.infoAnim }),
       hudLayout: () => (this.scene.isActive('HUD') ? (this.scene.get('HUD') as unknown as { layout(): unknown }).layout() : null),
       noEsperar: () => this.listo,
+      // cuántas texturas hay en memoria y cuántos megapíxeles suman (el iPad cierra la pestaña si se pasa)
+      texturas: () => {
+        let px = 0
+        const keys = this.textures.getTextureKeys()
+        for (const k of keys) {
+          const src = this.textures.get(k).getSourceImage() as { width?: number; height?: number }
+          px += (src.width ?? 0) * (src.height ?? 0)
+        }
+        return { n: keys.length, mpx: Math.round(px / 1e5) / 10 }
+      },
       combate: () => this.combate.info(),
       abrirTienda: (() => this.abrirTienda()) as never,
       olfatear: (() => this.olfatear()) as never,

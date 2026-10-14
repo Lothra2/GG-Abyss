@@ -83,3 +83,24 @@ export function puntosDeCaida(n: number, x: number, y: number, libre: (x: number
   while (out.length < n) out.push(out[out.length % Math.max(1, out.length)] ?? { x, y })
   return out
 }
+
+/**
+ * Un lugar donde la heroína se puede parar y desde donde se llega caminando al resto del mapa (al inicio del mundo).
+ * Si `pos` no sirve (fuera del mapa, adentro de algo o en un hueco encerrado), el más cercano que sirva; si no hay
+ * ninguno a menos de `maxPx`, el inicio. Así nunca queda trancada (pedido de Rick: quedó fuera del mapa al volver).
+ */
+export function posicionSegura(g: Grilla, pos: { x: number; y: number }, inicio: { x: number; y: number }, radio = 8, maxPx = 320): { x: number; y: number } {
+  const alcanzable = regionCaminable(g, inicio.x, inicio.y, 100000)
+  const c = g.cuadro
+  const sirve = (x: number, y: number) => g.circuloLibre(x, y, radio) && alcanzable.has(g.idx(Math.floor(x / c), Math.floor(y / c)))
+  if (Number.isFinite(pos.x) && Number.isFinite(pos.y) && sirve(pos.x, pos.y)) return { x: pos.x, y: pos.y }
+  for (let r = c / 2; r <= maxPx; r += c / 2) {
+    for (let a = 0; a < 16; a++) {
+      const ang = (a / 16) * Math.PI * 2
+      const x = Math.round(pos.x + Math.cos(ang) * r)
+      const y = Math.round(pos.y + Math.sin(ang) * r)
+      if (sirve(x, y)) return { x, y }
+    }
+  }
+  return { x: inicio.x, y: inicio.y }
+}
