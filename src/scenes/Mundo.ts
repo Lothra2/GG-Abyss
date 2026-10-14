@@ -34,7 +34,6 @@ import { Grilla } from '../logic/grilla'
 import { zonaEn, nocheMaxima } from '../logic/zonas'
 import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimiento } from '../logic/descubrimiento'
 import { fx, juego } from '../logic/azar'
-import { statsDe } from '../logic/stats'
 import { itemDe, leerCatalogo, type Catalogo } from '../logic/catalogo'
 import { tirarBotin, type Fuente, type Premio } from '../logic/botin'
 import { equipar as equiparInv, desequipar as desequiparInv, moverEnBolsa, normalizar, recoger as recogerInv, sacar as sacarInv, type Inv, type OrigenInv } from '../logic/inventario'
@@ -107,6 +106,7 @@ const NOMBRES_GANCHOS = [
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
   'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable', 'puerto', 'adelantarMarea', 'alzarFarol', 'apagarFarol', 'misterio', 'ciudad', 'robarYa', 'bostezando', 'enLuzFija', 'gargolas', 'relojero', 'decosDespiertos',
   'fragua', 'sacudirThor', 'mojarThor', 'tirarPalanca', 'abrirJaula', 'relojFragua', 'pegarHollin', 'salamandras', 'faroleros', 'lavaApagada',
+  'ciclo', 'verCine', 'probarFinal',
 ]
 
 /**
@@ -2526,6 +2526,19 @@ export class Mundo extends Phaser.Scene {
       abrirAlbum: (() => this.abrirAlbum()) as never,
       tutorial: () => ({ hechos: [...this.partida.tutorial], demo: this.demoTutorial ? { paso: this.demoTutorial.paso } : null }),
       saltarTutorial: (() => this.saltarTutorial()) as never,
+      // F13: el ciclo, las alas y el final
+      ciclo: () => ({ ciclo: this.partida.ciclo, celestial: this.partida.celestial, cines: [...this.partida.cines], multJefe: Math.round(this.multJefe * 100) / 100, halo: this.atmosfera.radioHalo, vidaMax: this.combate.stats.vidaMax, nivel: this.partida.nivel, mundo: this.partida.mundo }),
+      verCine: ((cine: 'cine_bajada' | 'cine_fin') => {
+        this.guardar()
+        this.scene.start('Cine', { cine, luego: { escena: 'Mundo' } })
+      }) as never,
+      // como si acabara de vencer al Diablo: la escena del final con el botón del ciclo celestial
+      probarFinal: (() => {
+        this.guardar()
+        this.partida.mundo = 'mundo7'
+        this.partida.jefeVencido = true
+        this.scene.start('Continuara')
+      }) as never,
       irAMundo: ((destino: string) => this.irAMundo(destino, { x: Math.round(this.heroina.x), y: Math.round(this.heroina.y) }, false)) as never,
       mundoActual: () => ({ id: idMundo(this.m.mundo), nombre: this.m.mundo.nombre, partida: this.partida.mundo, otros: Object.keys(this.partida.otrosMundos), zonas: this.mapa.zonas.map((z) => z.nombre), jefe: !!this.jefe, portalVolver: entidadesDeTipo(this.mapa, 'portal_volver').map((e) => ({ x: e.x, y: e.y }))[0] ?? null, peligroAgua: entidadesDeTipo(this.mapa, 'peligro_agua').map((e) => ({ x: e.x, y: e.y })), caidasAgua: this.caidasAgua, aclarado: Math.round(this.atmosfera.aclarado * 100) / 100, jefeTipo: this.jefe?.tipo ?? null }),
       mecanismos: () => this.mecanismos?.info() ?? null,
@@ -2604,7 +2617,7 @@ export class Mundo extends Phaser.Scene {
       ponerNivel: ((n: number) => {
         this.partida.nivel = n
         this.partida.xp = 0
-        this.combate.stats = statsDe(this.combate.clase, n)
+        this.combate.refrescarStats()
         this.partida.vida = this.combate.stats.vidaMax
         this.partida.mana = this.combate.stats.manaMax
       }) as never,
