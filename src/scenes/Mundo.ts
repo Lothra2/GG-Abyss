@@ -108,7 +108,7 @@ const NOMBRES_GANCHOS = [
   'botin', 'inventario', 'soltarObjeto', 'soltarOro', 'darObjeto', 'llenarBolsa', 'equipar', 'desequipar', 'abrirInventario', 'desenterrar', 'premioDe', 'romper',
   'luzMundo', 'galerias', 'prenderCristal', 'apagarCristal', 'jefeVulnerable', 'puerto', 'adelantarMarea', 'alzarFarol', 'apagarFarol', 'misterio', 'ciudad', 'robarYa', 'bostezando', 'enLuzFija', 'gargolas', 'relojero', 'decosDespiertos',
   'fragua', 'sacudirThor', 'mojarThor', 'tirarPalanca', 'abrirJaula', 'relojFragua', 'pegarHollin', 'salamandras', 'faroleros', 'lavaApagada',
-  'ciclo', 'verCine', 'probarFinal', 'corazon', 'ventisca', 'devorarLuz', 'prenderBrasero', 'frioA',
+  'ciclo', 'verCine', 'probarFinal', 'alas', 'lanza', 'hacerCelestial', 'corazon', 'ventisca', 'devorarLuz', 'prenderBrasero', 'frioA',
 ]
 
 /**
@@ -643,6 +643,9 @@ export class Mundo extends Phaser.Scene {
       centrarCamara: () => this.camara.centrarEn(this.heroina.x, this.heroina.y - 12),
       alImpacto: (t) => this.impacto(t),
       alFallar: (x, y) => this.alFallar(x, y),
+      // F13: el vuelo de las alas aterriza donde se camina
+      aterrizar: (x, y) => (this.grilla.circuloLibre(x, y, RADIO_HEROINA + 1) ? { x, y } : (this.grilla.puntoLibreCerca(x, y, RADIO_HEROINA + 1, 160) ?? { x: this.heroina.x, y: this.heroina.y })),
+      estallido: (x, y, llave, n) => this.atmosfera.particulas.estallido(x, y, llave, n),
       mejoras: () => this.mejoras,
     })
 
@@ -1636,6 +1639,9 @@ export class Mundo extends Phaser.Scene {
     kb.on('keydown-I', () => !this.entrada.estaPausada && this.abrirInventario())
     kb.on('keydown-T', () => !this.entrada.estaPausada && this.olfatear())
     ;(['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'] as const).forEach((k, i) => kb.on(`keydown-${k}`, () => !this.entrada.estaPausada && this.combate.pocion(i)))
+    // F13: la celestial: R vuela con las alas, X tira la lanza de luz
+    kb.on('keydown-R', () => !this.entrada.estaPausada && this.combate.alas())
+    kb.on('keydown-X', () => !this.entrada.estaPausada && this.combate.lanza())
     // F12: F alza el farol de Thor en el Puerto
     kb.on('keydown-F', () => !this.entrada.estaPausada && (this.alzarFarol() || this.sacudirThor()))
   }
@@ -2655,7 +2661,15 @@ export class Mundo extends Phaser.Scene {
         if (this.corazon) this.corazon.frio.valor = v
       }) as never,
       // F13: el ciclo, las alas y el final
-      ciclo: () => ({ ciclo: this.partida.ciclo, celestial: this.partida.celestial, cines: [...this.partida.cines], multJefe: Math.round(this.multJefe * 100) / 100, halo: this.atmosfera.radioHalo, vidaMax: this.combate.stats.vidaMax, nivel: this.partida.nivel, mundo: this.partida.mundo }),
+      alas: ((x?: number, y?: number) => this.combate.alas(x, y)) as never,
+      lanza: ((x?: number, y?: number) => this.combate.lanza(x, y)) as never,
+      hacerCelestial: (() => {
+        this.partida.celestial = true
+        this.combate.refrescarStats()
+        this.atmosfera.radioHalo = haloCelestial(COLOR.FAROL_RADIO, true)
+        this.game.events.emit('celestial')
+      }) as never,
+      ciclo: () => ({ ciclo: this.partida.ciclo, celestial: this.partida.celestial, cines: [...this.partida.cines], multJefe: Math.round(this.multJefe * 100) / 100, halo: this.atmosfera.radioHalo, vidaMax: this.combate.stats.vidaMax, nivel: this.partida.nivel, mundo: this.partida.mundo, alasS: Math.round(this.combate.alasS * 10) / 10, lanzaS: Math.round(this.combate.lanzaS * 10) / 10, vuelos: this.combate.vuelos, volando: this.combate.volando, ultimaLanza: this.combate.ultimaLanza, invulnerable: this.combate.invulnerableS > 0 }),
       verCine: ((cine: 'cine_bajada' | 'cine_fin') => {
         this.guardar()
         this.scene.start('Cine', { cine, luego: { escena: 'Mundo' } })

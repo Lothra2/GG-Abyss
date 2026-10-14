@@ -1,4 +1,5 @@
 import { ENEMIGOS } from '../src/config/balance'
+import { enemigoDelPiso } from '../src/logic/dureza'
 import { expect, test, type Page, type TestInfo } from '@playwright/test'
 import { abrirMundo, gancho, sinErrores, vigilarErrores, type MapaInfo } from './util'
 
@@ -53,8 +54,8 @@ test.describe('Combate', () => {
     })
     expect(lista.length).toBe(delMapa)
     expect(lista.length).toBeGreaterThanOrEqual(29)
-    // el Bosque es el piso 1: la vida es la de la tabla tal cual (más abajo la escala logic/dureza.ts)
-    for (const e of lista) expect(e.vida).toBe(ENEMIGOS[e.tipo]!.vida)
+    // el Bosque es el piso 1: la vida es la de la tabla con la dureza base de F13 (logic/dureza.ts)
+    for (const e of lista) expect(e.vida).toBe(enemigoDelPiso(ENEMIGOS[e.tipo]!, 1).vida)
     const trol = lista.find((e) => e.elite)!
     expect(trol.nombre).toBe('Trol del Puente')
     await sinErrores(errores)
@@ -425,7 +426,9 @@ const CLASES: { id: string; clase: string; ver: [(page: Page, id: number) => Pro
         expect((await combate(page)).escudo).toBeGreaterThanOrEqual(25)
       },
       async (page) => {
-        // el escudo de Thor de la primera habilidad se comería el daño: se le gana con un golpe grande
+        // el escudo de Thor de la primera habilidad se comería el daño: se le gana con un golpe grande. Sin enemigos
+        // cerca (con la dureza de F13 la calabaza pega lo que cura)
+        await gancho(page, 'matarEnemigos')
         await gancho(page, 'danar', 55)
         const v0 = (await combate(page)).vida
         await gancho(page, 'habilidad', 1)

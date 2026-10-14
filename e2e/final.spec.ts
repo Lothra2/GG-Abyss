@@ -4,7 +4,7 @@ import { abrirMundo, esperarEscena, gancho, manifest, sinErrores, vigilarErrores
 // F13, el final: las cinemáticas (la bajada al infierno y el cierre), la escena del final con el botón para jugar con
 // alas, y el Ciclo 2 que vuelve al Bosque con su nivel y su equipo, celestial y todo más difícil.
 
-interface Ciclo { ciclo: number; celestial: boolean; cines: string[]; multJefe: number; halo: number; vidaMax: number; nivel: number; mundo: string }
+interface Ciclo { ciclo: number; celestial: boolean; cines: string[]; multJefe: number; halo: number; vidaMax: number; nivel: number; mundo: string; alasS: number; lanzaS: number; vuelos: number; volando: boolean; ultimaLanza: number; invulnerable: boolean }
 interface CineInfo { cine: string; t: number; plano: string | null; planos: string[]; texto: string; duracion: number; capas: number; terminada: boolean }
 
 const ciclo = (p: Page) => gancho<Ciclo>(p, 'ciclo')
@@ -68,6 +68,43 @@ test.describe('El final', () => {
     await page.reload()
     await abrirMundo(page, 'sophie')
     expect((await ciclo(page)).ciclo).toBe(2)
+    await sinErrores(errores)
+  })
+
+  test('la celestial vuela con las alas sin recibir daño y su lanza de luz atraviesa en línea', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'saltarPresentacion')
+    // sin ser celestial no tiene poderes
+    expect(await gancho(page, 'alas')).toBe(false)
+    await gancho(page, 'hacerCelestial')
+    await gancho(page, 'curarTodo')
+    const p0 = await gancho<{ x: number; y: number }>(page, 'pos')
+    expect(await gancho(page, 'alas', p0.x + 300, p0.y)).toBe(true)
+    await gancho(page, 'avanzar', 0.15)
+    const enVuelo = await ciclo(page)
+    expect(enVuelo.volando).toBe(true)
+    expect(enVuelo.invulnerable).toBe(true)
+    await gancho(page, 'avanzar', 0.8)
+    const p1 = await gancho<{ x: number; y: number }>(page, 'pos')
+    expect(Math.hypot(p1.x - p0.x, p1.y - p0.y)).toBeGreaterThan(60)
+    const d = await ciclo(page)
+    expect(d.volando).toBe(false)
+    expect(d.alasS).toBeGreaterThan(0)
+    // recargando no vuelve a volar
+    expect(await gancho(page, 'alas')).toBe(false)
+    // la lanza: de lejos, contra un enemigo del mapa
+    const es = await gancho<{ id: number; x: number; y: number; vida: number; vivo: boolean }[]>(page, 'enemigos')
+    const e = es.find((q) => q.vivo)!
+    await gancho(page, 'teleport', e.x - 120, e.y)
+    await gancho(page, 'curarTodo')
+    expect(await gancho(page, 'lanza', e.x, e.y)).toBe(true)
+    await gancho(page, 'avanzar', 1)
+    expect((await ciclo(page)).ultimaLanza).toBeGreaterThanOrEqual(1)
+    const despues = (await gancho<{ id: number; vida: number; vivo: boolean }[]>(page, 'enemigos')).find((q) => q.id === e.id)!
+    expect(!despues.vivo || despues.vida < e.vida).toBe(true)
+    // los dos botones se ven en el HUD
+    await expect.poll(async () => (await gancho<{ celestial: { id: string; visible: boolean }[] }>(page, 'hudCombate')).celestial.map((b) => `${b.id}:${b.visible}`), { timeout: 8000 }).toEqual(['alas:true', 'lanza:true'])
     await sinErrores(errores)
   })
 })

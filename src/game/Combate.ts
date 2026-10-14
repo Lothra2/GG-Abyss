@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
-import { bonosCelestial, vidaCelestial } from '../logic/celestial'
+import { bonosCelestial, danoLanza, empezarVuelo, pasoVuelo, vidaCelestial, type Vuelo } from '../logic/celestial'
+import { enLinea } from '../logic/jefe'
 import type { Manifest } from '../kit/tipos'
 import { K } from '../kit/claves'
 import { crearAnimFx } from '../kit/anims'
@@ -18,7 +19,7 @@ import { itemDe } from '../logic/catalogo'
 import type { TipoImpacto } from '../logic/impacto'
 import { sortearNormal } from '../logic/botin'
 import type { Catalogo } from '../logic/catalogo'
-import { ATAQUE_LIBRE, BOTIN, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, JEFE, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, type ClaseId } from '../config/balance'
+import { ATAQUE_LIBRE, BOTIN, CELESTIAL, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, JEFE, HABILIDADES, MODO_PEQUE, PROYECTIL, THOR, type ClaseId } from '../config/balance'
 import { Colchon } from '../logic/colchon'
 import { PROF } from '../config/juego'
 import type { Heroina } from './Heroina'
@@ -58,6 +59,10 @@ export interface DepsCombate {
   alFallar?: (x: number, y: number) => void
   /** F7 prendido (el colchón de entrada es de F7) */
   mejoras?: () => boolean
+  /** F13: dónde aterriza el vuelo de las alas si cae en algo que no se camina */
+  aterrizar?: (x: number, y: number) => { x: number; y: number }
+  /** F13: un estallido de partículas (las plumas de luz) */
+  estallido?: (x: number, y: number, llave: string, n: number) => void
 }
 
 interface Aura {
@@ -105,6 +110,13 @@ export class Combate {
   private reloj_desenterrar = new RelojDesenterrar(juego())
   private auras: Aura[] = []
   private fxEscudo?: Phaser.GameObjects.Sprite
+  /** F13: los poderes de la celestial: lo que le falta a cada uno y el vuelo de ahora */
+  alasS = 0
+  lanzaS = 0
+  private vuelo: Vuelo | null = null
+  /** para las pruebas: cuántas veces voló y cuántos atravesó la última lanza */
+  vuelos = 0
+  ultimaLanza = 0
   /** cuerpo de la heroína para los proyectiles enemigos */
   readonly cuerpo: Blanco
 
@@ -533,6 +545,116 @@ export class Combate {
   }
 
   /** Pulsó un botón de habilidad (0 o 1). El Rayo canalizado se mantiene: se suelta con `soltarHabilidad`. */
+  /* ---------- F13: los poderes de la celestial ---------- */
+
+  get celestial(): boolean {
+    return !!this.partida.celestial
+  }
+
+  get volando(): boolean {
+    return !!this.vuelo
+  }
+
+  /**
+   * Las alas: un vuelo corto hacia donde mira (o hacia x, y), por encima de todo y sin recibir daño mientras dura.
+   * Aterriza donde se camina.
+   */
+  alas(x?: number, y?: number): boolean {
+    if (!this.celestial || this.caido || this.vuelo || this.alasS > 0) return false
+    const p = this.partida
+    if (p.mana < CELESTIAL.alas.mana) {
+      this.d.escena.game.events.emit('sin-mana')
+      return false
+    }
+    p.mana -= CELESTIAL.alas.mana
+    this.sinHabilidadS = 0
+    const h = this.d.heroina
+    const v = x !== undefined && y !== undefined && Math.hypot(x - h.x, y - h.y) > 4 ? { x: x - h.x, y: y - h.y } : vectorDe(DIRECCIONES[h.dir]!)
+    this.vuelo = empezarVuelo(h.x, h.y, v.x, v.y)
+    this.alasS = CELESTIAL.alas.recargaS
+    this.invulnerableS = Math.max(this.invulnerableS, CELESTIAL.alas.duracionS + 0.15)
+    this.vuelos++
+    h.parar()
+    // la animación de volar si el taller la trae; si no, la esquiva
+    h.accion(this.d.m.personajes[h.id]?.anims.volar ? 'volar' : 'dodge', { interrumpible: true, dur: CELESTIAL.alas.duracionS })
+    this.d.sonido.efecto(this.d.escena.cache.audio.exists(K.aud('alas')) ? 'alas' : 'esquiva', { volumen: 0.7, rate: 0.9 })
+    this.d.estallido?.(h.x, h.y - 20, 'chispa', 10)
+    return true
+  }
+
+  private pasoAlas(dt: number): void {
+    const v = this.vuelo
+    if (!v) return
+    const h = this.d.heroina
+    const r = pasoVuelo(v, dt)
+    if (!r.llego) {
+      h.ponerEn(r.x, r.y)
+      if (juego().next() < dt * 20) this.d.estallido?.(r.x, r.y - 20 - r.alto, 'chispa', 2)
+      return
+    }
+    const fin = this.d.aterrizar ? this.d.aterrizar(r.x, r.y) : { x: r.x, y: r.y }
+    h.teleport(fin.x, fin.y)
+    this.vuelo = null
+    this.d.estallido?.(fin.x, fin.y, 'chispa', 8)
+    this.d.sonido.efecto('esquiva', { volumen: 0.4, rate: 1.3 })
+  }
+
+  /** La lanza de luz: atraviesa a todos los que estén en su línea, hacia donde mira (o hacia x, y) */
+  lanza(x?: number, y?: number): boolean {
+    if (!this.celestial || !this.puedeActuar() || this.lanzaS > 0) return false
+    const p = this.partida
+    if (p.mana < CELESTIAL.lanza.mana) {
+      this.d.escena.game.events.emit('sin-mana')
+      return false
+    }
+    const h = this.d.heroina
+    const obj = this.objetivo && this.objetivo.vivo ? this.objetivo : null
+    const tx = x ?? obj?.x
+    const ty = y ?? obj?.y
+    const v = tx !== undefined && ty !== undefined && Math.hypot(tx - h.x, ty - h.y) > 4 ? { x: tx - h.x, y: ty - h.y } : vectorDe(DIRECCIONES[h.dir]!)
+    const d = Math.hypot(v.x, v.y) || 1
+    const dx = v.x / d
+    const dy = v.y / d
+    p.mana -= CELESTIAL.lanza.mana
+    this.sinHabilidadS = 0
+    this.lanzaS = CELESTIAL.lanza.recargaS
+    h.parar()
+    h.mirarA(h.x + dx * 50, h.y + dy * 50)
+    h.accion('cast', { fraccion: GOLPE_EN.heroe, interrumpible: false, enGolpe: () => this.soltarLanza(dx, dy) })
+    return true
+  }
+
+  private soltarLanza(dx: number, dy: number): void {
+    const h = this.d.heroina
+    const k = CELESTIAL.lanza
+    const golpe = this.tirar(1)
+    const dano = danoLanza(golpe.dano)
+    let n = 0
+    for (const e of this.d.enemigos.todos) {
+      if (!e.vivo || !enLinea(e.x, e.y, h.x, h.y, dx, dy, k.largo, k.ancho + e.radioHit)) continue
+      this.golpear(e, 1, { ...golpe, dano })
+      n++
+    }
+    this.ultimaLanza = n
+    // la lanza se ve: el fx del taller si lo trae, si no la luz técnica dorada en línea
+    const esc = this.d.escena
+    const ang = Math.atan2(dy, dx)
+    const key = crearAnimFx(esc, this.d.m, 'lanza_luz')
+    const piezas: Phaser.GameObjects.GameObject[] = []
+    for (let d = 16; d < k.largo; d += key ? 32 : 18) {
+      const x = Math.round(h.x + dx * d)
+      const y = Math.round(h.y - 16 + dy * d)
+      if (key) {
+        const s2 = esc.add.sprite(x, y, K.fx('lanza_luz'), 0).setRotation(ang).setDepth(PROF.OBJETOS + y + 20).setBlendMode(Phaser.BlendModes.ADD)
+        s2.play(key)
+        piezas.push(s2)
+      } else if (esc.textures.exists(K.luz)) piezas.push(esc.add.image(x, y, K.luz).setTint(0xfff0b0).setBlendMode(Phaser.BlendModes.ADD).setScale(k.ancho / 64).setDepth(PROF.OBJETOS + y + 20))
+    }
+    esc.tweens.add({ targets: piezas, alpha: 0, duration: 420, delay: 120, onComplete: () => piezas.forEach((q) => q.destroy()) })
+    this.d.sonido.efecto(esc.cache.audio.exists(K.aud('lanza_luz')) ? 'lanza_luz' : 'legendario', { volumen: 0.6, rate: 1.2 })
+    this.d.estallido?.(h.x + dx * 40, h.y - 16 + dy * 40, 'chispa', 6)
+  }
+
   presionarHabilidad(i: 0 | 1): void {
     if (!this.puedeActuar()) {
       if (!this.caido && this.d.mejoras?.() !== false) this.colchon.guardar(i)
@@ -732,6 +854,9 @@ export class Combate {
     if (this.caido) return
 
     this.recargas.tick(dt)
+    this.alasS = Math.max(0, this.alasS - dt)
+    this.lanzaS = Math.max(0, this.lanzaS - dt)
+    this.pasoAlas(dt)
     this.atqCd = Math.max(0, this.atqCd - dt)
     this.invulnerableS = Math.max(0, this.invulnerableS - dt)
     this.bloqueoS = Math.max(0, this.bloqueoS - dt)

@@ -237,6 +237,13 @@ export class Heroina {
     this.forzado = { vx, vy, resta: dur }
   }
 
+  /** F13: la mueve sin cortar lo que está haciendo (el vuelo de las alas) */
+  ponerEn(x: number, y: number): void {
+    this.x = x
+    this.y = y
+    this.colocar()
+  }
+
   teleport(x: number, y: number): void {
     this.accionActual = null
     this.forzado = null

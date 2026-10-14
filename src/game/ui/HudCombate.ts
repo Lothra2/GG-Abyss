@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import { K } from '../../kit/claves'
-import { BOTIN, FRAGUA, JEFE, MODO_PEQUE } from '../../config/balance'
+import { BOTIN, CELESTIAL, FRAGUA, JEFE, MODO_PEQUE } from '../../config/balance'
 import { HUD as MARGENES } from '../../config/juego'
 import { escalaDe, toqueMinimo } from '../Pantalla'
 import { texto } from '../Texto'
@@ -85,6 +85,8 @@ export class HudCombate {
   private ataqueLado = 48
   /** F12: el botón del farol de Thor (solo en el Puerto, si el taller trae su ícono) */
   private farol: { icono: Phaser.GameObjects.Image; arco: Phaser.GameObjects.Graphics; zona: Phaser.GameObjects.Zone; x: number; y: number; lado: number; late: number } | null = null
+  /** F13: los poderes de la celestial (las alas y la lanza de luz): solo se ven si ella es celestial */
+  private celes: { id: 'alas' | 'lanza'; icono: Phaser.GameObjects.Image; arco: Phaser.GameObjects.Graphics; zona: Phaser.GameObjects.Zone; tecla: Phaser.GameObjects.BitmapText; x: number; y: number; lado: number }[] = []
   /** el ícono del arma trae su marco cuadrado de la mochila: se ve solo un círculo, justo por dentro del aro */
   private ataqueMascara!: Phaser.GameObjects.Graphics
   private iconoPropio = false
@@ -214,6 +216,22 @@ export class HudCombate {
       escena.game.events.on('farol-pista', this.alPistaFarol, this)
       escena.events.once(Phaser.Scenes.Events.SHUTDOWN, () => escena.game.events.off('farol-pista', this.alPistaFarol, this))
     }
+    // F13: las alas y la lanza de la celestial (con su ícono del taller, o la luz técnica dorada mientras no esté)
+    for (const id of ['alas', 'lanza'] as const) {
+      const tex = escena.textures.exists(k(`hab_${id}`)) ? k(`hab_${id}`) : K.luz
+      const icono = escena.add.image(0, 0, tex).setVisible(false)
+      if (tex === K.luz) icono.setTint(id === 'alas' ? 0xfff4d0 : 0xffd27a).setBlendMode(Phaser.BlendModes.ADD)
+      const arco = escena.add.graphics()
+      const tecla = texto(escena, 0, 0, id === 'alas' ? 'R' : 'X', 'fuente_ui', 1, { origen: [0.5, 0.5], tinte: 0xffd27a }).setVisible(false)
+      const zona = escena.add.zone(0, 0, 40, 40).setOrigin(0.5, 0.5).setInteractive({ useHandCursor: true })
+      zona.on('pointerdown', (p: Phaser.Input.Pointer) => {
+        if (!this.mundo.combate.celestial) return
+        Bloqueo.tomar(p.id)
+        if (id === 'alas') this.mundo.combate.alas()
+        else this.mundo.combate.lanza()
+      })
+      this.celes.push({ id, icono, arco, zona, tecla, x: 0, y: 0, lado: 40 })
+    }
     escena.game.events.on('sin-mana', this.alSinMana, this)
     escena.events.once(Phaser.Scenes.Events.SHUTDOWN, () => escena.game.events.off('sin-mana', this.alSinMana, this))
   }
@@ -310,6 +328,18 @@ export class HudCombate {
       // la letra del teclado chiquita afuera del botón, abajo a la derecha; en la tablet y el teléfono no va
       b.tecla.setScale(1).setOrigin(0.5, 0.5).setPosition(b.x + lado / 2 - 3, b.y + lado / 2 - 3).setVisible(!this.tactil)
     })
+    // F13: las alas y la lanza, en un segundo arco por fuera de las habilidades
+    const radio2 = radio + lado + sep
+    this.celes.forEach((b, n) => {
+      const a = Phaser.Math.DegToRad([150, 122][n]!)
+      b.lado = lado
+      b.x = Math.round(this.ataqueX + Math.cos(a) * radio2)
+      b.y = Math.round(this.ataqueY - Math.sin(a) * radio2)
+      const k = b.icono.texture.key === K.luz ? lado / 64 : Math.max(1, Math.floor(lado / 40))
+      b.icono.setPosition(b.x, b.y).setScale(k)
+      b.zona.setPosition(b.x, b.y).setSize(lado, lado)
+      b.tecla.setPosition(b.x + lado / 2 - 3, b.y + lado / 2 - 3)
+    })
     // el farol de Thor, arriba del ataque (sigue el arco de las habilidades)
     if (this.farol) {
       const a = Phaser.Math.DegToRad(62)
@@ -349,6 +379,28 @@ export class HudCombate {
     // el marco de la mochila va en el borde del ícono (los 2 pixeles de afuera): el círculo lo deja afuera
     this.ataqueMascara.clear().fillStyle(0xffffff, 1).fillCircle(this.ataqueX, this.ataqueY, Math.min(l / 2 - 4, 14 * k))
     this.ataqueZona.setPosition(this.ataqueX, this.ataqueY).setSize(l, l)
+  }
+
+  /** F13: los botones de la celestial: el arco oscuro mientras recargan */
+  private actualizarCelestial(): void {
+    const c = this.mundo.combate
+    const ver = c.celestial
+    for (const b of this.celes) {
+      b.icono.setVisible(ver)
+      b.tecla.setVisible(ver && !this.tactil)
+      if (b.zona.input) b.zona.input.enabled = ver
+      b.arco.clear()
+      if (!ver) continue
+      const fr = b.id === 'alas' ? c.alasS / CELESTIAL.alas.recargaS : c.lanzaS / CELESTIAL.lanza.recargaS
+      const r = b.lado / 2
+      b.arco.lineStyle(2, 0xfff0b0, 0.8).strokeCircle(b.x, b.y, r)
+      if (fr > 0) {
+        b.arco.fillStyle(0x000000, 0.62)
+        b.arco.slice(b.x, b.y, r, Phaser.Math.DegToRad(-90), Phaser.Math.DegToRad(-90 + 360 * fr), false)
+        b.arco.fillPath()
+      }
+      b.arco.setDepth(b.icono.depth + 1)
+    }
   }
 
   /** F12: el botón del farol: solo en el Puerto, gris y con el arco oscuro mientras recarga, y late con la pista */
@@ -418,6 +470,7 @@ export class HudCombate {
       xp: this.marcoXp.getBounds(),
       jefe: { visible: this.marcoJefe.visible, marco: this.marcoJefe.getBounds(), relleno: this.rellenoJefe.getBounds(), rastro: this.rastroJefe.visible ? this.rastroJefe.getBounds() : null, llenado: Math.round(this.llenado * 100) / 100 },
       botones: this.botones.map((b) => ({ id: b.id, x: b.x, y: b.y, lado: b.lado })),
+      celestial: this.celes.map((b) => ({ id: b.id, x: b.x, y: b.y, lado: b.lado, visible: b.icono.visible })),
       farol: this.farol && this.farol.icono.visible ? { x: this.farol.x, y: this.farol.y, lado: this.farol.lado } : null,
       ataque: { x: this.ataqueX, y: this.ataqueY, lado: this.ataqueLado, arma: this.ataqueArma },
       pociones: this.slots.map((q) => ({ x: q.x, y: q.y, id: q.id, fina: !!q.icono && q.icono.texture.key === this.atlasFino })),
@@ -426,6 +479,7 @@ export class HudCombate {
 
   update(dt: number): void {
     this.actualizarFarol(dt)
+    this.actualizarCelestial()
     const c = this.mundo.combate
     // mantener el botón de ataque sigue pegando (el combate pone el ritmo); el ícono sigue al arma puesta
     if (this.ataqueApretado) c.atacarHacia()
