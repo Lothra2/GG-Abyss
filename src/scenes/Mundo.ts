@@ -1327,7 +1327,16 @@ export class Mundo extends Phaser.Scene {
     const nombre = manifestParaMundo(base, destino).mundo.nombre
     this.sonido.efecto('portal', { volumen: 0.8 })
     this.cameras.main.fadeOut(700, 5, 6, 12)
-    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('Bajada', { nombre, subir, piso: pisoDe(destino) }))
+    const bajada = { nombre, subir, piso: pisoDe(destino) }
+    // F13: la primera vez que se baja al Corazón Helado, la cinemática del infierno antes de la bajada
+    const cine = destino === 'mundo7' && !subir && !this.partida.cines.includes('bajada') && !!base.cine_bajada
+    if (cine) {
+      this.partida.cines.push('bajada')
+      guardarPartida(this.alm, this.partida)
+    }
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () =>
+      cine ? this.scene.start('Cine', { cine: 'cine_bajada', luego: { escena: 'Bajada', datos: bajada } }) : this.scene.start('Bajada', bajada),
+    )
   }
 
   /**
