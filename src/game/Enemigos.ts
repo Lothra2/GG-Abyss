@@ -145,6 +145,13 @@ export class Enemigo implements Atacable {
   posada = false
   private picada: { x: number; y: number; resta: number; total: number; ox: number; oy: number; s: Phaser.GameObjects.Sprite | null } | null = null
   private picadaEnS = 0
+  /** Para las pruebas: la gárgola en picada y la aguja del Relojero barriendo */
+  get enPicada(): boolean {
+    return !!this.picada
+  }
+  get conAguja(): boolean {
+    return !!this.barridoAguja
+  }
   /** F12: la aguja del Relojero barriendo */
   private barridoAguja: { grados: number; resta: number; pego: boolean; sprites: Phaser.GameObjects.Sprite[]; aviso: number } | null = null
   private cfgIA: ConfigIA

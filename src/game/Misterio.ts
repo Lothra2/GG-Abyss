@@ -47,7 +47,8 @@ export class Misterio {
     const def = this.existe('figura_ojos_mojada') ? 'figura_ojos_mojada' : this.existe('figura_ojos') ? 'figura_ojos' : null
     if (def) {
       const o = m.mundo.objetos[def]!
-      for (const e of entidadesDeTipo(mapa, 'figura')) {
+      // las figuras con barrio son la Ladrona de la Ciudad Dormida (las maneja Ciudad): acá solo las que miran
+      for (const e of entidadesDeTipo(mapa, 'figura').filter((q) => q.props.barrio === undefined || q.props.alto === true)) {
         const alto = e.props.alto === true
         const s = escena.add.sprite(e.x, e.y, K.obj(def, 'idle'), 0).setOrigin(o.apoyo[0] / o.w, o.apoyo[1] / o.h)
         // en lo alto del faro se dibuja encima de la torre

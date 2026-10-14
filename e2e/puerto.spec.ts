@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { abrirMundo, esperarEscena, gancho, sinErrores, vigilarErrores } from './util'
+import { abrirMundo, esperarEscena, gancho, manifest, sinErrores, vigilarErrores } from './util'
 
 // F12, el Mundo 4: El Puerto Ahogado. La luz la carga Thor en un farol: se alza (crece y encandila), se apaga si lo toca
 // una medusa, prende los faroles del muelle que quedan guardados y la marea abre y cierra caminos. El Pez Farol solo se
@@ -256,10 +256,16 @@ test.describe('El Puerto Ahogado', () => {
     expect(Object.keys(await gancho<Record<string, number>>(page, 'sonido'))).toContain('musica_faro')
     await gancho(page, 'guardarAhora')
     expect((await gancho<{ jefeVencido: boolean }>(page, 'estado')).jefeVencido).toBe(true)
-    // el portal baja más hondo: el kit todavía no trae el Mundo 5, así que Continuará
+    // el portal baja más hondo: a la Ciudad Dormida si el kit la trae con su jefe, si no Continuará
     await expect.poll(async () => (await gancho<Jefe>(page, 'jefe')).portal, { timeout: 60_000 }).toBe(true)
+    const kit = await manifest(page)
+    const hayMundo5 = kit.mundos?.some((x) => x.mapa.includes('mundo5')) && !!kit.personajes.rey_de_piedra
     await gancho(page, 'irAlPortal')
-    await esperarEscena(page, 'Continuara')
+    if (hayMundo5) {
+      await esperarEscena(page, 'Bajada')
+      await esperarEscena(page, 'Mundo')
+      await expect.poll(async () => (await gancho<{ id: string }>(page, 'mundoActual')).id, { timeout: 60_000 }).toBe('mundo5')
+    } else await esperarEscena(page, 'Continuara')
     await sinErrores(errores)
   })
 })

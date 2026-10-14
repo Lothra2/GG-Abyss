@@ -638,6 +638,29 @@ export class Decos {
     return hubo
   }
 
+  /**
+   * F12: la Ciudad Dormida despierta. Las estatuas se estiran (`despertar` una vez si están a la vista) y quedan
+   * `despierta`, las casas prenden sus ventanas, la fuente corre y la torre del reloj anda.
+   */
+  despertarTodo(t: number, animar: boolean): number {
+    let n = 0
+    for (const d of this.defs) {
+      const an = d.def.anims
+      const queda = an.despierta ? 'despierta' : an.corre ? 'corre' : an.andando ? 'andando' : null
+      if (!queda) continue
+      d.anim = queda
+      d.desde = undefined
+      n++
+    }
+    if (animar) for (const a of this.activos.values()) if (a.d.def.anims.despertar) a.forzada = { anim: 'despertar', t0: t }
+    return n
+  }
+
+  /** Para las pruebas: cuántos decorados ya despertaron */
+  get despiertos(): number {
+    return this.defs.filter((d) => d.anim === 'despierta' || d.anim === 'corre' || d.anim === 'andando').length
+  }
+
   /** Toca una animación una vez sobre los decorados activos con ese nombre (el portal que se abre) */
   reproducir(t: number, nombre: string, anim: string): boolean {
     let hubo = false
