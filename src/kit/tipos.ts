@@ -28,6 +28,8 @@ export interface AnimHoja {
   boca?: ([number, number] | null)[][]
   /** F13: los ojos del Diablo por dirección y cuadro (la luz que se ve en la oscuridad) */
   ojos?: ([number, number] | null)[][]
+  /** F13: las dos puntas de las alas del Diablo por dirección y cuadro (de ahí gotea la sangre) */
+  alas?: ([[number, number], [number, number]] | null)[][]
   /** F12: la jaula que carga el farolero de cadenas, igual que la antena */
   jaula?: ([number, number] | null)[][]
 }

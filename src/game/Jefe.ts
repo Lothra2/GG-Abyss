@@ -135,6 +135,9 @@ export class JefeSprite implements Atacable {
   private rayoVivo: { x: number; y: number; grados: number; gradosPorS: number; resta: number; largo: number; ancho: number; dano: readonly [number, number]; pego: boolean; s: Phaser.GameObjects.Sprite[] } | null = null
   /** para las pruebas: cuántas veces giró el rayo */
   rayos = 0
+  /** F13: lo que falta para la próxima gota de las alas del Diablo, y cuántas cayeron */
+  private gotaS = 0.4
+  gotas = 0
   private cuadros: Record<string, { cuadros: number; fps: number }> = {}
   private estadoPrevio: EstadoJefe = 'dormido'
   private destelloFin = 0
@@ -394,6 +397,7 @@ export class JefeSprite implements Atacable {
     this.bloqueoAnimS = Math.max(0, this.bloqueoAnimS - c.dt)
     this.actualizarTelegrafos(c.dt)
     this.girarRayo(c)
+    this.gotear(c.dt)
     if (this.logica.estado === 'dormido' || this.logica.estado === 'muerto') {
       this.colocar()
       return
@@ -1101,6 +1105,42 @@ export class JefeSprite implements Atacable {
     const p = { x: this.sprite.x + pt[0], y: this.sprite.y + pt[1] }
     this.ultimaAntena = p
     return p
+  }
+
+  /**
+   * F13: las alas del Diablo gotean sangre (pedido de Sophie, decisión de Rick). Cada tanto una gota cae desde una de las
+   * puntas hasta el piso y ahí salpica (el fx `gota_sangre_diablo`: los cuadros del final de la caída y el salpicón).
+   */
+  private gotear(dt: number): void {
+    if (this.logica.perfil !== 'diablo' || !this.vivo || !this.sprite.visible) return
+    this.gotaS -= dt
+    if (this.gotaS > 0) return
+    // en los aletazos (la nova, el rayo, el rugido) salpica más seguido
+    const fuerte = /nova|rayo|warcry|charge/.test(this.animNombre)
+    this.gotaS = fuerte ? 0.18 : 0.45 + fx().next() * 0.4
+    const def = this.m.personajes[this.tipo]?.anims[this.animNombre]
+    const f = Math.max(0, (this.sprite.anims.currentFrame?.index ?? 1) - 1)
+    const puntas = def?.alas?.[this.dir]?.[f]
+    const k = crearAnimFx(this.escena, this.m, 'gota_sangre_diablo')
+    if (!puntas || !k) return
+    const p = puntas[fx().next() < 0.5 ? 0 : 1]
+    const x = Math.round(this.sprite.x + p[0])
+    const y0 = Math.round(this.sprite.y + p[1])
+    const piso = Math.round(this.y + (fx().next() - 0.3) * 18)
+    if (piso <= y0) return
+    this.gotas++
+    const s = this.escena.add.sprite(x, y0, K.fx('gota_sangre_diablo'), 0).setOrigin(0.5, 13 / 16).setDepth(PROF.OBJETOS + this.y + 1)
+    this.escena.tweens.add({
+      targets: s,
+      y: piso,
+      duration: Math.max(120, (piso - y0) * 4),
+      ease: 'Quad.easeIn',
+      onComplete: () => {
+        if (!s.active) return
+        s.play(k)
+        s.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => s.destroy())
+      },
+    })
   }
 
   /** Un punto que el kit trae por dirección y cuadro en la animación de ahora (`boca`, `ojos`), en el mundo */
