@@ -302,11 +302,15 @@ export class Particulas {
       ['humo', 'humo', 8, 1.5, -8, -4, 3.2],
       // gotas que caen del techo de la Catedral
       ['gotas', 'gota', 8, 2, 70, 40, 1.4],
+      // F12 y F13: la ceniza baja lenta, la nieve cae, la ventisca cruza rápido de lado
+      ['ceniza', 'ceniza', 18, 5, 6, 8, 7],
+      ['nieve', 'nieve', 34, 12, 16, 14, 6],
+      ['ventisca', 'ventisca', 40, 22, 10, 10, 2.4],
     ]
     for (const [zn, llave, tope, tasa, vy0, vyR, vida] of motas) {
       if (!quiere(zn) || this.cuenta('mota', llave) >= Math.max(2, Math.round(tope * q)) || r() >= dt * tasa) continue
       this.crear('mota', llave, rx(), ry(), {
-        vx: (r() - 0.3) * 6,
+        vx: llave === 'ventisca' ? 90 + r() * 70 : llave === 'nieve' ? (r() - 0.5) * 14 : (r() - 0.3) * 6,
         vy: vy0 + r() * vyR,
         vida: vida * (0.7 + r() * 0.6),
         porEdad: llave === 'humo',

@@ -245,6 +245,11 @@ const TRADUCCION: Record<string, EmisorZona> = {
   gotas: { nombre: 'gotas', tipo: 'particula', llaves: ['gota'] },
   fuegos_fatuos: { nombre: 'fuegos_fatuos', tipo: 'criatura', llaves: ['fuego_fatuo', 'fuego_fatuo_violeta'] },
   murcielagos: { nombre: 'murcielagos', tipo: 'criatura', llaves: ['murcielago'] },
+  // F12 y F13: la ceniza de la Fragua y del Corazón, la nieve y la ventisca, y el polvo del sueño de la Ciudad
+  ceniza: { nombre: 'ceniza', tipo: 'particula', llaves: ['ceniza'] },
+  nieve: { nombre: 'nieve', tipo: 'particula', llaves: ['nieve'] },
+  ventisca: { nombre: 'ventisca', tipo: 'particula', llaves: ['ventisca'] },
+  polvo_sueno: { nombre: 'polvo_sueno', tipo: 'particula', llaves: ['brillo'] },
 }
 
 export interface TraduccionZona {
