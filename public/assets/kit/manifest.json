@@ -429,6 +429,22 @@
        ]
       }
      ]
+    },
+    "volar": {
+     "archivo": "personajes/rick_volar.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true,
+     "elevacion": [
+      10,
+      12,
+      14,
+      15,
+      14,
+      12,
+      10,
+      9
+     ]
     }
    },
    "perfil_movimiento": "premium",
@@ -552,6 +568,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_sword_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -663,6 +686,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_dagger_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -774,6 +804,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_greatsword_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -885,6 +922,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_axe_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -996,6 +1040,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_mace_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -1107,6 +1158,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_hammer_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -1218,6 +1276,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_spear_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -1329,6 +1394,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_scythe_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -1440,6 +1512,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_staff_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -1551,6 +1630,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_wand_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -1662,6 +1748,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_bow_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -1773,6 +1866,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_claws_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -1884,6 +1984,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_arma_club_volar.png",
+        "columnas": 24
        }
       }
      }
@@ -1997,6 +2104,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_mano_shield_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -2108,6 +2222,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_mano_shield_round_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -2219,6 +2340,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_mano_shield_kite_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -2330,6 +2458,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_mano_shield_tower_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -2441,6 +2576,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_mano_orb_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -2552,6 +2694,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_mano_tome_volar.png",
+        "columnas": 24
        }
       }
      }
@@ -2665,6 +2814,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_cuero_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -2776,6 +2932,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_cuero_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -2887,6 +3050,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_cuero_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -2998,6 +3168,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_cuero_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -3109,6 +3286,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_cuero_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -3220,6 +3404,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_malla_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -3331,6 +3522,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_malla_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -3442,6 +3640,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_malla_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -3553,6 +3758,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_malla_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -3664,6 +3876,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_malla_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -3775,6 +3994,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_placas_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -3886,6 +4112,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_placas_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -3997,6 +4230,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_placas_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -4108,6 +4348,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_placas_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -4219,6 +4466,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_placas_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -4330,6 +4584,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_tunica_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -4441,6 +4702,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_tunica_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -4552,6 +4820,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_tunica_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -4663,6 +4938,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_tunica_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -4774,6 +5056,129 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_pecho_tunica_5_volar.png",
+        "columnas": 24
+       }
+      }
+     },
+     "tunica_celestial": {
+      "archivo": "personajes/capas/rick_pecho_tunica_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
        }
       }
      }
@@ -4887,6 +5292,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_cuero_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -4998,6 +5410,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_cuero_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -5109,6 +5528,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_cuero_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -5220,6 +5646,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_cuero_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -5331,6 +5764,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_malla_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -5442,6 +5882,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_malla_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -5553,6 +6000,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_malla_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -5664,6 +6118,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_malla_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -5775,6 +6236,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_malla_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -5886,6 +6354,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_placas_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -5997,6 +6472,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_placas_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -6108,6 +6590,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_placas_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -6219,6 +6708,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_placas_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -6330,6 +6826,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_placas_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -6441,6 +6944,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_tunica_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -6552,6 +7062,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_tunica_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -6663,6 +7180,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_tunica_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -6774,11 +7298,383 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/rick_casco_tunica_5_volar.png",
+        "columnas": 24
        }
       }
      }
-    }
-   }
+    },
+    "alas_detras": {
+     "celestial": {
+      "archivo": "personajes/capas/rick_alas_detras_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "alas_delante": {
+     "celestial": {
+      "archivo": "personajes/capas/rick_alas_delante_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "aura": {
+     "celestial": {
+      "archivo": "personajes/capas/rick_aura_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "orden_celestial": [
+     "alas_detras",
+     "base",
+     "pecho",
+     "casco",
+     "arma",
+     "mano",
+     "alas_delante",
+     "aura"
+    ]
+   },
+   "retrato_celestial": "personajes/retrato_celestial_rick.png"
   },
   "steph": {
    "tipo": "heroe",
@@ -7194,6 +8090,22 @@
        ]
       }
      ]
+    },
+    "volar": {
+     "archivo": "personajes/steph_volar.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true,
+     "elevacion": [
+      10,
+      12,
+      14,
+      15,
+      14,
+      12,
+      10,
+      9
+     ]
     }
    },
    "perfil_movimiento": "premium",
@@ -7317,6 +8229,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_sword_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -7428,6 +8347,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_dagger_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -7539,6 +8465,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_greatsword_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -7650,6 +8583,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_axe_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -7761,6 +8701,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_mace_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -7872,6 +8819,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_hammer_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -7983,6 +8937,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_spear_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -8094,6 +9055,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_scythe_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -8205,6 +9173,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_staff_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -8316,6 +9291,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_wand_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -8427,6 +9409,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_bow_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -8538,6 +9527,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_claws_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -8649,6 +9645,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_arma_club_volar.png",
+        "columnas": 24
        }
       }
      }
@@ -8762,6 +9765,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_mano_shield_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -8873,6 +9883,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_mano_shield_round_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -8984,6 +10001,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_mano_shield_kite_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -9095,6 +10119,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_mano_shield_tower_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -9206,6 +10237,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_mano_orb_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -9317,6 +10355,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_mano_tome_volar.png",
+        "columnas": 24
        }
       }
      }
@@ -9430,6 +10475,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_cuero_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -9541,6 +10593,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_cuero_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -9652,6 +10711,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_cuero_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -9763,6 +10829,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_cuero_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -9874,6 +10947,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_cuero_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -9985,6 +11065,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_malla_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -10096,6 +11183,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_malla_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -10207,6 +11301,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_malla_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -10318,6 +11419,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_malla_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -10429,6 +11537,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_malla_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -10540,6 +11655,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_placas_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -10651,6 +11773,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_placas_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -10762,6 +11891,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_placas_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -10873,6 +12009,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_placas_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -10984,6 +12127,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_placas_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -11095,6 +12245,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_tunica_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -11206,6 +12363,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_tunica_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -11317,6 +12481,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_tunica_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -11428,6 +12599,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_tunica_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -11539,6 +12717,129 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_pecho_tunica_5_volar.png",
+        "columnas": 24
+       }
+      }
+     },
+     "tunica_celestial": {
+      "archivo": "personajes/capas/steph_pecho_tunica_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
        }
       }
      }
@@ -11652,6 +12953,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_cuero_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -11763,6 +13071,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_cuero_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -11874,6 +13189,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_cuero_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -11985,6 +13307,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_cuero_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -12096,6 +13425,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_malla_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -12207,6 +13543,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_malla_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -12318,6 +13661,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_malla_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -12429,6 +13779,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_malla_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -12540,6 +13897,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_malla_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -12651,6 +14015,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_placas_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -12762,6 +14133,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_placas_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -12873,6 +14251,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_placas_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -12984,6 +14369,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_placas_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -13095,6 +14487,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_placas_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -13206,6 +14605,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_tunica_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -13317,6 +14723,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_tunica_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -13428,6 +14841,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_tunica_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -13539,11 +14959,383 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/steph_casco_tunica_5_volar.png",
+        "columnas": 24
        }
       }
      }
-    }
-   }
+    },
+    "alas_detras": {
+     "celestial": {
+      "archivo": "personajes/capas/steph_alas_detras_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "alas_delante": {
+     "celestial": {
+      "archivo": "personajes/capas/steph_alas_delante_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "aura": {
+     "celestial": {
+      "archivo": "personajes/capas/steph_aura_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "orden_celestial": [
+     "alas_detras",
+     "base",
+     "pecho",
+     "casco",
+     "arma",
+     "mano",
+     "alas_delante",
+     "aura"
+    ]
+   },
+   "retrato_celestial": "personajes/retrato_celestial_steph.png"
   },
   "sophie": {
    "tipo": "heroe",
@@ -13959,6 +15751,22 @@
        ]
       }
      ]
+    },
+    "volar": {
+     "archivo": "personajes/sophie_volar.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true,
+     "elevacion": [
+      10,
+      12,
+      14,
+      15,
+      14,
+      12,
+      10,
+      9
+     ]
     }
    },
    "perfil_movimiento": "premium",
@@ -14082,6 +15890,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_sword_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -14193,6 +16008,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_dagger_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -14304,6 +16126,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_greatsword_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -14415,6 +16244,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_axe_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -14526,6 +16362,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_mace_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -14637,6 +16480,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_hammer_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -14748,6 +16598,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_spear_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -14859,6 +16716,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_scythe_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -14970,6 +16834,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_staff_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -15081,6 +16952,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_wand_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -15192,6 +17070,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_bow_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -15303,6 +17188,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_claws_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -15414,6 +17306,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_arma_club_volar.png",
+        "columnas": 24
        }
       }
      }
@@ -15527,6 +17426,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_mano_shield_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -15638,6 +17544,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_mano_shield_round_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -15749,6 +17662,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_mano_shield_kite_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -15860,6 +17780,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_mano_shield_tower_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -15971,6 +17898,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_mano_orb_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -16082,6 +18016,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_mano_tome_volar.png",
+        "columnas": 24
        }
       }
      }
@@ -16195,6 +18136,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_cuero_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -16306,6 +18254,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_cuero_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -16417,6 +18372,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_cuero_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -16528,6 +18490,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_cuero_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -16639,6 +18608,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_cuero_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -16750,6 +18726,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_malla_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -16861,6 +18844,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_malla_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -16972,6 +18962,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_malla_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -17083,6 +19080,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_malla_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -17194,6 +19198,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_malla_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -17305,6 +19316,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_placas_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -17416,6 +19434,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_placas_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -17527,6 +19552,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_placas_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -17638,6 +19670,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_placas_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -17749,6 +19788,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_placas_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -17860,6 +19906,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_tunica_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -17971,6 +20024,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_tunica_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -18082,6 +20142,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_tunica_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -18193,6 +20260,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_tunica_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -18304,6 +20378,129 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_pecho_tunica_5_volar.png",
+        "columnas": 24
+       }
+      }
+     },
+     "tunica_celestial": {
+      "archivo": "personajes/capas/sophie_pecho_tunica_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
        }
       }
      }
@@ -18417,6 +20614,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_cuero_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -18528,6 +20732,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_cuero_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -18639,6 +20850,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_cuero_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -18750,6 +20968,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_cuero_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -18861,6 +21086,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_malla_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -18972,6 +21204,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_malla_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -19083,6 +21322,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_malla_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -19194,6 +21440,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_malla_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -19305,6 +21558,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_malla_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -19416,6 +21676,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_placas_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -19527,6 +21794,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_placas_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -19638,6 +21912,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_placas_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -19749,6 +22030,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_placas_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -19860,6 +22148,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_placas_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -19971,6 +22266,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_tunica_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -20082,6 +22384,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_tunica_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -20193,6 +22502,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_tunica_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -20304,11 +22620,383 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/sophie_casco_tunica_5_volar.png",
+        "columnas": 24
        }
       }
      }
-    }
-   }
+    },
+    "alas_detras": {
+     "celestial": {
+      "archivo": "personajes/capas/sophie_alas_detras_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "alas_delante": {
+     "celestial": {
+      "archivo": "personajes/capas/sophie_alas_delante_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "aura": {
+     "celestial": {
+      "archivo": "personajes/capas/sophie_aura_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "orden_celestial": [
+     "alas_detras",
+     "base",
+     "pecho",
+     "casco",
+     "arma",
+     "mano",
+     "alas_delante",
+     "aura"
+    ]
+   },
+   "retrato_celestial": "personajes/retrato_celestial_sophie.png"
   },
   "alana": {
    "tipo": "heroe",
@@ -20724,6 +23412,22 @@
        ]
       }
      ]
+    },
+    "volar": {
+     "archivo": "personajes/alana_volar.png",
+     "cuadros": 8,
+     "fps": 10,
+     "loop": true,
+     "elevacion": [
+      10,
+      12,
+      14,
+      15,
+      14,
+      12,
+      10,
+      9
+     ]
     }
    },
    "perfil_movimiento": "premium",
@@ -20847,6 +23551,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_sword_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -20958,6 +23669,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_dagger_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -21069,6 +23787,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_greatsword_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -21180,6 +23905,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_axe_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -21291,6 +24023,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_mace_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -21402,6 +24141,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_hammer_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -21513,6 +24259,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_spear_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -21624,6 +24377,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_scythe_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -21735,6 +24495,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_staff_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -21846,6 +24613,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_wand_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -21957,6 +24731,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_bow_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -22068,6 +24849,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_claws_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -22179,6 +24967,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_arma_club_volar.png",
+        "columnas": 24
        }
       }
      }
@@ -22292,6 +25087,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_mano_shield_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -22403,6 +25205,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_mano_shield_round_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -22514,6 +25323,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_mano_shield_kite_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -22625,6 +25441,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_mano_shield_tower_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -22736,6 +25559,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_mano_orb_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -22847,6 +25677,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_mano_tome_volar.png",
+        "columnas": 24
        }
       }
      }
@@ -22960,6 +25797,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_cuero_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -23071,6 +25915,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_cuero_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -23182,6 +26033,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_cuero_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -23293,6 +26151,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_cuero_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -23404,6 +26269,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_cuero_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -23515,6 +26387,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_malla_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -23626,6 +26505,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_malla_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -23737,6 +26623,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_malla_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -23848,6 +26741,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_malla_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -23959,6 +26859,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_malla_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -24070,6 +26977,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_placas_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -24181,6 +27095,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_placas_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -24292,6 +27213,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_placas_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -24403,6 +27331,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_placas_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -24514,6 +27449,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_placas_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -24625,6 +27567,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_tunica_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -24736,6 +27685,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_tunica_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -24847,6 +27803,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_tunica_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -24958,6 +27921,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_tunica_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -25069,6 +28039,129 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_pecho_tunica_5_volar.png",
+        "columnas": 24
+       }
+      }
+     },
+     "tunica_celestial": {
+      "archivo": "personajes/capas/alana_pecho_tunica_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
        }
       }
      }
@@ -25182,6 +28275,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_cuero_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -25293,6 +28393,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_cuero_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -25404,6 +28511,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_cuero_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -25515,6 +28629,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_cuero_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -25626,6 +28747,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_malla_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -25737,6 +28865,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_malla_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -25848,6 +28983,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_malla_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -25959,6 +29101,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_malla_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -26070,6 +29219,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_malla_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -26181,6 +29337,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_placas_1_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -26292,6 +29455,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_placas_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -26403,6 +29573,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_placas_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -26514,6 +29691,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_placas_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -26625,6 +29809,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_placas_5_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -26736,6 +29927,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_tunica_2_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -26847,6 +30045,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_tunica_3_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -26958,6 +30163,13 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_tunica_4_volar.png",
+        "columnas": 24
        }
       }
      },
@@ -27069,11 +30281,383 @@
         "x": 22,
         "y": 48,
         "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8,
+        "archivo": "personajes/capas/alana_casco_tunica_5_volar.png",
+        "columnas": 24
        }
       }
      }
-    }
-   }
+    },
+    "alas_detras": {
+     "celestial": {
+      "archivo": "personajes/capas/alana_alas_detras_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "alas_delante": {
+     "celestial": {
+      "archivo": "personajes/capas/alana_alas_delante_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "aura": {
+     "celestial": {
+      "archivo": "personajes/capas/alana_aura_celestial.png",
+      "columnas": 33,
+      "bloques": {
+       "idle": {
+        "x": 0,
+        "y": 0,
+        "cuadros": 8
+       },
+       "walk": {
+        "x": 11,
+        "y": 0,
+        "cuadros": 8
+       },
+       "run": {
+        "x": 22,
+        "y": 0,
+        "cuadros": 8
+       },
+       "attack": {
+        "x": 0,
+        "y": 8,
+        "cuadros": 7
+       },
+       "attack_heavy": {
+        "x": 11,
+        "y": 8,
+        "cuadros": 10
+       },
+       "attack_thrust": {
+        "x": 22,
+        "y": 8,
+        "cuadros": 6
+       },
+       "cast": {
+        "x": 0,
+        "y": 16,
+        "cuadros": 9
+       },
+       "nova": {
+        "x": 11,
+        "y": 16,
+        "cuadros": 8
+       },
+       "channel": {
+        "x": 22,
+        "y": 16,
+        "cuadros": 6
+       },
+       "whirlwind": {
+        "x": 0,
+        "y": 24,
+        "cuadros": 8
+       },
+       "leap": {
+        "x": 11,
+        "y": 24,
+        "cuadros": 9
+       },
+       "charge": {
+        "x": 22,
+        "y": 24,
+        "cuadros": 8
+       },
+       "dodge": {
+        "x": 0,
+        "y": 32,
+        "cuadros": 6
+       },
+       "shoot_bow": {
+        "x": 11,
+        "y": 32,
+        "cuadros": 7
+       },
+       "summon": {
+        "x": 22,
+        "y": 32,
+        "cuadros": 8
+       },
+       "warcry": {
+        "x": 0,
+        "y": 40,
+        "cuadros": 7
+       },
+       "block_shield": {
+        "x": 11,
+        "y": 40,
+        "cuadros": 7
+       },
+       "use_item": {
+        "x": 22,
+        "y": 40,
+        "cuadros": 10
+       },
+       "throw": {
+        "x": 0,
+        "y": 48,
+        "cuadros": 6
+       },
+       "hit": {
+        "x": 11,
+        "y": 48,
+        "cuadros": 6
+       },
+       "die": {
+        "x": 22,
+        "y": 48,
+        "cuadros": 11
+       },
+       "volar": {
+        "x": 0,
+        "y": 56,
+        "cuadros": 8
+       }
+      }
+     }
+    },
+    "orden_celestial": [
+     "alas_detras",
+     "base",
+     "pecho",
+     "casco",
+     "arma",
+     "mano",
+     "alas_delante",
+     "aura"
+    ]
+   },
+   "retrato_celestial": "personajes/retrato_celestial_alana.png"
   },
   "thor": {
    "tipo": "mascota",
@@ -45098,6 +48682,34 @@
    "celda": 96,
    "w": 96,
    "h": 128
+  },
+  "lanza_luz": {
+   "archivo": "fx/lanza_luz.png",
+   "cuadros": 6,
+   "fps": 14,
+   "loop": true,
+   "celda": 32
+  },
+  "impacto_luz": {
+   "archivo": "fx/impacto_luz.png",
+   "cuadros": 8,
+   "fps": 16,
+   "loop": false,
+   "celda": 48
+  },
+  "estela_alas": {
+   "archivo": "fx/estela_alas.png",
+   "cuadros": 6,
+   "fps": 10,
+   "loop": false,
+   "celda": 32
+  },
+  "aura_celestial": {
+   "archivo": "fx/aura_celestial.png",
+   "cuadros": 8,
+   "fps": 8,
+   "loop": true,
+   "celda": 64
   }
  },
  "botin": {
@@ -68424,6 +72036,501 @@
   },
   "notas": "Paneles de 480 x 270 (el corte del abismo 480 x 540) para agrandar x2 o x3 entero. Cada capa es una tira de cuadros; dibujar fondo, medio y frente en ese orden, cada una corrida con su paralaje respecto de la cámara. La luz sale de abajo, del fuego. Momentos de GUION_INTRO: brasas y cueva > intro_bosque_noche e intro_corte_abismo, ojos > intro_ojos, guardianes > intro_guardianes, familia > intro_familia, titulo > logo_fuego sobre fuego_pared."
  },
+ "cine_bajada": {
+  "bajada_puerta": {
+   "w": 480,
+   "h": 270,
+   "notas": "La Puerta Negra se abre de a poco (8 cuadros a 5 fps, sin bucle: quedarse en el último). Por la rendija sale luz de hielo y niebla; los braseros de la Fragua y la brasa del marco se apagan y la escarcha crece en helechos por el piso. Delante, el viento helado viene hacia la cámara.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/bajada_puerta_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.4
+    },
+    {
+     "nombre": "medio",
+     "archivo": "cine/bajada_puerta_medio.png",
+     "cuadros": 8,
+     "fps": 5,
+     "paralaje": 0.7,
+     "bucle": false
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/bajada_puerta_frente.png",
+     "cuadros": 6,
+     "fps": 10,
+     "paralaje": 1
+    }
+   ]
+  },
+  "bajada_escalera": {
+   "w": 480,
+   "h": 540,
+   "notas": "Una escalera tallada en la pared de hielo baja en zigzag, tramo tras tramo, cada vez más chica, hasta perderse en la niebla y la luz fría del lago (480 x 540: la cámara baja de arriba a abajo). La heroína y Thor, chiquitos y de espaldas, bajan el primer tramo con su luz: la capa `heroina` trae `por_heroina` (rick, steph, sophie, alana), usar la del perfil.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/bajada_escalera_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.5
+    },
+    {
+     "nombre": "medio",
+     "archivo": "cine/bajada_escalera_medio.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.8
+    },
+    {
+     "nombre": "heroina",
+     "archivo": "cine/bajada_escalera_heroina.png",
+     "cuadros": 8,
+     "fps": 8,
+     "paralaje": 0.8,
+     "por_heroina": {
+      "rick": "cine/bajada_escalera_heroina_rick.png",
+      "steph": "cine/bajada_escalera_heroina_steph.png",
+      "sophie": "cine/bajada_escalera_heroina_sophie.png",
+      "alana": "cine/bajada_escalera_heroina_alana.png"
+     }
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/bajada_escalera_frente.png",
+     "cuadros": 6,
+     "fps": 8,
+     "paralaje": 1
+    }
+   ]
+  },
+  "bajada_lago": {
+   "w": 480,
+   "h": 270,
+   "notas": "El lago congelado, enorme, de hielo negro pulido. Adentro hay gigantes atrapados mirando hacia arriba, con los ojos abiertos (uno de cerca, dos lejos, y una mano apretada contra el hielo). Lejos, la luz roja del trono. Delante cae nieve negra.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/bajada_lago_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.3
+    },
+    {
+     "nombre": "medio",
+     "archivo": "cine/bajada_lago_medio.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.7
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/bajada_lago_frente.png",
+     "cuadros": 6,
+     "fps": 8,
+     "paralaje": 1
+    }
+   ]
+  },
+  "bajada_ladrona": {
+   "w": 480,
+   "h": 270,
+   "notas": "La Ladrona camina por el hielo con la última llama en las manos (8 cuadros de paso a 8 fps, camina en el lugar: el juego desliza la capa un poco hacia la derecha si quiere). Lejos, el trono con el Diablo sentado, todavía dormido. La llama deja un camino tibio en el hielo.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/bajada_ladrona_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.4
+    },
+    {
+     "nombre": "medio",
+     "archivo": "cine/bajada_ladrona_medio.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.7
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/bajada_ladrona_frente.png",
+     "cuadros": 8,
+     "fps": 8,
+     "paralaje": 1
+    }
+   ]
+  },
+  "bajada_diablo": {
+   "w": 480,
+   "h": 270,
+   "notas": "El Diablo en su trono, de cerca: el primer plano más terrorífico del juego. 8 cuadros a 5 fps sin bucle (quedarse en el último): los ojos se abren de a poco (cuadro 2 a 6), la escarcha se le rompe de los cuernos y cae (capa frente), y exhala humo por la nariz. Las garras agarran los brazos del trono. Con `cine_rugido` en el cuadro 6.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/bajada_diablo_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.5
+    },
+    {
+     "nombre": "medio",
+     "archivo": "cine/bajada_diablo_medio.png",
+     "cuadros": 8,
+     "fps": 5,
+     "paralaje": 0.85,
+     "bucle": false
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/bajada_diablo_frente.png",
+     "cuadros": 8,
+     "fps": 5,
+     "paralaje": 1,
+     "bucle": false
+    }
+   ]
+  },
+  "bajada_titulo": {
+   "w": 480,
+   "h": 270,
+   "notas": "El título sobre negro con un marco de escarcha. El logo va aparte (`logo_hielo`, centrado) y cae con el rugido.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/bajada_titulo_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.6
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/bajada_titulo_frente.png",
+     "cuadros": 6,
+     "fps": 8,
+     "paralaje": 1
+    }
+   ]
+  },
+  "nieve_frente": {
+   "archivo": "cine/nieve_frente.png",
+   "w": 128,
+   "h": 128,
+   "cuadros": 8,
+   "fps": 10,
+   "loop": true,
+   "notas": "Cruza delante de todo, como humo_grande, pero en bucle y pega por los cuatro lados: repetirla en mosaico sobre la pantalla (a lo mejor dos capas, una corrida y más rápida)."
+  },
+  "logo_hielo": {
+   "archivo": "cine/logo_hielo.png",
+   "w": 430,
+   "h": 128,
+   "cuadros": 16,
+   "fps": 10,
+   "loop": true,
+   "bucle_desde": 12,
+   "columnas": 4,
+   "notas": "Cuadro i en la columna i % 4, fila floor(i / 4). Se arma una vez: el hielo sube por las letras (0 a 7) y se rajan con grietas de brasa (8 a 11); después late en bucle del 12 al 15. Centrado sobre bajada_titulo, cae con el rugido."
+  },
+  "audio": {
+   "musica": "cine_bajada_musica",
+   "rugido": "cine_rugido",
+   "latido": "latido"
+  },
+  "guion": [
+   {
+    "panel": "bajada_puerta",
+    "desde": 0,
+    "hasta": 10,
+    "subtitulo": "La Puerta Negra se abrió.",
+    "sonido": [
+     {
+      "nombre": "puerta_negra",
+      "en": 0.5
+     }
+    ]
+   },
+   {
+    "panel": "bajada_escalera",
+    "desde": 10,
+    "hasta": 20,
+    "subtitulo": "Abajo, más abajo que todo."
+   },
+   {
+    "panel": "bajada_lago",
+    "desde": 20,
+    "hasta": 30,
+    "subtitulo": "Donde el abismo se congeló."
+   },
+   {
+    "panel": "bajada_ladrona",
+    "desde": 30,
+    "hasta": 40,
+    "subtitulo": "La última llama tenía dueño."
+   },
+   {
+    "panel": "bajada_diablo",
+    "desde": 40,
+    "hasta": 50.5,
+    "subtitulo": "Y él despertó.",
+    "sonido": [
+     {
+      "nombre": "latido",
+      "en": 41
+     },
+     {
+      "nombre": "latido",
+      "en": 44
+     }
+    ]
+   },
+   {
+    "panel": "bajada_titulo",
+    "desde": 50.5,
+    "hasta": 60,
+    "sonido": [
+     {
+      "nombre": "cine_rugido",
+      "en": 50.5
+     }
+    ]
+   }
+  ],
+  "notas": "Paneles de 480 x 270 (la escalera y los pisos 480 x 540: la cámara se mueve de arriba a abajo, o de abajo a arriba en los pisos) para agrandar x2 o x3 entero, con las franjas negras y los subtítulos letra por letra del intro. Cada capa es una tira de cuadros; dibujar en el orden en que vienen, cada una corrida con su paralaje. `bucle: false` = pasar una vez y quedarse en el último cuadro. `por_heroina`: la misma capa para cada heroína, usar la del perfil (el `archivo` de la capa es la de Sophie). `guion`: cuándo va cada panel en la música (segundos), su subtítulo y los sonidos. La bajada es lo más oscuro del juego (sin sangre y sin sustos de golpe: lo que da miedo aparece de a poco). Se salta con un toque y se ve una vez por perfil. La música (60 s) crece hasta el título: golpe y silencio corto a los 50.5 s, ahí cae el logo con el rugido."
+ },
+ "cine_fin": {
+  "fin_cae": {
+   "w": 480,
+   "h": 270,
+   "notas": "El Diablo cae de rodillas en la arena. Las grietas de su piel se apagan y el hielo se rompe alrededor con grietas de luz que se abren (8 cuadros a 6 fps, sin bucle). Delante saltan pedazos de hielo y chispas.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/fin_cae_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.4
+    },
+    {
+     "nombre": "medio",
+     "archivo": "cine/fin_cae_medio.png",
+     "cuadros": 8,
+     "fps": 6,
+     "paralaje": 0.8,
+     "bucle": false
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/fin_cae_frente.png",
+     "cuadros": 6,
+     "fps": 10,
+     "paralaje": 1
+    }
+   ]
+  },
+  "fin_llama": {
+   "w": 480,
+   "h": 270,
+   "notas": "La última llama sale del pecho del Diablo (ya apagado, a la izquierda) y vuela en un arco hasta la Ladrona, que se vuelve luz: la Primera Luz, una niña de luz dorada y blanca con los ojos cerrados contentos (8 cuadros a 4 fps, sin bucle: 0 a 4 la llama viaja, 5 a 7 ella se ilumina).",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/fin_llama_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.5
+    },
+    {
+     "nombre": "medio",
+     "archivo": "cine/fin_llama_medio.png",
+     "cuadros": 8,
+     "fps": 4,
+     "paralaje": 0.85,
+     "bucle": false
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/fin_llama_frente.png",
+     "cuadros": 6,
+     "fps": 8,
+     "paralaje": 1
+    }
+   ]
+  },
+  "fin_pisos": {
+   "w": 480,
+   "h": 540,
+   "notas": "El abismo en corte, como en el intro, pero al revés: una columna de luz sube por el pozo desde el Corazón Helado y cada piso se prende con su color (8 cuadros a 3 fps, sin bucle: el Corazón, la Fragua, la Ciudad, el Faro, las Galerías, la Catedral y el Bosque). 480 x 540: la cámara sube de abajo a arriba.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/fin_pisos_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.8
+    },
+    {
+     "nombre": "medio",
+     "archivo": "cine/fin_pisos_medio.png",
+     "cuadros": 8,
+     "fps": 3,
+     "paralaje": 0.9,
+     "bucle": false
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/fin_pisos_frente.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 1
+    }
+   ]
+  },
+  "fin_amanecer": {
+   "w": 480,
+   "h": 270,
+   "notas": "Amanece en el Bosque GG: el sol asoma detrás de las lomas, nubes rosadas, la casa con las ventanas tibias y el humito. La familia (Rick, Steph, Sophie y Alana, como sus personajes) y Thor moviendo la cola, de frente, en el pasto (8 cuadros a 6 fps).",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/fin_amanecer_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.3
+    },
+    {
+     "nombre": "medio",
+     "archivo": "cine/fin_amanecer_medio.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.6
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/fin_amanecer_frente.png",
+     "cuadros": 8,
+     "fps": 6,
+     "paralaje": 1
+    }
+   ]
+  },
+  "fin_alas": {
+   "w": 480,
+   "h": 270,
+   "notas": "La Primera Luz le da las alas a la heroína: de frente, al triple, con la túnica celestial; las alas de luz se abren de a poco y en el cuadro 5 aparece la aureola (8 cuadros a 5 fps, sin bucle). La capa `heroina` trae `por_heroina`: usar la del perfil. Con `celestial_despierta`.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/fin_alas_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.4
+    },
+    {
+     "nombre": "heroina",
+     "archivo": "cine/fin_alas_heroina.png",
+     "cuadros": 8,
+     "fps": 5,
+     "paralaje": 0.8,
+     "bucle": false,
+     "por_heroina": {
+      "rick": "cine/fin_alas_heroina_rick.png",
+      "steph": "cine/fin_alas_heroina_steph.png",
+      "sophie": "cine/fin_alas_heroina_sophie.png",
+      "alana": "cine/fin_alas_heroina_alana.png"
+     }
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/fin_alas_frente.png",
+     "cuadros": 6,
+     "fps": 8,
+     "paralaje": 1
+    }
+   ]
+  },
+  "fin_titulo": {
+   "w": 480,
+   "h": 270,
+   "notas": "\"Fin\" en letras doradas que brillan, sobre un cielo que ya clarea. El logo va aparte (`logo_fin`, centrado): primero brilla \"Fin\" y en el cuadro 8 aparece abajo, chiquito, \"¿o no?\". Después, la pregunta del Ciclo 2 y los créditos LPC.",
+   "capas": [
+    {
+     "nombre": "fondo",
+     "archivo": "cine/fin_titulo_fondo.png",
+     "cuadros": 1,
+     "fps": 1,
+     "paralaje": 0.6
+    },
+    {
+     "nombre": "frente",
+     "archivo": "cine/fin_titulo_frente.png",
+     "cuadros": 6,
+     "fps": 8,
+     "paralaje": 1
+    }
+   ]
+  },
+  "logo_fin": {
+   "archivo": "cine/logo_fin.png",
+   "w": 176,
+   "h": 94,
+   "cuadros": 16,
+   "fps": 10,
+   "loop": true,
+   "bucle_desde": 8,
+   "columnas": 4,
+   "notas": "Cuadro i en la columna i % 4, fila floor(i / 4). \"Fin\" en oro con un brillo que lo recorre; en el cuadro 8 aparece abajo, chiquito, \"¿o no?\". Del 8 al 15 en bucle. Centrado sobre fin_titulo."
+  },
+  "audio": {
+   "musica": "cine_fin_musica"
+  },
+  "guion": [
+   {
+    "panel": "fin_cae",
+    "desde": 0,
+    "hasta": 12,
+    "subtitulo": "Se apagó."
+   },
+   {
+    "panel": "fin_llama",
+    "desde": 12,
+    "hasta": 24,
+    "subtitulo": "La última llama volvió a casa."
+   },
+   {
+    "panel": "fin_pisos",
+    "desde": 24,
+    "hasta": 36,
+    "subtitulo": "Y la luz subió por todo el abismo."
+   },
+   {
+    "panel": "fin_amanecer",
+    "desde": 36,
+    "hasta": 54,
+    "subtitulo": "Amaneció."
+   },
+   {
+    "panel": "fin_alas",
+    "desde": 54,
+    "hasta": 64,
+    "subtitulo": "La Primera Luz te dio sus alas.",
+    "sonido": [
+     {
+      "nombre": "celestial_despierta",
+      "en": 55
+     }
+    ]
+   },
+   {
+    "panel": "fin_titulo",
+    "desde": 64,
+    "hasta": 72
+   }
+  ],
+  "notas": "Paneles de 480 x 270 (la escalera y los pisos 480 x 540: la cámara se mueve de arriba a abajo, o de abajo a arriba en los pisos) para agrandar x2 o x3 entero, con las franjas negras y los subtítulos letra por letra del intro. Cada capa es una tira de cuadros; dibujar en el orden en que vienen, cada una corrida con su paralaje. `bucle: false` = pasar una vez y quedarse en el último cuadro. `por_heroina`: la misma capa para cada heroína, usar la del perfil (el `archivo` de la capa es la de Sophie). `guion`: cuándo va cada panel en la música (segundos), su subtítulo y los sonidos. El cierre va de terror a esperanza y termina en el amanecer. La música (72 s) es oscura hasta los 12 s, se abre en mayor con la llama y trae el tema del Bosque desde los 36 s. Después de fin_titulo: la pregunta del Ciclo 2 y los créditos LPC."
+ },
  "ui": {
   "orbe_vida": {
    "archivo": "ui/orbe_vida.png",
@@ -68798,7 +72905,23 @@
    "sacudir_seco": "ui/habilidades/sacudir_seco.png",
    "calor": "ui/habilidades/calor.png",
    "jaula": "ui/habilidades/jaula.png",
-   "palanca": "ui/habilidades/palanca.png"
+   "palanca": "ui/habilidades/palanca.png",
+   "alas": "ui/habilidades/alas.png",
+   "lanza_luz": "ui/habilidades/lanza_luz.png",
+   "ciclo": "ui/habilidades/ciclo.png"
+  },
+  "marco_ciclo": {
+   "archivo": "ui/marco_ciclo.png",
+   "w": 36,
+   "h": 24,
+   "cuadros": 1,
+   "nueve": [
+    8,
+    8,
+    8,
+    8
+   ],
+   "notas": "El número de ciclo en el HUD (\"Ciclo 2\"): se estira como los otros marcos; los espirales de las esquinas de arriba no se estiran."
   },
   "numeros": {
    "archivo": "ui/numeros.png",
@@ -68931,6 +73054,15 @@
    "cuadros": 8,
    "fps": 8,
    "loop": true
+  },
+  "logo_ciclo": {
+   "archivo": "ui/logo_ciclo.png",
+   "w": 288,
+   "h": 96,
+   "cuadros": 8,
+   "fps": 8,
+   "loop": true,
+   "notas": "Igual que ui.logo (mismo tamaño y cuadros), en oro con un espiral que gira detrás."
   },
   "fuentes": {
    "fuente_ui": {
@@ -69154,7 +73286,81 @@
   "ambiente_fuelles": "audio/ambiente_fuelles.wav",
   "ambiente_bosque_ceniza": "audio/ambiente_bosque_ceniza.wav",
   "ambiente_carcel": "audio/ambiente_carcel.wav",
-  "ambiente_horno": "audio/ambiente_horno.wav"
+  "ambiente_horno": "audio/ambiente_horno.wav",
+  "cine_bajada_musica": "audio/cine_bajada_musica.wav",
+  "cine_rugido": "audio/cine_rugido.wav",
+  "cine_fin_musica": "audio/cine_fin_musica.wav",
+  "alas_vuelo": "audio/alas_vuelo.wav",
+  "lanza_luz": "audio/lanza_luz.wav",
+  "celestial_despierta": "audio/celestial_despierta.wav"
+ },
+ "celestial": {
+  "tunica": {
+   "id": "tunica_celestial",
+   "nombre": {
+    "es": "Túnica Celestial",
+    "en": "Celestial Robe"
+   },
+   "rareza": "legendary",
+   "nivel": 45,
+   "base": {
+    "cat": "armor",
+    "slot": "chest",
+    "line": "tunica",
+    "tier": 5
+   },
+   "stats": {
+    "defense": 50,
+    "mods": [
+     {
+      "stat": "allRes",
+      "value": 15
+     }
+    ]
+   },
+   "flavor": {
+    "es": "Tejida con la luz del primer amanecer.",
+    "en": "Woven from the light of the first dawn."
+   },
+   "iconos": {
+    "32": {
+     "archivo": "botin/tunica_celestial_32.png",
+     "w": 32,
+     "h": 32,
+     "cuadros": 8
+    },
+    "64": {
+     "archivo": "botin/tunica_celestial_64.png",
+     "w": 64,
+     "h": 64,
+     "cuadros": 8
+    }
+   },
+   "capa": {
+    "capa": "pecho",
+    "clave": "tunica_celestial"
+   },
+   "notas": "Va en el casillero del pecho. Los íconos son tiras de 8 cuadros (legendario animado), con su casillero. Se ve en la heroína con capas.pecho.tunica_celestial."
+  },
+  "poderes": {
+   "alas": {
+    "icono": "ui/habilidades/alas.png",
+    "anim": "volar",
+    "fx": "estela_alas",
+    "audio": "alas_vuelo"
+   },
+   "lanza_luz": {
+    "icono": "ui/habilidades/lanza_luz.png",
+    "fx": [
+     "lanza_luz",
+     "impacto_luz"
+    ],
+    "audio": "lanza_luz"
+   }
+  },
+  "aura": "aura_celestial",
+  "despierta": "celestial_despierta",
+  "notas": "La heroína celestial: la misma heroína con alas, aureola y túnica. Orden de dibujo: alas_detras (debajo de todo), la base, pecho, casco, arma, mano, alas_delante y aura (encima de todo). Todas con la misma celda y el mismo pivote que la base, cuadro por cuadro. capas.alas_detras.celestial, capas.alas_delante.celestial y capas.aura.celestial traen un bloque por animación (todas las de la heroína y volar), igual que las de equipo. La aureola se apaga sola en la segunda mitad de die. capas.pecho.tunica_celestial: la túnica (objeto celestial.tunica en el botín). anims.volar: el poder Alas (8 cuadros a 10 fps, en bucle). En la hoja el cuerpo queda cerca del piso con las piernas colgando: el juego lo sube con `elevacion` (pixeles por cuadro, de 9 a 15) sobre su sombra. Las alas aletean con el cuerpo: el ala baja en los cuadros 2 a 4 y es cuando más sube. Cada capa de equipo de antes trae bloques.volar con su propio `archivo` y `columnas` (una hoja aparte por pieza): el juego usa bloque.archivo ?? capa.archivo. Así las hojas de antes no cambian. fx (se ven mejor sumando luz, modo ADD, pero funcionan en modo normal): lanza_luz (32 x 32 en bucle, tramo del haz hacia la derecha: repetirlo en línea y girarlo), impacto_luz (48, 8 cuadros), estela_alas (32, 6 cuadros, dejarla detrás del vuelo cada tanto), aura_celestial (64 en bucle, al pie: el centro del brillo va en (32, 50) de la celda, sobre el pivote). Íconos: ui.habilidades.alas, lanza_luz y ciclo. Audio: alas_vuelo, lanza_luz y celestial_despierta (el coro, al volverse celestial)."
  },
  "creditos": "CREDITOS.txt"
 }
