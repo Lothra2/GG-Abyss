@@ -48,6 +48,9 @@ describe('objetivo actual', () => {
   it('sigue el mismo orden que la flecha: explorar, crecer, jefe, portal', () => {
     expect(objetivoActual({ nivel: 1, jefeVencido: false, descubiertas: 2, totalZonas: 9 })).toMatchObject({ clave: 'explorar', texto: 'Explora 2/9' })
     expect(objetivoActual({ nivel: 3, jefeVencido: false, descubiertas: 9, totalZonas: 9 }).clave).toBe('crecer')
+    // F13: con la arena sellada, el objetivo es el minijefe (con el mismo nivel que pedía el jefe)
+    expect(objetivoActual({ nivel: 9, jefeVencido: false, descubiertas: 9, totalZonas: 9, minijefe: 'Trol del Puente' })).toMatchObject({ clave: 'minijefe', texto: 'Vence a Trol del Puente' })
+    expect(objetivoActual({ nivel: 1, jefeVencido: false, descubiertas: 2, totalZonas: 9, minijefe: 'Trol del Puente' }).clave).toBe('explorar')
     expect(objetivoActual({ nivel: GUIA.nivelParaJefe, jefeVencido: false, descubiertas: 2, totalZonas: 9 }).clave).toBe('jefe')
     expect(objetivoActual({ nivel: 1, jefeVencido: true, descubiertas: 2, totalZonas: 9 }).clave).toBe('portal')
   })

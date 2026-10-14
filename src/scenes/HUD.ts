@@ -299,7 +299,7 @@ export class HUD extends Phaser.Scene {
     if (!p || this.mundo.saliendo) return
     const r = this.mundo.resumenDescubrimiento
     const mc = this.mundo.mecanismos
-    const o = objetivoActual({ nivel: p.nivel, jefeVencido: p.jefeVencido, descubiertas: r.zonas, totalZonas: r.totalZonas, hayJefe: !!this.mundo.jefe || p.jefeVencido, ...(mc?.hay ? { brasas: { tiene: p.brasas.length, total: mc.total } } : {}) })
+    const o = objetivoActual({ nivel: p.nivel, jefeVencido: p.jefeVencido, descubiertas: r.zonas, totalZonas: r.totalZonas, hayJefe: !!this.mundo.jefe || p.jefeVencido, minijefe: this.mundo.sellada ? this.mundo.llave?.nombre : null, ...(mc?.hay ? { brasas: { tiene: p.brasas.length, total: mc.total } } : {}) })
     const cambio = !this.objetivo || this.objetivo.clave !== o.clave
     if (this.objetivo && this.objetivo.texto === o.texto) return
     this.objetivo = o

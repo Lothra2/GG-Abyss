@@ -45,6 +45,13 @@ test.describe('Flecha guía', () => {
     await gancho(page, 'avanzar', 0.2)
     await gancho(page, 'forzarGuia')
     await gancho(page, 'avanzar', 0.2)
+    // F13: con la arena sellada la flecha lleva primero al Trol del Puente (la llave)
+    expect((await guia(page)).flecha?.destino.nombre).toBe('Trol del Puente')
+    const t = (await gancho<{ id: number; elite: boolean }[]>(page, 'enemigos')).find((e) => e.elite)!
+    await gancho(page, 'danarEnemigo', t.id, 99999)
+    await gancho(page, 'avanzar', 0.3)
+    await gancho(page, 'forzarGuia')
+    await gancho(page, 'avanzar', 0.2)
     expect((await guia(page)).flecha?.destino.tipo).toBe('arena')
     await gancho(page, 'entrarArena')
     await gancho(page, 'avanzar', 0.5)
@@ -62,8 +69,12 @@ test.describe('Flecha guía', () => {
     const obj = () => gancho<Obj>(page, 'hudObjetivo')
     await expect.poll(async () => (await obj()).clave, { timeout: 10_000 }).toBe('explorar')
     expect((await obj()).texto).toMatch(/^Explora \d+\/\d+$/)
-    // con nivel para el jefe el objetivo cambia
+    // con nivel para el jefe el objetivo cambia: primero el minijefe que tiene la llave de la arena (F13)
     await gancho(page, 'ponerNivel', GUIA.nivelParaJefe)
+    await expect.poll(async () => (await obj()).clave, { timeout: 10_000 }).toBe('minijefe')
+    expect((await obj()).texto).toBe('Vence a Trol del Puente')
+    const t = (await gancho<{ id: number; elite: boolean }[]>(page, 'enemigos')).find((e) => e.elite)!
+    await gancho(page, 'danarEnemigo', t.id, 99999)
     await expect.poll(async () => (await obj()).clave, { timeout: 10_000 }).toBe('jefe')
     expect((await guia(page)).flecha).toBeNull()
     // tocarlo pide la flecha sin esperar

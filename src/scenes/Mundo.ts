@@ -1963,7 +1963,7 @@ export class Mundo extends Phaser.Scene {
     // F8: mientras falten brasas, la flecha apunta a la más cercana a la que se llega caminando
     const brasa = this.brasaAlcanzable()
     // F13: con la arena sellada, la flecha lleva al minijefe que tiene la llave
-    const mj = this.sellada && this.llave ? this.enemigos.lista.find((e) => e.ent.id === this.llave!.id && e.vivo) : undefined
+    const mj = this.sellada && this.llave && p.nivel >= GUIA.nivelParaJefe ? this.enemigos.lista.find((e) => e.ent.id === this.llave!.id && e.vivo) : undefined
     const destino = brasa ? { tipo: 'zona' as const, nombre: 'Brasa', x: brasa.x, y: brasa.y } : mj ? { tipo: 'zona' as const, nombre: mj.nombre, x: mj.x, y: mj.y } : elegirDestino({
       heroe: { x: this.heroina.x, y: this.heroina.y },
       nivel: p.nivel,
