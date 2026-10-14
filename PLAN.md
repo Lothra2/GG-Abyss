@@ -1047,6 +1047,85 @@ Lo que pide Rick: "vamos a mejorar mucho más cada vez que bajamos de mundo, hac
 
 **Estado del Mundo 4 (jugable).** Con el taller `243c319` (rama `claude/abyss-mundo4`): el farol de Thor (capa por cuadro, alzar con botón propio o tocando a Thor, apagado por medusa), los faroles del muelle guardados, la marea con su rescate suave, el marinero de niebla, los cangrejos que rodean, la medusa, el Capitán Ahogado con su música de pelea, la figura mojada que se lleva la luz de un farol, el mural 4 y el Pez Farol en su poza: sumergido no recibe daño, muerde con aviso, la ola en franja desde la fase 2, la llamada en la 3, el farol alzado lo encandila y al liberarse la luz vuela al faro, el piso se aclara y suena la música del faro. La luz del pez sigue la antena cuadro por cuadro. Pruebas en `e2e/puerto.spec.ts` y postales en `docs/capturas/f12/`.
 
+### F13. El final: el Corazón Helado, el Diablo, las cinemáticas, la heroína celestial y el Ciclo 2
+
+Lo que pide Rick: "el último mundo, épico, bien invernal, difícil, más monstruos, una experiencia 100 % inmersiva perfecta y el jefe final SÚPER ÉPICO, detallado como el Diablo real del juego", "calibra la dificultad, hoy sigue siendo muy fácil", "cinemática épica antes de bajar al infierno y una de cierre", "un jugador celestial con alas y súper poderes al terminar, y que el juego empiece otra vez con más dificultad".
+
+**Decisiones de Rick (no se rediscuten):**
+- **El Mundo 7 es lo más oscuro del juego, para todos (también en modo peque).** Cambia la regla 3 de F12 solo para este piso: el Diablo y sus demonios tienen cara de verdad (cuernos, colmillos, ojos que queman) y dan miedo de verdad. Se mantiene: sin sangre ni vísceras, y nada de sustos de golpe (lo que ataca se ve antes de pegar). Si Rick pide quitar también eso, se quita.
+- **La heroína celestial es la misma heroína con alas.** Alas, aureola y túnica blanca y dorada encima de su equipo, con poderes nuevos.
+- **La dificultad sube en los dos modos** (normal bastante más, peque un poco).
+- **El Ciclo 2** empieza en el Bosque con el nivel y el equipo que tenía, la heroína ya celestial, los mundos mucho más duros y mejor botín.
+- **Diseño propio:** el Diablo es nuestro, inspirado en el clásico (rojo, enorme, cuernos, espinas, alas de murciélago), no una copia del de Blizzard: los repos son públicos.
+
+**Mundo 7: El Corazón Helado.** Detrás de la Puerta Negra no hay fuego: el fondo del abismo está congelado. Un lago de hielo negro enorme, con gigantes congelados adentro mirando hacia arriba, columnas de hielo, cadenas cubiertas de escarcha, una ventisca que nunca para y, en el centro, el trono del Diablo: mitad hielo, mitad brasa. Todas las luces que la Ladrona robó eran para él: el Diablo tiene frío, y se come la luz para no apagarse. Cae nieve negra y ceniza.
+
+- **La mecánica de luz: la oscuridad total y el frío.** La oscuridad del piso es casi completa (0.95). Las únicas luces son el farol de la heroína, el brillo de Thor, las hogueras de hueso (las fogatas del piso) y las **luces compañeras**: las luces que liberó en la Fragua la siguen ahora, orbitando a su alrededor (una por cada quinto de jaulas libres, hasta cinco). Es el premio de haber liberado todo.
+  - **El frío** es el calor de la Fragua al revés: a oscuras y en la ventisca la heroína se va congelando (un copo que crece arriba de ella). Cerca del fuego o de sus luces compañeras se calienta. Congelada camina lento y pierde vida.
+  - **La ventisca:** cada tanto se oye el aullido del viento, la nieve se vuelve horizontal, la luz se achica a la mitad y empuja. Detrás de una columna de hielo o de un gigante congelado (la sombra contra el viento) no llega: las sombras con sentido son refugio.
+  - **El hielo fino** del lago cruje si te quedas parada: se ve la grieta, suena, y si no te mueves te hundes en el agua helada (Thor te saca, nadie pierde, pero sales congelada).
+  - **Las sombras devoradoras** se comen tus luces compañeras: si te tocan te quitan una, que vuelve sola al rato o en la próxima hoguera.
+- **Más monstruos, y más duros.** Grupos grandes desde la entrada:
+  - **Lobos de escarcha:** manadas de 4 a 6 que rodean y muerden por la espalda.
+  - **Espectros helados:** vuelan, tiran un rayo de hielo que congela de a poco.
+  - **Diablillos:** chicos, rápidos, en grupos de 5 a 8, tiran bolitas de fuego.
+  - **Caballeros congelados:** armadura de hielo con escudo (de frente no les entra el golpe, hay que rodearlos), golpe pesado con aviso.
+  - **Brujas de escarcha:** levantan muros de hielo que cierran el paso un rato y curan a los demás.
+  - **Sombras devoradoras:** lo de arriba.
+- **Dos minijefes:**
+  - **La Reina Escarcha** en el Lago de los Gigantes: flota, llama ventiscas en la arena, lanzas de hielo que caen con su círculo de aviso y se divide en tres reflejos (solo una es la real, la que tiene sombra).
+  - **El Guardián de la Puerta** frente al salón del trono: un demonio caballero enorme con espada de fuego negro, golpes en cruz y una carga. Cofre dorado y postal cada uno.
+- **El jefe final: El Diablo.** Celda 192 (el más grande del juego). Cuernos enormes, espinas en la espalda, alas de murciélago rotas, ojos que queman, piel roja oscura con grietas de brasa y escarcha en los cuernos. Se mueve pesado y rápido a la vez. Cinco fases, cada una con su música más fuerte:
+  1. **El Señor del Hielo y del Fuego (100 a 75 %).** Zarpazos con aviso, **nova de fuego** en anillos que se expanden (hay que pasar por el hueco), carga en línea.
+  2. **El Rayo (75 a 50 %).** Aliento de **rayo rojo** que gira como la aguja del Relojero, **pilares de fuego** que salen del piso con su círculo de aviso, llama diablillos.
+  3. **La Oscuridad (50 a 30 %).** Se come todas las luces: hasta el farol de la heroína se achica. Solo se ven sus ojos y tus luces compañeras. Con la luz apagada no siente los golpes: hay que **prender los cuatro braseros de hueso** de la arena (los congela de nuevo con su aliento) mientras él acecha. Las luces compañeras lo dejan ver de cerca.
+  4. **La Jaula de Huesos (30 a 10 %).** Encierra a la heroína en una jaula de huesos que hay que romper a golpes (Thor muerde los barrotes de afuera) mientras le caen pilares de fuego. Llama a sus demonios.
+  5. **Desesperado (10 a 0 %).** Todo junto y más rápido, con la ventisca adentro de la arena.
+  - **Al vencerlo:** cinemática de cierre (abajo).
+- **Lugares.** La Escalera Helada (llegada y primera hoguera de hueso), El Bosque de Escarcha (árboles de hielo con lobos), El Lago de los Gigantes (hielo fino, gigantes congelados y la Reina Escarcha), Las Catacumbas de Hielo (pasillos oscuros con sombras devoradoras, secreto de Thor), La Ciudadela Congelada (caballeros y brujas), El Puente de las Cadenas (sobre el vacío, en la ventisca), La Puerta del Trono (el Guardián) y El Corazón Helado (el trono y la arena del Diablo).
+- **Misterio, el final de la Ladrona.** La Ladrona aparece por última vez en el trono, entregándole la última llama al Diablo. Al vencerlo se descubre quién es: **la Primera Luz**, una niña de luz que el Diablo volvió sombra. Libre, es ella la que le da las alas a la heroína. `mural_7` la muestra de luz, antes de ser sombra.
+- **Sonido.** Viento helado siempre, hielo que cruje, lobos lejos, un latido grave cerca del trono. Música de pelea en cada fase del Diablo, cada vez más fuerte, y un tema final de cierre.
+- **Tamaño.** 120 x 110 cuadros (el más grande), 5 hogueras de hueso, al menos 3 ramas opcionales, 2 secretos de Thor, 8 cofres o más y el doble de enemigos que la Fragua.
+
+**La cinemática de bajada al infierno.** Antes de entrar al Mundo 7 (al cruzar el portal de la Fragua), una cinemática de cine con los paneles pintados del taller, franjas negras, subtítulos letra por letra, música y latidos, como el intro:
+1. La Puerta Negra se abre de a poco y sale un viento helado que apaga las brasas.
+2. Una escalera interminable baja al hielo, con la heroína y Thor chiquitos.
+3. El lago congelado con los gigantes adentro, mirando hacia arriba.
+4. La Ladrona camina por el hielo con la última llama hacia el trono.
+5. El Diablo despierta en su trono: se le abren los ojos y la escarcha se le rompe de los cuernos.
+6. El título "El Corazón Helado" que cae con un rugido.
+Se salta con un toque, y se ve una vez por perfil (después, al volver, va directo).
+
+**La cinemática de cierre.** Al vencer al Diablo:
+1. El Diablo cae de rodillas y el hielo se rompe a su alrededor.
+2. La última llama sale de su pecho y vuelve a la Ladrona, que se vuelve luz: la Primera Luz.
+3. Las luces suben por los siete pisos: el Bosque, la Catedral, las Galerías, el faro, la ciudad, la fragua, cada uno se prende otra vez.
+4. Amanece en el Bosque GG: la familia y Thor en casa.
+5. La Primera Luz le da las alas a la heroína.
+6. "Fin... ¿o no?" y la pregunta de empezar el Ciclo 2.
+Los créditos LPC corren al final.
+
+**La heroína celestial.** Al terminar, la heroína de ese perfil se vuelve celestial (para siempre en ese perfil):
+- **Aspecto:** alas blancas y doradas que se mueven con cada animación, aureola y una túnica celestial encima del equipo (el taller las entrega como capas `alas` y `aura`, para las cuatro heroínas, en las 8 direcciones y en cada animación).
+- **Poderes nuevos** (dos botones más):
+  - **Alas:** un vuelo corto que pasa por encima de todo (agua, lava, huecos) y no recibe daño mientras vuela.
+  - **Lanza de luz:** una lanza que atraviesa a todos en línea y prende la luz donde pega.
+  - Y siempre: un poco más de vida y de daño, y su farol es más grande.
+
+**El Ciclo 2.** Después del cierre: "¿Bajar otra vez, más hondo?". Se empieza en el Bosque con su nivel, su equipo y las alas. Los mundos se reinician (cofres, jefes, faroles, jaulas) y todo es mucho más duro: los enemigos con mucha más vida y daño, los jefes con más vida y avisos un poco más cortos (en modo peque nunca por debajo de los de Alana), y el botín mejor (más raros y legendarios). Se ve "Ciclo 2" en el HUD. El Ciclo 3 sigue la misma regla.
+
+**La dificultad (pedido de Rick: "sigue siendo muy fácil").** Desde ya, en todos los pisos:
+- Enemigos con más vida y más daño en modo normal, y en modo peque un poco más (Alana pega menos de más y le pegan un poco más).
+- Más monstruos: los grupos del mapa se refuerzan con compañeros a partir del piso 3.
+- Jefes con más vida.
+- Se mide con números en `logic/` y tests, no a ojo: cuántos golpes aguanta la heroína de cada nivel y cuánto tarda en matar a cada enemigo.
+
+**Orden.**
+1. Calibrar la dificultad (logic + tests) y publicarlo solo, porque sirve ya en los pisos 1 a 6.
+2. Los encargos del taller en dos sesiones a la vez: el Mundo 7 con el Diablo, y las cinemáticas con la heroína celestial.
+3. Mientras el taller dibuja, el juego hace las reglas puras con tests: el frío, la ventisca, el hielo fino, las luces compañeras, el Diablo, el Ciclo 2 y los poderes celestiales.
+4. Llega el arte y se conecta: postales, suite completa y publicar.
+
 ## 6. Riesgos y mitigación
 
 | Riesgo | Mitigación |
