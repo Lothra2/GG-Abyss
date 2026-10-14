@@ -2,6 +2,11 @@ import { expect, test } from '@playwright/test'
 import { mkdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { abrirMundo, esperarEscena, gancho, vigilarErrores, sinErrores } from './util'
+import { JEFE } from '../src/config/balance'
+import { vidaDeJefe } from '../src/logic/dureza'
+
+/** F13: la vida del minotauro con la dureza de los jefes */
+const VIDA_MINOTAURO = vidaDeJefe(JEFE.vida)
 
 /**
  * Captura todas las postales de la capa `postales` del mapa en el juego, ya con luces, partículas y personajes.
@@ -147,7 +152,7 @@ test('captura la pelea, la victoria y la bajada a la Catedral', async ({ browser
     await gancho(page, 'ponerNivel', 10)
     await gancho(page, 'entrarArena')
     await gancho(page, 'avanzar', 0.3)
-    await gancho(page, 'danarJefe', 650 * 0.41)
+    await gancho(page, 'danarJefe', VIDA_MINOTAURO * 0.41)
     // se avanza hasta que haya un aviso en el piso (círculo o frente) con el reloj a la mitad
     for (let t = 0; t < 120; t += 0.1) {
       await gancho(page, 'curarTodo')
@@ -241,7 +246,7 @@ test('captura la tienda, el olfato de Thor, el álbum, la flecha guía y el cine
     await p2.waitForTimeout(400)
     await p2.screenshot({ path: join(carpeta, `jefe_entrada${v.sufijo}.png`) })
     await gancho(p2, 'avanzar', 2.5)
-    await gancho(p2, 'danarJefe', 650 * 0.42)
+    await gancho(p2, 'danarJefe', VIDA_MINOTAURO * 0.42)
     await gancho(p2, 'avanzar', 0.6)
     await p2.waitForTimeout(500)
     await p2.screenshot({ path: join(carpeta, `jefe_enojo${v.sufijo}.png`) })
