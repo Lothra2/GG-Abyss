@@ -206,6 +206,24 @@ export function encolarTodo(e: Escena, m: Manifest): void {
 }
 
 /** F11: las capas de los paneles del intro y sus hojas sueltas, con el tamaño de cuadro que dice el manifest */
+/** F13: los paneles y las hojas de una cinemática del final (`cine_bajada`, `cine_fin`) */
+export function encolarCine(e: Escena, m: Manifest, cine: 'cine_bajada' | 'cine_fin'): void {
+  const c = m[cine] ?? {}
+  for (const [n, v] of Object.entries(c)) {
+    const p = v as { w?: number; h?: number; capas?: { nombre: string; archivo: string }[]; archivo?: string; cuadros?: number } | null
+    if (!p || typeof p !== 'object') continue
+    if (Array.isArray(p.capas) && p.w && p.h) {
+      for (const k of p.capas) {
+        const key = K.cine(cine, `${n}_${k.nombre}`)
+        if (!yaHay(e, key)) e.load.spritesheet(key, rutaKit(k.archivo), { frameWidth: p.w, frameHeight: p.h })
+      }
+    } else if (typeof p.archivo === 'string' && p.w && p.h && typeof p.cuadros === 'number') {
+      const key = K.cine(cine, n)
+      if (!yaHay(e, key)) e.load.spritesheet(key, rutaKit(p.archivo), { frameWidth: p.w, frameHeight: p.h })
+    }
+  }
+}
+
 export function encolarIntro(e: Escena, m: Manifest): void {
   for (const [n, p] of Object.entries(panelesIntro(m))) {
     for (const c of p.capas) {

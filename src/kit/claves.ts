@@ -19,6 +19,8 @@ export const K = {
   animFx: (n: string) => `afx_${n}`,
   /** F11: capas de los paneles del intro y sus hojas sueltas */
   intro: (n: string) => `intro_${n}`,
+  /** F13: las capas de las cinemáticas del final */
+  cine: (cine: string, n: string) => `${cine}__${n}`,
   suelo: (i: number) => `suelo_${i}`,
   agua: 'agua',
   luz: 'luz',

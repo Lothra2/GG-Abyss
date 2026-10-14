@@ -255,6 +255,9 @@ export interface Manifest {
   creditos: string
   /** F11, parte 4: los paneles pintados del intro, la pared de fuego, el humo y el logo en llamas (ver kit/intro.ts) */
   intro?: Record<string, unknown>
+  /** F13: las cinemáticas del final, en el formato del intro (ver logic/cine.ts) */
+  cine_bajada?: Record<string, unknown>
+  cine_fin?: Record<string, unknown>
 }
 
 /** Una capa de un panel del intro: una tira de cuadros del tamaño del panel, corrida con su paralaje */
