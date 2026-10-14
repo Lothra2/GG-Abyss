@@ -175,6 +175,7 @@ export class Mundo extends Phaser.Scene {
   /** F12: el chorro de un surtidor o la sacudida de Thor le llegan a la Dragona en el próximo paso del jefe */
   private chorroPendiente = false
   private sacudidaPendiente = false
+  private chorros: { s: { x: number; y: number }; resta: number }[] = []
   /** las luces del último cuadro (la sombra solo se ve dentro de una) */
   private lucesUltimas: Luz[] = []
   /** la heroína va en el carrito: hasta cuándo (segundos de juego) */
@@ -714,6 +715,7 @@ export class Mundo extends Phaser.Scene {
       : null
     this.chorroPendiente = false
     this.sacudidaPendiente = false
+    this.chorros = []
     // los faroleros cuya luz ya está libre salen sin su jaula
     if (this.fragua) for (const e of this.enemigos.lista) if (e.jaulaLuz && this.fragua.faroleroLibre(e.ent.id)) e.jaulaLuz = null
     // la Dragona ya se liberó en esta partida: la fragua está fría de entrada
@@ -972,6 +974,12 @@ export class Mundo extends Phaser.Scene {
     const j = this.jefe
     const a = this.arena
     if (!j || !a) return
+    // los chorros que salen ahora: si la Dragona está encima, la apagan
+    for (const c of this.chorros) {
+      c.resta -= dt
+      if (c.resta <= 0 && j.peleando && this.fragua?.chorroA(c.s as never, j)) this.chorroPendiente = true
+    }
+    this.chorros = this.chorros.filter((c) => c.resta > 0)
     if (!j.peleando && j.vivo && !this.partida.jefeVencido && !this.combate.caido) {
       if (Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) <= a.radio - JEFE.entradaMargen) this.empezarJefe()
     }
@@ -1585,10 +1593,8 @@ export class Mundo extends Phaser.Scene {
     const r = f.usar(o)
     const s = r.surtidor
     if (!s) return false
-    this.time.delayedCall(280, () => {
-      const j = this.jefe
-      if (j && j.peleando && f.chorroA(s, j)) this.chorroPendiente = true
-    })
+    // el chorro sale un poquito después del tirón (cuenta con el reloj del juego)
+    this.chorros.push({ s, resta: 0.28 })
     return true
   }
 

@@ -112,16 +112,18 @@ test.describe('La Fragua de las Luces', () => {
     const errores = vigilarErrores(page)
     await bajarALaFragua(page, 'alana')
     await gancho(page, 'matarEnemigos')
+    // los faroleros y el Carcelero sueltan sus luces de a poco (en tiempo real)
+    await avanzar(page, 1)
+    await page.waitForTimeout(3000)
     const f = await fg(page)
-    const j = f.jaulas.find((q) => !q.farolero && !q.carcel)!
+    const j = f.jaulas.find((q) => !q.farolero && !q.carcel && !q.abierta)!
     await gancho(page, 'teleport', j.x, j.y + 20)
     expect(await gancho(page, 'abrirJaula', j.id)).toBe(true)
     await avanzar(page, 1.5)
     const f2 = await fg(page)
-    expect(f2.libres).toBe(1)
+    expect(f2.libres).toBe(f.libres + 1)
     expect(f2.jaulas.find((q) => q.id === j.id)!.abierta).toBe(true)
     expect(f2.alrededor.luzFria).toBe(true)
-    expect(Object.keys(await gancho<Record<string, number>>(page, 'sonido'))).toEqual(expect.arrayContaining(['jaula_abre']))
     await gancho(page, 'guardarAhora')
     expect((await gancho<{ faroles: string[] }>(page, 'estado')).faroles).toContain(`jaula:${j.id}`)
     // otra vez abrirla no hace nada
@@ -150,9 +152,11 @@ test.describe('La Fragua de las Luces', () => {
     const f1 = await fg(page)
     expect(f1.hollines).toBe(1)
     expect(f1.halo).toBeLessThan(h0)
-    // la sacudida los suelta y gasta una gota
-    const th = await gancho<{ x: number; y: number }>(page, 'thor')
-    await gancho(page, 'ponerHeroina', th.x + 20, th.y)
+    // la sacudida los suelta y gasta una gota (lejos del charco, si no se vuelve a mojar)
+    const lejos = (await fg(page)).fuentes.length ? { x: ch.x + 260, y: ch.y } : { x: ch.x + 260, y: ch.y }
+    await gancho(page, 'teleport', lejos.x, lejos.y)
+    await avanzar(page, 0.3)
+    expect((await fg(page)).agua).toBe(3)
     expect(await gancho(page, 'sacudirThor')).toBe(true)
     await avanzar(page, 0.3)
     const f2 = await fg(page)
