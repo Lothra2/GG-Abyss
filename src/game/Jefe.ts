@@ -14,6 +14,7 @@ import { Sombra } from './Sombras'
 import { texto } from './Texto'
 import type { Atacable } from './Enemigos'
 import { cuerpoJefe } from '../logic/capas'
+import { vidaDeJefe } from '../logic/dureza'
 
 export interface EventosJefe {
   /** el golpe cae sobre un círculo del piso: si la heroína está dentro, recibe el daño */
@@ -53,8 +54,13 @@ export interface EventosJefe {
   alMorir(): void
 }
 
-/** Qué jefe es según el personaje del manifest, y la vida con la que empieza */
-export function perfilDe(tipo: string): { perfil: PerfilJefe; vida: number } {
+/** Qué jefe es según el personaje del manifest, y la vida con la que empieza (F13: más dura, y más en cada ciclo) */
+export function perfilDe(tipo: string, ciclo = 1): { perfil: PerfilJefe; vida: number } {
+  const b = perfilBase(tipo)
+  return { perfil: b.perfil, vida: vidaDeJefe(b.vida, ciclo) }
+}
+
+function perfilBase(tipo: string): { perfil: PerfilJefe; vida: number } {
   if (tipo === 'guardian_campana') return { perfil: 'campana', vida: JEFE_CAMPANA.vida }
   if (tipo === 'polilla_reina') return { perfil: 'polilla', vida: JEFE_POLILLA.vida }
   if (tipo === 'pez_farol') return { perfil: 'pez', vida: JEFE_PEZ.vida }

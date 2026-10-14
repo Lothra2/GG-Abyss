@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Azar } from '../azar'
 import { danoEnemigo, escudoDeThor, recibirDano, reducirPorArmadura, tirarGolpe } from '../combate'
+import { COMBATE, MODO_PEQUE } from '../../config/balance'
 
 describe('tirarGolpe', () => {
   it('con la misma semilla da siempre lo mismo', () => {
@@ -38,15 +39,16 @@ describe('tirarGolpe', () => {
 })
 
 describe('armadura y daño recibido', () => {
-  it('la armadura reduce con 100 / (100 + armadura * 4)', () => {
+  it('la armadura reduce con 100 / (100 + armadura * factor)', () => {
     expect(reducirPorArmadura(100, 0)).toBe(100)
-    expect(reducirPorArmadura(100, 25)).toBeCloseTo(50)
+    expect(reducirPorArmadura(100, 100 / COMBATE.armaduraFactor)).toBeCloseTo(50)
   })
-  it('el modo peque baja el daño de los enemigos a la mitad', () => {
+  it('el modo peque baja el daño de los enemigos', () => {
     const normal = danoEnemigo(new Azar(4), [10, 10], false)
     const peque = danoEnemigo(new Azar(4), [10, 10], true)
     expect(normal).toBe(10)
-    expect(peque).toBe(5)
+    expect(peque).toBe(Math.round(10 * MODO_PEQUE.danoEnemigos))
+    expect(peque).toBeLessThan(normal)
   })
   const d = { vida: 50, escudo: 0, reduccionPct: 0, armadura: 0, invulnerableS: 0 }
   it('resta vida y avisa si cae', () => {

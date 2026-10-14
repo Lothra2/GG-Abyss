@@ -227,12 +227,25 @@ export const ENEMIGOS: Record<string, EnemigoBalance> = {
 }
 
 /**
- * La dureza de cada piso (pedido de Rick: "mato todo muy fácil"). La heroína sube de nivel y de equipo al bajar: los
- * enemigos también. Se multiplica la vida y el daño del enemigo según el piso (1 en el Bosque).
+ * La dureza de cada piso (pedido de Rick: "mato todo muy fácil", y en F13 otra vez: "sigue siendo muy fácil"). La
+ * heroína sube de nivel y de equipo al bajar: los enemigos también. Medido en logic/__tests__/dificultad.test.ts con el
+ * equipo normal de su nivel: un enemigo común aguanta unos 3 a 7 golpes, la heroína unos 10 a 25 golpes comunes y un
+ * jefe más de un minuto de golpes seguidos.
  */
 export const DUREZA = {
-  vidaPorPiso: 0.3,
-  danoPorPiso: 0.2,
+  /** desde el Bosque: la vida y el daño de todos los enemigos se multiplican por esto */
+  vidaBase: 2.6,
+  danoBase: 2.6,
+  /** y cada piso más abajo suma esto */
+  vidaPorPiso: 0.35,
+  danoPorPiso: 0.25,
+  /** los jefes aguantan esto más (sus fases y sus ventanas siguen igual) */
+  jefeVida: 2.8,
+  /** desde este piso los grupos traen refuerzos: cada enemigo común trae un compañero con esta probabilidad por piso */
+  refuerzoDesde: 3,
+  refuerzoPorPiso: 0.12,
+  /** el Ciclo 2 en adelante: cada ciclo extra multiplica otra vez la vida y el daño (y los jefes) */
+  ciclo: { vida: 1.7, dano: 1.5 },
 }
 
 export const TROL_ELITE = {
@@ -252,9 +265,10 @@ export const ENEMIGO_COMUN = {
 }
 
 export const MODO_PEQUE = {
-  danoEnemigos: 0.5,
+  // F13: un poco menos generoso (Rick: "sube la dificultad en los dos modos")
+  danoEnemigos: 0.6,
   /** en modo peque la heroína pega más fuerte: los enemigos más duros siguen cayendo rápido para Alana */
-  danoHeroina: 1.5,
+  danoHeroina: 1.3,
   velocidadEnemigos: 0.8,
   avisos: 1.5,
   botones: 1.25,
@@ -392,7 +406,8 @@ export const COMBATE = {
   critDanoMult: 1.5,
   critBase: 0.05,
   /** cada punto de armadura reduce el daño: dano * 100 / (100 + armadura * esto) */
-  armaduraFactor: 4,
+  // F13: la armadura protege menos (con 4, el equipo normal dejaba pasar apenas un quinto del daño)
+  armaduraFactor: 1.5,
   // más pausado desde F10: con la cámara más cerca en la compu se ve el doble de rápido en pantalla
   velocidadHeroe: 105,
   velocidadHeroeCorrer: 140,

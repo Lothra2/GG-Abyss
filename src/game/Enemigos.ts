@@ -7,7 +7,7 @@ import { DIRECCIONES, indiceDireccion } from '../logic/direccion'
 import type { Grilla } from '../logic/grilla'
 import { moverCuerpo } from '../logic/movimiento'
 import { ordenPolilla, sombraVisible, type Cristal } from '../logic/abismo'
-import { enemigoDelPiso } from '../logic/dureza'
+import { enemigoDelPiso, traeRefuerzo } from '../logic/dureza'
 import { aturdir, matar, nuevoEnemigoIA, pensar, type ConfigIA, type EnemigoIA } from '../logic/ia'
 import { juego } from '../logic/azar'
 import { ABISMO, COMBATE, ENEMIGOS, GOLPE_EN, IMPACTO, MODO_PEQUE, PUERTO, TROL_ELITE, type EnemigoBalance } from '../config/balance'
@@ -192,11 +192,12 @@ export class Enemigo implements Atacable {
     readonly ent: Entidad,
     private ev: EventosEnemigos,
     piso = 1,
+    ciclo = 1,
   ) {
     this.tipo = String(ent.props.enemigo ?? 'rata')
     this.id = ent.id
     // más abajo, más duros (logic/dureza.ts)
-    this.cfg = enemigoDelPiso(ENEMIGOS[this.tipo] ?? ENEMIGOS.rata!, piso)
+    this.cfg = enemigoDelPiso(ENEMIGOS[this.tipo] ?? ENEMIGOS.rata!, piso, ciclo)
     this.elite = ent.props.elite === true
     this.trolElite = this.elite && !this.cfg.pesado
     this.nombre = String(ent.props.nombre ?? (this.elite ? 'Trol del Puente' : this.tipo))
@@ -1025,13 +1026,19 @@ export class Enemigos {
     return [...this.lista.filter((e) => !e.oculta), ...this.adicionales]
   }
 
-  constructor(escena: Phaser.Scene, m: Manifest, grilla: Grilla, entidades: readonly Entidad[], ev: EventosEnemigos, private piso = 1) {
+  constructor(escena: Phaser.Scene, m: Manifest, grilla: Grilla, entidades: readonly Entidad[], ev: EventosEnemigos, private piso = 1, private ciclo = 1) {
     for (const e of entidades) {
       if (e.tipo !== 'enemigo') continue
       if (e.props.tras_jefe === true) continue
       const tipo = String(e.props.enemigo ?? '')
       if (!m.personajes[tipo]) continue
-      this.lista.push(new Enemigo(escena, m, grilla, e, ev, piso))
+      this.lista.push(new Enemigo(escena, m, grilla, e, ev, piso, ciclo))
+      // F13: más abajo los grupos crecen: un compañero al lado (nunca de los élites ni de los que cargan algo)
+      const h = (((e.id * 2654435761) >>> 0) % 1000) / 1000
+      if (e.props.elite !== true && e.props.jaula !== true && traeRefuerzo(piso, h, ciclo)) {
+        const p = grilla.puntoLibreCerca(e.x + 30, e.y + 14, 8, 90)
+        if (p) this.lista.push(new Enemigo(escena, m, grilla, { id: 500000 + e.id, tipo: 'enemigo', x: p.x, y: p.y, props: { ...e.props, refuerzo: true } }, ev, piso, ciclo))
+      }
     }
   }
 
@@ -1099,7 +1106,7 @@ export class Enemigos {
     if (!m.personajes[tipo]) return null
     const id = 900000 + this.lista.length
     const ent: Entidad = { id, tipo: 'enemigo', x, y, props: { enemigo: tipo, invocada: true } }
-    const e = new Enemigo(escena, m, grilla, ent, ev, this.piso)
+    const e = new Enemigo(escena, m, grilla, ent, ev, this.piso, this.ciclo)
     // salen persiguiendo, no paseando
     e.ia.cd = 0.6
     this.lista.push(e)
