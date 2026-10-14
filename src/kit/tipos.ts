@@ -53,6 +53,8 @@ export interface Personaje {
   nombre: string
   clase?: string
   retrato?: string
+  /** F13: el retrato de la celestial */
+  retrato_celestial?: string
   celda: number
   pivote: [number, number]
   desde_estudio?: boolean

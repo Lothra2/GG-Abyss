@@ -230,7 +230,9 @@ export class Inventario extends Phaser.Scene {
       const [rx, ry, rw, rh] = r
       if (clave === 'retrato') {
         const id = this.mundo.heroina.id
-        if (this.textures.exists(K.retrato(id))) poner(this.add.image(rx + rw / 2, ry + rh / 2, K.retrato(id)))
+        // F13: la celestial con su aureola y las alas asomando
+        const r = p.celestial && this.textures.exists(K.retratoCelestial(id)) ? K.retratoCelestial(id) : K.retrato(id)
+        if (this.textures.exists(r)) poner(this.add.image(rx + rw / 2, ry + rh / 2, r))
         continue
       }
       const id = p.equipo[clave] ?? null

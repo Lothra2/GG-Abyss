@@ -49,6 +49,7 @@ export function encolarPersonaje(e: Escena, m: Manifest, id: string, anims?: str
     e.load.spritesheet(key, rutaKit(a.archivo), { frameWidth: p.celda, frameHeight: p.celda })
   }
   if (p.retrato && !yaHay(e, K.retrato(id))) e.load.image(K.retrato(id), rutaKit(p.retrato))
+  if (p.retrato_celestial && !yaHay(e, K.retratoCelestial(id))) e.load.image(K.retratoCelestial(id), rutaKit(p.retrato_celestial))
 }
 
 /** Las capas de equipo que una heroína tiene puestas (arma, mano libre, pecho, casco) */

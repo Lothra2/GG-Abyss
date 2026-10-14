@@ -7,6 +7,7 @@ export const K = {
   /** F13: un bloque de una capa que viene en su propia hoja (el vuelo de la celestial) */
   capaBloque: (id: string, tipo: string, clave: string, anim: string) => `capa_${id}_${tipo}_${clave}__${anim}`,
   retrato: (id: string) => `retrato_${id}`,
+  retratoCelestial: (id: string) => `retrato_celestial_${id}`,
   fx: (n: string) => `fx_${n}`,
   obj: (n: string, anim: string) => `o_${n}_${anim}`,
   /** la sombra horneada de un objeto */
