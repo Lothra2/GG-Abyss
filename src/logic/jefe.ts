@@ -210,7 +210,7 @@ export function enLinea(px: number, py: number, x: number, y: number, dx: number
 }
 
 /** El golpe que recibe el jefe. La vida solo baja: no hay manera de curarlo. Devuelve si cambió de fase o murió. */
-export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boolean; escudo?: boolean; fase3?: boolean } {
+export function danarJefe(j: Jefe, dano: number): { fase2: boolean; murio: boolean; escudo?: boolean; fase3?: boolean; faseNueva?: number } {
   if (j.estado === 'muerto' || dano <= 0) return { fase2: false, murio: false }
   // la Polilla Reina con los cristales apagados: el golpe no le llega
   if (j.escudo) return { fase2: false, murio: false, escudo: true }

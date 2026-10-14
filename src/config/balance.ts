@@ -350,6 +350,7 @@ export const BOTIN = {
   salamandra_brasa: { objeto: 0.12, oro: 0.6, cantidad: 1 } as BotinFuente,
   farolero_cadenas: { objeto: 0.25, oro: 0.8, cantidad: 1 } as BotinFuente,
   carcelero: { objeto: 1, oro: 1, cantidad: 2, garantiza: 'rare' } as BotinFuente,
+  jaula_huesos: { objeto: 0, oro: 0, cantidad: 0 } as BotinFuente,
   lobo_escarcha: { objeto: 0.08, oro: 0.5, cantidad: 1 } as BotinFuente,
   espectro_helado: { objeto: 0.12, oro: 0.6, cantidad: 1 } as BotinFuente,
   diablillo: { objeto: 0.05, oro: 0.4, cantidad: 1 } as BotinFuente,

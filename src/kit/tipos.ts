@@ -26,6 +26,8 @@ export interface AnimHoja {
   corona?: ([number, number] | null)[][]
   /** F12: la boca de la Dragona de Brasa (su luz y de dónde sale el aliento), igual que la antena */
   boca?: ([number, number] | null)[][]
+  /** F13: los ojos del Diablo por dirección y cuadro (la luz que se ve en la oscuridad) */
+  ojos?: ([number, number] | null)[][]
   /** F12: la jaula que carga el farolero de cadenas, igual que la antena */
   jaula?: ([number, number] | null)[][]
 }
@@ -71,6 +73,7 @@ export interface Personaje {
   luz_corona?: { color: string; radius: number; notas?: string }
   /** la luz de la boca de la Dragona de Brasa */
   luz_boca?: { color: string; radius: number; notas?: string }
+  luz_ojos?: { color: string; radius: number; notas?: string }
 }
 
 export type TipoCapa = 'pecho' | 'casco' | 'arma' | 'mano'

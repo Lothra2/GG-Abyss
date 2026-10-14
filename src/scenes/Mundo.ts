@@ -49,6 +49,7 @@ import { Ciudad } from '../game/Ciudad'
 import { bostezo } from '../logic/ciudad'
 import { Fragua } from '../game/Fragua'
 import { Corazon } from '../game/Corazon'
+import { JaulaHuesos } from '../game/JaulaHuesos'
 import { alcanzaSacudida } from '../logic/fragua'
 import { enMedio } from '../logic/jefe'
 import { CORAZON, FRAGUA } from '../config/balance'
@@ -179,6 +180,8 @@ export class Mundo extends Phaser.Scene {
   fragua: Fragua | null = null
   /** F13: el Mundo 7, el Corazón Helado (el frío, la ventisca, el hielo fino, las compañeras y los braseros) */
   corazon: Corazon | null = null
+  /** F13: la jaula de huesos del Diablo, mientras la tiene encerrada */
+  jaulaHuesos: JaulaHuesos | null = null
   /** F12: el chorro de un surtidor o la sacudida de Thor le llegan a la Dragona en el próximo paso del jefe */
   private chorroPendiente = false
   private sacudidaPendiente = false
@@ -893,7 +896,7 @@ export class Mundo extends Phaser.Scene {
           const ang = (Math.PI * 2 * k) / Math.max(1, n) + 0.7
           const p = this.grilla.puntoLibreCerca(x + Math.cos(ang) * 46, y + Math.sin(ang) * 30, 8, 80) ?? { x, y }
           // el minotauro llama ratas; la Polilla Reina, polillas; el Pez Farol, cangrejos y una medusa
-          const tipo = tipoJefe === 'polilla_reina' ? 'polilla_ceniza' : tipoJefe === 'pez_farol' ? (k % 3 === 2 ? 'medusa_negra' : 'cangrejo_ceniza') : tipoJefe === 'rey_de_piedra' ? 'sonambulo_piedra' : tipoJefe === 'dragona_brasa' ? (k % 3 === 2 ? 'salamandra_brasa' : 'hollin') : 'rata'
+          const tipo = tipoJefe === 'diablo' ? (k % 3 === 2 ? 'lobo_escarcha' : 'diablillo') : tipoJefe === 'polilla_reina' ? 'polilla_ceniza' : tipoJefe === 'pez_farol' ? (k % 3 === 2 ? 'medusa_negra' : 'cangrejo_ceniza') : tipoJefe === 'rey_de_piedra' ? 'sonambulo_piedra' : tipoJefe === 'dragona_brasa' ? (k % 3 === 2 ? 'salamandra_brasa' : 'hollin') : 'rata'
           this.enemigos.invocar(this, this.m, this.grilla, tipo, p.x, p.y, evEnemigos)
         }
       },
@@ -974,6 +977,21 @@ export class Mundo extends Phaser.Scene {
         this.game.events.emit('destello', { color: 0xffe8b0, alfa: this.suave ? 0.08 : 0.22, ms: 300 })
       },
       alMorir: () => this.victoria(),
+      // F13: el Diablo cambia de fase: la música sube (musica_diablo_1 a 3 y la final) y la arena se tiñe
+      faseNueva: (n) => {
+        this.director.fase2()
+        this.impacto('jefeFase2')
+        this.game.events.emit('destello', { color: n === 3 ? 0x05060c : 0xc8281e, alfa: this.suave ? 0.12 : 0.4, ms: 500 })
+        if (this.jefe) this.proyectiles.fxEn('onda_pisoton', this.jefe.x, this.jefe.y, 3)
+        this.sonido.fijarMusica(this.musicaDiablo(n))
+        const dicho: Record<number, string> = { 2: '¡Cuidado con el rayo!', 3: '¡Prende los cuatro braseros!', 4: '¡Rompe la jaula a golpes!', 5: '¡Ya casi! ¡No te rindas!' }
+        if (dicho[n]) this.textoFlotante(this.heroina.x, this.heroina.y - 66, dicho[n]!, n === 3 ? 0xffb060 : 0xffe0a0)
+      },
+      congelar: (x, y) => {
+        this.proyectiles.fxEn('impacto_hielo', x, y - 40, 2)
+        if (this.corazon?.congelarUno(x, y)) this.textoFlotante(x, y - 120, '¡Congeló un brasero!', 0x9ad8ff)
+      },
+      jaula: (x, y, golpes) => this.encerrarEnJaula(x, y, golpes),
     }
     this.jefe = new JefeSprite(this, this.m, this.grilla, ent, this.arena, this.partida.jefeVida ?? perfilDe(tipoJefe, this.partida.ciclo).vida, ev, this.partida.ciclo)
     this.enemigos.adicionales.push(this.jefe)
@@ -982,6 +1000,45 @@ export class Mundo extends Phaser.Scene {
       this.jefe.quitar()
       this.victoria(true)
     }
+  }
+
+  /** F13: la música del Diablo según su fase: 1 a 3 cada vez más fuerte y la final en la desesperada */
+  private musicaDiablo(fase: number): string {
+    const n = fase >= 5 ? 'musica_diablo_final' : `musica_diablo_${Math.min(3, Math.max(1, fase === 4 ? 3 : fase))}`
+    return this.cache.audio.exists(K.aud(n)) ? n : 'musica_jefe'
+  }
+
+  /** F13: la jaula de huesos sale donde está la heroína: no sale hasta romperla (los golpes y Thor la rompen) */
+  private encerrarEnJaula(x: number, y: number, golpes: number): void {
+    if (this.combate.caido) return
+    this.soltarJaula()
+    const h = this.heroina
+    // si ya se movió del aviso, la jaula sale donde está ella (el aviso es para que vea venir lo que pasa)
+    const cx = Math.hypot(h.x - x, h.y - y) < 60 ? h.x : x
+    const cy = Math.hypot(h.x - x, h.y - y) < 60 ? h.y : y
+    if (Math.hypot(h.x - cx, h.y - cy) > 30) return
+    const peque = this.combate.modoPeque
+    this.jaulaHuesos = new JaulaHuesos(this, this.m, cx, cy, peque ? Math.ceil(golpes / 2) : golpes, {
+      sonido: (n, op) => this.sonido.efecto(n, op),
+      fx: (n, fx, fy, esc) => this.proyectiles.fxEn(n, fx, fy, esc ?? 1),
+      romper: () => {
+        this.textoFlotante(cx, cy - 60, '¡Libre!', 0xffe0a0)
+        const i = this.jaulaHuesos ? this.enemigos.adicionales.indexOf(this.jaulaHuesos) : -1
+        if (i >= 0) this.enemigos.adicionales.splice(i, 1)
+      },
+    })
+    this.enemigos.adicionales.push(this.jaulaHuesos)
+    this.combate.marcar(this.jaulaHuesos)
+    this.textoFlotante(cx, cy - 60, '¡Rómpela a golpes!', 0xe8e0d0)
+  }
+
+  private soltarJaula(): void {
+    const j = this.jaulaHuesos
+    if (!j) return
+    const i = this.enemigos.adicionales.indexOf(j)
+    if (i >= 0) this.enemigos.adicionales.splice(i, 1)
+    j.destruir()
+    this.jaulaHuesos = null
   }
 
   /** F8: raíces que salen del piso por unos segundos (la llamada del Guardián de la Campana). No atrapan a la heroína. */
@@ -1028,9 +1085,19 @@ export class Mundo extends Phaser.Scene {
     }
     // si la heroína se va lejos de la arena (un salto de prueba, por ejemplo) la pelea se corta sin curar al jefe
     if (j.peleando && Math.hypot(this.heroina.x - a.x, this.heroina.y - a.y) > a.radio + 60) this.alCaerEnArena()
-    j.update({ dt, heroeX: this.heroina.x, heroeY: this.heroina.y, heroeVivo: !this.combate.caido, modoPeque: this.combate.modoPeque, ratasVivas: this.enemigos.invocadasVivas, vulnerable: this.galerias?.reinaVulnerable ?? this.ciudad?.lamparasTodas, alzado: this.puerto?.farolAlzado ? { x: this.thor.x, y: this.thor.y } : undefined, chorro: this.chorroPendiente, sacudida: this.sacudidaPendiente })
+    j.update({ dt, heroeX: this.heroina.x, heroeY: this.heroina.y, heroeVivo: !this.combate.caido, modoPeque: this.combate.modoPeque, ratasVivas: this.enemigos.invocadasVivas, vulnerable: this.galerias?.reinaVulnerable ?? this.ciudad?.lamparasTodas ?? this.corazon?.braserosTodos, alzado: this.puerto?.farolAlzado ? { x: this.thor.x, y: this.thor.y } : undefined, chorro: this.chorroPendiente, sacudida: this.sacudidaPendiente })
     this.chorroPendiente = false
     this.sacudidaPendiente = false
+    // F13: adentro de la jaula no se sale: vuelve al centro si se va. Thor muerde desde afuera
+    const jh = this.jaulaHuesos
+    if (jh) {
+      jh.update(dt, this.thor)
+      if (!jh.vivo) this.jaulaHuesos = null
+      else if (jh.encierra(this.heroina.x, this.heroina.y)) {
+        const d = Math.hypot(this.heroina.x - jh.x, this.heroina.y - jh.y) || 1
+        this.heroina.teleport(jh.x + ((this.heroina.x - jh.x) / d) * 18, jh.y + ((this.heroina.y - jh.y) / d) * 18)
+      }
+    }
     // F12: en la fase 3 de la Dragona los fuelles soplan más seguido
     if (this.fragua) this.fragua.rapido = j.peleando && j.fase >= 3
     // al salir de la arena después de ganar, vuelve la música del bosque
@@ -1048,7 +1115,8 @@ export class Mundo extends Phaser.Scene {
     if (!this.jefe || !this.arena || !this.jefe.empezar()) return
     this.director.empezar()
     // cada jefe con su música si el taller la trae (la Polilla Reina tiene la suya)
-    const propia = `musica_jefe_${perfilDe(this.jefe.tipo).perfil}`
+    const perfil = perfilDe(this.jefe.tipo).perfil
+    const propia = perfil === 'diablo' ? this.musicaDiablo(this.jefe.fase) : `musica_jefe_${perfil}`
     this.sonido.fijarMusica(this.cache.audio.exists(K.aud(propia)) ? propia : 'musica_jefe')
     this.cerrarAnillo()
     this.encenderPiedras()
@@ -1109,6 +1177,7 @@ export class Mundo extends Phaser.Scene {
   /** Thor rescató a la heroína: el jefe se duerme sin curarse, la arena se abre y vuelve la música del bosque */
   private alCaerEnArena(): void {
     if (!this.jefe || !this.jefe.peleando) return
+    this.soltarJaula()
     this.director.cortar()
     this.jefe.reposar()
     this.ciudad?.limpiarChispasJefe()
@@ -1125,6 +1194,9 @@ export class Mundo extends Phaser.Scene {
   private victoria(yaVencido = false): void {
     if (this.victoriaVista) return
     this.victoriaVista = true
+    // F13: vencido el Diablo se acaban el frío y la ventisca, y la jaula se rompe sola
+    this.soltarJaula()
+    this.corazon?.apagar()
     const a = this.arena
     this.partida.jefeVencido = true
     this.partida.jefeVida = undefined
