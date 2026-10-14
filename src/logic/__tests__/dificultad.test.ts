@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { statsDe } from '../stats'
 import { bonosDeEquipo } from '../equipo'
-import { enemigoDelPiso, vidaDeJefe } from '../dureza'
+import { danoDeJefe, enemigoDelPiso, vidaDeJefe } from '../dureza'
 import { reducirPorArmadura } from '../combate'
 import { leerCatalogo } from '../catalogo'
 import { ENEMIGOS, JEFE, JEFE_CAMPANA, JEFE_DRAGONA, JEFE_PEZ, JEFE_POLILLA, JEFE_REY, MODO_PEQUE, type ClaseId } from '../../config/balance'
@@ -15,6 +15,7 @@ const items = (catJson as unknown as { items: It[] }).items
 const cat = leerCatalogo(catJson as never)
 const NIVEL_DE_PISO = [0, 2, 4, 6, 8, 10, 10]
 const COMUNES: Record<number, string[]> = { 1: ['rata', 'calabaza', 'goblin_arquero'], 2: ['raicita', 'vigia_raices'], 3: ['polilla_ceniza', 'sombra'], 4: ['marinero_niebla', 'cangrejo_ceniza'], 5: ['sonambulo_piedra', 'gargola_dormida', 'duende_sueno'], 6: ['salamandra_brasa'] }
+const ATAQUES: Record<string, unknown>[] = [{}, JEFE, JEFE_CAMPANA, JEFE_POLILLA, JEFE_PEZ, JEFE_REY, JEFE_DRAGONA]
 const JEFES = [0, JEFE.vida, JEFE_CAMPANA.vida, JEFE_POLILLA.vida, JEFE_PEZ.vida, JEFE_REY.vida, JEFE_DRAGONA.vida]
 
 function heroina(clase: ClaseId, piso: number) {
@@ -58,6 +59,20 @@ describe('la dificultad (F13)', () => {
       }
     })
   }
+
+  it('los golpes de cada jefe duelen: con su equipo aguanta entre 4 y 16 (antes eran hasta 39)', () => {
+    for (let piso = 1; piso <= 6; piso++) {
+      const s = heroina('paladin', piso)
+      for (const [k, v] of Object.entries(ATAQUES[piso]!)) {
+        const d = (v as { dano?: readonly [number, number] } | null)?.dano
+        if (!d || !Array.isArray(d)) continue
+        const aguanta = Math.ceil(s.vidaMax / reducirPorArmadura(((d[0] + d[1]) / 2) * danoDeJefe(piso), s.armadura))
+        expect(aguanta, `${k} del jefe del piso ${piso}`).toBeGreaterThanOrEqual(4)
+        expect(aguanta, `${k} del jefe del piso ${piso}`).toBeLessThanOrEqual(16)
+      }
+    }
+    expect(danoDeJefe(7, 2)).toBeGreaterThan(danoDeJefe(7))
+  })
 
   it('en modo peque sigue siendo más amable, pero ya no regala', () => {
     expect(MODO_PEQUE.danoEnemigos).toBeGreaterThan(0.5)

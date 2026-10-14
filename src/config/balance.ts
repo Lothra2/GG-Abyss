@@ -241,6 +241,9 @@ export const DUREZA = {
   danoPorPiso: 0.25,
   /** los jefes aguantan esto más (sus fases y sus ventanas siguen igual) */
   jefeVida: 2.8,
+  /** F13: los jefes también pegan más, y más abajo más (multiplica sus golpes: 1.4 en el piso 1, 4.1 en el 7) */
+  jefeDanoBase: 1.4,
+  jefeDanoPorPiso: 0.45,
   /** desde este piso los grupos traen refuerzos: cada enemigo común trae un compañero con esta probabilidad por piso */
   refuerzoDesde: 3,
   refuerzoPorPiso: 0.12,

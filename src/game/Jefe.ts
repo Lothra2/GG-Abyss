@@ -144,13 +144,14 @@ export class JefeSprite implements Atacable {
     arena: { x: number; y: number; radio: number; poza?: number },
     vida: number,
     private ev: EventosJefe,
+    ciclo = 1,
   ) {
     this.tipo = String(ent.props.enemigo ?? 'minotauro')
     this.nombre = String(ent.props.nombre ?? 'Minotauro del Bosque')
     this.titulo = String(ent.props.titulo ?? 'Guardián de Las Alturas')
     this.radioArena = arena.radio
     this.radioPoza = arena.poza ?? 0
-    const { perfil, vida: vidaMax } = perfilDe(this.tipo)
+    const { perfil, vida: vidaMax } = perfilDe(this.tipo, ciclo)
     const campana = perfil === 'campana'
     this.logica = nuevoJefe(arena.x, arena.y, vidaMax, perfil)
     this.logica.vida = Math.max(1, Math.min(vidaMax, vida))

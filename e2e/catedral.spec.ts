@@ -132,7 +132,8 @@ test.describe('La Catedral de las Raíces', () => {
     expect(vio, 'el guardián avisó').toBe(true)
     // avisa más que el trol (1.2 s): hay tiempo para mirarlo
     expect(tAviso).toBeGreaterThan(1.2)
-    expect((await gancho<{ vida: number }>(page, 'combate')).vida).toBeGreaterThan(vida0 - 9)
+    // a lo sumo le entra un golpe chico (con la dureza del piso 2, hasta unos 31), nunca el grande (50 o más)
+    expect((await gancho<{ vida: number }>(page, 'combate')).vida).toBeGreaterThan(vida0 - 45)
   })
 
   test('el vado de la nave: salirse de las losas es caer al agua y vuelve a la losa sin perder vida; tocar la otra orilla no la manda por el agua', async ({ page }) => {

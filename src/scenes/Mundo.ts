@@ -16,6 +16,7 @@ import { Frente } from '../fx/Frente'
 import { frenteDeZona } from '../logic/capas'
 import { FondoParalaje } from '../fx/FondoParalaje'
 import { Niebla } from '../logic/niebla'
+import { danoDeJefe } from '../logic/dureza'
 import { pisoDe, thorBrilla, topeOscuridad } from '../logic/abismo'
 import { ABISMO, PUERTO } from '../config/balance'
 import { aspectoDe, claveAspecto } from '../logic/aspecto'
@@ -140,6 +141,8 @@ export class Mundo extends Phaser.Scene {
   private relojNiebla = 0
   /** F11: el piso del abismo de este mundo (1 el Bosque, 2 la Catedral...) */
   piso = 1
+  /** F13: cuánto más pegan los golpes del jefe en este piso y ciclo (logic/dureza.ts) */
+  multJefe = 1
   heroina!: Heroina
   private thor!: ThorSprite
   private criaturas!: Criaturas
@@ -398,6 +401,7 @@ export class Mundo extends Phaser.Scene {
     this.planoJefe = this.director.tick(0)
     this.mapa = this.mapaDelMundo()
     this.piso = pisoDe(this.partida.mundo)
+    this.multJefe = danoDeJefe(this.piso, this.partida.ciclo)
     this.niebla = new Niebla(this.mapa.ancho, this.mapa.alto, this.mapa.cuadro, this.partida.niebla)
     this.peligroAgua = new Set(entidadesDeTipo(this.mapa, 'peligro_agua').map((e) => Math.floor(e.y / this.mapa.cuadro) * this.mapa.ancho + Math.floor(e.x / this.mapa.cuadro)))
     this.grilla = new Grilla(this.mapa)
@@ -595,7 +599,7 @@ export class Mundo extends Phaser.Scene {
       juicio: (id) => veredicto(this.cat, this.partida.equipo, id, this.combate.clase)?.juicio ?? null,
       aPiso: (x, y) => this.grilla.puntoLibreCerca(x, y, 8, 240) ?? { x, y },
     })
-    this.enemigos = new Enemigos(this, m, this.grilla, this.mapa.entidades, evEnemigos, this.piso)
+    this.enemigos = new Enemigos(this, m, this.grilla, this.mapa.entidades, evEnemigos, this.piso, this.partida.ciclo)
     this.combate = new Combate({
       escena: this,
       m,
@@ -831,15 +835,15 @@ export class Mundo extends Phaser.Scene {
         if (this.combate.caido) return
         const dx = (this.heroina.x - x) / radio
         const dy = (this.heroina.y - y) / (elipse ? radio / 2 : radio)
-        if (dx * dx + dy * dy <= 1) this.combate.golpeDeEnemigo(dano)
+        if (dx * dx + dy * dy <= 1) this.combate.golpeDeEnemigo(dano, this.multJefe)
       },
       golpeCarga: (dano) => {
-        if (!this.combate.caido) this.combate.golpeDeEnemigo(dano)
+        if (!this.combate.caido) this.combate.golpeDeEnemigo(dano, this.multJefe)
       },
       // F8: la onda de la campana: el anillo pega, cerca de la campana (o lejos del anillo) no
       golpeAnillo: (x, y, interior, exterior, dano) => {
         if (this.combate.caido) return
-        if (enAnillo(this.heroina.x, this.heroina.y, x, y, interior, exterior)) this.combate.golpeDeEnemigo(dano)
+        if (enAnillo(this.heroina.x, this.heroina.y, x, y, interior, exterior)) this.combate.golpeDeEnemigo(dano, this.multJefe)
         else if (this.mejoras && Math.hypot(this.heroina.x - x, this.heroina.y - y) <= interior) this.textoFlotante(this.heroina.x, this.heroina.y - 48, '¡A salvo!', 0x5ae0d0)
       },
       // F8: la llamada de raíces: salen del piso donde cayeron y tapan el paso un rato
@@ -895,7 +899,7 @@ export class Mundo extends Phaser.Scene {
       // F12: el barrido del Rey pega en su franja
       golpeLinea: (x, y, dx, dy, largo, ancho, dano) => {
         if (this.combate.caido) return
-        if (enFranja(this.heroina.x, this.heroina.y, x, y, dx, dy, largo, ancho)) this.combate.golpeDeEnemigo(dano)
+        if (enFranja(this.heroina.x, this.heroina.y, x, y, dx, dy, largo, ancho)) this.combate.golpeDeEnemigo(dano, this.multJefe)
         else if (this.mejoras && enFranja(this.heroina.x, this.heroina.y, x, y, dx, dy, largo, ancho + 50)) this.textoFlotante(this.heroina.x, this.heroina.y - 48, '¡Esquivaste!', 0x8af0e0)
       },
       // F12: la canción de cuna apaga las lámparas del salón
@@ -907,7 +911,7 @@ export class Mundo extends Phaser.Scene {
       // F12: el coletazo de la Dragona barre medio círculo del lado de la heroína
       golpeMedio: (x, y, dx, dy, radio, dano) => {
         if (this.combate.caido) return
-        if (enMedio(this.heroina.x, this.heroina.y, x, y, dx, dy, radio)) this.combate.golpeDeEnemigo(dano)
+        if (enMedio(this.heroina.x, this.heroina.y, x, y, dx, dy, radio)) this.combate.golpeDeEnemigo(dano, this.multJefe)
         else if (this.mejoras && Math.hypot(this.heroina.x - x, this.heroina.y - y) <= radio + 40) this.textoFlotante(this.heroina.x, this.heroina.y - 48, '¡Esquivaste!', 0x8af0e0)
       },
       fuegoPiso: (x, y, dx, dy, largo, ancho, seg) => this.fragua?.fuegoPiso(x, y, dx, dy, largo, ancho, seg),
@@ -921,7 +925,7 @@ export class Mundo extends Phaser.Scene {
         this.olaQueCorre(x, y, dx, dy, largo)
         if (this.combate.caido) return
         if (enLinea(this.heroina.x, this.heroina.y, x, y, dx, dy, largo, ancho)) {
-          this.combate.golpeDeEnemigo(dano)
+          this.combate.golpeDeEnemigo(dano, this.multJefe)
           this.empujarHeroina(dx, dy, empuje)
         } else if (this.mejoras && enLinea(this.heroina.x, this.heroina.y, x, y, dx, dy, largo, ancho + 50)) this.textoFlotante(this.heroina.x, this.heroina.y - 48, '¡Esquivaste!', 0x8af0e0)
       },
@@ -932,7 +936,7 @@ export class Mundo extends Phaser.Scene {
       },
       alMorir: () => this.victoria(),
     }
-    this.jefe = new JefeSprite(this, this.m, this.grilla, ent, this.arena, this.partida.jefeVida ?? perfilDe(tipoJefe).vida, ev)
+    this.jefe = new JefeSprite(this, this.m, this.grilla, ent, this.arena, this.partida.jefeVida ?? perfilDe(tipoJefe, this.partida.ciclo).vida, ev, this.partida.ciclo)
     this.enemigos.adicionales.push(this.jefe)
     this.game.events.on('heroina-cae', this.alCaerEnArena, this)
     if (this.partida.jefeVencido) {

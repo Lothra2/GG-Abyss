@@ -18,6 +18,12 @@ export function vidaDeJefe(base: number, ciclo = 1): number {
   return Math.round(base * DUREZA.jefeVida * Math.pow(DUREZA.ciclo.vida, Math.max(0, Math.floor(ciclo) - 1)))
 }
 
+/** Cuánto más pega un jefe en su piso (y en cada ciclo extra) */
+export function danoDeJefe(piso: number, ciclo = 1): number {
+  const p = Math.max(1, Math.floor(piso)) - 1
+  return (DUREZA.jefeDanoBase + DUREZA.jefeDanoPorPiso * p) * Math.pow(DUREZA.ciclo.dano, Math.max(0, Math.floor(ciclo) - 1))
+}
+
 /**
  * Desde DUREZA.refuerzoDesde, cada enemigo común puede traer un compañero (los grupos crecen al bajar). Determinista por
  * la entidad: el mismo mapa da siempre los mismos refuerzos. `h` es un número de 0 a 1 propio de esa entidad.
