@@ -1,5 +1,5 @@
 import { expect, test, type Page, type TestInfo } from '@playwright/test'
-import { abrirMundo, esperarEscena, gancho, sinErrores, vigilarErrores } from './util'
+import { abrirMundo, esperarCuadros, esperarEscena, gancho, sinErrores, vigilarErrores } from './util'
 
 // F1b: del título al mundo, guardado, pausa y créditos. Corre en escritorio (mouse) y en tablet (dedo).
 
@@ -142,6 +142,7 @@ test.describe('Cosas del mundo', () => {
     expect(await gancho(page, 'cartelAbierto')).toBe(true)
     // el velo del panel entra al input de Phaser en el cuadro siguiente: nadie toca tan rápido
     await page.waitForTimeout(300)
+    await esperarCuadros(page)
     await toque(page, info, 30, 200)
     await expect.poll(async () => (await gancho<{ abierto: boolean }>(page, 'hudCartel')).abierto, { timeout: 10_000 }).toBe(false)
     expect(await gancho(page, 'cartelAbierto')).toBe(false)

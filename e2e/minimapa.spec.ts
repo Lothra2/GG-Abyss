@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { abrirMundo, gancho, sinErrores, vigilarErrores } from './util'
+import { abrirMundo, esperarCuadros, gancho, sinErrores, vigilarErrores } from './util'
 
 // F10: el minimapa arriba a la derecha se descubre al caminar, se agranda al tocarlo y lo descubierto se guarda.
 
@@ -35,6 +35,7 @@ test.describe('Minimapa', () => {
     const ahora = await gancho<{ x: number; y: number }>(page, 'pos')
     expect(Math.hypot(ahora.x - pos.x, ahora.y - pos.y)).toBeLessThan(4)
     await page.waitForTimeout(300)
+    await esperarCuadros(page)
     await page.mouse.click(40 * z.cssZoom, 200 * z.cssZoom)
     await expect.poll(async () => (await mini(page)).abierto, { timeout: 5_000 }).toBe(false)
   })

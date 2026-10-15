@@ -98,3 +98,12 @@ export async function mundoAPagina(page: Page, wx: number, wy: number): Promise<
     [wx, wy] as const,
   )
 }
+
+/**
+ * Espera que el juego dibuje `n` cuadros más. Un panel recién abierto entra al input de Phaser en el cuadro siguiente:
+ * con la máquina cargada (1 o 2 cuadros por segundo en la suite larga) un toque puede llegar antes y pasar de largo.
+ */
+export async function esperarCuadros(page: Page, n = 2): Promise<void> {
+  const f0 = await page.evaluate(() => (window as unknown as { __JUEGO__: { loop: { frame: number } } }).__JUEGO__.loop.frame)
+  await page.waitForFunction(([f0, n]) => (window as unknown as { __JUEGO__: { loop: { frame: number } } }).__JUEGO__.loop.frame >= f0 + n, [f0, n] as const, { timeout: 30_000 })
+}
