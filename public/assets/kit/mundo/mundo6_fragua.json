@@ -12893,8 +12893,8 @@
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
@@ -12961,11 +12961,11 @@
     5,
     5,
     5,
-    0,
     0,
     0,
     0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
@@ -13564,9 +13564,6 @@
     5,
     5,
     5,
-    0,
-    0,
-    0,
     0,
     0,
     0,
@@ -13575,6 +13572,9 @@
     0,
     0,
     0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -15514,7 +15514,7 @@
     5,
     5,
     0,
-    0,
+    5,
     0,
     0,
     0,
@@ -15565,9 +15565,9 @@
     0,
     0,
     0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -15696,14 +15696,14 @@
     0,
     0,
     0,
-    0,
-    0,
     5,
     5,
     5,
     5,
     5,
     5,
+    5,
+    5,
     0,
     0,
     0,
@@ -16370,13 +16370,13 @@
     0,
     0,
     5,
-    0,
     0,
     0,
     0,
     0,
     0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
@@ -17904,8 +17904,8 @@
     5,
     5,
     0,
-    0,
-    0,
+    5,
+    5,
     0,
     5,
     0,
@@ -18348,7 +18348,6 @@
     0,
     5,
     5,
-    0,
     0,
     0,
     0,
@@ -18357,7 +18356,8 @@
     0,
     0,
     0,
-    0,
+    5,
+    5,
     0,
     5,
     5,
@@ -19313,9 +19313,9 @@
     5,
     5,
     0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -65782,6 +65782,196 @@
        "value": "ceniza_1"
       }
      ]
+    },
+    {
+     "id": 548,
+     "name": "mon_fragua_herrero",
+     "type": "deco",
+     "x": 480,
+     "y": 508,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_fragua_herrero"
+      }
+     ]
+    },
+    {
+     "id": 549,
+     "name": "mon_fragua_crisol",
+     "type": "deco",
+     "x": 1728,
+     "y": 476,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_fragua_crisol"
+      }
+     ]
+    },
+    {
+     "id": 550,
+     "name": "mon_fragua_jaula_caida",
+     "type": "deco",
+     "x": 2352,
+     "y": 668,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_fragua_jaula_caida"
+      }
+     ]
+    },
+    {
+     "id": 551,
+     "name": "mon_fragua_lingotes",
+     "type": "deco",
+     "x": 2768,
+     "y": 1244,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_fragua_lingotes"
+      }
+     ]
+    },
+    {
+     "id": 552,
+     "name": "mon_fragua_arbol_hierro",
+     "type": "deco",
+     "x": 512,
+     "y": 1500,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_fragua_arbol_hierro"
+      }
+     ]
+    },
+    {
+     "id": 553,
+     "name": "mon_fragua_llavero",
+     "type": "deco",
+     "x": 1104,
+     "y": 1244,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_fragua_llavero"
+      }
+     ]
+    },
+    {
+     "id": 554,
+     "name": "mon_fragua_yunque",
+     "type": "deco",
+     "x": 544,
+     "y": 2076,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_fragua_yunque"
+      }
+     ]
+    },
+    {
+     "id": 555,
+     "name": "mon_fragua_huevo",
+     "type": "deco",
+     "x": 3024,
+     "y": 2332,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_fragua_huevo"
+      }
+     ]
+    },
+    {
+     "id": 556,
+     "name": "mon_fragua_nido",
+     "type": "deco",
+     "x": 160,
+     "y": 1948,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_fragua_nido"
+      }
+     ]
+    },
+    {
+     "id": 557,
+     "name": "mon_fragua_alacena",
+     "type": "deco",
+     "x": 3424,
+     "y": 1276,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_fragua_alacena"
+      }
+     ]
     }
    ]
   },
@@ -65796,7 +65986,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 548,
+     "id": 558,
      "name": "portal_llegada",
      "type": "portal_llegada",
      "x": 464,
@@ -65820,7 +66010,7 @@
      ]
     },
     {
-     "id": 549,
+     "id": 559,
      "name": "portal_volver",
      "type": "portal_volver",
      "x": 464,
@@ -65839,7 +66029,7 @@
      ]
     },
     {
-     "id": 550,
+     "id": 560,
      "name": "jugador_inicio",
      "type": "jugador_inicio",
      "x": 560,
@@ -65852,7 +66042,7 @@
      "properties": []
     },
     {
-     "id": 551,
+     "id": 561,
      "name": "thor_inicio",
      "type": "thor_inicio",
      "x": 560,
@@ -65865,7 +66055,7 @@
      "properties": []
     },
     {
-     "id": 552,
+     "id": 562,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 528,
@@ -65904,7 +66094,7 @@
      ]
     },
     {
-     "id": 553,
+     "id": 563,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 368,
@@ -65928,7 +66118,7 @@
      ]
     },
     {
-     "id": 554,
+     "id": 564,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 688,
@@ -65952,7 +66142,7 @@
      ]
     },
     {
-     "id": 555,
+     "id": 565,
      "name": "cofre",
      "type": "cofre",
      "x": 752,
@@ -65971,7 +66161,7 @@
      ]
     },
     {
-     "id": 556,
+     "id": 566,
      "name": "enemigo",
      "type": "enemigo",
      "x": 400,
@@ -65995,7 +66185,7 @@
      ]
     },
     {
-     "id": 557,
+     "id": 567,
      "name": "enemigo",
      "type": "enemigo",
      "x": 720,
@@ -66019,7 +66209,7 @@
      ]
     },
     {
-     "id": 558,
+     "id": 568,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 1680,
@@ -66053,7 +66243,7 @@
      ]
     },
     {
-     "id": 559,
+     "id": 569,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 1008,
@@ -66077,7 +66267,7 @@
      ]
     },
     {
-     "id": 560,
+     "id": 570,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 1808,
@@ -66101,7 +66291,7 @@
      ]
     },
     {
-     "id": 561,
+     "id": 571,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 1040,
@@ -66125,7 +66315,7 @@
      ]
     },
     {
-     "id": 562,
+     "id": 572,
      "name": "cofre",
      "type": "cofre",
      "x": 1872,
@@ -66144,7 +66334,7 @@
      ]
     },
     {
-     "id": 563,
+     "id": 573,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1072,
@@ -66168,7 +66358,7 @@
      ]
     },
     {
-     "id": 564,
+     "id": 574,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1616,
@@ -66192,7 +66382,7 @@
      ]
     },
     {
-     "id": 565,
+     "id": 575,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1744,
@@ -66216,7 +66406,7 @@
      ]
     },
     {
-     "id": 566,
+     "id": 576,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1648,
@@ -66240,7 +66430,7 @@
      ]
     },
     {
-     "id": 567,
+     "id": 577,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1040,
@@ -66264,7 +66454,7 @@
      ]
     },
     {
-     "id": 568,
+     "id": 578,
      "name": "figura",
      "type": "figura",
      "x": 1840,
@@ -66288,7 +66478,7 @@
      ]
     },
     {
-     "id": 569,
+     "id": 579,
      "name": "mural",
      "type": "mural",
      "x": 2496,
@@ -66307,7 +66497,7 @@
      ]
     },
     {
-     "id": 570,
+     "id": 580,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 2320,
@@ -66341,7 +66531,7 @@
      ]
     },
     {
-     "id": 571,
+     "id": 581,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 2128,
@@ -66365,7 +66555,7 @@
      ]
     },
     {
-     "id": 572,
+     "id": 582,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 2896,
@@ -66389,7 +66579,7 @@
      ]
     },
     {
-     "id": 573,
+     "id": 583,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 2704,
@@ -66413,7 +66603,7 @@
      ]
     },
     {
-     "id": 574,
+     "id": 584,
      "name": "cofre",
      "type": "cofre",
      "x": 3088,
@@ -66432,7 +66622,7 @@
      ]
     },
     {
-     "id": 575,
+     "id": 585,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2576,
@@ -66471,7 +66661,7 @@
      ]
     },
     {
-     "id": 576,
+     "id": 586,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2768,
@@ -66510,7 +66700,7 @@
      ]
     },
     {
-     "id": 577,
+     "id": 587,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2256,
@@ -66534,7 +66724,7 @@
      ]
     },
     {
-     "id": 578,
+     "id": 588,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3152,
@@ -66558,7 +66748,7 @@
      ]
     },
     {
-     "id": 579,
+     "id": 589,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2448,
@@ -66582,7 +66772,7 @@
      ]
     },
     {
-     "id": 580,
+     "id": 590,
      "name": "figura",
      "type": "figura",
      "x": 2672,
@@ -66606,7 +66796,7 @@
      ]
     },
     {
-     "id": 581,
+     "id": 591,
      "name": "fuelle",
      "type": "fuelle",
      "x": 2256,
@@ -66635,7 +66825,7 @@
      ]
     },
     {
-     "id": 582,
+     "id": 592,
      "name": "fuelle",
      "type": "fuelle",
      "x": 3088,
@@ -66664,7 +66854,7 @@
      ]
     },
     {
-     "id": 583,
+     "id": 593,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 2672,
@@ -66698,7 +66888,7 @@
      ]
     },
     {
-     "id": 584,
+     "id": 594,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 2064,
@@ -66722,7 +66912,7 @@
      ]
     },
     {
-     "id": 585,
+     "id": 595,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 3152,
@@ -66746,7 +66936,7 @@
      ]
     },
     {
-     "id": 586,
+     "id": 596,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 2256,
@@ -66770,7 +66960,7 @@
      ]
     },
     {
-     "id": 587,
+     "id": 597,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2416,
@@ -66794,7 +66984,7 @@
      ]
     },
     {
-     "id": 588,
+     "id": 598,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3024,
@@ -66818,7 +67008,7 @@
      ]
     },
     {
-     "id": 589,
+     "id": 599,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2832,
@@ -66842,7 +67032,7 @@
      ]
     },
     {
-     "id": 590,
+     "id": 600,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3152,
@@ -66881,7 +67071,7 @@
      ]
     },
     {
-     "id": 591,
+     "id": 601,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2192,
@@ -66905,7 +67095,7 @@
      ]
     },
     {
-     "id": 592,
+     "id": 602,
      "name": "cofre",
      "type": "cofre",
      "x": 3376,
@@ -66934,7 +67124,7 @@
      ]
     },
     {
-     "id": 593,
+     "id": 603,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 560,
@@ -66958,7 +67148,7 @@
      ]
     },
     {
-     "id": 594,
+     "id": 604,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 272,
@@ -66982,7 +67172,7 @@
      ]
     },
     {
-     "id": 595,
+     "id": 605,
      "name": "enemigo",
      "type": "enemigo",
      "x": 368,
@@ -67006,7 +67196,7 @@
      ]
     },
     {
-     "id": 596,
+     "id": 606,
      "name": "enemigo",
      "type": "enemigo",
      "x": 688,
@@ -67030,7 +67220,7 @@
      ]
     },
     {
-     "id": 597,
+     "id": 607,
      "name": "enemigo",
      "type": "enemigo",
      "x": 528,
@@ -67054,7 +67244,7 @@
      ]
     },
     {
-     "id": 598,
+     "id": 608,
      "name": "enemigo",
      "type": "enemigo",
      "x": 848,
@@ -67078,7 +67268,7 @@
      ]
     },
     {
-     "id": 599,
+     "id": 609,
      "name": "cofre",
      "type": "cofre",
      "x": 144,
@@ -67107,7 +67297,7 @@
      ]
     },
     {
-     "id": 600,
+     "id": 610,
      "name": "cofre",
      "type": "cofre",
      "x": 784,
@@ -67126,7 +67316,7 @@
      ]
     },
     {
-     "id": 601,
+     "id": 611,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1456,
@@ -67155,7 +67345,7 @@
      ]
     },
     {
-     "id": 602,
+     "id": 612,
      "name": "cofre",
      "type": "cofre",
      "x": 1456,
@@ -67179,7 +67369,7 @@
      ]
     },
     {
-     "id": 603,
+     "id": 613,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 1072,
@@ -67203,7 +67393,7 @@
      ]
     },
     {
-     "id": 604,
+     "id": 614,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 1840,
@@ -67227,7 +67417,7 @@
      ]
     },
     {
-     "id": 605,
+     "id": 615,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1232,
@@ -67251,7 +67441,7 @@
      ]
     },
     {
-     "id": 606,
+     "id": 616,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1712,
@@ -67290,7 +67480,7 @@
      ]
     },
     {
-     "id": 607,
+     "id": 617,
      "name": "fuelle",
      "type": "fuelle",
      "x": 1744,
@@ -67319,7 +67509,7 @@
      ]
     },
     {
-     "id": 608,
+     "id": 618,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 1808,
@@ -67353,7 +67543,7 @@
      ]
     },
     {
-     "id": 609,
+     "id": 619,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 272,
@@ -67377,7 +67567,7 @@
      ]
     },
     {
-     "id": 610,
+     "id": 620,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 464,
@@ -67401,7 +67591,7 @@
      ]
     },
     {
-     "id": 611,
+     "id": 621,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 1296,
@@ -67425,7 +67615,7 @@
      ]
     },
     {
-     "id": 612,
+     "id": 622,
      "name": "cofre",
      "type": "cofre",
      "x": 176,
@@ -67444,7 +67634,7 @@
      ]
     },
     {
-     "id": 613,
+     "id": 623,
      "name": "enemigo",
      "type": "enemigo",
      "x": 976,
@@ -67468,7 +67658,7 @@
      ]
     },
     {
-     "id": 614,
+     "id": 624,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1168,
@@ -67492,7 +67682,7 @@
      ]
     },
     {
-     "id": 615,
+     "id": 625,
      "name": "enemigo",
      "type": "enemigo",
      "x": 400,
@@ -67516,7 +67706,7 @@
      ]
     },
     {
-     "id": 616,
+     "id": 626,
      "name": "enemigo",
      "type": "enemigo",
      "x": 848,
@@ -67540,7 +67730,7 @@
      ]
     },
     {
-     "id": 617,
+     "id": 627,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1552,
@@ -67564,7 +67754,7 @@
      ]
     },
     {
-     "id": 618,
+     "id": 628,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1872,
@@ -67603,7 +67793,7 @@
      ]
     },
     {
-     "id": 619,
+     "id": 629,
      "name": "figura",
      "type": "figura",
      "x": 1296,
@@ -67627,7 +67817,7 @@
      ]
     },
     {
-     "id": 620,
+     "id": 630,
      "name": "puerta_negra",
      "type": "puerta_negra",
      "x": 2832,
@@ -67661,7 +67851,7 @@
      ]
     },
     {
-     "id": 621,
+     "id": 631,
      "name": "figura",
      "type": "figura",
      "x": 2832,
@@ -67690,7 +67880,7 @@
      ]
     },
     {
-     "id": 622,
+     "id": 632,
      "name": "arena_jefe",
      "type": "arena_jefe",
      "x": 2832,
@@ -67714,7 +67904,7 @@
      ]
     },
     {
-     "id": 623,
+     "id": 633,
      "name": "jefe",
      "type": "jefe",
      "x": 2832,
@@ -67743,7 +67933,7 @@
      ]
     },
     {
-     "id": 624,
+     "id": 634,
      "name": "surtidor",
      "type": "surtidor",
      "x": 2740,
@@ -67767,7 +67957,7 @@
      ]
     },
     {
-     "id": 625,
+     "id": 635,
      "name": "palanca",
      "type": "palanca",
      "x": 2706,
@@ -67796,7 +67986,7 @@
      ]
     },
     {
-     "id": 626,
+     "id": 636,
      "name": "surtidor",
      "type": "surtidor",
      "x": 2924,
@@ -67820,7 +68010,7 @@
      ]
     },
     {
-     "id": 627,
+     "id": 637,
      "name": "palanca",
      "type": "palanca",
      "x": 2958,
@@ -67849,7 +68039,7 @@
      ]
     },
     {
-     "id": 628,
+     "id": 638,
      "name": "surtidor",
      "type": "surtidor",
      "x": 2924,
@@ -67873,7 +68063,7 @@
      ]
     },
     {
-     "id": 629,
+     "id": 639,
      "name": "palanca",
      "type": "palanca",
      "x": 2958,
@@ -67902,7 +68092,7 @@
      ]
     },
     {
-     "id": 630,
+     "id": 640,
      "name": "surtidor",
      "type": "surtidor",
      "x": 2740,
@@ -67926,7 +68116,7 @@
      ]
     },
     {
-     "id": 631,
+     "id": 641,
      "name": "palanca",
      "type": "palanca",
      "x": 2706,
@@ -67955,7 +68145,7 @@
      ]
     },
     {
-     "id": 632,
+     "id": 642,
      "name": "cadena",
      "type": "cadena",
      "x": 2832,
@@ -67989,7 +68179,7 @@
      ]
     },
     {
-     "id": 633,
+     "id": 643,
      "name": "cadena",
      "type": "cadena",
      "x": 3048,
@@ -68023,7 +68213,7 @@
      ]
     },
     {
-     "id": 634,
+     "id": 644,
      "name": "cadena",
      "type": "cadena",
      "x": 2832,
@@ -68057,7 +68247,7 @@
      ]
     },
     {
-     "id": 635,
+     "id": 645,
      "name": "cadena",
      "type": "cadena",
      "x": 2616,
@@ -68091,7 +68281,7 @@
      ]
     },
     {
-     "id": 636,
+     "id": 646,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 2664,
@@ -68115,7 +68305,7 @@
      ]
     },
     {
-     "id": 637,
+     "id": 647,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 3002,
@@ -68139,7 +68329,7 @@
      ]
     },
     {
-     "id": 638,
+     "id": 648,
      "name": "portal_jefe",
      "type": "portal_jefe",
      "x": 2832,
@@ -68168,7 +68358,7 @@
      ]
     },
     {
-     "id": 639,
+     "id": 649,
      "name": "cofre",
      "type": "cofre",
      "x": 3088,
@@ -68192,7 +68382,7 @@
      ]
     },
     {
-     "id": 640,
+     "id": 650,
      "name": "charco_frio",
      "type": "charco_frio",
      "x": 2256,
@@ -68216,7 +68406,7 @@
      ]
     },
     {
-     "id": 641,
+     "id": 651,
      "name": "jaula",
      "type": "jaula",
      "x": 560,
@@ -68250,7 +68440,7 @@
      ]
     },
     {
-     "id": 642,
+     "id": 652,
      "name": "jaula",
      "type": "jaula",
      "x": 432,
@@ -68284,7 +68474,7 @@
      ]
     },
     {
-     "id": 643,
+     "id": 653,
      "name": "jaula",
      "type": "jaula",
      "x": 656,
@@ -68318,7 +68508,7 @@
      ]
     },
     {
-     "id": 644,
+     "id": 654,
      "name": "jaula",
      "type": "jaula",
      "x": 528,
@@ -68352,7 +68542,7 @@
      ]
     },
     {
-     "id": 645,
+     "id": 655,
      "name": "jaula",
      "type": "jaula",
      "x": 400,
@@ -68386,7 +68576,7 @@
      ]
     },
     {
-     "id": 646,
+     "id": 656,
      "name": "jaula",
      "type": "jaula",
      "x": 1712,
@@ -68420,7 +68610,7 @@
      ]
     },
     {
-     "id": 647,
+     "id": 657,
      "name": "jaula",
      "type": "jaula",
      "x": 1872,
@@ -68454,7 +68644,7 @@
      ]
     },
     {
-     "id": 648,
+     "id": 658,
      "name": "jaula",
      "type": "jaula",
      "x": 1072,
@@ -68488,7 +68678,7 @@
      ]
     },
     {
-     "id": 649,
+     "id": 659,
      "name": "jaula",
      "type": "jaula",
      "x": 1072,
@@ -68522,7 +68712,7 @@
      ]
     },
     {
-     "id": 650,
+     "id": 660,
      "name": "jaula",
      "type": "jaula",
      "x": 1680,
@@ -68556,7 +68746,7 @@
      ]
     },
     {
-     "id": 651,
+     "id": 661,
      "name": "jaula",
      "type": "jaula",
      "x": 1104,
@@ -68590,7 +68780,7 @@
      ]
     },
     {
-     "id": 652,
+     "id": 662,
      "name": "jaula",
      "type": "jaula",
      "x": 2512,
@@ -68624,7 +68814,7 @@
      ]
     },
     {
-     "id": 653,
+     "id": 663,
      "name": "jaula",
      "type": "jaula",
      "x": 2736,
@@ -68658,7 +68848,7 @@
      ]
     },
     {
-     "id": 654,
+     "id": 664,
      "name": "jaula",
      "type": "jaula",
      "x": 2352,
@@ -68692,7 +68882,7 @@
      ]
     },
     {
-     "id": 655,
+     "id": 665,
      "name": "jaula",
      "type": "jaula",
      "x": 2064,
@@ -68726,7 +68916,7 @@
      ]
     },
     {
-     "id": 656,
+     "id": 666,
      "name": "jaula",
      "type": "jaula",
      "x": 2448,
@@ -68760,7 +68950,7 @@
      ]
     },
     {
-     "id": 657,
+     "id": 667,
      "name": "jaula",
      "type": "jaula",
      "x": 2320,
@@ -68794,7 +68984,7 @@
      ]
     },
     {
-     "id": 658,
+     "id": 668,
      "name": "jaula",
      "type": "jaula",
      "x": 2192,
@@ -68828,7 +69018,7 @@
      ]
     },
     {
-     "id": 659,
+     "id": 669,
      "name": "jaula",
      "type": "jaula",
      "x": 2832,
@@ -68862,7 +69052,7 @@
      ]
     },
     {
-     "id": 660,
+     "id": 670,
      "name": "jaula",
      "type": "jaula",
      "x": 2928,
@@ -68896,7 +69086,7 @@
      ]
     },
     {
-     "id": 661,
+     "id": 671,
      "name": "jaula",
      "type": "jaula",
      "x": 3152,
@@ -68930,7 +69120,7 @@
      ]
     },
     {
-     "id": 662,
+     "id": 672,
      "name": "jaula",
      "type": "jaula",
      "x": 2256,
@@ -68964,7 +69154,7 @@
      ]
     },
     {
-     "id": 663,
+     "id": 673,
      "name": "jaula",
      "type": "jaula",
      "x": 3152,
@@ -68998,7 +69188,7 @@
      ]
     },
     {
-     "id": 664,
+     "id": 674,
      "name": "jaula",
      "type": "jaula",
      "x": 2960,
@@ -69032,7 +69222,7 @@
      ]
     },
     {
-     "id": 665,
+     "id": 675,
      "name": "jaula",
      "type": "jaula",
      "x": 2928,
@@ -69066,7 +69256,7 @@
      ]
     },
     {
-     "id": 666,
+     "id": 676,
      "name": "jaula",
      "type": "jaula",
      "x": 624,
@@ -69100,7 +69290,7 @@
      ]
     },
     {
-     "id": 667,
+     "id": 677,
      "name": "jaula",
      "type": "jaula",
      "x": 592,
@@ -69134,7 +69324,7 @@
      ]
     },
     {
-     "id": 668,
+     "id": 678,
      "name": "jaula",
      "type": "jaula",
      "x": 272,
@@ -69168,7 +69358,7 @@
      ]
     },
     {
-     "id": 669,
+     "id": 679,
      "name": "jaula",
      "type": "jaula",
      "x": 784,
@@ -69202,7 +69392,7 @@
      ]
     },
     {
-     "id": 670,
+     "id": 680,
      "name": "jaula",
      "type": "jaula",
      "x": 1808,
@@ -69236,7 +69426,7 @@
      ]
     },
     {
-     "id": 671,
+     "id": 681,
      "name": "jaula",
      "type": "jaula",
      "x": 1616,
@@ -69270,7 +69460,7 @@
      ]
     },
     {
-     "id": 672,
+     "id": 682,
      "name": "jaula",
      "type": "jaula",
      "x": 1840,
@@ -69304,7 +69494,7 @@
      ]
     },
     {
-     "id": 673,
+     "id": 683,
      "name": "jaula",
      "type": "jaula",
      "x": 1552,
@@ -69338,7 +69528,7 @@
      ]
     },
     {
-     "id": 674,
+     "id": 684,
      "name": "jaula",
      "type": "jaula",
      "x": 1072,
@@ -69372,7 +69562,7 @@
      ]
     },
     {
-     "id": 675,
+     "id": 685,
      "name": "jaula",
      "type": "jaula",
      "x": 976,
@@ -69406,7 +69596,7 @@
      ]
     },
     {
-     "id": 676,
+     "id": 686,
      "name": "jaula",
      "type": "jaula",
      "x": 944,
@@ -69440,7 +69630,7 @@
      ]
     },
     {
-     "id": 677,
+     "id": 687,
      "name": "jaula",
      "type": "jaula",
      "x": 2032,
@@ -69474,7 +69664,7 @@
      ]
     },
     {
-     "id": 678,
+     "id": 688,
      "name": "jaula",
      "type": "jaula",
      "x": 208,
@@ -69508,7 +69698,7 @@
      ]
     },
     {
-     "id": 679,
+     "id": 689,
      "name": "jaula",
      "type": "jaula",
      "x": 784,
@@ -69542,7 +69732,7 @@
      ]
     },
     {
-     "id": 680,
+     "id": 690,
      "name": "jaula",
      "type": "jaula",
      "x": 2736,
@@ -69576,7 +69766,7 @@
      ]
     },
     {
-     "id": 681,
+     "id": 691,
      "name": "jaula",
      "type": "jaula",
      "x": 2224,
@@ -69610,7 +69800,7 @@
      ]
     },
     {
-     "id": 682,
+     "id": 692,
      "name": "jaula",
      "type": "jaula",
      "x": 2992,
@@ -69644,7 +69834,7 @@
      ]
     },
     {
-     "id": 683,
+     "id": 693,
      "name": "jaula",
      "type": "jaula",
      "x": 2448,
@@ -69678,7 +69868,7 @@
      ]
     },
     {
-     "id": 684,
+     "id": 694,
      "name": "jaula",
      "type": "jaula",
      "x": 1616,
@@ -69717,7 +69907,7 @@
      ]
     },
     {
-     "id": 685,
+     "id": 695,
      "name": "jaula",
      "type": "jaula",
      "x": 1584,
@@ -69756,7 +69946,7 @@
      ]
     },
     {
-     "id": 686,
+     "id": 696,
      "name": "jaula",
      "type": "jaula",
      "x": 1456,
@@ -69795,7 +69985,7 @@
      ]
     },
     {
-     "id": 687,
+     "id": 697,
      "name": "jaula",
      "type": "jaula",
      "x": 1328,
@@ -69834,7 +70024,7 @@
      ]
     },
     {
-     "id": 688,
+     "id": 698,
      "name": "jaula",
      "type": "jaula",
      "x": 1328,
@@ -69873,7 +70063,7 @@
      ]
     },
     {
-     "id": 689,
+     "id": 699,
      "name": "jaula",
      "type": "jaula",
      "x": 1456,
@@ -69912,7 +70102,7 @@
      ]
     },
     {
-     "id": 690,
+     "id": 700,
      "name": "jaula",
      "type": "jaula",
      "x": 1584,
@@ -69951,7 +70141,7 @@
      ]
     },
     {
-     "id": 691,
+     "id": 701,
      "name": "jaula",
      "type": "jaula",
      "x": 1648,
@@ -69990,7 +70180,7 @@
      ]
     },
     {
-     "id": 692,
+     "id": 702,
      "name": "grieta",
      "type": "grieta",
      "x": 640,
@@ -70029,7 +70219,7 @@
      ]
     },
     {
-     "id": 693,
+     "id": 703,
      "name": "grieta",
      "type": "grieta",
      "x": 480,
@@ -70068,7 +70258,7 @@
      ]
     },
     {
-     "id": 694,
+     "id": 704,
      "name": "grieta",
      "type": "grieta",
      "x": 832,
@@ -70107,7 +70297,7 @@
      ]
     },
     {
-     "id": 695,
+     "id": 705,
      "name": "grieta",
      "type": "grieta",
      "x": 992,
@@ -70146,7 +70336,7 @@
      ]
     },
     {
-     "id": 696,
+     "id": 706,
      "name": "grieta",
      "type": "grieta",
      "x": 1536,
@@ -70185,7 +70375,7 @@
      ]
     },
     {
-     "id": 697,
+     "id": 707,
      "name": "grieta",
      "type": "grieta",
      "x": 1568,
@@ -70224,7 +70414,7 @@
      ]
     },
     {
-     "id": 698,
+     "id": 708,
      "name": "grieta",
      "type": "grieta",
      "x": 1056,
@@ -70263,7 +70453,7 @@
      ]
     },
     {
-     "id": 699,
+     "id": 709,
      "name": "grieta",
      "type": "grieta",
      "x": 1120,
@@ -70302,7 +70492,7 @@
      ]
     },
     {
-     "id": 700,
+     "id": 710,
      "name": "grieta",
      "type": "grieta",
      "x": 2112,
@@ -70341,7 +70531,7 @@
      ]
     },
     {
-     "id": 701,
+     "id": 711,
      "name": "grieta",
      "type": "grieta",
      "x": 2464,
@@ -70380,7 +70570,7 @@
      ]
     },
     {
-     "id": 702,
+     "id": 712,
      "name": "grieta",
      "type": "grieta",
      "x": 2336,
@@ -70419,7 +70609,7 @@
      ]
     },
     {
-     "id": 703,
+     "id": 713,
      "name": "grieta",
      "type": "grieta",
      "x": 2560,
@@ -70458,7 +70648,7 @@
      ]
     },
     {
-     "id": 704,
+     "id": 714,
      "name": "grieta",
      "type": "grieta",
      "x": 2688,
@@ -70497,7 +70687,7 @@
      ]
     },
     {
-     "id": 705,
+     "id": 715,
      "name": "grieta",
      "type": "grieta",
      "x": 2656,
@@ -70536,7 +70726,7 @@
      ]
     },
     {
-     "id": 706,
+     "id": 716,
      "name": "grieta",
      "type": "grieta",
      "x": 2080,
@@ -70575,7 +70765,7 @@
      ]
     },
     {
-     "id": 707,
+     "id": 717,
      "name": "grieta",
      "type": "grieta",
      "x": 2080,
@@ -70614,7 +70804,7 @@
      ]
     },
     {
-     "id": 708,
+     "id": 718,
      "name": "grieta",
      "type": "grieta",
      "x": 2336,
@@ -70653,7 +70843,7 @@
      ]
     },
     {
-     "id": 709,
+     "id": 719,
      "name": "grieta",
      "type": "grieta",
      "x": 2528,
@@ -70692,7 +70882,7 @@
      ]
     },
     {
-     "id": 710,
+     "id": 720,
      "name": "grieta",
      "type": "grieta",
      "x": 2816,
@@ -70731,7 +70921,7 @@
      ]
     },
     {
-     "id": 711,
+     "id": 721,
      "name": "grieta",
      "type": "grieta",
      "x": 2464,
@@ -70770,7 +70960,7 @@
      ]
     },
     {
-     "id": 712,
+     "id": 722,
      "name": "grieta",
      "type": "grieta",
      "x": 2560,
@@ -70809,7 +70999,7 @@
      ]
     },
     {
-     "id": 713,
+     "id": 723,
      "name": "grieta",
      "type": "grieta",
      "x": 2304,
@@ -70848,7 +71038,7 @@
      ]
     },
     {
-     "id": 714,
+     "id": 724,
      "name": "grieta",
      "type": "grieta",
      "x": 3296,
@@ -70887,7 +71077,7 @@
      ]
     },
     {
-     "id": 715,
+     "id": 725,
      "name": "grieta",
      "type": "grieta",
      "x": 512,
@@ -70926,7 +71116,7 @@
      ]
     },
     {
-     "id": 716,
+     "id": 726,
      "name": "grieta",
      "type": "grieta",
      "x": 480,
@@ -70965,7 +71155,7 @@
      ]
     },
     {
-     "id": 717,
+     "id": 727,
      "name": "grieta",
      "type": "grieta",
      "x": 1632,
@@ -71004,7 +71194,7 @@
      ]
     },
     {
-     "id": 718,
+     "id": 728,
      "name": "grieta",
      "type": "grieta",
      "x": 1248,
@@ -71043,7 +71233,7 @@
      ]
     },
     {
-     "id": 719,
+     "id": 729,
      "name": "grieta",
      "type": "grieta",
      "x": 1184,
@@ -71082,7 +71272,7 @@
      ]
     },
     {
-     "id": 720,
+     "id": 730,
      "name": "grieta",
      "type": "grieta",
      "x": 224,
@@ -71121,7 +71311,7 @@
      ]
     },
     {
-     "id": 721,
+     "id": 731,
      "name": "grieta",
      "type": "grieta",
      "x": 1728,
@@ -71160,7 +71350,7 @@
      ]
     },
     {
-     "id": 722,
+     "id": 732,
      "name": "grieta",
      "type": "grieta",
      "x": 1344,
@@ -71199,7 +71389,7 @@
      ]
     },
     {
-     "id": 723,
+     "id": 733,
      "name": "grieta",
      "type": "grieta",
      "x": 1952,
@@ -71238,7 +71428,7 @@
      ]
     },
     {
-     "id": 724,
+     "id": 734,
      "name": "grieta",
      "type": "grieta",
      "x": 480,
@@ -71277,7 +71467,7 @@
      ]
     },
     {
-     "id": 725,
+     "id": 735,
      "name": "grieta",
      "type": "grieta",
      "x": 1216,
@@ -71316,7 +71506,7 @@
      ]
     },
     {
-     "id": 726,
+     "id": 736,
      "name": "grieta",
      "type": "grieta",
      "x": 1952,
@@ -71355,7 +71545,7 @@
      ]
     },
     {
-     "id": 727,
+     "id": 737,
      "name": "grieta",
      "type": "grieta",
      "x": 2496,
@@ -71394,7 +71584,7 @@
      ]
     },
     {
-     "id": 728,
+     "id": 738,
      "name": "grieta",
      "type": "grieta",
      "x": 3040,
@@ -71433,7 +71623,7 @@
      ]
     },
     {
-     "id": 729,
+     "id": 739,
      "name": "grieta",
      "type": "grieta",
      "x": 2592,
@@ -71470,6 +71660,234 @@
        "value": "El Corazón de la Fragua"
       }
      ]
+    },
+    {
+     "id": 740,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 400,
+     "y": 432,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "escarabajo_brasa"
+      }
+     ]
+    },
+    {
+     "id": 741,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2256,
+     "y": 688,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_hollin"
+      }
+     ]
+    },
+    {
+     "id": 742,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2859,
+     "y": 1200,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "escarabajo_brasa"
+      }
+     ]
+    },
+    {
+     "id": 743,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 429,
+     "y": 1488,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_hollin"
+      }
+     ]
+    },
+    {
+     "id": 744,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1141,
+     "y": 1328,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "escarabajo_brasa"
+      }
+     ]
+    },
+    {
+     "id": 745,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 522,
+     "y": 2160,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_hollin"
+      }
+     ]
+    },
+    {
+     "id": 746,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2933,
+     "y": 2288,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "escarabajo_brasa"
+      }
+     ]
+    },
+    {
+     "id": 747,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 3403,
+     "y": 1424,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_hollin"
+      }
+     ]
+    },
+    {
+     "id": 748,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 780,
+     "y": 1744,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "escarabajo_brasa"
+      }
+     ]
+    },
+    {
+     "id": 749,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 366,
+     "y": 1712,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_hollin"
+      }
+     ]
+    },
+    {
+     "id": 750,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2132,
+     "y": 432,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "escarabajo_brasa"
+      }
+     ]
+    },
+    {
+     "id": 751,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 657,
+     "y": 1712,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_hollin"
+      }
+     ]
     }
    ]
   },
@@ -71484,7 +71902,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 730,
+     "id": 752,
      "name": "La Escalera de Ceniza",
      "type": "zona",
      "x": 64,
@@ -71522,7 +71940,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brasas"
+       "value": "brasas,ceniza"
       },
       {
        "name": "ambiente",
@@ -71533,11 +71951,21 @@
        "name": "frente",
        "type": "string",
        "value": "humo_frente_0,cadena_colgante_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-15,#ffa060,0.35"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#140a08,#ffb070,1.12,1.0"
       }
      ]
     },
     {
-     "id": 731,
+     "id": 753,
      "name": "El Río de Lava",
      "type": "zona",
      "x": 832,
@@ -71575,7 +72003,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brasas"
+       "value": "brasas,humo"
       },
       {
        "name": "ambiente",
@@ -71586,11 +72014,21 @@
        "name": "frente",
        "type": "string",
        "value": "cadena_colgante_1,humo_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#ff7020,0.5"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#1a0604,#ffa040,1.2,1.15"
       }
      ]
     },
     {
-     "id": 732,
+     "id": 754,
      "name": "Las Jaulas Colgantes",
      "type": "zona",
      "x": 1984,
@@ -71628,7 +72066,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brasas"
+       "value": "brasas,brillos"
       },
       {
        "name": "ambiente",
@@ -71639,11 +72077,21 @@
        "name": "frente",
        "type": "string",
        "value": "jaulas_frente_0,jaulas_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-10,#ffc070,0.3"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#140c06,#ffd090,1.14,1.05"
       }
      ]
     },
     {
-     "id": 733,
+     "id": 755,
      "name": "Los Fuelles",
      "type": "zona",
      "x": 1920,
@@ -71681,7 +72129,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brasas"
+       "value": "brasas,humo"
       },
       {
        "name": "ambiente",
@@ -71692,11 +72140,21 @@
        "name": "frente",
        "type": "string",
        "value": "cadena_colgante_2,humo_frente_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-20,#ff8040,0.35"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#140806,#ffa060,1.16,1.05"
       }
      ]
     },
     {
-     "id": 734,
+     "id": 756,
      "name": "El Bosque de Ceniza",
      "type": "zona",
      "x": 64,
@@ -71734,7 +72192,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,brasas"
       },
       {
        "name": "ambiente",
@@ -71745,11 +72203,21 @@
        "name": "frente",
        "type": "string",
        "value": "humo_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-25,#c86a3a,0.25"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0e0806,#e09060,1.1,0.85"
       }
      ]
     },
     {
-     "id": 735,
+     "id": 757,
      "name": "La Cárcel de las Luces",
      "type": "zona",
      "x": 960,
@@ -71787,7 +72255,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brasas"
+       "value": "brasas,polvo"
       },
       {
        "name": "ambiente",
@@ -71803,11 +72271,21 @@
        "name": "frente",
        "type": "string",
        "value": "jaulas_frente_1,cadena_colgante_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-5,#ffc070,0.3"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#100806,#ffd090,1.15,1.0"
       }
      ]
     },
     {
-     "id": 736,
+     "id": 758,
      "name": "El Horno",
      "type": "zona",
      "x": 64,
@@ -71845,7 +72323,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brasas"
+       "value": "brasas,humo"
       },
       {
        "name": "ambiente",
@@ -71856,11 +72334,21 @@
        "name": "frente",
        "type": "string",
        "value": "humo_frente_0,cadena_colgante_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#ff7020,0.45"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#1a0804,#ffa040,1.2,1.12"
       }
      ]
     },
     {
-     "id": 737,
+     "id": 759,
      "name": "El Corazón de la Fragua",
      "type": "zona",
      "x": 2112,
@@ -71898,7 +72386,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brasas"
+       "value": "brasas,ceniza"
       },
       {
        "name": "ambiente",
@@ -71914,11 +72402,21 @@
        "name": "frente",
        "type": "string",
        "value": "cadena_colgante_2,jaulas_frente_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#ff5a20,0.4"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#1a0402,#ff9040,1.25,1.15"
       }
      ]
     },
     {
-     "id": 738,
+     "id": 760,
      "name": "El Nido de Ceniza",
      "type": "zona",
      "x": 64,
@@ -71956,7 +72454,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,brasas"
       },
       {
        "name": "secreto",
@@ -71967,11 +72465,21 @@
        "name": "descubrir",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#c86a3a,0.2"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0e0806,#e09060,1.1,0.9"
       }
      ]
     },
     {
-     "id": 739,
+     "id": 761,
      "name": "La Alacena del Herrero",
      "type": "zona",
      "x": 3296,
@@ -72009,7 +72517,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brasas"
+       "value": "brasas,polvo"
       },
       {
        "name": "secreto",
@@ -72020,6 +72528,16 @@
        "name": "descubrir",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-30,#ffc070,0.35"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#140c06,#ffd090,1.12,1.0"
       }
      ]
     }
@@ -72036,7 +72554,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 740,
+     "id": 762,
      "name": "escalera_de_ceniza",
      "type": "postal",
      "x": 496,
@@ -72049,7 +72567,7 @@
      "properties": []
     },
     {
-     "id": 741,
+     "id": 763,
      "name": "rio_de_lava",
      "type": "postal",
      "x": 1200,
@@ -72062,7 +72580,7 @@
      "properties": []
     },
     {
-     "id": 742,
+     "id": 764,
      "name": "jaulas_colgantes",
      "type": "postal",
      "x": 2576,
@@ -72075,7 +72593,7 @@
      "properties": []
     },
     {
-     "id": 743,
+     "id": 765,
      "name": "los_fuelles",
      "type": "postal",
      "x": 2576,
@@ -72088,7 +72606,7 @@
      "properties": []
     },
     {
-     "id": 744,
+     "id": 766,
      "name": "bosque_de_ceniza",
      "type": "postal",
      "x": 496,
@@ -72101,7 +72619,7 @@
      "properties": []
     },
     {
-     "id": 745,
+     "id": 767,
      "name": "carcel_de_las_luces",
      "type": "postal",
      "x": 1456,
@@ -72114,7 +72632,7 @@
      "properties": []
     },
     {
-     "id": 746,
+     "id": 768,
      "name": "el_horno",
      "type": "postal",
      "x": 1104,
@@ -72127,7 +72645,7 @@
      "properties": []
     },
     {
-     "id": 747,
+     "id": 769,
      "name": "corazon_de_la_fragua",
      "type": "postal",
      "x": 2832,
@@ -72143,5 +72661,5 @@
   }
  ],
  "nextlayerid": 200,
- "nextobjectid": 748
+ "nextobjectid": 770
 }

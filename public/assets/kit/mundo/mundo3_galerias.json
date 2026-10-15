@@ -9264,9 +9264,9 @@
     0,
     0,
     0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -9490,11 +9490,11 @@
     5,
     0,
     5,
-    0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     5,
     0,
@@ -9926,15 +9926,15 @@
     0,
     5,
     5,
-    0,
-    0,
-    0,
     0,
     0,
     0,
     0,
     0,
     0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -11771,12 +11771,12 @@
     0,
     5,
     5,
-    0,
-    0,
-    0,
     0,
     0,
     0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -12293,12 +12293,12 @@
     5,
     5,
     5,
-    0,
-    0,
     0,
     0,
     0,
     0,
+    5,
+    5,
     0,
     0,
     0,
@@ -13765,13 +13765,13 @@
     0,
     0,
     0,
-    0,
     5,
     5,
     5,
     5,
     5,
     5,
+    5,
     0,
     0,
     5,
@@ -14318,11 +14318,11 @@
     5,
     5,
     5,
-    0,
     0,
     0,
     0,
-    0,
+    5,
+    5,
     0,
     0,
     5,
@@ -14670,12 +14670,12 @@
     0,
     5,
     5,
-    0,
-    0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -44958,6 +44958,177 @@
        "value": "grava_mina_1"
       }
      ]
+    },
+    {
+     "id": 244,
+     "name": "mon_galerias_cabria",
+     "type": "deco",
+     "x": 432,
+     "y": 348,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_galerias_cabria"
+      }
+     ]
+    },
+    {
+     "id": 245,
+     "name": "mon_galerias_carrito",
+     "type": "deco",
+     "x": 1328,
+     "y": 412,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_galerias_carrito"
+      }
+     ]
+    },
+    {
+     "id": 246,
+     "name": "mon_galerias_geoda",
+     "type": "deco",
+     "x": 2608,
+     "y": 540,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_galerias_geoda"
+      }
+     ]
+    },
+    {
+     "id": 247,
+     "name": "mon_galerias_campana_aviso",
+     "type": "deco",
+     "x": 1472,
+     "y": 1308,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_galerias_campana_aviso"
+      }
+     ]
+    },
+    {
+     "id": 248,
+     "name": "mon_galerias_barca_minero",
+     "type": "deco",
+     "x": 752,
+     "y": 1148,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_galerias_barca_minero"
+      }
+     ]
+    },
+    {
+     "id": 249,
+     "name": "mon_galerias_carpa",
+     "type": "deco",
+     "x": 704,
+     "y": 2076,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_galerias_carpa"
+      }
+     ]
+    },
+    {
+     "id": 250,
+     "name": "mon_galerias_capullo",
+     "type": "deco",
+     "x": 2240,
+     "y": 1948,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_galerias_capullo"
+      }
+     ]
+    },
+    {
+     "id": 251,
+     "name": "mon_galerias_ambar",
+     "type": "deco",
+     "x": 1472,
+     "y": 124,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_galerias_ambar"
+      }
+     ]
+    },
+    {
+     "id": 252,
+     "name": "mon_galerias_memorial",
+     "type": "deco",
+     "x": 432,
+     "y": 1788,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_galerias_memorial"
+      }
+     ]
     }
    ]
   },
@@ -44972,7 +45143,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 244,
+     "id": 253,
      "name": "portal_llegada",
      "type": "portal_llegada",
      "x": 208,
@@ -44991,7 +45162,7 @@
      ]
     },
     {
-     "id": 245,
+     "id": 254,
      "name": "portal_volver",
      "type": "portal_volver",
      "x": 208,
@@ -45010,7 +45181,7 @@
      ]
     },
     {
-     "id": 246,
+     "id": 255,
      "name": "jugador_inicio",
      "type": "jugador_inicio",
      "x": 336,
@@ -45023,7 +45194,7 @@
      "properties": []
     },
     {
-     "id": 247,
+     "id": 256,
      "name": "thor_inicio",
      "type": "thor_inicio",
      "x": 304,
@@ -45036,7 +45207,7 @@
      "properties": []
     },
     {
-     "id": 248,
+     "id": 257,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 464,
@@ -45065,7 +45236,7 @@
      ]
     },
     {
-     "id": 249,
+     "id": 258,
      "name": "cofre",
      "type": "cofre",
      "x": 208,
@@ -45084,7 +45255,7 @@
      ]
     },
     {
-     "id": 250,
+     "id": 259,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1328,
@@ -45108,7 +45279,7 @@
      ]
     },
     {
-     "id": 251,
+     "id": 260,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1776,
@@ -45132,7 +45303,7 @@
      ]
     },
     {
-     "id": 252,
+     "id": 261,
      "name": "cofre",
      "type": "cofre",
      "x": 1488,
@@ -45151,7 +45322,7 @@
      ]
     },
     {
-     "id": 253,
+     "id": 262,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1328,
@@ -45175,7 +45346,7 @@
      ]
     },
     {
-     "id": 254,
+     "id": 263,
      "name": "cofre",
      "type": "cofre",
      "x": 1552,
@@ -45204,7 +45375,7 @@
      ]
     },
     {
-     "id": 255,
+     "id": 264,
      "name": "carrito",
      "type": "carrito",
      "x": 976,
@@ -45233,7 +45404,7 @@
      ]
     },
     {
-     "id": 256,
+     "id": 265,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 2512,
@@ -45262,7 +45433,7 @@
      ]
     },
     {
-     "id": 257,
+     "id": 266,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2768,
@@ -45286,7 +45457,7 @@
      ]
     },
     {
-     "id": 258,
+     "id": 267,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2384,
@@ -45310,7 +45481,7 @@
      ]
     },
     {
-     "id": 259,
+     "id": 268,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2832,
@@ -45334,7 +45505,7 @@
      ]
     },
     {
-     "id": 260,
+     "id": 269,
      "name": "cofre",
      "type": "cofre",
      "x": 2864,
@@ -45353,7 +45524,7 @@
      ]
     },
     {
-     "id": 261,
+     "id": 270,
      "name": "figura",
      "type": "figura",
      "x": 1360,
@@ -45372,7 +45543,7 @@
      ]
     },
     {
-     "id": 262,
+     "id": 271,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2256,
@@ -45396,7 +45567,7 @@
      ]
     },
     {
-     "id": 263,
+     "id": 272,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1360,
@@ -45420,7 +45591,7 @@
      ]
     },
     {
-     "id": 264,
+     "id": 273,
      "name": "enemigo",
      "type": "enemigo",
      "x": 464,
@@ -45444,7 +45615,7 @@
      ]
     },
     {
-     "id": 265,
+     "id": 274,
      "name": "enemigo",
      "type": "enemigo",
      "x": 880,
@@ -45468,7 +45639,7 @@
      ]
     },
     {
-     "id": 266,
+     "id": 275,
      "name": "cofre",
      "type": "cofre",
      "x": 368,
@@ -45487,7 +45658,7 @@
      ]
     },
     {
-     "id": 267,
+     "id": 276,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 816,
@@ -45516,7 +45687,7 @@
      ]
     },
     {
-     "id": 268,
+     "id": 277,
      "name": "cofre",
      "type": "cofre",
      "x": 944,
@@ -45535,7 +45706,7 @@
      ]
     },
     {
-     "id": 269,
+     "id": 278,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1072,
@@ -45559,7 +45730,7 @@
      ]
     },
     {
-     "id": 270,
+     "id": 279,
      "name": "mural",
      "type": "mural",
      "x": 368,
@@ -45578,7 +45749,7 @@
      ]
     },
     {
-     "id": 271,
+     "id": 280,
      "name": "cofre",
      "type": "cofre",
      "x": 304,
@@ -45607,7 +45778,7 @@
      ]
     },
     {
-     "id": 272,
+     "id": 281,
      "name": "cofre",
      "type": "cofre",
      "x": 1424,
@@ -45626,7 +45797,7 @@
      ]
     },
     {
-     "id": 273,
+     "id": 282,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1296,
@@ -45650,7 +45821,7 @@
      ]
     },
     {
-     "id": 274,
+     "id": 283,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1552,
@@ -45674,7 +45845,7 @@
      ]
     },
     {
-     "id": 275,
+     "id": 284,
      "name": "arena_jefe",
      "type": "arena_jefe",
      "x": 2576,
@@ -45693,7 +45864,7 @@
      ]
     },
     {
-     "id": 276,
+     "id": 285,
      "name": "jefe",
      "type": "jefe",
      "x": 2576,
@@ -45722,7 +45893,7 @@
      ]
     },
     {
-     "id": 277,
+     "id": 286,
      "name": "portal_jefe",
      "type": "portal_jefe",
      "x": 2576,
@@ -45746,7 +45917,7 @@
      ]
     },
     {
-     "id": 278,
+     "id": 287,
      "name": "cofre",
      "type": "cofre",
      "x": 2704,
@@ -45768,6 +45939,234 @@
        "value": true
       }
      ]
+    },
+    {
+     "id": 288,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1230,
+     "y": 304,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejo_cristal"
+      }
+     ]
+    },
+    {
+     "id": 289,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2702,
+     "y": 496,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "topo_minero"
+      }
+     ]
+    },
+    {
+     "id": 290,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 753,
+     "y": 1040,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejo_cristal"
+      }
+     ]
+    },
+    {
+     "id": 291,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 816,
+     "y": 2064,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "topo_minero"
+      }
+     ]
+    },
+    {
+     "id": 292,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2192,
+     "y": 2032,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejo_cristal"
+      }
+     ]
+    },
+    {
+     "id": 293,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 461,
+     "y": 1360,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "topo_minero"
+      }
+     ]
+    },
+    {
+     "id": 294,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2000,
+     "y": 400,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejo_cristal"
+      }
+     ]
+    },
+    {
+     "id": 295,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 973,
+     "y": 368,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "topo_minero"
+      }
+     ]
+    },
+    {
+     "id": 296,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 687,
+     "y": 1968,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejo_cristal"
+      }
+     ]
+    },
+    {
+     "id": 297,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1200,
+     "y": 624,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "topo_minero"
+      }
+     ]
+    },
+    {
+     "id": 298,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1749,
+     "y": 464,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejo_cristal"
+      }
+     ]
+    },
+    {
+     "id": 299,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2733,
+     "y": 592,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "topo_minero"
+      }
+     ]
     }
    ]
   },
@@ -45782,7 +46181,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 279,
+     "id": 300,
      "name": "La Boca de la Mina",
      "type": "zona",
      "x": 64,
@@ -45825,17 +46224,27 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo"
+       "value": "polvo,gotas"
       },
       {
        "name": "frente",
        "type": "string",
        "value": "estalactitas_frente_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-20,#d8e8ff,0.55"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0a1018,#d0e8ff,1.08,0.92"
       }
      ]
     },
     {
-     "id": 280,
+     "id": 301,
      "name": "Los Rieles",
      "type": "zona",
      "x": 768,
@@ -45884,11 +46293,21 @@
        "name": "frente",
        "type": "string",
        "value": "estalactitas_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#c8a070,0"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0c0c10,#ffd0a0,1.12,0.9"
       }
      ]
     },
     {
-     "id": 281,
+     "id": 302,
      "name": "La Sala del Eco",
      "type": "zona",
      "x": 2112,
@@ -45931,17 +46350,27 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brillos"
+       "value": "brillos,polvo"
       },
       {
        "name": "frente",
        "type": "string",
        "value": "cristales_techo_frente_0,cristales_techo_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#a88aff,0.15"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0c0618,#c0a8ff,1.16,1.05"
       }
      ]
     },
     {
-     "id": 282,
+     "id": 303,
      "name": "El Puente Colgante",
      "type": "zona",
      "x": 1312,
@@ -45984,17 +46413,27 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brasas_frias"
+       "value": "brasas_frias,gotas"
       },
       {
        "name": "frente",
        "type": "string",
        "value": "estalactitas_frente_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-5,#6a8ad8,0.2"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#04060e,#8ab0ff,1.18,0.95"
       }
      ]
     },
     {
-     "id": 283,
+     "id": 304,
      "name": "El Lago de Cristal",
      "type": "zona",
      "x": 192,
@@ -46037,17 +46476,27 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brillos"
+       "value": "brillos,gotas"
       },
       {
        "name": "frente",
        "type": "string",
        "value": "estalactitas_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-10,#5ae8ff,0.3"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#04101a,#8af0ff,1.12,1.08"
       }
      ]
     },
     {
-     "id": 284,
+     "id": 305,
      "name": "El Campamento Abandonado",
      "type": "zona",
      "x": 192,
@@ -46090,17 +46539,27 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "humo"
+       "value": "humo,polvo"
       },
       {
        "name": "frente",
        "type": "string",
        "value": "estalactitas_frente_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#ffb35a,0"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#100a06,#ffc080,1.1,0.95"
       }
      ]
     },
     {
-     "id": 285,
+     "id": 306,
      "name": "La Cueva de la Reina",
      "type": "zona",
      "x": 2048,
@@ -46143,17 +46602,27 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,brillos"
       },
       {
        "name": "frente",
        "type": "string",
        "value": "estalactitas_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#b07aff,0.1"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0a0414,#c890ff,1.2,1.0"
       }
      ]
     },
     {
-     "id": 286,
+     "id": 307,
      "name": "La Veta Escondida",
      "type": "zona",
      "x": 1376,
@@ -46202,11 +46671,21 @@
        "name": "descubrir",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#ffb35a,0.2"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#100a04,#ffd080,1.12,1.1"
       }
      ]
     },
     {
-     "id": 287,
+     "id": 308,
      "name": "El Nicho del Minero",
      "type": "zona",
      "x": 224,
@@ -46244,7 +46723,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo"
+       "value": "polvo,gotas"
       },
       {
        "name": "secreto",
@@ -46255,6 +46734,16 @@
        "name": "descubrir",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#ffb35a,0"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0c0a08,#ffc890,1.1,0.9"
       }
      ]
     }
@@ -46271,7 +46760,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 288,
+     "id": 309,
      "name": "boca_de_la_mina",
      "type": "postal",
      "x": 432,
@@ -46284,7 +46773,7 @@
      "properties": []
     },
     {
-     "id": 289,
+     "id": 310,
      "name": "los_rieles",
      "type": "postal",
      "x": 1296,
@@ -46297,7 +46786,7 @@
      "properties": []
     },
     {
-     "id": 290,
+     "id": 311,
      "name": "sala_del_eco",
      "type": "postal",
      "x": 2608,
@@ -46310,7 +46799,7 @@
      "properties": []
     },
     {
-     "id": 291,
+     "id": 312,
      "name": "puente_colgante",
      "type": "postal",
      "x": 1840,
@@ -46323,7 +46812,7 @@
      "properties": []
     },
     {
-     "id": 292,
+     "id": 313,
      "name": "lago_de_cristal",
      "type": "postal",
      "x": 688,
@@ -46336,7 +46825,7 @@
      "properties": []
     },
     {
-     "id": 293,
+     "id": 314,
      "name": "campamento_abandonado",
      "type": "postal",
      "x": 688,
@@ -46349,7 +46838,7 @@
      "properties": []
     },
     {
-     "id": 294,
+     "id": 315,
      "name": "cueva_de_la_reina",
      "type": "postal",
      "x": 2576,
@@ -46374,7 +46863,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 295,
+     "id": 316,
      "name": "g1",
      "type": "cristal_grande",
      "x": 2384,
@@ -46403,7 +46892,7 @@
      ]
     },
     {
-     "id": 296,
+     "id": 317,
      "name": "g2",
      "type": "cristal_grande",
      "x": 2768,
@@ -46432,7 +46921,7 @@
      ]
     },
     {
-     "id": 297,
+     "id": 318,
      "name": "g3",
      "type": "cristal_grande",
      "x": 2384,
@@ -46461,7 +46950,7 @@
      ]
     },
     {
-     "id": 298,
+     "id": 319,
      "name": "g4",
      "type": "cristal_grande",
      "x": 2768,
@@ -46490,7 +46979,7 @@
      ]
     },
     {
-     "id": 299,
+     "id": 320,
      "name": "c1",
      "type": "cristal",
      "x": 266,
@@ -46519,7 +47008,7 @@
      ]
     },
     {
-     "id": 300,
+     "id": 321,
      "name": "c2",
      "type": "cristal",
      "x": 562,
@@ -46548,7 +47037,7 @@
      ]
     },
     {
-     "id": 301,
+     "id": 322,
      "name": "c3",
      "type": "cristal",
      "x": 623,
@@ -46577,7 +47066,7 @@
      ]
     },
     {
-     "id": 302,
+     "id": 323,
      "name": "c4",
      "type": "cristal",
      "x": 659,
@@ -46606,7 +47095,7 @@
      ]
     },
     {
-     "id": 303,
+     "id": 324,
      "name": "c5",
      "type": "cristal",
      "x": 368,
@@ -46635,7 +47124,7 @@
      ]
     },
     {
-     "id": 304,
+     "id": 325,
      "name": "c6",
      "type": "cristal",
      "x": 1780,
@@ -46664,7 +47153,7 @@
      ]
     },
     {
-     "id": 305,
+     "id": 326,
      "name": "c7",
      "type": "cristal",
      "x": 1834,
@@ -46693,7 +47182,7 @@
      ]
     },
     {
-     "id": 306,
+     "id": 327,
      "name": "c8",
      "type": "cristal",
      "x": 1684,
@@ -46722,7 +47211,7 @@
      ]
     },
     {
-     "id": 307,
+     "id": 328,
      "name": "c9",
      "type": "cristal",
      "x": 1810,
@@ -46751,7 +47240,7 @@
      ]
     },
     {
-     "id": 308,
+     "id": 329,
      "name": "c10",
      "type": "cristal",
      "x": 1134,
@@ -46780,7 +47269,7 @@
      ]
     },
     {
-     "id": 309,
+     "id": 330,
      "name": "c11",
      "type": "cristal",
      "x": 1654,
@@ -46809,7 +47298,7 @@
      ]
     },
     {
-     "id": 310,
+     "id": 331,
      "name": "c12",
      "type": "cristal",
      "x": 1258,
@@ -46838,7 +47327,7 @@
      ]
     },
     {
-     "id": 311,
+     "id": 332,
      "name": "c13",
      "type": "cristal",
      "x": 2380,
@@ -46867,7 +47356,7 @@
      ]
     },
     {
-     "id": 312,
+     "id": 333,
      "name": "c14",
      "type": "cristal",
      "x": 2858,
@@ -46896,7 +47385,7 @@
      ]
     },
     {
-     "id": 313,
+     "id": 334,
      "name": "c15",
      "type": "cristal",
      "x": 2663,
@@ -46925,7 +47414,7 @@
      ]
     },
     {
-     "id": 314,
+     "id": 335,
      "name": "c16",
      "type": "cristal",
      "x": 2855,
@@ -46954,7 +47443,7 @@
      ]
     },
     {
-     "id": 315,
+     "id": 336,
      "name": "c17",
      "type": "cristal",
      "x": 2735,
@@ -46983,7 +47472,7 @@
      ]
     },
     {
-     "id": 316,
+     "id": 337,
      "name": "c18",
      "type": "cristal",
      "x": 2239,
@@ -47012,7 +47501,7 @@
      ]
     },
     {
-     "id": 317,
+     "id": 338,
      "name": "c19",
      "type": "cristal",
      "x": 2293,
@@ -47041,7 +47530,7 @@
      ]
     },
     {
-     "id": 318,
+     "id": 339,
      "name": "c20",
      "type": "cristal",
      "x": 2239,
@@ -47070,7 +47559,7 @@
      ]
     },
     {
-     "id": 319,
+     "id": 340,
      "name": "c21",
      "type": "cristal",
      "x": 2586,
@@ -47099,7 +47588,7 @@
      ]
     },
     {
-     "id": 320,
+     "id": 341,
      "name": "c22",
      "type": "cristal",
      "x": 2768,
@@ -47128,7 +47617,7 @@
      ]
     },
     {
-     "id": 321,
+     "id": 342,
      "name": "c23",
      "type": "cristal",
      "x": 2250,
@@ -47157,7 +47646,7 @@
      ]
     },
     {
-     "id": 322,
+     "id": 343,
      "name": "c24",
      "type": "cristal",
      "x": 1536,
@@ -47186,7 +47675,7 @@
      ]
     },
     {
-     "id": 323,
+     "id": 344,
      "name": "c25",
      "type": "cristal",
      "x": 1456,
@@ -47215,7 +47704,7 @@
      ]
     },
     {
-     "id": 324,
+     "id": 345,
      "name": "c26",
      "type": "cristal",
      "x": 1081,
@@ -47244,7 +47733,7 @@
      ]
     },
     {
-     "id": 325,
+     "id": 346,
      "name": "c27",
      "type": "cristal",
      "x": 313,
@@ -47273,7 +47762,7 @@
      ]
     },
     {
-     "id": 326,
+     "id": 347,
      "name": "c28",
      "type": "cristal",
      "x": 498,
@@ -47302,7 +47791,7 @@
      ]
     },
     {
-     "id": 327,
+     "id": 348,
      "name": "c29",
      "type": "cristal",
      "x": 352,
@@ -47331,7 +47820,7 @@
      ]
     },
     {
-     "id": 328,
+     "id": 349,
      "name": "c30",
      "type": "cristal",
      "x": 952,
@@ -47360,7 +47849,7 @@
      ]
     },
     {
-     "id": 329,
+     "id": 350,
      "name": "c31",
      "type": "cristal",
      "x": 995,
@@ -47389,7 +47878,7 @@
      ]
     },
     {
-     "id": 330,
+     "id": 351,
      "name": "c32",
      "type": "cristal",
      "x": 777,
@@ -47418,7 +47907,7 @@
      ]
     },
     {
-     "id": 331,
+     "id": 352,
      "name": "c33",
      "type": "cristal",
      "x": 623,
@@ -47447,7 +47936,7 @@
      ]
     },
     {
-     "id": 332,
+     "id": 353,
      "name": "c34",
      "type": "cristal",
      "x": 694,
@@ -47476,7 +47965,7 @@
      ]
     },
     {
-     "id": 333,
+     "id": 354,
      "name": "c35",
      "type": "cristal",
      "x": 405,
@@ -47505,7 +47994,7 @@
      ]
     },
     {
-     "id": 334,
+     "id": 355,
      "name": "c36",
      "type": "cristal",
      "x": 629,
@@ -47534,7 +48023,7 @@
      ]
     },
     {
-     "id": 335,
+     "id": 356,
      "name": "c37",
      "type": "cristal",
      "x": 1088,
@@ -47563,7 +48052,7 @@
      ]
     },
     {
-     "id": 336,
+     "id": 357,
      "name": "c38",
      "type": "cristal",
      "x": 1070,
@@ -47592,7 +48081,7 @@
      ]
     },
     {
-     "id": 337,
+     "id": 358,
      "name": "c39",
      "type": "cristal",
      "x": 2288,
@@ -47621,7 +48110,7 @@
      ]
     },
     {
-     "id": 338,
+     "id": 359,
      "name": "c40",
      "type": "cristal",
      "x": 2931,
@@ -47650,7 +48139,7 @@
      ]
     },
     {
-     "id": 339,
+     "id": 360,
      "name": "c41",
      "type": "cristal",
      "x": 2218,
@@ -47679,7 +48168,7 @@
      ]
     },
     {
-     "id": 340,
+     "id": 361,
      "name": "c42",
      "type": "cristal",
      "x": 2976,
@@ -47711,5 +48200,5 @@
   }
  ],
  "nextlayerid": 200,
- "nextobjectid": 341
+ "nextobjectid": 362
 }

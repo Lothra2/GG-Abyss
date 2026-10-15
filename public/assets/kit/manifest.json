@@ -78185,6 +78185,305 @@
       "loop": true
      }
     }
+   },
+   "mon_bosque_carreta": {
+    "w": 112,
+    "h": 80,
+    "apoyo": [
+     56,
+     74
+    ],
+    "solido": [
+     -28,
+     -12,
+     56,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_carreta_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_carreta_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_hada": {
+    "w": 80,
+    "h": 128,
+    "apoyo": [
+     40,
+     121
+    ],
+    "solido": [
+     -20,
+     -12,
+     40,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_hada_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_hada_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_piedra_nombres": {
+    "w": 72,
+    "h": 112,
+    "apoyo": [
+     36,
+     104
+    ],
+    "solido": [
+     -18,
+     -12,
+     36,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_piedra_nombres_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_piedra_nombres_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_arbol_hueco": {
+    "w": 100,
+    "h": 140,
+    "apoyo": [
+     51,
+     132
+    ],
+    "solido": [
+     -24,
+     -12,
+     48,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_arbol_hueco_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_arbol_hueco_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_trono_hongos": {
+    "w": 80,
+    "h": 96,
+    "apoyo": [
+     40,
+     89
+    ],
+    "solido": [
+     -20,
+     -12,
+     40,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_trono_hongos_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_trono_hongos_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_altar_ciervo": {
+    "w": 96,
+    "h": 96,
+    "apoyo": [
+     48,
+     89
+    ],
+    "solido": [
+     -32,
+     -12,
+     64,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_altar_ciervo_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_altar_ciervo_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_molino": {
+    "w": 112,
+    "h": 112,
+    "apoyo": [
+     62,
+     105
+    ],
+    "solido": [
+     -36,
+     -12,
+     72,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_molino_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_molino_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_barca": {
+    "w": 112,
+    "h": 72,
+    "apoyo": [
+     56,
+     64
+    ],
+    "solido": [
+     -36,
+     -12,
+     72,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_barca_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_barca_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_cabeza_rey": {
+    "w": 120,
+    "h": 96,
+    "apoyo": [
+     56,
+     92
+    ],
+    "solido": [
+     -40,
+     -12,
+     80,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_cabeza_rey_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_cabeza_rey_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_totem_goblin": {
+    "w": 72,
+    "h": 144,
+    "apoyo": [
+     36,
+     137
+    ],
+    "solido": [
+     -15,
+     -12,
+     30,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_totem_goblin_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_totem_goblin_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_calabaza_casa": {
+    "w": 112,
+    "h": 112,
+    "apoyo": [
+     56,
+     106
+    ],
+    "solido": [
+     -40,
+     -12,
+     80,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_calabaza_casa_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_calabaza_casa_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_torre_vigia": {
+    "w": 88,
+    "h": 156,
+    "apoyo": [
+     42,
+     151
+    ],
+    "solido": [
+     -28,
+     -12,
+     56,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_torre_vigia_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_torre_vigia_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
+   },
+   "mon_bosque_hacha_minotauro": {
+    "w": 96,
+    "h": 128,
+    "apoyo": [
+     49,
+     120
+    ],
+    "solido": [
+     -40,
+     -12,
+     80,
+     12
+    ],
+    "sombra": "mundo/objetos/mon_bosque_hacha_minotauro_sombra.png",
+    "anims": {
+     "idle": {
+      "archivo": "mundo/objetos/mon_bosque_hacha_minotauro_idle.png",
+      "cuadros": 1,
+      "fps": 4,
+      "loop": true
+     }
+    }
    }
   },
   "portal": "portal_verde",
@@ -78478,6 +78777,67 @@
       "loop": true
      }
     }
+   },
+   "polilla_luz": {
+    "w": 16,
+    "h": 16,
+    "anims": {
+     "quieto": {
+      "archivo": "mundo/criaturas/polilla_luz_quieto.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     },
+     "huir": {
+      "archivo": "mundo/criaturas/polilla_luz_huir.png",
+      "cuadros": 8,
+      "fps": 12,
+      "loop": true
+     },
+     "huye": {
+      "archivo": "mundo/criaturas/polilla_luz_huir.png",
+      "cuadros": 8,
+      "fps": 12,
+      "loop": true
+     }
+    },
+    "comportamiento": {
+     "huye": 70,
+     "se_esconde": false,
+     "corre": 60,
+     "vuela": true
+    },
+    "notas": "Polilla de luz: se posa en flores, hongos y velas. Al huir sube y se va en diagonal. Su panza brilla (un punto de luz chico #ffe9a8 si el juego quiere)."
+   },
+   "erizo": {
+    "w": 16,
+    "h": 16,
+    "anims": {
+     "quieto": {
+      "archivo": "mundo/criaturas/erizo_quieto.png",
+      "cuadros": 4,
+      "fps": 4,
+      "loop": true
+     },
+     "huir": {
+      "archivo": "mundo/criaturas/erizo_huir.png",
+      "cuadros": 6,
+      "fps": 10,
+      "loop": true
+     },
+     "huye": {
+      "archivo": "mundo/criaturas/erizo_huir.png",
+      "cuadros": 6,
+      "fps": 10,
+      "loop": true
+     }
+    },
+    "comportamiento": {
+     "huye": 50,
+     "se_esconde": true,
+     "corre": 40
+    },
+    "notas": "Erizo: husmea en las hojas. Al asustarse se hace bolita (cuadros 0-1 de huir) y rueda a esconderse bajo un arbusto."
    }
   },
   "luz": "mundo/luz.png",
@@ -78485,7 +78845,102 @@
   "niebla": {
    "nubes": "mundo/niebla_nubes.png",
    "jirones": "mundo/niebla_jirones.png",
-   "notas": "Texturas de 256 que pegan por los 4 lados. Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla."
+   "jirones_mundo": "mundo/niebla_jirones_mundo1.png",
+   "notas": "Texturas de 256 que pegan por los 4 lados (los jirones también: ya no hay costura cada 512). Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla. jirones_mundo (si está) es la misma forma teñida con el color de la niebla de este mundo: usarla en vez de jirones."
+  },
+  "monumentos": {
+   "mon_bosque_carreta": {
+    "zona": "Claro de la Llegada",
+    "x": 320,
+    "y": 2396,
+    "historia": "La carreta de los primeros viajeros, volcada; ahora le crecen flores adentro."
+   },
+   "mon_bosque_hada": {
+    "zona": "Pradera de las Mariposas",
+    "x": 720,
+    "y": 2268,
+    "historia": "El hada de piedra que cuidaba la pradera, con un ala rota; una mariposa de luz se le posa en la mano."
+   },
+   "mon_bosque_piedra_nombres": {
+    "zona": "El Abuelo Roble",
+    "x": 1088,
+    "y": 1628,
+    "historia": "La piedra de los nombres: las manos de una familia talladas de grande a chica, y velas que alguien todavía prende."
+   },
+   "mon_bosque_arbol_hueco": {
+    "zona": "Bosque Profundo",
+    "x": 800,
+    "y": 1340,
+    "historia": "El árbol abuelo hueco: algo vive en el tronco y abre los ojos cuando pasas."
+   },
+   "mon_bosque_trono_hongos": {
+    "zona": "Anillo de las Hadas",
+    "x": 304,
+    "y": 828,
+    "historia": "El trono de hongos donde la reina de las hadas daba audiencia; todavía gotea luz turquesa."
+   },
+   "mon_bosque_altar_ciervo": {
+    "zona": "Claro Escondido",
+    "x": 352,
+    "y": 284,
+    "historia": "El altar del ciervo blanco: los cuernos sobre la laja y bayas que alguien deja de ofrenda."
+   },
+   "mon_bosque_molino": {
+    "zona": "Arroyo Cristalino",
+    "x": 1648,
+    "y": 1500,
+    "historia": "El molino del arroyo: la rueda se soltó y quedó apoyada en la casita sin techo."
+   },
+   "mon_bosque_barca": {
+    "zona": "Lago Espejo",
+    "x": 2240,
+    "y": 2396,
+    "historia": "La barca del pescador, varada entre juncos con la red adentro, como si fuera a volver."
+   },
+   "mon_bosque_cabeza_rey": {
+    "zona": "Ruinas del Viejo Reino",
+    "x": 2256,
+    "y": 1820,
+    "historia": "La cabeza del rey del viejo reino, caída de costado con la corona rajada y musgo en la barba."
+   },
+   "mon_bosque_totem_goblin": {
+    "zona": "Colina de los Goblins",
+    "x": 3152,
+    "y": 1980,
+    "historia": "El tótem de los goblins: tres caras apiladas, plumas, ollas y el cuerno de guerra."
+   },
+   "mon_bosque_calabaza_casa": {
+    "zona": "Campo de Calabazas",
+    "x": 2800,
+    "y": 2492,
+    "historia": "La calabaza gigante que alguien vació para vivir adentro: hay luz en la ventana."
+   },
+   "mon_bosque_torre_vigia": {
+    "zona": "Las Alturas",
+    "x": 2512,
+    "y": 508,
+    "historia": "La torre del vigía, partida a la mitad, con el estandarte azul del viejo reino todavía colgado."
+   },
+   "mon_bosque_hacha_minotauro": {
+    "zona": "Arena del Minotauro",
+    "x": 3056,
+    "y": 220,
+    "historia": "El hacha del primer minotauro, clavada en la roca que partió de un golpe."
+   }
+  },
+  "luz_zonas": {
+   "defecto": {
+    "rayos": "-22,#ffe9a8,0.6",
+    "grado": "#1a2a22,#ffe2a0,1.08,1.1"
+   },
+   "notas": "Cada zona del mapa trae rayos (\"angulo,#color,densidad\": grados desde la vertical, densidad 0 a 1, 0 = sin rayos) y grado (\"#sombras,#luces,contraste,saturacion\"). Si a una zona le falta, usar defecto."
+  },
+  "criaturas_nuevas": {
+   "especies": [
+    "polilla_luz",
+    "erizo"
+   ],
+   "notas": "Entidades criatura con `especie`. Anims quieto (bucle) y huir (= huye, mismo archivo). comportamiento: huye = radio en px al que se asusta, se_esconde = se mete en una grieta y desaparece (si no, corre fuera de la pantalla), corre = px/s, vuela = sale volando."
   },
   "referencia": "tools/pixel_forja/scripts/visor/runtime.js anima todo esto en Canvas 2D: es la referencia para el juego.",
   "notas": "Orden de dibujo: capa fondo (paralaje) > agua (cuadros animados) > suelo (trozos de imagen, el agua es transparente) > objetos con capa suelo > sombras horneadas (campo sombra; si no hay, la elipse de siempre) > objetos y personajes ordenados por y > capa frente (no va en el mapa: la zona la declara en su propiedad frente y el juego la pega a los bordes de la pantalla, con paralaje 1.15) > luces (aditivo) > sombras de nube. Cada zona del mapa trae musica, ambiente, luz, oscuridad y particulas."
@@ -83074,6 +83529,305 @@
        "loop": true
       }
      }
+    },
+    "mon_bosque_carreta": {
+     "w": 112,
+     "h": 80,
+     "apoyo": [
+      56,
+      74
+     ],
+     "solido": [
+      -28,
+      -12,
+      56,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_carreta_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_carreta_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_hada": {
+     "w": 80,
+     "h": 128,
+     "apoyo": [
+      40,
+      121
+     ],
+     "solido": [
+      -20,
+      -12,
+      40,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_hada_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_hada_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_piedra_nombres": {
+     "w": 72,
+     "h": 112,
+     "apoyo": [
+      36,
+      104
+     ],
+     "solido": [
+      -18,
+      -12,
+      36,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_piedra_nombres_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_piedra_nombres_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_arbol_hueco": {
+     "w": 100,
+     "h": 140,
+     "apoyo": [
+      51,
+      132
+     ],
+     "solido": [
+      -24,
+      -12,
+      48,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_arbol_hueco_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_arbol_hueco_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_trono_hongos": {
+     "w": 80,
+     "h": 96,
+     "apoyo": [
+      40,
+      89
+     ],
+     "solido": [
+      -20,
+      -12,
+      40,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_trono_hongos_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_trono_hongos_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_altar_ciervo": {
+     "w": 96,
+     "h": 96,
+     "apoyo": [
+      48,
+      89
+     ],
+     "solido": [
+      -32,
+      -12,
+      64,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_altar_ciervo_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_altar_ciervo_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_molino": {
+     "w": 112,
+     "h": 112,
+     "apoyo": [
+      62,
+      105
+     ],
+     "solido": [
+      -36,
+      -12,
+      72,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_molino_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_molino_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_barca": {
+     "w": 112,
+     "h": 72,
+     "apoyo": [
+      56,
+      64
+     ],
+     "solido": [
+      -36,
+      -12,
+      72,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_barca_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_barca_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_cabeza_rey": {
+     "w": 120,
+     "h": 96,
+     "apoyo": [
+      56,
+      92
+     ],
+     "solido": [
+      -40,
+      -12,
+      80,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_cabeza_rey_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_cabeza_rey_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_totem_goblin": {
+     "w": 72,
+     "h": 144,
+     "apoyo": [
+      36,
+      137
+     ],
+     "solido": [
+      -15,
+      -12,
+      30,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_totem_goblin_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_totem_goblin_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_calabaza_casa": {
+     "w": 112,
+     "h": 112,
+     "apoyo": [
+      56,
+      106
+     ],
+     "solido": [
+      -40,
+      -12,
+      80,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_calabaza_casa_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_calabaza_casa_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_torre_vigia": {
+     "w": 88,
+     "h": 156,
+     "apoyo": [
+      42,
+      151
+     ],
+     "solido": [
+      -28,
+      -12,
+      56,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_torre_vigia_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_torre_vigia_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_bosque_hacha_minotauro": {
+     "w": 96,
+     "h": 128,
+     "apoyo": [
+      49,
+      120
+     ],
+     "solido": [
+      -40,
+      -12,
+      80,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_bosque_hacha_minotauro_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_bosque_hacha_minotauro_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
     }
    },
    "portal": "portal_verde",
@@ -83367,6 +84121,67 @@
        "loop": true
       }
      }
+    },
+    "polilla_luz": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/polilla_luz_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/polilla_luz_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/polilla_luz_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 70,
+      "se_esconde": false,
+      "corre": 60,
+      "vuela": true
+     },
+     "notas": "Polilla de luz: se posa en flores, hongos y velas. Al huir sube y se va en diagonal. Su panza brilla (un punto de luz chico #ffe9a8 si el juego quiere)."
+    },
+    "erizo": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/erizo_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/erizo_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/erizo_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 50,
+      "se_esconde": true,
+      "corre": 40
+     },
+     "notas": "Erizo: husmea en las hojas. Al asustarse se hace bolita (cuadros 0-1 de huir) y rueda a esconderse bajo un arbusto."
     }
    },
    "luz": "mundo/luz.png",
@@ -83374,7 +84189,102 @@
    "niebla": {
     "nubes": "mundo/niebla_nubes.png",
     "jirones": "mundo/niebla_jirones.png",
-    "notas": "Texturas de 256 que pegan por los 4 lados. Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla."
+    "jirones_mundo": "mundo/niebla_jirones_mundo1.png",
+    "notas": "Texturas de 256 que pegan por los 4 lados (los jirones también: ya no hay costura cada 512). Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla. jirones_mundo (si está) es la misma forma teñida con el color de la niebla de este mundo: usarla en vez de jirones."
+   },
+   "monumentos": {
+    "mon_bosque_carreta": {
+     "zona": "Claro de la Llegada",
+     "x": 320,
+     "y": 2396,
+     "historia": "La carreta de los primeros viajeros, volcada; ahora le crecen flores adentro."
+    },
+    "mon_bosque_hada": {
+     "zona": "Pradera de las Mariposas",
+     "x": 720,
+     "y": 2268,
+     "historia": "El hada de piedra que cuidaba la pradera, con un ala rota; una mariposa de luz se le posa en la mano."
+    },
+    "mon_bosque_piedra_nombres": {
+     "zona": "El Abuelo Roble",
+     "x": 1088,
+     "y": 1628,
+     "historia": "La piedra de los nombres: las manos de una familia talladas de grande a chica, y velas que alguien todavía prende."
+    },
+    "mon_bosque_arbol_hueco": {
+     "zona": "Bosque Profundo",
+     "x": 800,
+     "y": 1340,
+     "historia": "El árbol abuelo hueco: algo vive en el tronco y abre los ojos cuando pasas."
+    },
+    "mon_bosque_trono_hongos": {
+     "zona": "Anillo de las Hadas",
+     "x": 304,
+     "y": 828,
+     "historia": "El trono de hongos donde la reina de las hadas daba audiencia; todavía gotea luz turquesa."
+    },
+    "mon_bosque_altar_ciervo": {
+     "zona": "Claro Escondido",
+     "x": 352,
+     "y": 284,
+     "historia": "El altar del ciervo blanco: los cuernos sobre la laja y bayas que alguien deja de ofrenda."
+    },
+    "mon_bosque_molino": {
+     "zona": "Arroyo Cristalino",
+     "x": 1648,
+     "y": 1500,
+     "historia": "El molino del arroyo: la rueda se soltó y quedó apoyada en la casita sin techo."
+    },
+    "mon_bosque_barca": {
+     "zona": "Lago Espejo",
+     "x": 2240,
+     "y": 2396,
+     "historia": "La barca del pescador, varada entre juncos con la red adentro, como si fuera a volver."
+    },
+    "mon_bosque_cabeza_rey": {
+     "zona": "Ruinas del Viejo Reino",
+     "x": 2256,
+     "y": 1820,
+     "historia": "La cabeza del rey del viejo reino, caída de costado con la corona rajada y musgo en la barba."
+    },
+    "mon_bosque_totem_goblin": {
+     "zona": "Colina de los Goblins",
+     "x": 3152,
+     "y": 1980,
+     "historia": "El tótem de los goblins: tres caras apiladas, plumas, ollas y el cuerno de guerra."
+    },
+    "mon_bosque_calabaza_casa": {
+     "zona": "Campo de Calabazas",
+     "x": 2800,
+     "y": 2492,
+     "historia": "La calabaza gigante que alguien vació para vivir adentro: hay luz en la ventana."
+    },
+    "mon_bosque_torre_vigia": {
+     "zona": "Las Alturas",
+     "x": 2512,
+     "y": 508,
+     "historia": "La torre del vigía, partida a la mitad, con el estandarte azul del viejo reino todavía colgado."
+    },
+    "mon_bosque_hacha_minotauro": {
+     "zona": "Arena del Minotauro",
+     "x": 3056,
+     "y": 220,
+     "historia": "El hacha del primer minotauro, clavada en la roca que partió de un golpe."
+    }
+   },
+   "luz_zonas": {
+    "defecto": {
+     "rayos": "-22,#ffe9a8,0.6",
+     "grado": "#1a2a22,#ffe2a0,1.08,1.1"
+    },
+    "notas": "Cada zona del mapa trae rayos (\"angulo,#color,densidad\": grados desde la vertical, densidad 0 a 1, 0 = sin rayos) y grado (\"#sombras,#luces,contraste,saturacion\"). Si a una zona le falta, usar defecto."
+   },
+   "criaturas_nuevas": {
+    "especies": [
+     "polilla_luz",
+     "erizo"
+    ],
+    "notas": "Entidades criatura con `especie`. Anims quieto (bucle) y huir (= huye, mismo archivo). comportamiento: huye = radio en px al que se asusta, se_esconde = se mete en una grieta y desaparece (si no, corre fuera de la pantalla), corre = px/s, vuela = sale volando."
    },
    "referencia": "tools/pixel_forja/scripts/visor/runtime.js anima todo esto en Canvas 2D: es la referencia para el juego.",
    "notas": "Orden de dibujo: capa fondo (paralaje) > agua (cuadros animados) > suelo (trozos de imagen, el agua es transparente) > objetos con capa suelo > sombras horneadas (campo sombra; si no hay, la elipse de siempre) > objetos y personajes ordenados por y > capa frente (no va en el mapa: la zona la declara en su propiedad frente y el juego la pega a los bordes de la pantalla, con paralaje 1.15) > luces (aditivo) > sombras de nube. Cada zona del mapa trae musica, ambiente, luz, oscuridad y particulas."
@@ -85304,6 +86214,167 @@
        "loop": true
       }
      }
+    },
+    "mon_catedral_angel": {
+     "w": 96,
+     "h": 128,
+     "apoyo": [
+      48,
+      122
+     ],
+     "solido": [
+      -28,
+      -12,
+      56,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_catedral_angel_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_catedral_angel_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_catedral_pila": {
+     "w": 88,
+     "h": 88,
+     "apoyo": [
+      44,
+      84
+     ],
+     "solido": [
+      -18,
+      -12,
+      36,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_catedral_pila_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_catedral_pila_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_catedral_organo": {
+     "w": 120,
+     "h": 156,
+     "apoyo": [
+      60,
+      150
+     ],
+     "solido": [
+      -38,
+      -12,
+      76,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_catedral_organo_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_catedral_organo_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_catedral_relicario": {
+     "w": 72,
+     "h": 88,
+     "apoyo": [
+      36,
+      84
+     ],
+     "solido": [
+      -26,
+      -12,
+      52,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_catedral_relicario_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_catedral_relicario_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_catedral_pulpito": {
+     "w": 96,
+     "h": 120,
+     "apoyo": [
+      48,
+      116
+     ],
+     "solido": [
+      -20,
+      -12,
+      40,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_catedral_pulpito_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_catedral_pulpito_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_catedral_monje_herrero": {
+     "w": 96,
+     "h": 136,
+     "apoyo": [
+      48,
+      132
+     ],
+     "solido": [
+      -28,
+      -12,
+      56,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_catedral_monje_herrero_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_catedral_monje_herrero_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_catedral_roseton": {
+     "w": 112,
+     "h": 120,
+     "apoyo": [
+      56,
+      116
+     ],
+     "solido": [
+      -36,
+      -12,
+      72,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_catedral_roseton_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_catedral_roseton_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
     }
    },
    "portal": "portal_violeta",
@@ -85611,6 +86682,66 @@
        "loop": true
       }
      }
+    },
+    "raton_catedral": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/raton_catedral_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/raton_catedral_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/raton_catedral_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 60,
+      "se_esconde": true,
+      "corre": 90
+     },
+     "notas": "Ratón de catedral: gris, con orejas grandes rosadas. Roe migas cerca de los braseros y huye a un agujero de la pared."
+    },
+    "salamandrita": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/salamandrita_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/salamandrita_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/salamandrita_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 45,
+      "se_esconde": true,
+      "corre": 70
+     },
+     "notas": "Salamandrita del musgo: verde con pintas doradas, toma el calor de los braseros. Se mete entre las raíces."
     }
    },
    "luz": "mundo/luz.png",
@@ -85618,7 +86749,66 @@
    "niebla": {
     "nubes": "mundo/niebla_nubes.png",
     "jirones": "mundo/niebla_jirones.png",
-    "notas": "Texturas de 256 que pegan por los 4 lados. Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla."
+    "jirones_mundo": "mundo/niebla_jirones_mundo2.png",
+    "notas": "Texturas de 256 que pegan por los 4 lados (los jirones también: ya no hay costura cada 512). Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla. jirones_mundo (si está) es la misma forma teñida con el color de la niebla de este mundo: usarla en vez de jirones."
+   },
+   "monumentos": {
+    "mon_catedral_angel": {
+     "zona": "La Escalera Hundida",
+     "x": 640,
+     "y": 252,
+     "historia": "El ángel de piedra arrodillado al pie de la escalera, atado al piso por las raíces que bajaron con él."
+    },
+    "mon_catedral_pila": {
+     "zona": "El Atrio de las Luciérnagas",
+     "x": 608,
+     "y": 764,
+     "historia": "La pila bautismal desbordada: su agua quedó brillando turquesa y las luciérnagas vienen a beber."
+    },
+    "mon_catedral_organo": {
+     "zona": "Los Claustros Quebrados",
+     "x": 1024,
+     "y": 860,
+     "historia": "El órgano de raíces: los tubos se volvieron raíz y suenan solos cuando entra el viento."
+    },
+    "mon_catedral_relicario": {
+     "zona": "La Capilla Escondida",
+     "x": 2112,
+     "y": 796,
+     "historia": "El relicario de oro que los monjes escondieron, con tres velas que nunca se apagan."
+    },
+    "mon_catedral_pulpito": {
+     "zona": "La Nave Inundada",
+     "x": 544,
+     "y": 1404,
+     "historia": "El púlpito hundido de costado en el agua que subió del piso; la escalera sube a ninguna parte."
+    },
+    "mon_catedral_monje_herrero": {
+     "zona": "La Forja Apagada",
+     "x": 1792,
+     "y": 1372,
+     "historia": "El monje herrero de piedra con el martillo en alto; en su yunque frío queda una sola brasa."
+    },
+    "mon_catedral_roseton": {
+     "zona": "El Campanario Invertido",
+     "x": 2288,
+     "y": 1436,
+     "historia": "El rosetón que se cayó del campanario y quedó apoyado en los escombros, con los vidrios verdes y de oro."
+    }
+   },
+   "luz_zonas": {
+    "defecto": {
+     "rayos": "-15,#d8f0a0,0.45",
+     "grado": "#1a2a22,#ffd9a0,1.12,0.9"
+    },
+    "notas": "Cada zona del mapa trae rayos (\"angulo,#color,densidad\": grados desde la vertical, densidad 0 a 1, 0 = sin rayos) y grado (\"#sombras,#luces,contraste,saturacion\"). Si a una zona le falta, usar defecto."
+   },
+   "criaturas_nuevas": {
+    "especies": [
+     "raton_catedral",
+     "salamandrita"
+    ],
+    "notas": "Entidades criatura con `especie`. Anims quieto (bucle) y huir (= huye, mismo archivo). comportamiento: huye = radio en px al que se asusta, se_esconde = se mete en una grieta y desaparece (si no, corre fuera de la pantalla), corre = px/s, vuela = sale volando."
    },
    "referencia": "tools/pixel_forja/scripts/visor/runtime.js anima todo esto en Canvas 2D: es la referencia para el juego.",
    "notas": "Orden de dibujo: capa fondo (paralaje) > agua (cuadros animados) > suelo (trozos de imagen, el agua es transparente) > objetos con capa suelo > sombras horneadas (campo sombra; si no hay, la elipse de siempre) > objetos y personajes ordenados por y > capa frente (no va en el mapa: la zona la declara en su propiedad frente y el juego la pega a los bordes de la pantalla, con paralaje 1.15) > luces (aditivo) > sombras de nube. Cada zona del mapa trae musica, ambiente, luz, oscuridad y particulas."
@@ -87167,6 +88357,213 @@
        "loop": true
       }
      }
+    },
+    "mon_galerias_cabria": {
+     "w": 96,
+     "h": 148,
+     "apoyo": [
+      48,
+      144
+     ],
+     "solido": [
+      -36,
+      -12,
+      72,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_galerias_cabria_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_galerias_cabria_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_galerias_carrito": {
+     "w": 112,
+     "h": 80,
+     "apoyo": [
+      56,
+      72
+     ],
+     "solido": [
+      -40,
+      -12,
+      80,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_galerias_carrito_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_galerias_carrito_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_galerias_geoda": {
+     "w": 112,
+     "h": 112,
+     "apoyo": [
+      56,
+      108
+     ],
+     "solido": [
+      -48,
+      -12,
+      96,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_galerias_geoda_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_galerias_geoda_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_galerias_campana_aviso": {
+     "w": 80,
+     "h": 120,
+     "apoyo": [
+      40,
+      116
+     ],
+     "solido": [
+      -30,
+      -12,
+      60,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_galerias_campana_aviso_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_galerias_campana_aviso_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_galerias_barca_minero": {
+     "w": 112,
+     "h": 80,
+     "apoyo": [
+      56,
+      74
+     ],
+     "solido": [
+      -36,
+      -12,
+      72,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_galerias_barca_minero_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_galerias_barca_minero_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_galerias_carpa": {
+     "w": 112,
+     "h": 96,
+     "apoyo": [
+      54,
+      88
+     ],
+     "solido": [
+      -44,
+      -12,
+      88,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_galerias_carpa_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_galerias_carpa_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_galerias_capullo": {
+     "w": 88,
+     "h": 148,
+     "apoyo": [
+      44,
+      144
+     ],
+     "solido": [
+      -26,
+      -12,
+      52,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_galerias_capullo_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_galerias_capullo_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_galerias_ambar": {
+     "w": 64,
+     "h": 100,
+     "apoyo": [
+      32,
+      96
+     ],
+     "solido": [
+      -20,
+      -12,
+      40,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_galerias_ambar_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_galerias_ambar_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_galerias_memorial": {
+     "w": 64,
+     "h": 64,
+     "apoyo": [
+      32,
+      60
+     ],
+     "solido": [
+      -14,
+      -12,
+      28,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_galerias_memorial_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_galerias_memorial_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
     }
    },
    "portal": "portal_ambar",
@@ -87474,6 +88871,66 @@
        "loop": true
       }
      }
+    },
+    "cangrejo_cristal": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/cangrejo_cristal_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/cangrejo_cristal_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/cangrejo_cristal_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 55,
+      "se_esconde": true,
+      "corre": 55
+     },
+     "notas": "Cangrejo de cristal: lleva un cristal cian en el lomo que brilla apenas. Corre de costado y se entierra en la grava (último cuadro de huir)."
+    },
+    "topo_minero": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/topo_minero_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/topo_minero_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/topo_minero_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 40,
+      "se_esconde": true,
+      "corre": 35
+     },
+     "notas": "Topo minero: asoma de un montoncito de tierra con un pedacito de vela pegada en la cabeza. Al huir se hunde en su agujero."
     }
    },
    "luz": "mundo/luz.png",
@@ -87481,7 +88938,78 @@
    "niebla": {
     "nubes": "mundo/niebla_nubes.png",
     "jirones": "mundo/niebla_jirones.png",
-    "notas": "Texturas de 256 que pegan por los 4 lados. Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla."
+    "jirones_mundo": "mundo/niebla_jirones_mundo3.png",
+    "notas": "Texturas de 256 que pegan por los 4 lados (los jirones también: ya no hay costura cada 512). Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla. jirones_mundo (si está) es la misma forma teñida con el color de la niebla de este mundo: usarla en vez de jirones."
+   },
+   "monumentos": {
+    "mon_galerias_cabria": {
+     "zona": "La Boca de la Mina",
+     "x": 432,
+     "y": 348,
+     "historia": "La cabria de la boca de la mina: la rueda que bajaba a los mineros, con el balde colgando todavía."
+    },
+    "mon_galerias_carrito": {
+     "zona": "Los Rieles",
+     "x": 1328,
+     "y": 412,
+     "historia": "El carrito de mina volcado con los cristales que nunca llegaron arriba."
+    },
+    "mon_galerias_geoda": {
+     "zona": "La Sala del Eco",
+     "x": 2608,
+     "y": 540,
+     "historia": "La geoda gigante partida al medio: sus cristales violetas repiten cada sonido de la sala."
+    },
+    "mon_galerias_campana_aviso": {
+     "zona": "El Puente Colgante",
+     "x": 1472,
+     "y": 1308,
+     "historia": "La campana de aviso de la mina, con la soga cortada: nadie llegó a tocarla."
+    },
+    "mon_galerias_barca_minero": {
+     "zona": "El Lago de Cristal",
+     "x": 752,
+     "y": 1148,
+     "historia": "La barca del minero atada a su estaca, con el farol cian que sigue prendido."
+    },
+    "mon_galerias_carpa": {
+     "zona": "El Campamento Abandonado",
+     "x": 704,
+     "y": 2076,
+     "historia": "La carpa remendada del campamento, con la olla sobre un fuego que se apagó hace años."
+    },
+    "mon_galerias_capullo": {
+     "zona": "La Cueva de la Reina",
+     "x": 2240,
+     "y": 1948,
+     "historia": "El capullo vacío de la Polilla Reina, colgado de la estalagmita y abierto de un tajo."
+    },
+    "mon_galerias_ambar": {
+     "zona": "La Veta Escondida",
+     "x": 1472,
+     "y": 124,
+     "historia": "El cristal de ámbar gigante con una polilla atrapada desde antes de que existiera la mina."
+    },
+    "mon_galerias_memorial": {
+     "zona": "El Nicho del Minero",
+     "x": 432,
+     "y": 1788,
+     "historia": "El casco y el pico del último minero sobre una roca, con una vela y una foto borrosa."
+    }
+   },
+   "luz_zonas": {
+    "defecto": {
+     "rayos": "0,#8ae0ff,0",
+     "grado": "#060a14,#8ae0ff,1.14,0.95"
+    },
+    "notas": "Cada zona del mapa trae rayos (\"angulo,#color,densidad\": grados desde la vertical, densidad 0 a 1, 0 = sin rayos) y grado (\"#sombras,#luces,contraste,saturacion\"). Si a una zona le falta, usar defecto."
+   },
+   "criaturas_nuevas": {
+    "especies": [
+     "cangrejo_cristal",
+     "topo_minero"
+    ],
+    "notas": "Entidades criatura con `especie`. Anims quieto (bucle) y huir (= huye, mismo archivo). comportamiento: huye = radio en px al que se asusta, se_esconde = se mete en una grieta y desaparece (si no, corre fuera de la pantalla), corre = px/s, vuela = sale volando."
    },
    "referencia": "tools/pixel_forja/scripts/visor/runtime.js anima todo esto en Canvas 2D: es la referencia para el juego.",
    "notas": "Orden de dibujo: capa fondo (paralaje) > agua (cuadros animados) > suelo (trozos de imagen, el agua es transparente) > objetos con capa suelo > sombras horneadas (campo sombra; si no hay, la elipse de siempre) > objetos y personajes ordenados por y > capa frente (no va en el mapa: la zona la declara en su propiedad frente y el juego la pega a los bordes de la pantalla, con paralaje 1.15) > luces (aditivo) > sombras de nube. Cada zona del mapa trae musica, ambiente, luz, oscuridad y particulas.",
@@ -89697,6 +91225,236 @@
        "loop": true
       }
      }
+    },
+    "mon_puerto_ancla": {
+     "w": 96,
+     "h": 116,
+     "apoyo": [
+      48,
+      108
+     ],
+     "solido": [
+      -16,
+      -12,
+      32,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_puerto_ancla_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_puerto_ancla_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_puerto_secadero": {
+     "w": 112,
+     "h": 100,
+     "apoyo": [
+      56,
+      96
+     ],
+     "solido": [
+      -48,
+      -12,
+      96,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_puerto_secadero_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_puerto_secadero_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_puerto_balanza": {
+     "w": 100,
+     "h": 124,
+     "apoyo": [
+      50,
+      120
+     ],
+     "solido": [
+      -20,
+      -12,
+      40,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_puerto_balanza_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_puerto_balanza_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_puerto_mascaron": {
+     "w": 80,
+     "h": 132,
+     "apoyo": [
+      40,
+      128
+     ],
+     "solido": [
+      -28,
+      -12,
+      56,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_puerto_mascaron_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_puerto_mascaron_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_puerto_barco_partido": {
+     "w": 128,
+     "h": 112,
+     "apoyo": [
+      64,
+      100
+     ],
+     "solido": [
+      -48,
+      -12,
+      96,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_puerto_barco_partido_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_puerto_barco_partido_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_puerto_esqueleto": {
+     "w": 128,
+     "h": 100,
+     "apoyo": [
+      64,
+      96
+     ],
+     "solido": [
+      -52,
+      -12,
+      104,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_puerto_esqueleto_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_puerto_esqueleto_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_puerto_almeja": {
+     "w": 96,
+     "h": 84,
+     "apoyo": [
+      48,
+      80
+     ],
+     "solido": [
+      -36,
+      -12,
+      72,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_puerto_almeja_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_puerto_almeja_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_puerto_lente": {
+     "w": 100,
+     "h": 100,
+     "apoyo": [
+      50,
+      96
+     ],
+     "solido": [
+      -40,
+      -12,
+      80,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_puerto_lente_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_puerto_lente_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_puerto_cajas": {
+     "w": 72,
+     "h": 84,
+     "apoyo": [
+      36,
+      80
+     ],
+     "solido": [
+      -30,
+      -12,
+      60,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_puerto_cajas_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_puerto_cajas_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_puerto_timon": {
+     "w": 72,
+     "h": 84,
+     "apoyo": [
+      36,
+      80
+     ],
+     "solido": [
+      -24,
+      -12,
+      48,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_puerto_timon_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_puerto_timon_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
     }
    },
    "portal": "portal_rojo",
@@ -90005,6 +91763,67 @@
       }
      }
     },
+    "cangrejito": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/cangrejito_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/cangrejito_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/cangrejito_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 50,
+      "se_esconde": true,
+      "corre": 65
+     },
+     "notas": "Cangrejito del muelle: rojo apagado por la niebla, levanta las pinzas cuando lo miran y se mete en una grieta del muelle o en un balde."
+    },
+    "gaviota": {
+     "w": 24,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/gaviota_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/gaviota_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/gaviota_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 90,
+      "se_esconde": false,
+      "corre": 80,
+      "vuela": true
+     },
+     "notas": "Gaviota gris de la niebla: camina por los muelles y picotea redes. Al huir abre las alas y se va volando hacia el mar."
+    },
     "marinero_ojos": {
      "w": 16,
      "h": 8,
@@ -90023,7 +91842,84 @@
    "niebla": {
     "nubes": "mundo/niebla_nubes.png",
     "jirones": "mundo/niebla_jirones.png",
-    "notas": "Texturas de 256 que pegan por los 4 lados. Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla."
+    "jirones_mundo": "mundo/niebla_jirones_mundo4.png",
+    "notas": "Texturas de 256 que pegan por los 4 lados (los jirones también: ya no hay costura cada 512). Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla. jirones_mundo (si está) es la misma forma teñida con el color de la niebla de este mundo: usarla en vez de jirones."
+   },
+   "monumentos": {
+    "mon_puerto_ancla": {
+     "zona": "El Muelle de Llegada",
+     "x": 528,
+     "y": 412,
+     "historia": "El ancla gigante de un barco que nadie vio llegar, clavada en las tablas del muelle."
+    },
+    "mon_puerto_secadero": {
+     "zona": "La Calle de las Redes",
+     "x": 1232,
+     "y": 508,
+     "historia": "El secadero de redes con un pez enorme que nadie bajó antes de que subiera el mar."
+    },
+    "mon_puerto_balanza": {
+     "zona": "El Mercado Hundido",
+     "x": 1888,
+     "y": 476,
+     "historia": "La balanza del mercado, oxidada: un platillo lleno de agua y el otro de conchas."
+    },
+    "mon_puerto_mascaron": {
+     "zona": "La Iglesia de la Campana Ahogada",
+     "x": 2768,
+     "y": 604,
+     "historia": "El mascarón de proa de una mujer con un farol en las manos; el farol todavía tiene luz."
+    },
+    "mon_puerto_barco_partido": {
+     "zona": "Los Botes Volteados",
+     "x": 3056,
+     "y": 1180,
+     "historia": "La proa de un barco partido en dos; la otra mitad se la llevó el mar."
+    },
+    "mon_puerto_esqueleto": {
+     "zona": "El Astillero",
+     "x": 704,
+     "y": 1372,
+     "historia": "El esqueleto de un barco que nunca se terminó, sobre sus calzos, con el martillo olvidado."
+    },
+    "mon_puerto_almeja": {
+     "zona": "La Cueva de las Medusas",
+     "x": 1136,
+     "y": 2268,
+     "historia": "La almeja gigante abierta, con una perla que alumbra violeta en la oscuridad."
+    },
+    "mon_puerto_lente": {
+     "zona": "El Faro",
+     "x": 2672,
+     "y": 2012,
+     "historia": "La lente del faro, caída y rajada, que sigue juntando la poca luz que queda."
+    },
+    "mon_puerto_cajas": {
+     "zona": "El Patio de las Redes",
+     "x": 1216,
+     "y": 124,
+     "historia": "La pila de cajas y barriles de sal del pescadero, con su gaviota de madera tallada."
+    },
+    "mon_puerto_timon": {
+     "zona": "La Gruta del Ancla",
+     "x": 1488,
+     "y": 1852,
+     "historia": "El timón del barco del capitán, apoyado contra la roca de la gruta."
+    }
+   },
+   "luz_zonas": {
+    "defecto": {
+     "rayos": "-10,#d8d0b0,0.2",
+     "grado": "#0e1618,#ffd890,1.1,0.8"
+    },
+    "notas": "Cada zona del mapa trae rayos (\"angulo,#color,densidad\": grados desde la vertical, densidad 0 a 1, 0 = sin rayos) y grado (\"#sombras,#luces,contraste,saturacion\"). Si a una zona le falta, usar defecto."
+   },
+   "criaturas_nuevas": {
+    "especies": [
+     "cangrejito",
+     "gaviota"
+    ],
+    "notas": "Entidades criatura con `especie`. Anims quieto (bucle) y huir (= huye, mismo archivo). comportamiento: huye = radio en px al que se asusta, se_esconde = se mete en una grieta y desaparece (si no, corre fuera de la pantalla), corre = px/s, vuela = sale volando."
    },
    "referencia": "tools/pixel_forja/scripts/visor/runtime.js anima todo esto en Canvas 2D: es la referencia para el juego.",
    "notas": "Orden de dibujo: capa fondo (paralaje) > agua (cuadros animados) > suelo (trozos de imagen, el agua es transparente) > objetos con capa suelo > sombras horneadas (campo sombra; si no hay, la elipse de siempre) > objetos y personajes ordenados por y > capa frente (no va en el mapa: la zona la declara en su propiedad frente y el juego la pega a los bordes de la pantalla, con paralaje 1.15) > luces (aditivo) > sombras de nube. Cada zona del mapa trae musica, ambiente, luz, oscuridad y particulas.",
@@ -93416,6 +95312,236 @@
        "loop": true
       }
      }
+    },
+    "mon_ciudad_guardia": {
+     "w": 80,
+     "h": 132,
+     "apoyo": [
+      40,
+      128
+     ],
+     "solido": [
+      -24,
+      -12,
+      48,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_ciudad_guardia_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_ciudad_guardia_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_ciudad_horno": {
+     "w": 112,
+     "h": 100,
+     "apoyo": [
+      56,
+      96
+     ],
+     "solido": [
+      -48,
+      -12,
+      96,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_ciudad_horno_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_ciudad_horno_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_ciudad_reloj_plaza": {
+     "w": 64,
+     "h": 152,
+     "apoyo": [
+      32,
+      148
+     ],
+     "solido": [
+      -14,
+      -12,
+      28,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_ciudad_reloj_plaza_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_ciudad_reloj_plaza_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_ciudad_arpa": {
+     "w": 88,
+     "h": 132,
+     "apoyo": [
+      44,
+      126
+     ],
+     "solido": [
+      -28,
+      -12,
+      56,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_ciudad_arpa_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_ciudad_arpa_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_ciudad_cisne": {
+     "w": 100,
+     "h": 88,
+     "apoyo": [
+      50,
+      84
+     ],
+     "solido": [
+      -20,
+      -12,
+      40,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_ciudad_cisne_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_ciudad_cisne_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_ciudad_engranaje": {
+     "w": 112,
+     "h": 116,
+     "apoyo": [
+      56,
+      110
+     ],
+     "solido": [
+      -36,
+      -12,
+      72,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_ciudad_engranaje_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_ciudad_engranaje_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_ciudad_farol_caido": {
+     "w": 116,
+     "h": 84,
+     "apoyo": [
+      58,
+      80
+     ],
+     "solido": [
+      -50,
+      -12,
+      100,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_ciudad_farol_caido_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_ciudad_farol_caido_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_ciudad_corona": {
+     "w": 100,
+     "h": 84,
+     "apoyo": [
+      50,
+      78
+     ],
+     "solido": [
+      -44,
+      -12,
+      88,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_ciudad_corona_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_ciudad_corona_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_ciudad_arbol_piedra": {
+     "w": 80,
+     "h": 120,
+     "apoyo": [
+      40,
+      116
+     ],
+     "solido": [
+      -12,
+      -12,
+      24,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_ciudad_arbol_piedra_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_ciudad_arbol_piedra_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_ciudad_organillo": {
+     "w": 68,
+     "h": 80,
+     "apoyo": [
+      34,
+      78
+     ],
+     "solido": [
+      -26,
+      -12,
+      52,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_ciudad_organillo_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_ciudad_organillo_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
     }
    },
    "portal": "portal_plata",
@@ -93730,6 +95856,67 @@
        "loop": true
       }
      }
+    },
+    "gato_piedra": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/gato_piedra_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/gato_piedra_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/gato_piedra_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 60,
+      "se_esconde": true,
+      "corre": 85
+     },
+     "notas": "Gato de piedra: duerme en los escalones como un gatito de estatua (gris con ojos lilas que se abren). Al acercarse se despierta y corre a esconderse detrás de una casa."
+    },
+    "paloma_dormida": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/paloma_dormida_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/paloma_dormida_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/paloma_dormida_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 70,
+      "se_esconde": false,
+      "corre": 60,
+      "vuela": true
+     },
+     "notas": "Paloma dormida: violeta gris, cabecea con la cabeza bajo el ala. Al huir se va volando torpe (sube y baja) y suelta polvo de sueño."
     }
    },
    "luz": "mundo/luz.png",
@@ -93737,7 +95924,84 @@
    "niebla": {
     "nubes": "mundo/niebla_nubes.png",
     "jirones": "mundo/niebla_jirones.png",
-    "notas": "Texturas de 256 que pegan por los 4 lados. Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla."
+    "jirones_mundo": "mundo/niebla_jirones_mundo5.png",
+    "notas": "Texturas de 256 que pegan por los 4 lados (los jirones también: ya no hay costura cada 512). Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla. jirones_mundo (si está) es la misma forma teñida con el color de la niebla de este mundo: usarla en vez de jirones."
+   },
+   "monumentos": {
+    "mon_ciudad_guardia": {
+     "zona": "La Puerta de la Ciudad",
+     "x": 400,
+     "y": 476,
+     "historia": "El guardia que se durmió de pie en la puerta, abrazado a la lanza y con el casco sobre los ojos."
+    },
+    "mon_ciudad_horno": {
+     "zona": "La Calle de los Panaderos",
+     "x": 912,
+     "y": 604,
+     "historia": "El horno de pan con las hogazas hechas piedra; las brasas se volvieron lilas de sueño."
+    },
+    "mon_ciudad_reloj_plaza": {
+     "zona": "La Plaza de la Fuente",
+     "x": 2096,
+     "y": 508,
+     "historia": "El reloj de la plaza, parado a las tres menos diez como la torre: la hora en que se durmió la ciudad."
+    },
+    "mon_ciudad_arpa": {
+     "zona": "El Barrio de los Músicos",
+     "x": 2848,
+     "y": 860,
+     "historia": "El arpa gigante del barrio: una cuerda rota y las otras todavía vibran solas."
+    },
+    "mon_ciudad_cisne": {
+     "zona": "Los Jardines de Piedra",
+     "x": 544,
+     "y": 1532,
+     "historia": "El cisne de piedra del estanque seco, dormido con la cabeza bajo el ala."
+    },
+    "mon_ciudad_engranaje": {
+     "zona": "La Torre del Reloj",
+     "x": 1520,
+     "y": 1468,
+     "historia": "El engranaje gigante que se cayó de la torre y quedó clavado de canto en la calle."
+    },
+    "mon_ciudad_farol_caido": {
+     "zona": "El Puente de los Faroles",
+     "x": 2272,
+     "y": 1788,
+     "historia": "El farol gigante que se cayó del puente: rajado, pero con la luz que le queda adentro."
+    },
+    "mon_ciudad_corona": {
+     "zona": "El Palacio Dormido",
+     "x": 2640,
+     "y": 2428,
+     "historia": "Una corona gigante del Rey de Piedra, caída sobre su almohada de terciopelo."
+    },
+    "mon_ciudad_arbol_piedra": {
+     "zona": "El Corazón del Jardín",
+     "x": 704,
+     "y": 1788,
+     "historia": "El árbol de piedra más viejo del jardín, con un pajarito de piedra dormido en su nido."
+    },
+    "mon_ciudad_organillo": {
+     "zona": "El Desván del Organillero",
+     "x": 3232,
+     "y": 188,
+     "historia": "El organillo con su monito de juguete encima, con la manivela a medio girar."
+    }
+   },
+   "luz_zonas": {
+    "defecto": {
+     "rayos": "-25,#f0c890,0.4",
+     "grado": "#1a1028,#ffd890,1.1,0.9"
+    },
+    "notas": "Cada zona del mapa trae rayos (\"angulo,#color,densidad\": grados desde la vertical, densidad 0 a 1, 0 = sin rayos) y grado (\"#sombras,#luces,contraste,saturacion\"). Si a una zona le falta, usar defecto."
+   },
+   "criaturas_nuevas": {
+    "especies": [
+     "gato_piedra",
+     "paloma_dormida"
+    ],
+    "notas": "Entidades criatura con `especie`. Anims quieto (bucle) y huir (= huye, mismo archivo). comportamiento: huye = radio en px al que se asusta, se_esconde = se mete en una grieta y desaparece (si no, corre fuera de la pantalla), corre = px/s, vuela = sale volando."
    },
    "referencia": "tools/pixel_forja/scripts/visor/runtime.js anima todo esto en Canvas 2D: es la referencia para el juego.",
    "notas": "Orden de dibujo: capa fondo (paralaje) > agua (cuadros animados) > suelo (trozos de imagen, el agua es transparente) > objetos con capa suelo > sombras horneadas (campo sombra; si no hay, la elipse de siempre) > objetos y personajes ordenados por y > capa frente (no va en el mapa: la zona la declara en su propiedad frente y el juego la pega a los bordes de la pantalla, con paralaje 1.15) > luces (aditivo) > sombras de nube. Cada zona del mapa trae musica, ambiente, luz, oscuridad y particulas.",
@@ -96365,6 +98629,236 @@
        "loop": true
       }
      }
+    },
+    "mon_fragua_herrero": {
+     "w": 96,
+     "h": 140,
+     "apoyo": [
+      48,
+      136
+     ],
+     "solido": [
+      -32,
+      -12,
+      64,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_fragua_herrero_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_fragua_herrero_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_fragua_crisol": {
+     "w": 112,
+     "h": 96,
+     "apoyo": [
+      72,
+      92
+     ],
+     "solido": [
+      -24,
+      -12,
+      48,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_fragua_crisol_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_fragua_crisol_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_fragua_jaula_caida": {
+     "w": 100,
+     "h": 112,
+     "apoyo": [
+      50,
+      106
+     ],
+     "solido": [
+      -36,
+      -12,
+      72,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_fragua_jaula_caida_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_fragua_jaula_caida_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_fragua_lingotes": {
+     "w": 96,
+     "h": 72,
+     "apoyo": [
+      48,
+      68
+     ],
+     "solido": [
+      -40,
+      -12,
+      80,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_fragua_lingotes_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_fragua_lingotes_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_fragua_arbol_hierro": {
+     "w": 88,
+     "h": 144,
+     "apoyo": [
+      44,
+      138
+     ],
+     "solido": [
+      -16,
+      -12,
+      32,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_fragua_arbol_hierro_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_fragua_arbol_hierro_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_fragua_llavero": {
+     "w": 72,
+     "h": 124,
+     "apoyo": [
+      36,
+      120
+     ],
+     "solido": [
+      -16,
+      -12,
+      32,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_fragua_llavero_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_fragua_llavero_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_fragua_yunque": {
+     "w": 116,
+     "h": 96,
+     "apoyo": [
+      60,
+      92
+     ],
+     "solido": [
+      -24,
+      -12,
+      48,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_fragua_yunque_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_fragua_yunque_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_fragua_huevo": {
+     "w": 100,
+     "h": 92,
+     "apoyo": [
+      50,
+      86
+     ],
+     "solido": [
+      -36,
+      -12,
+      72,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_fragua_huevo_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_fragua_huevo_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_fragua_nido": {
+     "w": 64,
+     "h": 64,
+     "apoyo": [
+      32,
+      60
+     ],
+     "solido": [
+      -12,
+      -12,
+      24,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_fragua_nido_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_fragua_nido_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_fragua_alacena": {
+     "w": 64,
+     "h": 92,
+     "apoyo": [
+      32,
+      88
+     ],
+     "solido": [
+      -24,
+      -12,
+      48,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_fragua_alacena_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_fragua_alacena_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
     }
    },
    "portal": "portal_brasa",
@@ -96679,6 +99173,66 @@
        "loop": true
       }
      }
+    },
+    "escarabajo_brasa": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/escarabajo_brasa_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/escarabajo_brasa_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/escarabajo_brasa_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 45,
+      "se_esconde": true,
+      "corre": 50
+     },
+     "notas": "Escarabajo de brasa: caparazón negro con vetas naranjas que laten. Vive en las grietas tibias y se mete en ellas al huir."
+    },
+    "raton_hollin": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/raton_hollin_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/raton_hollin_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/raton_hollin_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 60,
+      "se_esconde": true,
+      "corre": 95
+     },
+     "notas": "Ratón de hollín: negro de ceniza con ojitos de brasa, deja una nubecita de ceniza (usar partícula ceniza) al salir corriendo."
     }
    },
    "luz": "mundo/luz.png",
@@ -96686,7 +99240,84 @@
    "niebla": {
     "nubes": "mundo/niebla_nubes.png",
     "jirones": "mundo/niebla_jirones.png",
-    "notas": "Texturas de 256 que pegan por los 4 lados. Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla."
+    "jirones_mundo": "mundo/niebla_jirones_mundo6.png",
+    "notas": "Texturas de 256 que pegan por los 4 lados (los jirones también: ya no hay costura cada 512). Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla. jirones_mundo (si está) es la misma forma teñida con el color de la niebla de este mundo: usarla en vez de jirones."
+   },
+   "monumentos": {
+    "mon_fragua_herrero": {
+     "zona": "La Escalera de Ceniza",
+     "x": 480,
+     "y": 508,
+     "historia": "La estatua del primer herrero, con el martillo al hombro y los ojos de brasa."
+    },
+    "mon_fragua_crisol": {
+     "zona": "El Río de Lava",
+     "x": 1728,
+     "y": 476,
+     "historia": "El crisol volcado: el metal fundido se derramó y se enfrió a medias."
+    },
+    "mon_fragua_jaula_caida": {
+     "zona": "Las Jaulas Colgantes",
+     "x": 2352,
+     "y": 668,
+     "historia": "La jaula más grande, caída y con los barrotes doblados: lo que tenía adentro se escapó."
+    },
+    "mon_fragua_lingotes": {
+     "zona": "Los Fuelles",
+     "x": 2768,
+     "y": 1244,
+     "historia": "La pila de lingotes que salió del último soplido de los fuelles, todavía tibios."
+    },
+    "mon_fragua_arbol_hierro": {
+     "zona": "El Bosque de Ceniza",
+     "x": 512,
+     "y": 1500,
+     "historia": "El árbol de hierro que plantó el herrero; sus hojas son brasas que no se apagan."
+    },
+    "mon_fragua_llavero": {
+     "zona": "La Cárcel de las Luces",
+     "x": 1104,
+     "y": 1244,
+     "historia": "El llavero gigante del carcelero, colgado de su poste; falta una sola llave."
+    },
+    "mon_fragua_yunque": {
+     "zona": "El Horno",
+     "x": 544,
+     "y": 2076,
+     "historia": "El yunque gigante de la fragua con el martillo encima; las chispas saltan solas."
+    },
+    "mon_fragua_huevo": {
+     "zona": "El Corazón de la Fragua",
+     "x": 3024,
+     "y": 2332,
+     "historia": "La cáscara del huevo de la Dragona, rota en su nido de cadenas."
+    },
+    "mon_fragua_nido": {
+     "zona": "El Nido de Ceniza",
+     "x": 160,
+     "y": 1948,
+     "historia": "El nido de un pájaro de fuego con plumas de brasa y un huevito que todavía late."
+    },
+    "mon_fragua_alacena": {
+     "zona": "La Alacena del Herrero",
+     "x": 3424,
+     "y": 1276,
+     "historia": "El estante de moldes del herrero, con el molde de una luz a medio hacer."
+    }
+   },
+   "luz_zonas": {
+    "defecto": {
+     "rayos": "0,#ff9040,0.3",
+     "grado": "#140806,#ffb060,1.15,1.05"
+    },
+    "notas": "Cada zona del mapa trae rayos (\"angulo,#color,densidad\": grados desde la vertical, densidad 0 a 1, 0 = sin rayos) y grado (\"#sombras,#luces,contraste,saturacion\"). Si a una zona le falta, usar defecto."
+   },
+   "criaturas_nuevas": {
+    "especies": [
+     "escarabajo_brasa",
+     "raton_hollin"
+    ],
+    "notas": "Entidades criatura con `especie`. Anims quieto (bucle) y huir (= huye, mismo archivo). comportamiento: huye = radio en px al que se asusta, se_esconde = se mete en una grieta y desaparece (si no, corre fuera de la pantalla), corre = px/s, vuela = sale volando."
    },
    "referencia": "tools/pixel_forja/scripts/visor/runtime.js anima todo esto en Canvas 2D: es la referencia para el juego.",
    "notas": "Orden de dibujo: capa fondo (paralaje) > agua (cuadros animados) > suelo (trozos de imagen, el agua es transparente) > objetos con capa suelo > sombras horneadas (campo sombra; si no hay, la elipse de siempre) > objetos y personajes ordenados por y > capa frente (no va en el mapa: la zona la declara en su propiedad frente y el juego la pega a los bordes de la pantalla, con paralaje 1.15) > luces (aditivo) > sombras de nube. Cada zona del mapa trae musica, ambiente, luz, oscuridad y particulas.",
@@ -99120,6 +101751,236 @@
        "loop": true
       }
      }
+    },
+    "mon_corazon_heroina_hielo": {
+     "w": 80,
+     "h": 132,
+     "apoyo": [
+      40,
+      128
+     ],
+     "solido": [
+      -32,
+      -12,
+      64,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_corazon_heroina_hielo_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_corazon_heroina_hielo_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_corazon_espada": {
+     "w": 68,
+     "h": 150,
+     "apoyo": [
+      34,
+      144
+     ],
+     "solido": [
+      -18,
+      -12,
+      36,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_corazon_espada_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_corazon_espada_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_corazon_sarcofago": {
+     "w": 116,
+     "h": 84,
+     "apoyo": [
+      52,
+      78
+     ],
+     "solido": [
+      -40,
+      -12,
+      80,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_corazon_sarcofago_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_corazon_sarcofago_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_corazon_arbol_hielo": {
+     "w": 96,
+     "h": 144,
+     "apoyo": [
+      48,
+      138
+     ],
+     "solido": [
+      -16,
+      -12,
+      32,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_corazon_arbol_hielo_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_corazon_arbol_hielo_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_corazon_estandarte": {
+     "w": 80,
+     "h": 140,
+     "apoyo": [
+      40,
+      134
+     ],
+     "solido": [
+      -24,
+      -12,
+      48,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_corazon_estandarte_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_corazon_estandarte_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_corazon_grillete": {
+     "w": 116,
+     "h": 84,
+     "apoyo": [
+      58,
+      78
+     ],
+     "solido": [
+      -48,
+      -12,
+      96,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_corazon_grillete_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_corazon_grillete_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_corazon_arco_cuernos": {
+     "w": 116,
+     "h": 116,
+     "apoyo": [
+      58,
+      112
+     ],
+     "solido": [
+      -48,
+      -12,
+      96,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_corazon_arco_cuernos_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_corazon_arco_cuernos_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_corazon_gigante": {
+     "w": 112,
+     "h": 140,
+     "apoyo": [
+      56,
+      134
+     ],
+     "solido": [
+      -44,
+      -12,
+      88,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_corazon_gigante_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_corazon_gigante_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_corazon_craneo_lobo": {
+     "w": 96,
+     "h": 72,
+     "apoyo": [
+      48,
+      66
+     ],
+     "solido": [
+      -24,
+      -12,
+      48,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_corazon_craneo_lobo_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_corazon_craneo_lobo_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
+    },
+    "mon_corazon_puerta_cripta": {
+     "w": 80,
+     "h": 100,
+     "apoyo": [
+      40,
+      96
+     ],
+     "solido": [
+      -32,
+      -12,
+      64,
+      12
+     ],
+     "sombra": "mundo/objetos/mon_corazon_puerta_cripta_sombra.png",
+     "anims": {
+      "idle": {
+       "archivo": "mundo/objetos/mon_corazon_puerta_cripta_idle.png",
+       "cuadros": 1,
+       "fps": 4,
+       "loop": true
+      }
+     }
     }
    },
    "portal": "portal_hielo",
@@ -99441,6 +102302,66 @@
        "loop": true
       }
      }
+    },
+    "zorro_nieve": {
+     "w": 24,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/zorro_nieve_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/zorro_nieve_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/zorro_nieve_huir.png",
+       "cuadros": 8,
+       "fps": 12,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 80,
+      "se_esconde": false,
+      "corre": 110
+     },
+     "notas": "Zorro de nieve: blanco azulado, casi invisible en la nieve salvo los ojos y la punta negra de las orejas. Huye a saltos largos."
+    },
+    "armino": {
+     "w": 16,
+     "h": 16,
+     "anims": {
+      "quieto": {
+       "archivo": "mundo/criaturas/armino_quieto.png",
+       "cuadros": 4,
+       "fps": 4,
+       "loop": true
+      },
+      "huir": {
+       "archivo": "mundo/criaturas/armino_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      },
+      "huye": {
+       "archivo": "mundo/criaturas/armino_huir.png",
+       "cuadros": 6,
+       "fps": 10,
+       "loop": true
+      }
+     },
+     "comportamiento": {
+      "huye": 55,
+      "se_esconde": true,
+      "corre": 100
+     },
+     "notas": "Armiño: largo y blanco con la punta de la cola negra. Se para en dos patas a mirar y se mete en la nieve (se esconde) al huir."
     }
    },
    "luz": "mundo/luz.png",
@@ -99448,7 +102369,84 @@
    "niebla": {
     "nubes": "mundo/niebla_nubes.png",
     "jirones": "mundo/niebla_jirones.png",
-    "notas": "Texturas de 256 que pegan por los 4 lados. Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla."
+    "jirones_mundo": "mundo/niebla_jirones_mundo7.png",
+    "notas": "Texturas de 256 que pegan por los 4 lados (los jirones también: ya no hay costura cada 512). Dibujar a escala 2, corriendo con el viento (jirones 12 px/s, nubes 7 px/s con parallax 1.15), con alfa = zona.niebla. jirones_mundo (si está) es la misma forma teñida con el color de la niebla de este mundo: usarla en vez de jirones."
+   },
+   "monumentos": {
+    "mon_corazon_heroina_hielo": {
+     "zona": "La Escalera Helada",
+     "x": 512,
+     "y": 476,
+     "historia": "La primera heroína que bajó hasta acá, congelada adentro de un bloque de hielo con la espada en alto."
+    },
+    "mon_corazon_espada": {
+     "zona": "El Lago de los Gigantes",
+     "x": 2400,
+     "y": 636,
+     "historia": "La espada de uno de los gigantes, clavada en el hielo hasta la mitad."
+    },
+    "mon_corazon_sarcofago": {
+     "zona": "Las Catacumbas de Hielo",
+     "x": 3632,
+     "y": 892,
+     "historia": "El sarcófago helado con la tapa corrida: adentro no hay nadie."
+    },
+    "mon_corazon_arbol_hielo": {
+     "zona": "El Bosque de Escarcha",
+     "x": 672,
+     "y": 1724,
+     "historia": "El árbol de cristal que creció donde se congeló un árbol de verdad; el tronco viejo se ve adentro."
+    },
+    "mon_corazon_estandarte": {
+     "zona": "La Ciudadela Congelada",
+     "x": 1584,
+     "y": 1660,
+     "historia": "El estandarte de la ciudadela, rígido de hielo, con la llama dorada que se fue y el escudo clavado al pie."
+    },
+    "mon_corazon_grillete": {
+     "zona": "El Puente de las Cadenas",
+     "x": 656,
+     "y": 2588,
+     "historia": "El grillete gigante con la cadena rota: lo que estuvo atado ahí se soltó hace poco."
+    },
+    "mon_corazon_arco_cuernos": {
+     "zona": "La Puerta del Trono",
+     "x": 2416,
+     "y": 2364,
+     "historia": "Los cuernos tallados en piedra negra con las runas rojas del Diablo."
+    },
+    "mon_corazon_gigante": {
+     "zona": "El Corazón Helado",
+     "x": 2832,
+     "y": 2140,
+     "historia": "Un gigante de hielo arrodillado ante el trono, con las cadenas del Diablo en las muñecas."
+    },
+    "mon_corazon_craneo_lobo": {
+     "zona": "La Guarida del Lobo",
+     "x": 176,
+     "y": 2044,
+     "historia": "El cráneo del lobo más grande, limpio y blanco, en su cama de huesos y nieve."
+    },
+    "mon_corazon_puerta_cripta": {
+     "zona": "La Cripta Sellada",
+     "x": 3632,
+     "y": 1148,
+     "historia": "La puerta de la cripta con el sello rojo del Diablo; del otro lado se oye algo que respira."
+    }
+   },
+   "luz_zonas": {
+    "defecto": {
+     "rayos": "-8,#b8d0ea,0.3",
+     "grado": "#04060e,#b8d8ff,1.15,0.85"
+    },
+    "notas": "Cada zona del mapa trae rayos (\"angulo,#color,densidad\": grados desde la vertical, densidad 0 a 1, 0 = sin rayos) y grado (\"#sombras,#luces,contraste,saturacion\"). Si a una zona le falta, usar defecto."
+   },
+   "criaturas_nuevas": {
+    "especies": [
+     "zorro_nieve",
+     "armino"
+    ],
+    "notas": "Entidades criatura con `especie`. Anims quieto (bucle) y huir (= huye, mismo archivo). comportamiento: huye = radio en px al que se asusta, se_esconde = se mete en una grieta y desaparece (si no, corre fuera de la pantalla), corre = px/s, vuela = sale volando."
    },
    "referencia": "tools/pixel_forja/scripts/visor/runtime.js anima todo esto en Canvas 2D: es la referencia para el juego.",
    "notas": "Orden de dibujo: capa fondo (paralaje) > agua (cuadros animados) > suelo (trozos de imagen, el agua es transparente) > objetos con capa suelo > sombras horneadas (campo sombra; si no hay, la elipse de siempre) > objetos y personajes ordenados por y > capa frente (no va en el mapa: la zona la declara en su propiedad frente y el juego la pega a los bordes de la pantalla, con paralaje 1.15) > luces (aditivo) > sombras de nube. Cada zona del mapa trae musica, ambiente, luz, oscuridad y particulas.",

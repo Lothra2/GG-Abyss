@@ -5915,8 +5915,8 @@
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
@@ -7194,8 +7194,8 @@
     5,
     5,
     0,
-    0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
@@ -7321,8 +7321,8 @@
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
     0,
     0,
     5,
@@ -7446,10 +7446,10 @@
     5,
     0,
     0,
-    0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -8741,7 +8741,6 @@
     5,
     5,
     5,
-    0,
     0,
     0,
     0,
@@ -8752,7 +8751,8 @@
     0,
     0,
     0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
@@ -8789,11 +8789,11 @@
     0,
     0,
     5,
-    0,
     0,
     0,
     0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
@@ -8922,13 +8922,13 @@
     5,
     5,
     5,
-    0,
     0,
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -30066,6 +30066,139 @@
        "value": "cera_derretida_0"
       }
      ]
+    },
+    {
+     "id": 220,
+     "name": "mon_catedral_angel",
+     "type": "deco",
+     "x": 640,
+     "y": 252,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_catedral_angel"
+      }
+     ]
+    },
+    {
+     "id": 221,
+     "name": "mon_catedral_pila",
+     "type": "deco",
+     "x": 608,
+     "y": 764,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_catedral_pila"
+      }
+     ]
+    },
+    {
+     "id": 222,
+     "name": "mon_catedral_organo",
+     "type": "deco",
+     "x": 1024,
+     "y": 860,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_catedral_organo"
+      }
+     ]
+    },
+    {
+     "id": 223,
+     "name": "mon_catedral_relicario",
+     "type": "deco",
+     "x": 2112,
+     "y": 796,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_catedral_relicario"
+      }
+     ]
+    },
+    {
+     "id": 224,
+     "name": "mon_catedral_pulpito",
+     "type": "deco",
+     "x": 544,
+     "y": 1404,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_catedral_pulpito"
+      }
+     ]
+    },
+    {
+     "id": 225,
+     "name": "mon_catedral_monje_herrero",
+     "type": "deco",
+     "x": 1792,
+     "y": 1372,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_catedral_monje_herrero"
+      }
+     ]
+    },
+    {
+     "id": 226,
+     "name": "mon_catedral_roseton",
+     "type": "deco",
+     "x": 2288,
+     "y": 1436,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_catedral_roseton"
+      }
+     ]
     }
    ]
   },
@@ -30080,7 +30213,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 220,
+     "id": 227,
      "name": "portal_llegada",
      "type": "portal_llegada",
      "x": 336,
@@ -30099,7 +30232,7 @@
      ]
     },
     {
-     "id": 221,
+     "id": 228,
      "name": "portal_volver",
      "type": "portal_volver",
      "x": 336,
@@ -30118,7 +30251,7 @@
      ]
     },
     {
-     "id": 222,
+     "id": 229,
      "name": "jugador_inicio",
      "type": "jugador_inicio",
      "x": 496,
@@ -30131,7 +30264,7 @@
      "properties": []
     },
     {
-     "id": 223,
+     "id": 230,
      "name": "thor_inicio",
      "type": "thor_inicio",
      "x": 464,
@@ -30144,7 +30277,7 @@
      "properties": []
     },
     {
-     "id": 224,
+     "id": 231,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 592,
@@ -30168,7 +30301,7 @@
      ]
     },
     {
-     "id": 225,
+     "id": 232,
      "name": "pedestal_brasas",
      "type": "pedestal_brasas",
      "x": 784,
@@ -30187,7 +30320,7 @@
      ]
     },
     {
-     "id": 226,
+     "id": 233,
      "name": "cofre",
      "type": "cofre",
      "x": 432,
@@ -30206,7 +30339,7 @@
      ]
     },
     {
-     "id": 227,
+     "id": 234,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 208,
@@ -30225,7 +30358,7 @@
      ]
     },
     {
-     "id": 228,
+     "id": 235,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 976,
@@ -30244,7 +30377,7 @@
      ]
     },
     {
-     "id": 229,
+     "id": 236,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1328,
@@ -30268,7 +30401,7 @@
      ]
     },
     {
-     "id": 230,
+     "id": 237,
      "name": "cofre",
      "type": "cofre",
      "x": 1360,
@@ -30287,7 +30420,7 @@
      ]
     },
     {
-     "id": 231,
+     "id": 238,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 1360,
@@ -30306,7 +30439,7 @@
      ]
     },
     {
-     "id": 232,
+     "id": 239,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 1872,
@@ -30325,7 +30458,7 @@
      ]
     },
     {
-     "id": 233,
+     "id": 240,
      "name": "brasa",
      "type": "brasa",
      "x": 1648,
@@ -30344,7 +30477,7 @@
      ]
     },
     {
-     "id": 234,
+     "id": 241,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1904,
@@ -30368,7 +30501,7 @@
      ]
     },
     {
-     "id": 235,
+     "id": 242,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1936,
@@ -30392,7 +30525,7 @@
      ]
     },
     {
-     "id": 236,
+     "id": 243,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1872,
@@ -30416,7 +30549,7 @@
      ]
     },
     {
-     "id": 237,
+     "id": 244,
      "name": "cofre",
      "type": "cofre",
      "x": 2160,
@@ -30445,7 +30578,7 @@
      ]
     },
     {
-     "id": 238,
+     "id": 245,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 2096,
@@ -30464,102 +30597,11 @@
      ]
     },
     {
-     "id": 239,
-     "name": "peligro_agua",
-     "type": "peligro_agua",
-     "x": 784,
-     "y": 1488,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": []
-    },
-    {
-     "id": 240,
-     "name": "peligro_agua",
-     "type": "peligro_agua",
-     "x": 848,
-     "y": 1488,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": []
-    },
-    {
-     "id": 241,
-     "name": "peligro_agua",
-     "type": "peligro_agua",
-     "x": 784,
-     "y": 1520,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": []
-    },
-    {
-     "id": 242,
-     "name": "peligro_agua",
-     "type": "peligro_agua",
-     "x": 848,
-     "y": 1520,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": []
-    },
-    {
-     "id": 243,
-     "name": "peligro_agua",
-     "type": "peligro_agua",
-     "x": 784,
-     "y": 1552,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": []
-    },
-    {
-     "id": 244,
-     "name": "peligro_agua",
-     "type": "peligro_agua",
-     "x": 848,
-     "y": 1552,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": []
-    },
-    {
-     "id": 245,
-     "name": "peligro_agua",
-     "type": "peligro_agua",
-     "x": 784,
-     "y": 1584,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "point": true,
-     "properties": []
-    },
-    {
      "id": 246,
      "name": "peligro_agua",
      "type": "peligro_agua",
-     "x": 848,
-     "y": 1584,
+     "x": 784,
+     "y": 1488,
      "width": 0,
      "height": 0,
      "rotation": 0,
@@ -30571,6 +30613,97 @@
      "id": 247,
      "name": "peligro_agua",
      "type": "peligro_agua",
+     "x": 848,
+     "y": 1488,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 248,
+     "name": "peligro_agua",
+     "type": "peligro_agua",
+     "x": 784,
+     "y": 1520,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 249,
+     "name": "peligro_agua",
+     "type": "peligro_agua",
+     "x": 848,
+     "y": 1520,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 250,
+     "name": "peligro_agua",
+     "type": "peligro_agua",
+     "x": 784,
+     "y": 1552,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 251,
+     "name": "peligro_agua",
+     "type": "peligro_agua",
+     "x": 848,
+     "y": 1552,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 252,
+     "name": "peligro_agua",
+     "type": "peligro_agua",
+     "x": 784,
+     "y": 1584,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 253,
+     "name": "peligro_agua",
+     "type": "peligro_agua",
+     "x": 848,
+     "y": 1584,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": []
+    },
+    {
+     "id": 254,
+     "name": "peligro_agua",
+     "type": "peligro_agua",
      "x": 784,
      "y": 1616,
      "width": 0,
@@ -30581,7 +30714,7 @@
      "properties": []
     },
     {
-     "id": 248,
+     "id": 255,
      "name": "peligro_agua",
      "type": "peligro_agua",
      "x": 848,
@@ -30594,7 +30727,7 @@
      "properties": []
     },
     {
-     "id": 249,
+     "id": 256,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1104,
@@ -30618,7 +30751,7 @@
      ]
     },
     {
-     "id": 250,
+     "id": 257,
      "name": "enemigo",
      "type": "enemigo",
      "x": 496,
@@ -30642,7 +30775,7 @@
      ]
     },
     {
-     "id": 251,
+     "id": 258,
      "name": "cofre",
      "type": "cofre",
      "x": 240,
@@ -30661,7 +30794,7 @@
      ]
     },
     {
-     "id": 252,
+     "id": 259,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 688,
@@ -30680,7 +30813,7 @@
      ]
     },
     {
-     "id": 253,
+     "id": 260,
      "name": "brasa",
      "type": "brasa",
      "x": 976,
@@ -30699,7 +30832,7 @@
      ]
     },
     {
-     "id": 254,
+     "id": 261,
      "name": "forja",
      "type": "forja",
      "x": 1744,
@@ -30712,7 +30845,7 @@
      "properties": []
     },
     {
-     "id": 255,
+     "id": 262,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 1488,
@@ -30731,7 +30864,7 @@
      ]
     },
     {
-     "id": 256,
+     "id": 263,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 2000,
@@ -30750,7 +30883,7 @@
      ]
     },
     {
-     "id": 257,
+     "id": 264,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 1488,
@@ -30769,7 +30902,7 @@
      ]
     },
     {
-     "id": 258,
+     "id": 265,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 2000,
@@ -30788,7 +30921,7 @@
      ]
     },
     {
-     "id": 259,
+     "id": 266,
      "name": "brasa",
      "type": "brasa",
      "x": 1968,
@@ -30807,7 +30940,7 @@
      ]
     },
     {
-     "id": 260,
+     "id": 267,
      "name": "cofre",
      "type": "cofre",
      "x": 1488,
@@ -30826,7 +30959,7 @@
      ]
     },
     {
-     "id": 261,
+     "id": 268,
      "name": "arena_jefe",
      "type": "arena_jefe",
      "x": 2320,
@@ -30845,7 +30978,7 @@
      ]
     },
     {
-     "id": 262,
+     "id": 269,
      "name": "jefe",
      "type": "jefe",
      "x": 2320,
@@ -30874,7 +31007,7 @@
      ]
     },
     {
-     "id": 263,
+     "id": 270,
      "name": "campana",
      "type": "campana",
      "x": 2320,
@@ -30887,7 +31020,7 @@
      "properties": []
     },
     {
-     "id": 264,
+     "id": 271,
      "name": "portal_jefe",
      "type": "portal_jefe",
      "x": 2320,
@@ -30911,7 +31044,7 @@
      ]
     },
     {
-     "id": 265,
+     "id": 272,
      "name": "cofre",
      "type": "cofre",
      "x": 2448,
@@ -30935,7 +31068,7 @@
      ]
     },
     {
-     "id": 266,
+     "id": 273,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 2160,
@@ -30954,7 +31087,7 @@
      ]
     },
     {
-     "id": 267,
+     "id": 274,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 2480,
@@ -30973,7 +31106,7 @@
      ]
     },
     {
-     "id": 268,
+     "id": 275,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 2160,
@@ -30992,7 +31125,7 @@
      ]
     },
     {
-     "id": 269,
+     "id": 276,
      "name": "brasero_brasa",
      "type": "brasero_brasa",
      "x": 2480,
@@ -31011,7 +31144,7 @@
      ]
     },
     {
-     "id": 270,
+     "id": 277,
      "name": "compuerta_raices",
      "type": "compuerta_raices",
      "x": 1376,
@@ -31055,7 +31188,7 @@
      ]
     },
     {
-     "id": 271,
+     "id": 278,
      "name": "compuerta_raices",
      "type": "compuerta_raices",
      "x": 1600,
@@ -31099,7 +31232,7 @@
      ]
     },
     {
-     "id": 272,
+     "id": 279,
      "name": "compuerta_raices",
      "type": "compuerta_raices",
      "x": 2080,
@@ -31141,6 +31274,234 @@
        "value": 48
       }
      ]
+    },
+    {
+     "id": 280,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 687,
+     "y": 144,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_catedral"
+      }
+     ]
+    },
+    {
+     "id": 281,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 531,
+     "y": 720,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "salamandrita"
+      }
+     ]
+    },
+    {
+     "id": 282,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1137,
+     "y": 880,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_catedral"
+      }
+     ]
+    },
+    {
+     "id": 283,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 525,
+     "y": 1296,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "salamandrita"
+      }
+     ]
+    },
+    {
+     "id": 284,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1710,
+     "y": 1360,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_catedral"
+      }
+     ]
+    },
+    {
+     "id": 285,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2386,
+     "y": 1392,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "salamandrita"
+      }
+     ]
+    },
+    {
+     "id": 286,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 499,
+     "y": 1008,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_catedral"
+      }
+     ]
+    },
+    {
+     "id": 287,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 590,
+     "y": 1040,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "salamandrita"
+      }
+     ]
+    },
+    {
+     "id": 288,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1749,
+     "y": 1072,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_catedral"
+      }
+     ]
+    },
+    {
+     "id": 289,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 563,
+     "y": 624,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "salamandrita"
+      }
+     ]
+    },
+    {
+     "id": 290,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1395,
+     "y": 624,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "raton_catedral"
+      }
+     ]
+    },
+    {
+     "id": 291,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1261,
+     "y": 880,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "salamandrita"
+      }
+     ]
     }
    ]
   },
@@ -31155,7 +31516,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 273,
+     "id": 292,
      "name": "La Escalera Hundida",
      "type": "zona",
      "x": 160,
@@ -31193,7 +31554,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo"
+       "value": "polvo,esporas"
       },
       {
        "name": "niebla",
@@ -31204,11 +31565,21 @@
        "name": "frente",
        "type": "string",
        "value": "frente_columna"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-12,#e8f0c8,0.55"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#18241e,#ffe0b0,1.08,0.92"
       }
      ]
     },
     {
-     "id": 274,
+     "id": 293,
      "name": "El Atrio de las Luciérnagas",
      "type": "zona",
      "x": 128,
@@ -31257,11 +31628,21 @@
        "name": "frente",
        "type": "string",
        "value": "frente_columna"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-8,#8affe8,0.4"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0e2420,#c8ffe0,1.1,0.95"
       }
      ]
     },
     {
-     "id": 275,
+     "id": 294,
      "name": "Los Claustros Quebrados",
      "type": "zona",
      "x": 992,
@@ -31299,7 +31680,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo,gotas"
+       "value": "polvo,esporas,gotas"
       },
       {
        "name": "niebla",
@@ -31310,11 +31691,21 @@
        "name": "frente",
        "type": "string",
        "value": "frente_raices_colgantes"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-20,#d0e090,0.5"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#1a2a1a,#ffd890,1.14,0.88"
       }
      ]
     },
     {
-     "id": 276,
+     "id": 295,
      "name": "La Capilla Escondida",
      "type": "zona",
      "x": 2048,
@@ -31352,7 +31743,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "luciernagas_turquesa"
+       "value": "luciernagas_turquesa,brillos"
       },
       {
        "name": "niebla",
@@ -31368,11 +31759,21 @@
        "name": "frente",
        "type": "string",
        "value": "frente_raices_colgantes"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-5,#ffd070,0.6"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#1a1a10,#ffe0a0,1.12,0.95"
       }
      ]
     },
     {
-     "id": 277,
+     "id": 296,
      "name": "La Nave Inundada",
      "type": "zona",
      "x": 160,
@@ -31410,7 +31811,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "gotas"
+       "value": "gotas,luciernagas_turquesa"
       },
       {
        "name": "niebla",
@@ -31421,11 +31822,21 @@
        "name": "frente",
        "type": "string",
        "value": "frente_columna,frente_raices_colgantes"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-18,#a0d0c0,0.35"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0a1a1e,#b0e0d0,1.1,0.85"
       }
      ]
     },
     {
-     "id": 278,
+     "id": 297,
      "name": "La Forja Apagada",
      "type": "zona",
      "x": 1376,
@@ -31463,7 +31874,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo"
+       "value": "ceniza,polvo"
       },
       {
        "name": "niebla",
@@ -31474,11 +31885,21 @@
        "name": "frente",
        "type": "string",
        "value": "frente_columna"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#ffb070,0.25"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#1e140e,#ffc890,1.15,0.9"
       }
      ]
     },
     {
-     "id": 279,
+     "id": 298,
      "name": "El Campanario Invertido",
      "type": "zona",
      "x": 2080,
@@ -31527,6 +31948,16 @@
        "name": "frente",
        "type": "string",
        "value": "frente_raices_colgantes"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#c8a0ff,0.2"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#140e1e,#ffd9a0,1.18,0.88"
       }
      ]
     }
@@ -31543,7 +31974,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 280,
+     "id": 299,
      "name": "escalera_hundida",
      "type": "postal",
      "x": 528,
@@ -31556,7 +31987,7 @@
      "properties": []
     },
     {
-     "id": 281,
+     "id": 300,
      "name": "atrio_luciernagas",
      "type": "postal",
      "x": 528,
@@ -31569,7 +32000,7 @@
      "properties": []
     },
     {
-     "id": 282,
+     "id": 301,
      "name": "claustros_quebrados",
      "type": "postal",
      "x": 1392,
@@ -31582,7 +32013,7 @@
      "properties": []
     },
     {
-     "id": 283,
+     "id": 302,
      "name": "capilla_escondida",
      "type": "postal",
      "x": 2128,
@@ -31595,7 +32026,7 @@
      "properties": []
     },
     {
-     "id": 284,
+     "id": 303,
      "name": "nave_inundada",
      "type": "postal",
      "x": 720,
@@ -31608,7 +32039,7 @@
      "properties": []
     },
     {
-     "id": 285,
+     "id": 304,
      "name": "forja_apagada",
      "type": "postal",
      "x": 1744,
@@ -31621,7 +32052,7 @@
      "properties": []
     },
     {
-     "id": 286,
+     "id": 305,
      "name": "campanario_invertido",
      "type": "postal",
      "x": 2320,
@@ -31637,5 +32068,5 @@
   }
  ],
  "nextlayerid": 200,
- "nextobjectid": 287
+ "nextobjectid": 306
 }

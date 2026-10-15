@@ -11950,8 +11950,8 @@
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
@@ -12843,8 +12843,6 @@
     5,
     5,
     5,
-    0,
-    0,
     0,
     0,
     0,
@@ -12853,7 +12851,9 @@
     0,
     0,
     0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -13015,7 +13015,7 @@
     0,
     0,
     0,
-    0,
+    5,
     0,
     0,
     0,
@@ -13307,9 +13307,9 @@
     0,
     0,
     0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -14248,8 +14248,8 @@
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
@@ -16294,11 +16294,11 @@
     0,
     5,
     5,
-    0,
-    0,
-    0,
     0,
     0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -16486,8 +16486,8 @@
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
     0,
     5,
     5,
@@ -17367,14 +17367,14 @@
     0,
     5,
     5,
-    0,
-    0,
     0,
     0,
     0,
     0,
     5,
     5,
+    5,
+    5,
     0,
     0,
     5,
@@ -17416,13 +17416,13 @@
     5,
     5,
     5,
-    0,
     0,
     0,
     0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -19610,8 +19610,6 @@
     5,
     5,
     5,
-    0,
-    0,
     0,
     0,
     0,
@@ -19633,7 +19631,9 @@
     0,
     0,
     0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -65459,6 +65459,196 @@
        "value": "charco_seco_1"
       }
      ]
+    },
+    {
+     "id": 531,
+     "name": "mon_ciudad_guardia",
+     "type": "deco",
+     "x": 400,
+     "y": 476,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_ciudad_guardia"
+      }
+     ]
+    },
+    {
+     "id": 532,
+     "name": "mon_ciudad_horno",
+     "type": "deco",
+     "x": 912,
+     "y": 604,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_ciudad_horno"
+      }
+     ]
+    },
+    {
+     "id": 533,
+     "name": "mon_ciudad_reloj_plaza",
+     "type": "deco",
+     "x": 2096,
+     "y": 508,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_ciudad_reloj_plaza"
+      }
+     ]
+    },
+    {
+     "id": 534,
+     "name": "mon_ciudad_arpa",
+     "type": "deco",
+     "x": 2848,
+     "y": 860,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_ciudad_arpa"
+      }
+     ]
+    },
+    {
+     "id": 535,
+     "name": "mon_ciudad_cisne",
+     "type": "deco",
+     "x": 544,
+     "y": 1532,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_ciudad_cisne"
+      }
+     ]
+    },
+    {
+     "id": 536,
+     "name": "mon_ciudad_engranaje",
+     "type": "deco",
+     "x": 1520,
+     "y": 1468,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_ciudad_engranaje"
+      }
+     ]
+    },
+    {
+     "id": 537,
+     "name": "mon_ciudad_farol_caido",
+     "type": "deco",
+     "x": 2272,
+     "y": 1788,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_ciudad_farol_caido"
+      }
+     ]
+    },
+    {
+     "id": 538,
+     "name": "mon_ciudad_corona",
+     "type": "deco",
+     "x": 2640,
+     "y": 2428,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_ciudad_corona"
+      }
+     ]
+    },
+    {
+     "id": 539,
+     "name": "mon_ciudad_arbol_piedra",
+     "type": "deco",
+     "x": 704,
+     "y": 1788,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_ciudad_arbol_piedra"
+      }
+     ]
+    },
+    {
+     "id": 540,
+     "name": "mon_ciudad_organillo",
+     "type": "deco",
+     "x": 3232,
+     "y": 188,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_ciudad_organillo"
+      }
+     ]
     }
    ]
   },
@@ -65473,7 +65663,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 531,
+     "id": 541,
      "name": "portal_llegada",
      "type": "portal_llegada",
      "x": 208,
@@ -65497,7 +65687,7 @@
      ]
     },
     {
-     "id": 532,
+     "id": 542,
      "name": "portal_volver",
      "type": "portal_volver",
      "x": 208,
@@ -65516,7 +65706,7 @@
      ]
     },
     {
-     "id": 533,
+     "id": 543,
      "name": "jugador_inicio",
      "type": "jugador_inicio",
      "x": 304,
@@ -65529,7 +65719,7 @@
      "properties": []
     },
     {
-     "id": 534,
+     "id": 544,
      "name": "thor_inicio",
      "type": "thor_inicio",
      "x": 304,
@@ -65542,7 +65732,7 @@
      "properties": []
     },
     {
-     "id": 535,
+     "id": 545,
      "name": "estatua",
      "type": "estatua",
      "x": 336,
@@ -65571,7 +65761,7 @@
      ]
     },
     {
-     "id": 536,
+     "id": 546,
      "name": "estatua",
      "type": "estatua",
      "x": 504,
@@ -65600,7 +65790,7 @@
      ]
     },
     {
-     "id": 537,
+     "id": 547,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 592,
@@ -65639,7 +65829,7 @@
      ]
     },
     {
-     "id": 538,
+     "id": 548,
      "name": "farol_plaza",
      "type": "farol_plaza",
      "x": 592,
@@ -65668,7 +65858,7 @@
      ]
     },
     {
-     "id": 539,
+     "id": 549,
      "name": "estatua",
      "type": "estatua",
      "x": 240,
@@ -65697,7 +65887,7 @@
      ]
     },
     {
-     "id": 540,
+     "id": 550,
      "name": "cofre",
      "type": "cofre",
      "x": 144,
@@ -65716,7 +65906,7 @@
      ]
     },
     {
-     "id": 541,
+     "id": 551,
      "name": "enemigo",
      "type": "enemigo",
      "x": 624,
@@ -65740,7 +65930,7 @@
      ]
     },
     {
-     "id": 542,
+     "id": 552,
      "name": "figura",
      "type": "figura",
      "x": 656,
@@ -65764,7 +65954,7 @@
      ]
     },
     {
-     "id": 543,
+     "id": 553,
      "name": "estatua",
      "type": "estatua",
      "x": 976,
@@ -65793,7 +65983,7 @@
      ]
     },
     {
-     "id": 544,
+     "id": 554,
      "name": "estatua",
      "type": "estatua",
      "x": 1296,
@@ -65822,7 +66012,7 @@
      ]
     },
     {
-     "id": 545,
+     "id": 555,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1072,
@@ -65846,7 +66036,7 @@
      ]
     },
     {
-     "id": 546,
+     "id": 556,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1456,
@@ -65870,7 +66060,7 @@
      ]
     },
     {
-     "id": 547,
+     "id": 557,
      "name": "figura",
      "type": "figura",
      "x": 1488,
@@ -65894,7 +66084,7 @@
      ]
     },
     {
-     "id": 548,
+     "id": 558,
      "name": "cofre",
      "type": "cofre",
      "x": 1072,
@@ -65913,7 +66103,7 @@
      ]
     },
     {
-     "id": 549,
+     "id": 559,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1232,
@@ -65937,7 +66127,7 @@
      ]
     },
     {
-     "id": 550,
+     "id": 560,
      "name": "fuente",
      "type": "fuente",
      "x": 2048,
@@ -65966,7 +66156,7 @@
      ]
     },
     {
-     "id": 551,
+     "id": 561,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 1808,
@@ -66000,7 +66190,7 @@
      ]
     },
     {
-     "id": 552,
+     "id": 562,
      "name": "farol_plaza",
      "type": "farol_plaza",
      "x": 1808,
@@ -66029,7 +66219,7 @@
      ]
     },
     {
-     "id": 553,
+     "id": 563,
      "name": "estatua",
      "type": "estatua",
      "x": 2192,
@@ -66058,7 +66248,7 @@
      ]
     },
     {
-     "id": 554,
+     "id": 564,
      "name": "estatua",
      "type": "estatua",
      "x": 2260,
@@ -66087,7 +66277,7 @@
      ]
     },
     {
-     "id": 555,
+     "id": 565,
      "name": "estatua",
      "type": "estatua",
      "x": 1680,
@@ -66116,7 +66306,7 @@
      ]
     },
     {
-     "id": 556,
+     "id": 566,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1872,
@@ -66140,7 +66330,7 @@
      ]
     },
     {
-     "id": 557,
+     "id": 567,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2288,
@@ -66164,7 +66354,7 @@
      ]
     },
     {
-     "id": 558,
+     "id": 568,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2128,
@@ -66188,7 +66378,7 @@
      ]
     },
     {
-     "id": 559,
+     "id": 569,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2480,
@@ -66212,7 +66402,7 @@
      ]
     },
     {
-     "id": 560,
+     "id": 570,
      "name": "cofre",
      "type": "cofre",
      "x": 2512,
@@ -66231,7 +66421,7 @@
      ]
     },
     {
-     "id": 561,
+     "id": 571,
      "name": "figura",
      "type": "figura",
      "x": 2128,
@@ -66255,7 +66445,7 @@
      ]
     },
     {
-     "id": 562,
+     "id": 572,
      "name": "mural",
      "type": "mural",
      "x": 2752,
@@ -66274,7 +66464,7 @@
      ]
     },
     {
-     "id": 563,
+     "id": 573,
      "name": "cajita_musica",
      "type": "cajita_musica",
      "x": 3024,
@@ -66298,7 +66488,7 @@
      ]
     },
     {
-     "id": 564,
+     "id": 574,
      "name": "estatua",
      "type": "estatua",
      "x": 2864,
@@ -66327,7 +66517,7 @@
      ]
     },
     {
-     "id": 565,
+     "id": 575,
      "name": "estatua",
      "type": "estatua",
      "x": 3184,
@@ -66356,7 +66546,7 @@
      ]
     },
     {
-     "id": 566,
+     "id": 576,
      "name": "estatua",
      "type": "estatua",
      "x": 2704,
@@ -66385,7 +66575,7 @@
      ]
     },
     {
-     "id": 567,
+     "id": 577,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 3248,
@@ -66419,7 +66609,7 @@
      ]
     },
     {
-     "id": 568,
+     "id": 578,
      "name": "farol_plaza",
      "type": "farol_plaza",
      "x": 3248,
@@ -66448,7 +66638,7 @@
      ]
     },
     {
-     "id": 569,
+     "id": 579,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2736,
@@ -66472,7 +66662,7 @@
      ]
     },
     {
-     "id": 570,
+     "id": 580,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3280,
@@ -66496,7 +66686,7 @@
      ]
     },
     {
-     "id": 571,
+     "id": 581,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3024,
@@ -66520,7 +66710,7 @@
      ]
     },
     {
-     "id": 572,
+     "id": 582,
      "name": "figura",
      "type": "figura",
      "x": 3344,
@@ -66544,7 +66734,7 @@
      ]
     },
     {
-     "id": 573,
+     "id": 583,
      "name": "figura",
      "type": "figura",
      "x": 2576,
@@ -66568,7 +66758,7 @@
      ]
     },
     {
-     "id": 574,
+     "id": 584,
      "name": "cofre",
      "type": "cofre",
      "x": 3248,
@@ -66597,7 +66787,7 @@
      ]
     },
     {
-     "id": 575,
+     "id": 585,
      "name": "cofre",
      "type": "cofre",
      "x": 592,
@@ -66626,7 +66816,7 @@
      ]
     },
     {
-     "id": 576,
+     "id": 586,
      "name": "estatua",
      "type": "estatua",
      "x": 208,
@@ -66655,7 +66845,7 @@
      ]
     },
     {
-     "id": 577,
+     "id": 587,
      "name": "enemigo",
      "type": "enemigo",
      "x": 304,
@@ -66679,7 +66869,7 @@
      ]
     },
     {
-     "id": 578,
+     "id": 588,
      "name": "enemigo",
      "type": "enemigo",
      "x": 720,
@@ -66703,7 +66893,7 @@
      ]
     },
     {
-     "id": 579,
+     "id": 589,
      "name": "enemigo",
      "type": "enemigo",
      "x": 464,
@@ -66727,7 +66917,7 @@
      ]
     },
     {
-     "id": 580,
+     "id": 590,
      "name": "cofre",
      "type": "cofre",
      "x": 176,
@@ -66746,7 +66936,7 @@
      ]
     },
     {
-     "id": 581,
+     "id": 591,
      "name": "torre_reloj",
      "type": "torre_reloj",
      "x": 1424,
@@ -66770,7 +66960,7 @@
      ]
     },
     {
-     "id": 582,
+     "id": 592,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1456,
@@ -66799,7 +66989,7 @@
      ]
     },
     {
-     "id": 583,
+     "id": 593,
      "name": "cofre",
      "type": "cofre",
      "x": 1232,
@@ -66823,7 +67013,7 @@
      ]
     },
     {
-     "id": 584,
+     "id": 594,
      "name": "estatua",
      "type": "estatua",
      "x": 1168,
@@ -66852,7 +67042,7 @@
      ]
     },
     {
-     "id": 585,
+     "id": 595,
      "name": "estatua",
      "type": "estatua",
      "x": 1744,
@@ -66881,7 +67071,7 @@
      ]
     },
     {
-     "id": 586,
+     "id": 596,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1616,
@@ -66905,7 +67095,7 @@
      ]
     },
     {
-     "id": 587,
+     "id": 597,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1200,
@@ -66929,7 +67119,7 @@
      ]
     },
     {
-     "id": 588,
+     "id": 598,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2800,
@@ -66953,7 +67143,7 @@
      ]
     },
     {
-     "id": 589,
+     "id": 599,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2832,
@@ -66977,7 +67167,7 @@
      ]
     },
     {
-     "id": 590,
+     "id": 600,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2800,
@@ -67001,7 +67191,7 @@
      ]
     },
     {
-     "id": 591,
+     "id": 601,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 2384,
@@ -67035,7 +67225,7 @@
      ]
     },
     {
-     "id": 592,
+     "id": 602,
      "name": "farol_plaza",
      "type": "farol_plaza",
      "x": 2384,
@@ -67064,7 +67254,7 @@
      ]
     },
     {
-     "id": 593,
+     "id": 603,
      "name": "estatua",
      "type": "estatua",
      "x": 3088,
@@ -67093,7 +67283,7 @@
      ]
     },
     {
-     "id": 594,
+     "id": 604,
      "name": "estatua",
      "type": "estatua",
      "x": 2224,
@@ -67122,7 +67312,7 @@
      ]
     },
     {
-     "id": 595,
+     "id": 605,
      "name": "cofre",
      "type": "cofre",
      "x": 3312,
@@ -67141,7 +67331,7 @@
      ]
     },
     {
-     "id": 596,
+     "id": 606,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2960,
@@ -67165,7 +67355,7 @@
      ]
     },
     {
-     "id": 597,
+     "id": 607,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3184,
@@ -67189,7 +67379,7 @@
      ]
     },
     {
-     "id": 598,
+     "id": 608,
      "name": "figura",
      "type": "figura",
      "x": 2896,
@@ -67213,7 +67403,7 @@
      ]
     },
     {
-     "id": 599,
+     "id": 609,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 2256,
@@ -67247,7 +67437,7 @@
      ]
     },
     {
-     "id": 600,
+     "id": 610,
      "name": "farol_plaza",
      "type": "farol_plaza",
      "x": 2256,
@@ -67276,7 +67466,7 @@
      ]
     },
     {
-     "id": 601,
+     "id": 611,
      "name": "estatua",
      "type": "estatua",
      "x": 2544,
@@ -67305,7 +67495,7 @@
      ]
     },
     {
-     "id": 602,
+     "id": 612,
      "name": "estatua",
      "type": "estatua",
      "x": 2860,
@@ -67334,7 +67524,7 @@
      ]
     },
     {
-     "id": 603,
+     "id": 613,
      "name": "estatua",
      "type": "estatua",
      "x": 2128,
@@ -67363,7 +67553,7 @@
      ]
     },
     {
-     "id": 604,
+     "id": 614,
      "name": "estatua",
      "type": "estatua",
      "x": 3184,
@@ -67392,7 +67582,7 @@
      ]
     },
     {
-     "id": 605,
+     "id": 615,
      "name": "cofre",
      "type": "cofre",
      "x": 3280,
@@ -67411,7 +67601,7 @@
      ]
     },
     {
-     "id": 606,
+     "id": 616,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2448,
@@ -67435,7 +67625,7 @@
      ]
     },
     {
-     "id": 607,
+     "id": 617,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2960,
@@ -67459,7 +67649,7 @@
      ]
     },
     {
-     "id": 608,
+     "id": 618,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3088,
@@ -67483,7 +67673,7 @@
      ]
     },
     {
-     "id": 609,
+     "id": 619,
      "name": "figura",
      "type": "figura",
      "x": 2800,
@@ -67507,7 +67697,7 @@
      ]
     },
     {
-     "id": 610,
+     "id": 620,
      "name": "arena_jefe",
      "type": "arena_jefe",
      "x": 2704,
@@ -67536,7 +67726,7 @@
      ]
     },
     {
-     "id": 611,
+     "id": 621,
      "name": "jefe",
      "type": "jefe",
      "x": 2704,
@@ -67565,7 +67755,7 @@
      ]
     },
     {
-     "id": 612,
+     "id": 622,
      "name": "lampara_trono",
      "type": "lampara_trono",
      "x": 2598,
@@ -67589,7 +67779,7 @@
      ]
     },
     {
-     "id": 613,
+     "id": 623,
      "name": "lampara_trono",
      "type": "lampara_trono",
      "x": 2810,
@@ -67613,7 +67803,7 @@
      ]
     },
     {
-     "id": 614,
+     "id": 624,
      "name": "lampara_trono",
      "type": "lampara_trono",
      "x": 2598,
@@ -67637,7 +67827,7 @@
      ]
     },
     {
-     "id": 615,
+     "id": 625,
      "name": "lampara_trono",
      "type": "lampara_trono",
      "x": 2810,
@@ -67661,7 +67851,7 @@
      ]
     },
     {
-     "id": 616,
+     "id": 626,
      "name": "figura",
      "type": "figura",
      "x": 2448,
@@ -67690,7 +67880,7 @@
      ]
     },
     {
-     "id": 617,
+     "id": 627,
      "name": "portal_jefe",
      "type": "portal_jefe",
      "x": 2704,
@@ -67719,7 +67909,7 @@
      ]
     },
     {
-     "id": 618,
+     "id": 628,
      "name": "cofre",
      "type": "cofre",
      "x": 2928,
@@ -67743,7 +67933,7 @@
      ]
     },
     {
-     "id": 619,
+     "id": 629,
      "name": "chispa",
      "type": "chispa",
      "x": 688,
@@ -67767,7 +67957,7 @@
      ]
     },
     {
-     "id": 620,
+     "id": 630,
      "name": "chispa",
      "type": "chispa",
      "x": 592,
@@ -67791,7 +67981,7 @@
      ]
     },
     {
-     "id": 621,
+     "id": 631,
      "name": "chispa",
      "type": "chispa",
      "x": 496,
@@ -67815,7 +68005,7 @@
      ]
     },
     {
-     "id": 622,
+     "id": 632,
      "name": "chispa",
      "type": "chispa",
      "x": 336,
@@ -67839,7 +68029,7 @@
      ]
     },
     {
-     "id": 623,
+     "id": 633,
      "name": "chispa",
      "type": "chispa",
      "x": 624,
@@ -67863,7 +68053,7 @@
      ]
     },
     {
-     "id": 624,
+     "id": 634,
      "name": "chispa",
      "type": "chispa",
      "x": 176,
@@ -67887,7 +68077,7 @@
      ]
     },
     {
-     "id": 625,
+     "id": 635,
      "name": "chispa",
      "type": "chispa",
      "x": 208,
@@ -67911,7 +68101,7 @@
      ]
     },
     {
-     "id": 626,
+     "id": 636,
      "name": "chispa",
      "type": "chispa",
      "x": 688,
@@ -67935,7 +68125,7 @@
      ]
     },
     {
-     "id": 627,
+     "id": 637,
      "name": "chispa",
      "type": "chispa",
      "x": 2192,
@@ -67959,7 +68149,7 @@
      ]
     },
     {
-     "id": 628,
+     "id": 638,
      "name": "chispa",
      "type": "chispa",
      "x": 1776,
@@ -67983,7 +68173,7 @@
      ]
     },
     {
-     "id": 629,
+     "id": 639,
      "name": "chispa",
      "type": "chispa",
      "x": 1584,
@@ -68007,7 +68197,7 @@
      ]
     },
     {
-     "id": 630,
+     "id": 640,
      "name": "chispa",
      "type": "chispa",
      "x": 2064,
@@ -68031,7 +68221,7 @@
      ]
     },
     {
-     "id": 631,
+     "id": 641,
      "name": "chispa",
      "type": "chispa",
      "x": 1968,
@@ -68055,7 +68245,7 @@
      ]
     },
     {
-     "id": 632,
+     "id": 642,
      "name": "chispa",
      "type": "chispa",
      "x": 2160,
@@ -68079,7 +68269,7 @@
      ]
     },
     {
-     "id": 633,
+     "id": 643,
      "name": "chispa",
      "type": "chispa",
      "x": 2320,
@@ -68103,7 +68293,7 @@
      ]
     },
     {
-     "id": 634,
+     "id": 644,
      "name": "chispa",
      "type": "chispa",
      "x": 2288,
@@ -68127,7 +68317,7 @@
      ]
     },
     {
-     "id": 635,
+     "id": 645,
      "name": "chispa",
      "type": "chispa",
      "x": 3120,
@@ -68151,7 +68341,7 @@
      ]
     },
     {
-     "id": 636,
+     "id": 646,
      "name": "chispa",
      "type": "chispa",
      "x": 2672,
@@ -68175,7 +68365,7 @@
      ]
     },
     {
-     "id": 637,
+     "id": 647,
      "name": "chispa",
      "type": "chispa",
      "x": 3024,
@@ -68199,7 +68389,7 @@
      ]
     },
     {
-     "id": 638,
+     "id": 648,
      "name": "chispa",
      "type": "chispa",
      "x": 3216,
@@ -68223,7 +68413,7 @@
      ]
     },
     {
-     "id": 639,
+     "id": 649,
      "name": "chispa",
      "type": "chispa",
      "x": 2672,
@@ -68247,7 +68437,7 @@
      ]
     },
     {
-     "id": 640,
+     "id": 650,
      "name": "chispa",
      "type": "chispa",
      "x": 2608,
@@ -68271,7 +68461,7 @@
      ]
     },
     {
-     "id": 641,
+     "id": 651,
      "name": "chispa",
      "type": "chispa",
      "x": 3344,
@@ -68295,7 +68485,7 @@
      ]
     },
     {
-     "id": 642,
+     "id": 652,
      "name": "chispa",
      "type": "chispa",
      "x": 3376,
@@ -68319,7 +68509,7 @@
      ]
     },
     {
-     "id": 643,
+     "id": 653,
      "name": "chispa",
      "type": "chispa",
      "x": 2224,
@@ -68343,7 +68533,7 @@
      ]
     },
     {
-     "id": 644,
+     "id": 654,
      "name": "chispa",
      "type": "chispa",
      "x": 3184,
@@ -68367,7 +68557,7 @@
      ]
     },
     {
-     "id": 645,
+     "id": 655,
      "name": "chispa",
      "type": "chispa",
      "x": 2800,
@@ -68391,7 +68581,7 @@
      ]
     },
     {
-     "id": 646,
+     "id": 656,
      "name": "chispa",
      "type": "chispa",
      "x": 2704,
@@ -68415,7 +68605,7 @@
      ]
     },
     {
-     "id": 647,
+     "id": 657,
      "name": "chispa",
      "type": "chispa",
      "x": 2544,
@@ -68439,7 +68629,7 @@
      ]
     },
     {
-     "id": 648,
+     "id": 658,
      "name": "chispa",
      "type": "chispa",
      "x": 2896,
@@ -68463,7 +68653,7 @@
      ]
     },
     {
-     "id": 649,
+     "id": 659,
      "name": "chispa",
      "type": "chispa",
      "x": 2800,
@@ -68487,7 +68677,7 @@
      ]
     },
     {
-     "id": 650,
+     "id": 660,
      "name": "chispa",
      "type": "chispa",
      "x": 3024,
@@ -68511,7 +68701,7 @@
      ]
     },
     {
-     "id": 651,
+     "id": 661,
      "name": "chispa",
      "type": "chispa",
      "x": 2960,
@@ -68535,7 +68725,7 @@
      ]
     },
     {
-     "id": 652,
+     "id": 662,
      "name": "chispa",
      "type": "chispa",
      "x": 2352,
@@ -68559,7 +68749,7 @@
      ]
     },
     {
-     "id": 653,
+     "id": 663,
      "name": "chispa",
      "type": "chispa",
      "x": 2480,
@@ -68583,7 +68773,7 @@
      ]
     },
     {
-     "id": 654,
+     "id": 664,
      "name": "chispa",
      "type": "chispa",
      "x": 3216,
@@ -68607,7 +68797,7 @@
      ]
     },
     {
-     "id": 655,
+     "id": 665,
      "name": "chispa",
      "type": "chispa",
      "x": 2832,
@@ -68631,7 +68821,7 @@
      ]
     },
     {
-     "id": 656,
+     "id": 666,
      "name": "chispa",
      "type": "chispa",
      "x": 2128,
@@ -68655,7 +68845,7 @@
      ]
     },
     {
-     "id": 657,
+     "id": 667,
      "name": "chispa",
      "type": "chispa",
      "x": 2000,
@@ -68679,7 +68869,7 @@
      ]
     },
     {
-     "id": 658,
+     "id": 668,
      "name": "chispa",
      "type": "chispa",
      "x": 2192,
@@ -68701,6 +68891,234 @@
        "value": "El Palacio Dormido"
       }
      ]
+    },
+    {
+     "id": 669,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 306,
+     "y": 496,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gato_piedra"
+      }
+     ]
+    },
+    {
+     "id": 670,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 944,
+     "y": 688,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "paloma_dormida"
+      }
+     ]
+    },
+    {
+     "id": 671,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1998,
+     "y": 496,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gato_piedra"
+      }
+     ]
+    },
+    {
+     "id": 672,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2830,
+     "y": 752,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "paloma_dormida"
+      }
+     ]
+    },
+    {
+     "id": 673,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1616,
+     "y": 1456,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gato_piedra"
+      }
+     ]
+    },
+    {
+     "id": 674,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2190,
+     "y": 1744,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "paloma_dormida"
+      }
+     ]
+    },
+    {
+     "id": 675,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2548,
+     "y": 2416,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gato_piedra"
+      }
+     ]
+    },
+    {
+     "id": 676,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 3154,
+     "y": 176,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "paloma_dormida"
+      }
+     ]
+    },
+    {
+     "id": 677,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1107,
+     "y": 560,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gato_piedra"
+      }
+     ]
+    },
+    {
+     "id": 678,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2965,
+     "y": 2096,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "paloma_dormida"
+      }
+     ]
+    },
+    {
+     "id": 679,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2383,
+     "y": 2800,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gato_piedra"
+      }
+     ]
+    },
+    {
+     "id": 680,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 3120,
+     "y": 496,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "paloma_dormida"
+      }
+     ]
     }
    ]
   },
@@ -68715,7 +69133,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 659,
+     "id": 681,
      "name": "La Puerta de la Ciudad",
      "type": "zona",
      "x": 64,
@@ -68753,7 +69171,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo_sueno"
+       "value": "polvo_sueno,polvo"
       },
       {
        "name": "ambiente",
@@ -68764,11 +69182,21 @@
        "name": "frente",
        "type": "string",
        "value": "arco_calle_0,lampara_colgante_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-25,#f0c890,0.45"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#1a1028,#ffd890,1.08,0.9"
       }
      ]
     },
     {
-     "id": 660,
+     "id": 682,
      "name": "La Calle de los Panaderos",
      "type": "zona",
      "x": 736,
@@ -68806,7 +69234,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo_sueno"
+       "value": "polvo_sueno,humo"
       },
       {
        "name": "ambiente",
@@ -68817,11 +69245,21 @@
        "name": "frente",
        "type": "string",
        "value": "banderines_rotos_0,arco_calle_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-30,#ffc880,0.5"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#20140e,#ffd090,1.1,0.95"
       }
      ]
     },
     {
-     "id": 661,
+     "id": 683,
      "name": "La Plaza de la Fuente",
      "type": "zona",
      "x": 1536,
@@ -68859,7 +69297,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo_sueno"
+       "value": "polvo_sueno,brillos"
       },
       {
        "name": "ambiente",
@@ -68870,11 +69308,21 @@
        "name": "frente",
        "type": "string",
        "value": "banderines_rotos_1,lampara_colgante_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-20,#ffd890,0.55"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#1a1028,#ffe0a0,1.08,0.95"
       }
      ]
     },
     {
-     "id": 662,
+     "id": 684,
      "name": "El Barrio de los Músicos",
      "type": "zona",
      "x": 2560,
@@ -68912,7 +69360,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo_sueno"
+       "value": "polvo_sueno,brillos"
       },
       {
        "name": "ambiente",
@@ -68923,11 +69371,21 @@
        "name": "frente",
        "type": "string",
        "value": "lampara_colgante_0,banderines_rotos_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-15,#c8a8ff,0.4"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#140c28,#d8c0ff,1.1,1.0"
       }
      ]
     },
     {
-     "id": 663,
+     "id": 685,
      "name": "Los Jardines de Piedra",
      "type": "zona",
      "x": 64,
@@ -68965,7 +69423,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo_sueno"
+       "value": "polvo_sueno,mariposas"
       },
       {
        "name": "ambiente",
@@ -68976,11 +69434,21 @@
        "name": "frente",
        "type": "string",
        "value": "arco_calle_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-22,#c8c0e0,0.35"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#101418,#d8d0f0,1.08,0.88"
       }
      ]
     },
     {
-     "id": 664,
+     "id": 686,
      "name": "La Torre del Reloj",
      "type": "zona",
      "x": 1056,
@@ -69018,7 +69486,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo_sueno"
+       "value": "polvo_sueno,polvo"
       },
       {
        "name": "ambiente",
@@ -69034,11 +69502,21 @@
        "name": "frente",
        "type": "string",
        "value": "lampara_colgante_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-35,#e0c8a0,0.45"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#16101e,#f0d8b0,1.14,0.88"
       }
      ]
     },
     {
-     "id": 665,
+     "id": 687,
      "name": "El Puente de los Faroles",
      "type": "zona",
      "x": 1824,
@@ -69076,7 +69554,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo_sueno"
+       "value": "polvo_sueno,luciernagas"
       },
       {
        "name": "ambiente",
@@ -69087,11 +69565,21 @@
        "name": "frente",
        "type": "string",
        "value": "banderines_rotos_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-10,#b89aff,0.3"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0c0820,#c8b0ff,1.16,1.0"
       }
      ]
     },
     {
-     "id": 666,
+     "id": 688,
      "name": "El Palacio Dormido",
      "type": "zona",
      "x": 1824,
@@ -69129,7 +69617,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo_sueno"
+       "value": "polvo_sueno,brillos"
       },
       {
        "name": "ambiente",
@@ -69145,11 +69633,21 @@
        "name": "frente",
        "type": "string",
        "value": "arco_calle_1,lampara_colgante_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#ffd890,0.35"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#1a1020,#ffe0a0,1.18,0.95"
       }
      ]
     },
     {
-     "id": 667,
+     "id": 689,
      "name": "El Corazón del Jardín",
      "type": "zona",
      "x": 480,
@@ -69187,7 +69685,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo_sueno"
+       "value": "polvo_sueno,mariposas"
       },
       {
        "name": "secreto",
@@ -69198,11 +69696,21 @@
        "name": "descubrir",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-10,#d0b0ff,0.4"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#120c20,#e0c8ff,1.1,1.05"
       }
      ]
     },
     {
-     "id": 668,
+     "id": 690,
      "name": "El Desván del Organillero",
      "type": "zona",
      "x": 3104,
@@ -69240,7 +69748,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "polvo_sueno"
+       "value": "polvo_sueno,polvo"
       },
       {
        "name": "secreto",
@@ -69251,6 +69759,16 @@
        "name": "descubrir",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-40,#ffc070,0.5"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#1a1008,#ffd090,1.1,0.95"
       }
      ]
     }
@@ -69267,7 +69785,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 669,
+     "id": 691,
      "name": "puerta_de_la_ciudad",
      "type": "postal",
      "x": 432,
@@ -69280,7 +69798,7 @@
      "properties": []
     },
     {
-     "id": 670,
+     "id": 692,
      "name": "calle_de_los_panaderos",
      "type": "postal",
      "x": 1136,
@@ -69293,7 +69811,7 @@
      "properties": []
     },
     {
-     "id": 671,
+     "id": 693,
      "name": "plaza_de_la_fuente",
      "type": "postal",
      "x": 2064,
@@ -69306,7 +69824,7 @@
      "properties": []
     },
     {
-     "id": 672,
+     "id": 694,
      "name": "barrio_de_los_musicos",
      "type": "postal",
      "x": 2992,
@@ -69319,7 +69837,7 @@
      "properties": []
     },
     {
-     "id": 673,
+     "id": 695,
      "name": "jardines_de_piedra",
      "type": "postal",
      "x": 560,
@@ -69332,7 +69850,7 @@
      "properties": []
     },
     {
-     "id": 674,
+     "id": 696,
      "name": "torre_del_reloj",
      "type": "postal",
      "x": 1456,
@@ -69345,7 +69863,7 @@
      "properties": []
     },
     {
-     "id": 675,
+     "id": 697,
      "name": "puente_de_los_faroles",
      "type": "postal",
      "x": 2704,
@@ -69358,7 +69876,7 @@
      "properties": []
     },
     {
-     "id": 676,
+     "id": 698,
      "name": "palacio_dormido",
      "type": "postal",
      "x": 2704,
@@ -69374,5 +69892,5 @@
   }
  ],
  "nextlayerid": 200,
- "nextobjectid": 677
+ "nextobjectid": 699
 }

@@ -10519,8 +10519,8 @@
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
     0,
     5,
     5,
@@ -11488,7 +11488,7 @@
     0,
     0,
     0,
-    0,
+    5,
     0,
     0,
     5,
@@ -11750,8 +11750,8 @@
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
     0,
     0,
     5,
@@ -11820,8 +11820,6 @@
     0,
     0,
     5,
-    0,
-    0,
     0,
     0,
     0,
@@ -11841,7 +11839,9 @@
     0,
     0,
     0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     5,
@@ -12179,8 +12179,6 @@
     0,
     0,
     5,
-    0,
-    0,
     0,
     0,
     0,
@@ -12219,7 +12217,9 @@
     0,
     0,
     0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -14203,12 +14203,12 @@
     0,
     5,
     5,
-    0,
-    0,
     0,
     0,
     0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -14789,13 +14789,13 @@
     0,
     5,
     5,
-    0,
-    0,
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
+    5,
+    5,
     0,
     5,
     0,
@@ -17054,9 +17054,9 @@
     0,
     0,
     0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -17886,9 +17886,9 @@
     0,
     0,
     0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -61241,6 +61241,196 @@
        "value": "piedras_mojadas_0"
       }
      ]
+    },
+    {
+     "id": 601,
+     "name": "mon_puerto_ancla",
+     "type": "deco",
+     "x": 528,
+     "y": 412,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_puerto_ancla"
+      }
+     ]
+    },
+    {
+     "id": 602,
+     "name": "mon_puerto_secadero",
+     "type": "deco",
+     "x": 1232,
+     "y": 508,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_puerto_secadero"
+      }
+     ]
+    },
+    {
+     "id": 603,
+     "name": "mon_puerto_balanza",
+     "type": "deco",
+     "x": 1888,
+     "y": 476,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_puerto_balanza"
+      }
+     ]
+    },
+    {
+     "id": 604,
+     "name": "mon_puerto_mascaron",
+     "type": "deco",
+     "x": 2768,
+     "y": 604,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_puerto_mascaron"
+      }
+     ]
+    },
+    {
+     "id": 605,
+     "name": "mon_puerto_barco_partido",
+     "type": "deco",
+     "x": 3056,
+     "y": 1180,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_puerto_barco_partido"
+      }
+     ]
+    },
+    {
+     "id": 606,
+     "name": "mon_puerto_esqueleto",
+     "type": "deco",
+     "x": 704,
+     "y": 1372,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_puerto_esqueleto"
+      }
+     ]
+    },
+    {
+     "id": 607,
+     "name": "mon_puerto_almeja",
+     "type": "deco",
+     "x": 1136,
+     "y": 2268,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_puerto_almeja"
+      }
+     ]
+    },
+    {
+     "id": 608,
+     "name": "mon_puerto_lente",
+     "type": "deco",
+     "x": 2672,
+     "y": 2012,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_puerto_lente"
+      }
+     ]
+    },
+    {
+     "id": 609,
+     "name": "mon_puerto_cajas",
+     "type": "deco",
+     "x": 1216,
+     "y": 124,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_puerto_cajas"
+      }
+     ]
+    },
+    {
+     "id": 610,
+     "name": "mon_puerto_timon",
+     "type": "deco",
+     "x": 1488,
+     "y": 1852,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_puerto_timon"
+      }
+     ]
     }
    ]
   },
@@ -61255,7 +61445,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 601,
+     "id": 611,
      "name": "portal_llegada",
      "type": "portal_llegada",
      "x": 208,
@@ -61274,7 +61464,7 @@
      ]
     },
     {
-     "id": 602,
+     "id": 612,
      "name": "portal_volver",
      "type": "portal_volver",
      "x": 208,
@@ -61293,7 +61483,7 @@
      ]
     },
     {
-     "id": 603,
+     "id": 613,
      "name": "jugador_inicio",
      "type": "jugador_inicio",
      "x": 336,
@@ -61306,7 +61496,7 @@
      "properties": []
     },
     {
-     "id": 604,
+     "id": 614,
      "name": "thor_inicio",
      "type": "thor_inicio",
      "x": 304,
@@ -61319,7 +61509,7 @@
      "properties": []
     },
     {
-     "id": 605,
+     "id": 615,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 464,
@@ -61358,7 +61548,7 @@
      ]
     },
     {
-     "id": 606,
+     "id": 616,
      "name": "farol_muelle",
      "type": "farol_muelle",
      "x": 464,
@@ -61382,7 +61572,7 @@
      ]
     },
     {
-     "id": 607,
+     "id": 617,
      "name": "cofre",
      "type": "cofre",
      "x": 208,
@@ -61401,7 +61591,7 @@
      ]
     },
     {
-     "id": 608,
+     "id": 618,
      "name": "enemigo",
      "type": "enemigo",
      "x": 464,
@@ -61425,7 +61615,7 @@
      ]
     },
     {
-     "id": 609,
+     "id": 619,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1072,
@@ -61449,7 +61639,7 @@
      ]
     },
     {
-     "id": 610,
+     "id": 620,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1392,
@@ -61473,7 +61663,7 @@
      ]
     },
     {
-     "id": 611,
+     "id": 621,
      "name": "figura",
      "type": "figura",
      "x": 1488,
@@ -61492,7 +61682,7 @@
      ]
     },
     {
-     "id": 612,
+     "id": 622,
      "name": "cofre",
      "type": "cofre",
      "x": 1168,
@@ -61511,7 +61701,7 @@
      ]
     },
     {
-     "id": 613,
+     "id": 623,
      "name": "enemigo",
      "type": "enemigo",
      "x": 848,
@@ -61535,7 +61725,7 @@
      ]
     },
     {
-     "id": 614,
+     "id": 624,
      "name": "cofre",
      "type": "cofre",
      "x": 1136,
@@ -61564,7 +61754,7 @@
      ]
     },
     {
-     "id": 615,
+     "id": 625,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 1840,
@@ -61598,7 +61788,7 @@
      ]
     },
     {
-     "id": 616,
+     "id": 626,
      "name": "farol_muelle",
      "type": "farol_muelle",
      "x": 1840,
@@ -61622,7 +61812,7 @@
      ]
     },
     {
-     "id": 617,
+     "id": 627,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1744,
@@ -61646,7 +61836,7 @@
      ]
     },
     {
-     "id": 618,
+     "id": 628,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1776,
@@ -61670,7 +61860,7 @@
      ]
     },
     {
-     "id": 619,
+     "id": 629,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1936,
@@ -61694,7 +61884,7 @@
      ]
     },
     {
-     "id": 620,
+     "id": 630,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2032,
@@ -61718,7 +61908,7 @@
      ]
     },
     {
-     "id": 621,
+     "id": 631,
      "name": "cofre",
      "type": "cofre",
      "x": 1840,
@@ -61737,7 +61927,7 @@
      ]
     },
     {
-     "id": 622,
+     "id": 632,
      "name": "figura",
      "type": "figura",
      "x": 2064,
@@ -61756,7 +61946,7 @@
      ]
     },
     {
-     "id": 623,
+     "id": 633,
      "name": "campana_iglesia",
      "type": "campana_iglesia",
      "x": 2738,
@@ -61780,7 +61970,7 @@
      ]
     },
     {
-     "id": 624,
+     "id": 634,
      "name": "mural",
      "type": "mural",
      "x": 2672,
@@ -61799,7 +61989,7 @@
      ]
     },
     {
-     "id": 625,
+     "id": 635,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2448,
@@ -61823,7 +62013,7 @@
      ]
     },
     {
-     "id": 626,
+     "id": 636,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3088,
@@ -61847,7 +62037,7 @@
      ]
     },
     {
-     "id": 627,
+     "id": 637,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 2992,
@@ -61881,7 +62071,7 @@
      ]
     },
     {
-     "id": 628,
+     "id": 638,
      "name": "farol_muelle",
      "type": "farol_muelle",
      "x": 2992,
@@ -61905,7 +62095,7 @@
      ]
     },
     {
-     "id": 629,
+     "id": 639,
      "name": "cofre",
      "type": "cofre",
      "x": 2128,
@@ -61924,7 +62114,7 @@
      ]
     },
     {
-     "id": 630,
+     "id": 640,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2768,
@@ -61948,7 +62138,7 @@
      ]
     },
     {
-     "id": 631,
+     "id": 641,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2800,
@@ -61972,7 +62162,7 @@
      ]
     },
     {
-     "id": 632,
+     "id": 642,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2736,
@@ -61996,7 +62186,7 @@
      ]
     },
     {
-     "id": 633,
+     "id": 643,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3216,
@@ -62020,7 +62210,7 @@
      ]
     },
     {
-     "id": 634,
+     "id": 644,
      "name": "enemigo",
      "type": "enemigo",
      "x": 592,
@@ -62049,7 +62239,7 @@
      ]
     },
     {
-     "id": 635,
+     "id": 645,
      "name": "cofre",
      "type": "cofre",
      "x": 272,
@@ -62073,7 +62263,7 @@
      ]
     },
     {
-     "id": 636,
+     "id": 646,
      "name": "enemigo",
      "type": "enemigo",
      "x": 784,
@@ -62097,7 +62287,7 @@
      ]
     },
     {
-     "id": 637,
+     "id": 647,
      "name": "enemigo",
      "type": "enemigo",
      "x": 816,
@@ -62121,7 +62311,7 @@
      ]
     },
     {
-     "id": 638,
+     "id": 648,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1296,
@@ -62145,7 +62335,7 @@
      ]
     },
     {
-     "id": 639,
+     "id": 649,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1776,
@@ -62169,7 +62359,7 @@
      ]
     },
     {
-     "id": 640,
+     "id": 650,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1520,
@@ -62193,7 +62383,7 @@
      ]
     },
     {
-     "id": 641,
+     "id": 651,
      "name": "cofre",
      "type": "cofre",
      "x": 1264,
@@ -62212,7 +62402,7 @@
      ]
     },
     {
-     "id": 642,
+     "id": 652,
      "name": "cofre",
      "type": "cofre",
      "x": 1520,
@@ -62241,7 +62431,7 @@
      ]
     },
     {
-     "id": 643,
+     "id": 653,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 2832,
@@ -62275,7 +62465,7 @@
      ]
     },
     {
-     "id": 644,
+     "id": 654,
      "name": "farol_muelle",
      "type": "farol_muelle",
      "x": 2832,
@@ -62299,7 +62489,7 @@
      ]
     },
     {
-     "id": 645,
+     "id": 655,
      "name": "arena_jefe",
      "type": "arena_jefe",
      "x": 2704,
@@ -62328,7 +62518,7 @@
      ]
     },
     {
-     "id": 646,
+     "id": 656,
      "name": "jefe",
      "type": "jefe",
      "x": 2704,
@@ -62362,7 +62552,7 @@
      ]
     },
     {
-     "id": 647,
+     "id": 657,
      "name": "portal_jefe",
      "type": "portal_jefe",
      "x": 3088,
@@ -62386,7 +62576,7 @@
      ]
     },
     {
-     "id": 648,
+     "id": 658,
      "name": "cofre",
      "type": "cofre",
      "x": 3184,
@@ -62410,7 +62600,7 @@
      ]
     },
     {
-     "id": 649,
+     "id": 659,
      "name": "figura",
      "type": "figura",
      "x": 3088,
@@ -62432,6 +62622,234 @@
        "value": true
       }
      ]
+    },
+    {
+     "id": 660,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 498,
+     "y": 304,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejito"
+      }
+     ]
+    },
+    {
+     "id": 661,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1131,
+     "y": 592,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gaviota"
+      }
+     ]
+    },
+    {
+     "id": 662,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1808,
+     "y": 464,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejito"
+      }
+     ]
+    },
+    {
+     "id": 663,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2735,
+     "y": 688,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gaviota"
+      }
+     ]
+    },
+    {
+     "id": 664,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 3092,
+     "y": 1072,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejito"
+      }
+     ]
+    },
+    {
+     "id": 665,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 683,
+     "y": 1264,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gaviota"
+      }
+     ]
+    },
+    {
+     "id": 666,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1228,
+     "y": 2288,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejito"
+      }
+     ]
+    },
+    {
+     "id": 667,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2769,
+     "y": 1872,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gaviota"
+      }
+     ]
+    },
+    {
+     "id": 668,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 365,
+     "y": 1744,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejito"
+      }
+     ]
+    },
+    {
+     "id": 669,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 884,
+     "y": 1616,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gaviota"
+      }
+     ]
+    },
+    {
+     "id": 670,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 493,
+     "y": 1488,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "cangrejito"
+      }
+     ]
+    },
+    {
+     "id": 671,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2166,
+     "y": 304,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "gaviota"
+      }
+     ]
     }
    ]
   },
@@ -62446,7 +62864,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 650,
+     "id": 672,
      "name": "El Muelle de Llegada",
      "type": "zona",
      "x": 64,
@@ -62484,7 +62902,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,gotas"
       },
       {
        "name": "ambiente",
@@ -62495,11 +62913,21 @@
        "name": "frente",
        "type": "string",
        "value": "vigas_frente_0,rocas_frente_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-14,#c8d0c8,0.3"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#101a1c,#e8e0c0,1.08,0.8"
       }
      ]
     },
     {
-     "id": 651,
+     "id": 673,
      "name": "La Calle de las Redes",
      "type": "zona",
      "x": 704,
@@ -62537,7 +62965,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,gotas"
       },
       {
        "name": "ambiente",
@@ -62548,11 +62976,21 @@
        "name": "frente",
        "type": "string",
        "value": "red_colgando_0,red_colgando_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-10,#b8c0b8,0.2"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0c1416,#d8d0b0,1.1,0.8"
       }
      ]
     },
     {
-     "id": 652,
+     "id": 674,
      "name": "El Mercado Hundido",
      "type": "zona",
      "x": 1472,
@@ -62590,7 +63028,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,gotas"
       },
       {
        "name": "ambiente",
@@ -62601,11 +63039,21 @@
        "name": "frente",
        "type": "string",
        "value": "vigas_frente_1,red_colgando_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-12,#b8c4bc,0.25"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0c1618,#d8d8c0,1.1,0.8"
       }
      ]
     },
     {
-     "id": 653,
+     "id": 675,
      "name": "La Iglesia de la Campana Ahogada",
      "type": "zona",
      "x": 2176,
@@ -62643,7 +63091,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,polvo"
       },
       {
        "name": "ambiente",
@@ -62654,11 +63102,21 @@
        "name": "frente",
        "type": "string",
        "value": "rocas_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-6,#ffd890,0.35"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0e1214,#ffe0a0,1.15,0.82"
       }
      ]
     },
     {
-     "id": 654,
+     "id": 676,
      "name": "Los Botes Volteados",
      "type": "zona",
      "x": 1984,
@@ -62696,7 +63154,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,gotas"
       },
       {
        "name": "ambiente",
@@ -62707,11 +63165,21 @@
        "name": "frente",
        "type": "string",
        "value": "rocas_frente_0,vigas_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-16,#c0c8c8,0.25"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0a1416,#d0d8d0,1.08,0.8"
       }
      ]
     },
     {
-     "id": 655,
+     "id": 677,
      "name": "El Astillero",
      "type": "zona",
      "x": 64,
@@ -62749,7 +63217,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,polvo"
       },
       {
        "name": "ambiente",
@@ -62765,11 +63233,21 @@
        "name": "frente",
        "type": "string",
        "value": "vigas_frente_0,vigas_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-20,#d8c8a0,0.3"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#140e0a,#e8d0a0,1.12,0.85"
       }
      ]
     },
     {
-     "id": 656,
+     "id": 678,
      "name": "La Cueva de las Medusas",
      "type": "zona",
      "x": 832,
@@ -62807,7 +63285,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brillos"
+       "value": "brillos,gotas"
       },
       {
        "name": "ambiente",
@@ -62818,11 +63296,21 @@
        "name": "frente",
        "type": "string",
        "value": "rocas_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#8a5aff,0.15"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#08061a,#c8a0ff,1.18,1.05"
       }
      ]
     },
     {
-     "id": 657,
+     "id": 679,
      "name": "El Faro",
      "type": "zona",
      "x": 2048,
@@ -62860,7 +63348,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,brillos"
       },
       {
        "name": "ambiente",
@@ -62876,11 +63364,21 @@
        "name": "frente",
        "type": "string",
        "value": "rocas_frente_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-30,#ffd890,0.7"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0e1214,#ffe090,1.2,0.9"
       }
      ]
     },
     {
-     "id": 658,
+     "id": 680,
      "name": "El Patio de las Redes",
      "type": "zona",
      "x": 1056,
@@ -62929,11 +63427,21 @@
        "name": "descubrir",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-8,#ffc070,0.3"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#120e0a,#ffd090,1.1,0.85"
       }
      ]
     },
     {
-     "id": 659,
+     "id": 681,
      "name": "La Gruta del Ancla",
      "type": "zona",
      "x": 1408,
@@ -62971,7 +63479,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "brillos"
+       "value": "brillos,gotas"
       },
       {
        "name": "secreto",
@@ -62982,6 +63490,16 @@
        "name": "descubrir",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#8a5aff,0.1"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#08061a,#b890ff,1.15,1.0"
       }
      ]
     }
@@ -62998,7 +63516,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 660,
+     "id": 682,
      "name": "muelle_de_llegada",
      "type": "postal",
      "x": 432,
@@ -63011,7 +63529,7 @@
      "properties": []
     },
     {
-     "id": 661,
+     "id": 683,
      "name": "calle_de_las_redes",
      "type": "postal",
      "x": 1104,
@@ -63024,7 +63542,7 @@
      "properties": []
     },
     {
-     "id": 662,
+     "id": 684,
      "name": "mercado_hundido",
      "type": "postal",
      "x": 1840,
@@ -63037,7 +63555,7 @@
      "properties": []
     },
     {
-     "id": 663,
+     "id": 685,
      "name": "iglesia_campana_ahogada",
      "type": "postal",
      "x": 2704,
@@ -63050,7 +63568,7 @@
      "properties": []
     },
     {
-     "id": 664,
+     "id": 686,
      "name": "botes_volteados",
      "type": "postal",
      "x": 2736,
@@ -63063,7 +63581,7 @@
      "properties": []
     },
     {
-     "id": 665,
+     "id": 687,
      "name": "astillero",
      "type": "postal",
      "x": 560,
@@ -63076,7 +63594,7 @@
      "properties": []
     },
     {
-     "id": 666,
+     "id": 688,
      "name": "cueva_de_las_medusas",
      "type": "postal",
      "x": 1520,
@@ -63089,7 +63607,7 @@
      "properties": []
     },
     {
-     "id": 667,
+     "id": 689,
      "name": "el_faro",
      "type": "postal",
      "x": 2832,
@@ -82945,5 +83463,5 @@
   }
  ],
  "nextlayerid": 200,
- "nextobjectid": 668
+ "nextobjectid": 690
 }

@@ -15195,8 +15195,8 @@
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
@@ -15809,8 +15809,6 @@
     0,
     5,
     5,
-    0,
-    0,
     0,
     0,
     0,
@@ -15856,6 +15854,8 @@
     0,
     0,
     0,
+    5,
+    5,
     0,
     0,
     0,
@@ -16845,7 +16845,6 @@
     0,
     0,
     5,
-    0,
     0,
     0,
     0,
@@ -16853,8 +16852,9 @@
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     5,
     5,
@@ -17812,9 +17812,9 @@
     5,
     5,
     5,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -19668,9 +19668,9 @@
     0,
     0,
     0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -19876,12 +19876,12 @@
     0,
     0,
     5,
-    0,
     0,
     0,
     0,
     0,
-    0,
+    5,
+    5,
     0,
     0,
     0,
@@ -21063,10 +21063,10 @@
     5,
     5,
     5,
-    0,
-    0,
-    0,
     0,
+    5,
+    5,
+    5,
     0,
     0,
     5,
@@ -21507,9 +21507,9 @@
     5,
     5,
     0,
-    0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -22328,15 +22328,15 @@
     5,
     5,
     5,
-    0,
     0,
     0,
     0,
     0,
     0,
     0,
-    0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -23103,8 +23103,6 @@
     5,
     5,
     5,
-    0,
-    0,
     0,
     0,
     0,
@@ -23121,7 +23119,9 @@
     0,
     0,
     0,
-    0,
+    5,
+    5,
+    5,
     0,
     0,
     0,
@@ -76060,6 +76060,196 @@
        "value": "escarcha_1"
       }
      ]
+    },
+    {
+     "id": 510,
+     "name": "mon_corazon_heroina_hielo",
+     "type": "deco",
+     "x": 512,
+     "y": 476,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_corazon_heroina_hielo"
+      }
+     ]
+    },
+    {
+     "id": 511,
+     "name": "mon_corazon_espada",
+     "type": "deco",
+     "x": 2400,
+     "y": 636,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_corazon_espada"
+      }
+     ]
+    },
+    {
+     "id": 512,
+     "name": "mon_corazon_sarcofago",
+     "type": "deco",
+     "x": 3632,
+     "y": 892,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_corazon_sarcofago"
+      }
+     ]
+    },
+    {
+     "id": 513,
+     "name": "mon_corazon_arbol_hielo",
+     "type": "deco",
+     "x": 672,
+     "y": 1724,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_corazon_arbol_hielo"
+      }
+     ]
+    },
+    {
+     "id": 514,
+     "name": "mon_corazon_estandarte",
+     "type": "deco",
+     "x": 1584,
+     "y": 1660,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_corazon_estandarte"
+      }
+     ]
+    },
+    {
+     "id": 515,
+     "name": "mon_corazon_grillete",
+     "type": "deco",
+     "x": 656,
+     "y": 2588,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_corazon_grillete"
+      }
+     ]
+    },
+    {
+     "id": 516,
+     "name": "mon_corazon_arco_cuernos",
+     "type": "deco",
+     "x": 2416,
+     "y": 2364,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_corazon_arco_cuernos"
+      }
+     ]
+    },
+    {
+     "id": 517,
+     "name": "mon_corazon_gigante",
+     "type": "deco",
+     "x": 2832,
+     "y": 2140,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_corazon_gigante"
+      }
+     ]
+    },
+    {
+     "id": 518,
+     "name": "mon_corazon_craneo_lobo",
+     "type": "deco",
+     "x": 176,
+     "y": 2044,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_corazon_craneo_lobo"
+      }
+     ]
+    },
+    {
+     "id": 519,
+     "name": "mon_corazon_puerta_cripta",
+     "type": "deco",
+     "x": 3632,
+     "y": 1148,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "mon_corazon_puerta_cripta"
+      }
+     ]
     }
    ]
   },
@@ -76074,7 +76264,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 510,
+     "id": 520,
      "name": "portal_llegada",
      "type": "portal_llegada",
      "x": 496,
@@ -76098,7 +76288,7 @@
      ]
     },
     {
-     "id": 511,
+     "id": 521,
      "name": "portal_volver",
      "type": "portal_volver",
      "x": 496,
@@ -76117,7 +76307,7 @@
      ]
     },
     {
-     "id": 512,
+     "id": 522,
      "name": "jugador_inicio",
      "type": "jugador_inicio",
      "x": 592,
@@ -76130,7 +76320,7 @@
      "properties": []
     },
     {
-     "id": 513,
+     "id": 523,
      "name": "thor_inicio",
      "type": "thor_inicio",
      "x": 592,
@@ -76143,7 +76333,7 @@
      "properties": []
     },
     {
-     "id": 514,
+     "id": 524,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 304,
@@ -76177,7 +76367,7 @@
      ]
     },
     {
-     "id": 515,
+     "id": 525,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 720,
@@ -76211,7 +76401,7 @@
      ]
     },
     {
-     "id": 516,
+     "id": 526,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 560,
@@ -76250,7 +76440,7 @@
      ]
     },
     {
-     "id": 517,
+     "id": 527,
      "name": "cofre",
      "type": "cofre",
      "x": 784,
@@ -76269,7 +76459,7 @@
      ]
     },
     {
-     "id": 518,
+     "id": 528,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 304,
@@ -76303,7 +76493,7 @@
      ]
     },
     {
-     "id": 519,
+     "id": 529,
      "name": "enemigo",
      "type": "enemigo",
      "x": 432,
@@ -76332,7 +76522,7 @@
      ]
     },
     {
-     "id": 520,
+     "id": 530,
      "name": "enemigo",
      "type": "enemigo",
      "x": 432,
@@ -76361,7 +76551,7 @@
      ]
     },
     {
-     "id": 521,
+     "id": 531,
      "name": "enemigo",
      "type": "enemigo",
      "x": 368,
@@ -76390,7 +76580,7 @@
      ]
     },
     {
-     "id": 522,
+     "id": 532,
      "name": "enemigo",
      "type": "enemigo",
      "x": 464,
@@ -76419,7 +76609,7 @@
      ]
     },
     {
-     "id": 523,
+     "id": 533,
      "name": "enemigo",
      "type": "enemigo",
      "x": 720,
@@ -76448,7 +76638,7 @@
      ]
     },
     {
-     "id": 524,
+     "id": 534,
      "name": "enemigo",
      "type": "enemigo",
      "x": 688,
@@ -76477,7 +76667,7 @@
      ]
     },
     {
-     "id": 525,
+     "id": 535,
      "name": "enemigo",
      "type": "enemigo",
      "x": 688,
@@ -76506,7 +76696,7 @@
      ]
     },
     {
-     "id": 526,
+     "id": 536,
      "name": "enemigo",
      "type": "enemigo",
      "x": 688,
@@ -76535,7 +76725,7 @@
      ]
     },
     {
-     "id": 527,
+     "id": 537,
      "name": "enemigo",
      "type": "enemigo",
      "x": 752,
@@ -76564,7 +76754,7 @@
      ]
     },
     {
-     "id": 528,
+     "id": 538,
      "name": "gigante",
      "type": "gigante",
      "x": 1520,
@@ -76598,7 +76788,7 @@
      ]
     },
     {
-     "id": 529,
+     "id": 539,
      "name": "gigante",
      "type": "gigante",
      "x": 2064,
@@ -76632,7 +76822,7 @@
      ]
     },
     {
-     "id": 530,
+     "id": 540,
      "name": "gigante",
      "type": "gigante",
      "x": 1296,
@@ -76666,7 +76856,7 @@
      ]
     },
     {
-     "id": 531,
+     "id": 541,
      "name": "gigante",
      "type": "gigante",
      "x": 2256,
@@ -76700,7 +76890,7 @@
      ]
     },
     {
-     "id": 532,
+     "id": 542,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 1072,
@@ -76734,7 +76924,7 @@
      ]
     },
     {
-     "id": 533,
+     "id": 543,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 1712,
@@ -76768,7 +76958,7 @@
      ]
     },
     {
-     "id": 534,
+     "id": 544,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 2576,
@@ -76802,7 +76992,7 @@
      ]
     },
     {
-     "id": 535,
+     "id": 545,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 1840,
@@ -76836,7 +77026,7 @@
      ]
     },
     {
-     "id": 536,
+     "id": 546,
      "name": "hielo_fino",
      "type": "hielo_fino",
      "x": 1216,
@@ -76870,7 +77060,7 @@
      ]
     },
     {
-     "id": 537,
+     "id": 547,
      "name": "hielo_fino",
      "type": "hielo_fino",
      "x": 1440,
@@ -76904,7 +77094,7 @@
      ]
     },
     {
-     "id": 538,
+     "id": 548,
      "name": "hielo_fino",
      "type": "hielo_fino",
      "x": 1664,
@@ -76938,7 +77128,7 @@
      ]
     },
     {
-     "id": 539,
+     "id": 549,
      "name": "hielo_fino",
      "type": "hielo_fino",
      "x": 1760,
@@ -76972,7 +77162,7 @@
      ]
     },
     {
-     "id": 540,
+     "id": 550,
      "name": "hielo_fino",
      "type": "hielo_fino",
      "x": 1952,
@@ -77006,7 +77196,7 @@
      ]
     },
     {
-     "id": 541,
+     "id": 551,
      "name": "hielo_fino",
      "type": "hielo_fino",
      "x": 1408,
@@ -77040,7 +77230,7 @@
      ]
     },
     {
-     "id": 542,
+     "id": 552,
      "name": "hielo_fino",
      "type": "hielo_fino",
      "x": 2144,
@@ -77074,7 +77264,7 @@
      ]
     },
     {
-     "id": 543,
+     "id": 553,
      "name": "hielo_fino",
      "type": "hielo_fino",
      "x": 1920,
@@ -77108,7 +77298,7 @@
      ]
     },
     {
-     "id": 544,
+     "id": 554,
      "name": "hielo_fino",
      "type": "hielo_fino",
      "x": 2240,
@@ -77142,7 +77332,7 @@
      ]
     },
     {
-     "id": 545,
+     "id": 555,
      "name": "hielo_fino",
      "type": "hielo_fino",
      "x": 1472,
@@ -77176,7 +77366,7 @@
      ]
     },
     {
-     "id": 546,
+     "id": 556,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2320,
@@ -77205,7 +77395,7 @@
      ]
     },
     {
-     "id": 547,
+     "id": 557,
      "name": "cofre",
      "type": "cofre",
      "x": 2544,
@@ -77229,7 +77419,7 @@
      ]
     },
     {
-     "id": 548,
+     "id": 558,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1104,
@@ -77258,7 +77448,7 @@
      ]
     },
     {
-     "id": 549,
+     "id": 559,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1072,
@@ -77287,7 +77477,7 @@
      ]
     },
     {
-     "id": 550,
+     "id": 560,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1072,
@@ -77316,7 +77506,7 @@
      ]
     },
     {
-     "id": 551,
+     "id": 561,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1040,
@@ -77345,7 +77535,7 @@
      ]
     },
     {
-     "id": 552,
+     "id": 562,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1136,
@@ -77374,7 +77564,7 @@
      ]
     },
     {
-     "id": 553,
+     "id": 563,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1616,
@@ -77403,7 +77593,7 @@
      ]
     },
     {
-     "id": 554,
+     "id": 564,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1520,
@@ -77432,7 +77622,7 @@
      ]
     },
     {
-     "id": 555,
+     "id": 565,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2096,
@@ -77461,7 +77651,7 @@
      ]
     },
     {
-     "id": 556,
+     "id": 566,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2032,
@@ -77490,7 +77680,7 @@
      ]
     },
     {
-     "id": 557,
+     "id": 567,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2096,
@@ -77519,7 +77709,7 @@
      ]
     },
     {
-     "id": 558,
+     "id": 568,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2320,
@@ -77548,7 +77738,7 @@
      ]
     },
     {
-     "id": 559,
+     "id": 569,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2352,
@@ -77577,7 +77767,7 @@
      ]
     },
     {
-     "id": 560,
+     "id": 570,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2288,
@@ -77606,7 +77796,7 @@
      ]
     },
     {
-     "id": 561,
+     "id": 571,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2288,
@@ -77635,7 +77825,7 @@
      ]
     },
     {
-     "id": 562,
+     "id": 572,
      "name": "figura",
      "type": "figura",
      "x": 1872,
@@ -77659,7 +77849,7 @@
      ]
     },
     {
-     "id": 563,
+     "id": 573,
      "name": "mural",
      "type": "mural",
      "x": 3200,
@@ -77678,7 +77868,7 @@
      ]
     },
     {
-     "id": 564,
+     "id": 574,
      "name": "gigante",
      "type": "gigante",
      "x": 3472,
@@ -77712,7 +77902,7 @@
      ]
     },
     {
-     "id": 565,
+     "id": 575,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2864,
@@ -77741,7 +77931,7 @@
      ]
     },
     {
-     "id": 566,
+     "id": 576,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2800,
@@ -77770,7 +77960,7 @@
      ]
     },
     {
-     "id": 567,
+     "id": 577,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3504,
@@ -77799,7 +77989,7 @@
      ]
     },
     {
-     "id": 568,
+     "id": 578,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3408,
@@ -77828,7 +78018,7 @@
      ]
     },
     {
-     "id": 569,
+     "id": 579,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3120,
@@ -77857,7 +78047,7 @@
      ]
     },
     {
-     "id": 570,
+     "id": 580,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3056,
@@ -77886,7 +78076,7 @@
      ]
     },
     {
-     "id": 571,
+     "id": 581,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3088,
@@ -77915,7 +78105,7 @@
      ]
     },
     {
-     "id": 572,
+     "id": 582,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3664,
@@ -77944,7 +78134,7 @@
      ]
     },
     {
-     "id": 573,
+     "id": 583,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3568,
@@ -77973,7 +78163,7 @@
      ]
     },
     {
-     "id": 574,
+     "id": 584,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3472,
@@ -78002,7 +78192,7 @@
      ]
     },
     {
-     "id": 575,
+     "id": 585,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3408,
@@ -78031,7 +78221,7 @@
      ]
     },
     {
-     "id": 576,
+     "id": 586,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3408,
@@ -78060,7 +78250,7 @@
      ]
     },
     {
-     "id": 577,
+     "id": 587,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3408,
@@ -78089,7 +78279,7 @@
      ]
     },
     {
-     "id": 578,
+     "id": 588,
      "name": "enemigo",
      "type": "enemigo",
      "x": 3472,
@@ -78118,7 +78308,7 @@
      ]
     },
     {
-     "id": 579,
+     "id": 589,
      "name": "cofre",
      "type": "cofre",
      "x": 3088,
@@ -78137,7 +78327,7 @@
      ]
     },
     {
-     "id": 580,
+     "id": 590,
      "name": "cofre",
      "type": "cofre",
      "x": 3696,
@@ -78166,7 +78356,7 @@
      ]
     },
     {
-     "id": 581,
+     "id": 591,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 656,
@@ -78200,7 +78390,7 @@
      ]
     },
     {
-     "id": 582,
+     "id": 592,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 912,
@@ -78234,7 +78424,7 @@
      ]
     },
     {
-     "id": 583,
+     "id": 593,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 368,
@@ -78268,7 +78458,7 @@
      ]
     },
     {
-     "id": 584,
+     "id": 594,
      "name": "enemigo",
      "type": "enemigo",
      "x": 336,
@@ -78297,7 +78487,7 @@
      ]
     },
     {
-     "id": 585,
+     "id": 595,
      "name": "enemigo",
      "type": "enemigo",
      "x": 368,
@@ -78326,7 +78516,7 @@
      ]
     },
     {
-     "id": 586,
+     "id": 596,
      "name": "enemigo",
      "type": "enemigo",
      "x": 304,
@@ -78355,7 +78545,7 @@
      ]
     },
     {
-     "id": 587,
+     "id": 597,
      "name": "enemigo",
      "type": "enemigo",
      "x": 304,
@@ -78384,7 +78574,7 @@
      ]
     },
     {
-     "id": 588,
+     "id": 598,
      "name": "enemigo",
      "type": "enemigo",
      "x": 368,
@@ -78413,7 +78603,7 @@
      ]
     },
     {
-     "id": 589,
+     "id": 599,
      "name": "enemigo",
      "type": "enemigo",
      "x": 912,
@@ -78442,7 +78632,7 @@
      ]
     },
     {
-     "id": 590,
+     "id": 600,
      "name": "enemigo",
      "type": "enemigo",
      "x": 944,
@@ -78471,7 +78661,7 @@
      ]
     },
     {
-     "id": 591,
+     "id": 601,
      "name": "enemigo",
      "type": "enemigo",
      "x": 880,
@@ -78500,7 +78690,7 @@
      ]
     },
     {
-     "id": 592,
+     "id": 602,
      "name": "enemigo",
      "type": "enemigo",
      "x": 816,
@@ -78529,7 +78719,7 @@
      ]
     },
     {
-     "id": 593,
+     "id": 603,
      "name": "enemigo",
      "type": "enemigo",
      "x": 912,
@@ -78558,7 +78748,7 @@
      ]
     },
     {
-     "id": 594,
+     "id": 604,
      "name": "enemigo",
      "type": "enemigo",
      "x": 976,
@@ -78587,7 +78777,7 @@
      ]
     },
     {
-     "id": 595,
+     "id": 605,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1072,
@@ -78616,7 +78806,7 @@
      ]
     },
     {
-     "id": 596,
+     "id": 606,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1072,
@@ -78645,7 +78835,7 @@
      ]
     },
     {
-     "id": 597,
+     "id": 607,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1040,
@@ -78674,7 +78864,7 @@
      ]
     },
     {
-     "id": 598,
+     "id": 608,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1072,
@@ -78703,7 +78893,7 @@
      ]
     },
     {
-     "id": 599,
+     "id": 609,
      "name": "enemigo",
      "type": "enemigo",
      "x": 560,
@@ -78732,7 +78922,7 @@
      ]
     },
     {
-     "id": 600,
+     "id": 610,
      "name": "enemigo",
      "type": "enemigo",
      "x": 464,
@@ -78761,7 +78951,7 @@
      ]
     },
     {
-     "id": 601,
+     "id": 611,
      "name": "cofre",
      "type": "cofre",
      "x": 1168,
@@ -78780,7 +78970,7 @@
      ]
     },
     {
-     "id": 602,
+     "id": 612,
      "name": "cofre",
      "type": "cofre",
      "x": 176,
@@ -78809,7 +78999,7 @@
      ]
     },
     {
-     "id": 603,
+     "id": 613,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 1904,
@@ -78843,7 +79033,7 @@
      ]
     },
     {
-     "id": 604,
+     "id": 614,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 1584,
@@ -78877,7 +79067,7 @@
      ]
     },
     {
-     "id": 605,
+     "id": 615,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 2416,
@@ -78911,7 +79101,7 @@
      ]
     },
     {
-     "id": 606,
+     "id": 616,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 1584,
@@ -78945,7 +79135,7 @@
      ]
     },
     {
-     "id": 607,
+     "id": 617,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 2416,
@@ -78979,7 +79169,7 @@
      ]
     },
     {
-     "id": 608,
+     "id": 618,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1872,
@@ -79008,7 +79198,7 @@
      ]
     },
     {
-     "id": 609,
+     "id": 619,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1808,
@@ -79037,7 +79227,7 @@
      ]
     },
     {
-     "id": 610,
+     "id": 620,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1872,
@@ -79066,7 +79256,7 @@
      ]
     },
     {
-     "id": 611,
+     "id": 621,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2160,
@@ -79095,7 +79285,7 @@
      ]
     },
     {
-     "id": 612,
+     "id": 622,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2064,
@@ -79124,7 +79314,7 @@
      ]
     },
     {
-     "id": 613,
+     "id": 623,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2000,
@@ -79153,7 +79343,7 @@
      ]
     },
     {
-     "id": 614,
+     "id": 624,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1904,
@@ -79182,7 +79372,7 @@
      ]
     },
     {
-     "id": 615,
+     "id": 625,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1488,
@@ -79211,7 +79401,7 @@
      ]
     },
     {
-     "id": 616,
+     "id": 626,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2512,
@@ -79240,7 +79430,7 @@
      ]
     },
     {
-     "id": 617,
+     "id": 627,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2512,
@@ -79269,7 +79459,7 @@
      ]
     },
     {
-     "id": 618,
+     "id": 628,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2480,
@@ -79298,7 +79488,7 @@
      ]
     },
     {
-     "id": 619,
+     "id": 629,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2416,
@@ -79327,7 +79517,7 @@
      ]
     },
     {
-     "id": 620,
+     "id": 630,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2480,
@@ -79356,7 +79546,7 @@
      ]
     },
     {
-     "id": 621,
+     "id": 631,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2576,
@@ -79385,7 +79575,7 @@
      ]
     },
     {
-     "id": 622,
+     "id": 632,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1456,
@@ -79414,7 +79604,7 @@
      ]
     },
     {
-     "id": 623,
+     "id": 633,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1520,
@@ -79443,7 +79633,7 @@
      ]
     },
     {
-     "id": 624,
+     "id": 634,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1424,
@@ -79472,7 +79662,7 @@
      ]
     },
     {
-     "id": 625,
+     "id": 635,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1520,
@@ -79501,7 +79691,7 @@
      ]
     },
     {
-     "id": 626,
+     "id": 636,
      "name": "cofre",
      "type": "cofre",
      "x": 2608,
@@ -79520,7 +79710,7 @@
      ]
     },
     {
-     "id": 627,
+     "id": 637,
      "name": "figura",
      "type": "figura",
      "x": 2384,
@@ -79544,7 +79734,7 @@
      ]
     },
     {
-     "id": 628,
+     "id": 638,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 208,
@@ -79578,7 +79768,7 @@
      ]
     },
     {
-     "id": 629,
+     "id": 639,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 432,
@@ -79612,7 +79802,7 @@
      ]
     },
     {
-     "id": 630,
+     "id": 640,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 880,
@@ -79646,7 +79836,7 @@
      ]
     },
     {
-     "id": 631,
+     "id": 641,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 1040,
@@ -79680,7 +79870,7 @@
      ]
     },
     {
-     "id": 632,
+     "id": 642,
      "name": "gigante",
      "type": "gigante",
      "x": 976,
@@ -79714,7 +79904,7 @@
      ]
     },
     {
-     "id": 633,
+     "id": 643,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 1456,
@@ -79748,7 +79938,7 @@
      ]
     },
     {
-     "id": 634,
+     "id": 644,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 1712,
@@ -79782,7 +79972,7 @@
      ]
     },
     {
-     "id": 635,
+     "id": 645,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 1584,
@@ -79816,7 +80006,7 @@
      ]
     },
     {
-     "id": 636,
+     "id": 646,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1232,
@@ -79845,7 +80035,7 @@
      ]
     },
     {
-     "id": 637,
+     "id": 647,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1136,
@@ -79874,7 +80064,7 @@
      ]
     },
     {
-     "id": 638,
+     "id": 648,
      "name": "enemigo",
      "type": "enemigo",
      "x": 944,
@@ -79903,7 +80093,7 @@
      ]
     },
     {
-     "id": 639,
+     "id": 649,
      "name": "enemigo",
      "type": "enemigo",
      "x": 944,
@@ -79932,7 +80122,7 @@
      ]
     },
     {
-     "id": 640,
+     "id": 650,
      "name": "enemigo",
      "type": "enemigo",
      "x": 912,
@@ -79961,7 +80151,7 @@
      ]
     },
     {
-     "id": 641,
+     "id": 651,
      "name": "enemigo",
      "type": "enemigo",
      "x": 880,
@@ -79990,7 +80180,7 @@
      ]
     },
     {
-     "id": 642,
+     "id": 652,
      "name": "enemigo",
      "type": "enemigo",
      "x": 944,
@@ -80019,7 +80209,7 @@
      ]
     },
     {
-     "id": 643,
+     "id": 653,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1008,
@@ -80048,7 +80238,7 @@
      ]
     },
     {
-     "id": 644,
+     "id": 654,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1936,
@@ -80077,7 +80267,7 @@
      ]
     },
     {
-     "id": 645,
+     "id": 655,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1872,
@@ -80106,7 +80296,7 @@
      ]
     },
     {
-     "id": 646,
+     "id": 656,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1904,
@@ -80135,7 +80325,7 @@
      ]
     },
     {
-     "id": 647,
+     "id": 657,
      "name": "enemigo",
      "type": "enemigo",
      "x": 304,
@@ -80164,7 +80354,7 @@
      ]
     },
     {
-     "id": 648,
+     "id": 658,
      "name": "enemigo",
      "type": "enemigo",
      "x": 272,
@@ -80193,7 +80383,7 @@
      ]
     },
     {
-     "id": 649,
+     "id": 659,
      "name": "enemigo",
      "type": "enemigo",
      "x": 272,
@@ -80222,7 +80412,7 @@
      ]
     },
     {
-     "id": 650,
+     "id": 660,
      "name": "enemigo",
      "type": "enemigo",
      "x": 336,
@@ -80251,7 +80441,7 @@
      ]
     },
     {
-     "id": 651,
+     "id": 661,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1520,
@@ -80280,7 +80470,7 @@
      ]
     },
     {
-     "id": 652,
+     "id": 662,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1520,
@@ -80309,7 +80499,7 @@
      ]
     },
     {
-     "id": 653,
+     "id": 663,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1456,
@@ -80338,7 +80528,7 @@
      ]
     },
     {
-     "id": 654,
+     "id": 664,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1456,
@@ -80367,7 +80557,7 @@
      ]
     },
     {
-     "id": 655,
+     "id": 665,
      "name": "enemigo",
      "type": "enemigo",
      "x": 1552,
@@ -80396,7 +80586,7 @@
      ]
     },
     {
-     "id": 656,
+     "id": 666,
      "name": "cofre",
      "type": "cofre",
      "x": 848,
@@ -80415,7 +80605,7 @@
      ]
     },
     {
-     "id": 657,
+     "id": 667,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2416,
@@ -80444,7 +80634,7 @@
      ]
     },
     {
-     "id": 658,
+     "id": 668,
      "name": "cofre",
      "type": "cofre",
      "x": 2608,
@@ -80468,7 +80658,7 @@
      ]
     },
     {
-     "id": 659,
+     "id": 669,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 2256,
@@ -80502,7 +80692,7 @@
      ]
     },
     {
-     "id": 660,
+     "id": 670,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 2576,
@@ -80536,7 +80726,7 @@
      ]
     },
     {
-     "id": 661,
+     "id": 671,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 2256,
@@ -80570,7 +80760,7 @@
      ]
     },
     {
-     "id": 662,
+     "id": 672,
      "name": "gigante",
      "type": "gigante",
      "x": 2544,
@@ -80604,7 +80794,7 @@
      ]
     },
     {
-     "id": 663,
+     "id": 673,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2384,
@@ -80633,7 +80823,7 @@
      ]
     },
     {
-     "id": 664,
+     "id": 674,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2416,
@@ -80662,7 +80852,7 @@
      ]
     },
     {
-     "id": 665,
+     "id": 675,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2352,
@@ -80691,7 +80881,7 @@
      ]
     },
     {
-     "id": 666,
+     "id": 676,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2320,
@@ -80720,7 +80910,7 @@
      ]
     },
     {
-     "id": 667,
+     "id": 677,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2416,
@@ -80749,7 +80939,7 @@
      ]
     },
     {
-     "id": 668,
+     "id": 678,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2512,
@@ -80778,7 +80968,7 @@
      ]
     },
     {
-     "id": 669,
+     "id": 679,
      "name": "enemigo",
      "type": "enemigo",
      "x": 2416,
@@ -80807,7 +80997,7 @@
      ]
     },
     {
-     "id": 670,
+     "id": 680,
      "name": "punto_guardado",
      "type": "punto_guardado",
      "x": 2864,
@@ -80841,7 +81031,7 @@
      ]
     },
     {
-     "id": 671,
+     "id": 681,
      "name": "trono_diablo",
      "type": "trono_diablo",
      "x": 3248,
@@ -80865,7 +81055,7 @@
      ]
     },
     {
-     "id": 672,
+     "id": 682,
      "name": "figura",
      "type": "figura",
      "x": 3388,
@@ -80899,7 +81089,7 @@
      ]
     },
     {
-     "id": 673,
+     "id": 683,
      "name": "arena_jefe",
      "type": "arena_jefe",
      "x": 3248,
@@ -80923,7 +81113,7 @@
      ]
     },
     {
-     "id": 674,
+     "id": 684,
      "name": "jefe",
      "type": "jefe",
      "x": 3248,
@@ -80952,7 +81142,7 @@
      ]
     },
     {
-     "id": 675,
+     "id": 685,
      "name": "brasero_hueso",
      "type": "brasero_hueso",
      "x": 3128,
@@ -80976,7 +81166,7 @@
      ]
     },
     {
-     "id": 676,
+     "id": 686,
      "name": "brasero_hueso",
      "type": "brasero_hueso",
      "x": 3368,
@@ -81000,7 +81190,7 @@
      ]
     },
     {
-     "id": 677,
+     "id": 687,
      "name": "brasero_hueso",
      "type": "brasero_hueso",
      "x": 3368,
@@ -81024,7 +81214,7 @@
      ]
     },
     {
-     "id": 678,
+     "id": 688,
      "name": "brasero_hueso",
      "type": "brasero_hueso",
      "x": 3128,
@@ -81048,7 +81238,7 @@
      ]
     },
     {
-     "id": 679,
+     "id": 689,
      "name": "portal_jefe",
      "type": "portal_jefe",
      "x": 3248,
@@ -81077,7 +81267,7 @@
      ]
     },
     {
-     "id": 680,
+     "id": 690,
      "name": "cofre",
      "type": "cofre",
      "x": 3632,
@@ -81101,7 +81291,7 @@
      ]
     },
     {
-     "id": 681,
+     "id": 691,
      "name": "gigante",
      "type": "gigante",
      "x": 2992,
@@ -81135,7 +81325,7 @@
      ]
     },
     {
-     "id": 682,
+     "id": 692,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 3632,
@@ -81169,7 +81359,7 @@
      ]
     },
     {
-     "id": 683,
+     "id": 693,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 2832,
@@ -81203,7 +81393,7 @@
      ]
     },
     {
-     "id": 684,
+     "id": 694,
      "name": "columna_hielo",
      "type": "columna_hielo",
      "x": 3664,
@@ -81235,6 +81425,234 @@
        "value": 34
       }
      ]
+    },
+    {
+     "id": 695,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 629,
+     "y": 432,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "zorro_nieve"
+      }
+     ]
+    },
+    {
+     "id": 696,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2453,
+     "y": 720,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "armino"
+      }
+     ]
+    },
+    {
+     "id": 697,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 3637,
+     "y": 784,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "zorro_nieve"
+      }
+     ]
+    },
+    {
+     "id": 698,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 596,
+     "y": 1712,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "armino"
+      }
+     ]
+    },
+    {
+     "id": 699,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 1682,
+     "y": 1648,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "zorro_nieve"
+      }
+     ]
+    },
+    {
+     "id": 700,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 754,
+     "y": 2576,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "armino"
+      }
+     ]
+    },
+    {
+     "id": 701,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2381,
+     "y": 2448,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "zorro_nieve"
+      }
+     ]
+    },
+    {
+     "id": 702,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 2806,
+     "y": 2224,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "armino"
+      }
+     ]
+    },
+    {
+     "id": 703,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 210,
+     "y": 1936,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "zorro_nieve"
+      }
+     ]
+    },
+    {
+     "id": 704,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 3733,
+     "y": 3344,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "armino"
+      }
+     ]
+    },
+    {
+     "id": 705,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 980,
+     "y": 1872,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "zorro_nieve"
+      }
+     ]
+    },
+    {
+     "id": 706,
+     "name": "criatura",
+     "type": "criatura",
+     "x": 564,
+     "y": 1872,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "especie",
+       "type": "string",
+       "value": "armino"
+      }
+     ]
     }
    ]
   },
@@ -81249,7 +81667,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 685,
+     "id": 707,
      "name": "La Escalera Helada",
      "type": "zona",
      "x": 64,
@@ -81287,7 +81705,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "nieve"
+       "value": "nieve,brillos"
       },
       {
        "name": "ambiente",
@@ -81298,11 +81716,21 @@
        "name": "frente",
        "type": "string",
        "value": "carambanos_frente_0,nieve_frente_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-10,#c8dcf0,0.4"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#060a14,#c8e0ff,1.12,0.85"
       }
      ]
     },
     {
-     "id": 686,
+     "id": 708,
      "name": "El Lago de los Gigantes",
      "type": "zona",
      "x": 896,
@@ -81340,7 +81768,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "nieve"
+       "value": "nieve,brillos"
       },
       {
        "name": "ambiente",
@@ -81356,11 +81784,21 @@
        "name": "frente",
        "type": "string",
        "value": "nieve_frente_1,carambanos_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-15,#9ab8d8,0.35"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#04060e,#b0d0f0,1.15,0.85"
       }
      ]
     },
     {
-     "id": 687,
+     "id": 709,
      "name": "Las Catacumbas de Hielo",
      "type": "zona",
      "x": 2656,
@@ -81398,7 +81836,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,polvo"
       },
       {
        "name": "ambiente",
@@ -81409,11 +81847,21 @@
        "name": "frente",
        "type": "string",
        "value": "carambanos_frente_0,cadena_helada_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#6a8aac,0.1"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#020306,#8aa8c8,1.2,0.8"
       }
      ]
     },
     {
-     "id": 688,
+     "id": 710,
      "name": "El Bosque de Escarcha",
      "type": "zona",
      "x": 64,
@@ -81451,7 +81899,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "nieve"
+       "value": "nieve,brillos"
       },
       {
        "name": "ambiente",
@@ -81462,11 +81910,21 @@
        "name": "frente",
        "type": "string",
        "value": "nieve_frente_0,cadena_helada_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-20,#b8d0ea,0.45"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#060a12,#d0e8ff,1.12,0.9"
       }
      ]
     },
     {
-     "id": 689,
+     "id": 711,
      "name": "La Ciudadela Congelada",
      "type": "zona",
      "x": 1280,
@@ -81504,7 +81962,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "nieve"
+       "value": "nieve,polvo"
       },
       {
        "name": "ambiente",
@@ -81515,11 +81973,21 @@
        "name": "frente",
        "type": "string",
        "value": "cadena_helada_2,nieve_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-12,#9ab8d8,0.3"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#06080e,#c0d4ec,1.14,0.82"
       }
      ]
     },
     {
-     "id": 690,
+     "id": 712,
      "name": "El Puente de las Cadenas",
      "type": "zona",
      "x": 64,
@@ -81557,7 +82025,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ventisca"
+       "value": "ventisca,nieve"
       },
       {
        "name": "ambiente",
@@ -81573,11 +82041,21 @@
        "name": "frente",
        "type": "string",
        "value": "nieve_frente_0,cadena_helada_0"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-35,#d0e0f0,0.25"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#060810,#d8e8ff,1.1,0.8"
       }
      ]
     },
     {
-     "id": 691,
+     "id": 713,
      "name": "La Puerta del Trono",
      "type": "zona",
      "x": 2112,
@@ -81615,7 +82093,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,brasas"
       },
       {
        "name": "ambiente",
@@ -81631,11 +82109,21 @@
        "name": "frente",
        "type": "string",
        "value": "cadena_helada_1,carambanos_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#ff5a3a,0.3"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0a0204,#ff8a6a,1.22,0.95"
       }
      ]
     },
     {
-     "id": 692,
+     "id": 714,
      "name": "El Corazón Helado",
      "type": "zona",
      "x": 2688,
@@ -81673,7 +82161,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,brasas"
       },
       {
        "name": "ambiente",
@@ -81689,11 +82177,21 @@
        "name": "frente",
        "type": "string",
        "value": "cadena_helada_2,nieve_frente_1"
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#ff3a20,0.45"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#0a0204,#ff7050,1.28,1.0"
       }
      ]
     },
     {
-     "id": 693,
+     "id": 715,
      "name": "La Guarida del Lobo",
      "type": "zona",
      "x": 64,
@@ -81742,11 +82240,21 @@
        "name": "descubrir",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "-10,#9ab8d8,0.2"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#04060c,#b0c8e0,1.12,0.85"
       }
      ]
     },
     {
-     "id": 694,
+     "id": 716,
      "name": "La Cripta Sellada",
      "type": "zona",
      "x": 3584,
@@ -81784,7 +82292,7 @@
       {
        "name": "particulas",
        "type": "string",
-       "value": "ceniza"
+       "value": "ceniza,brasas_frias"
       },
       {
        "name": "secreto",
@@ -81795,6 +82303,16 @@
        "name": "descubrir",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "rayos",
+       "type": "string",
+       "value": "0,#6a8aac,0"
+      },
+      {
+       "name": "grado",
+       "type": "string",
+       "value": "#020306,#ff6a4a,1.2,0.85"
       }
      ]
     }
@@ -81811,7 +82329,7 @@
    "y": 0,
    "objects": [
     {
-     "id": 695,
+     "id": 717,
      "name": "escalera_helada",
      "type": "postal",
      "x": 496,
@@ -81824,7 +82342,7 @@
      "properties": []
     },
     {
-     "id": 696,
+     "id": 718,
      "name": "bosque_de_escarcha",
      "type": "postal",
      "x": 656,
@@ -81837,7 +82355,7 @@
      "properties": []
     },
     {
-     "id": 697,
+     "id": 719,
      "name": "lago_de_los_gigantes",
      "type": "postal",
      "x": 1744,
@@ -81850,7 +82368,7 @@
      "properties": []
     },
     {
-     "id": 698,
+     "id": 720,
      "name": "catacumbas_de_hielo",
      "type": "postal",
      "x": 3248,
@@ -81863,7 +82381,7 @@
      "properties": []
     },
     {
-     "id": 699,
+     "id": 721,
      "name": "ciudadela_congelada",
      "type": "postal",
      "x": 2032,
@@ -81876,7 +82394,7 @@
      "properties": []
     },
     {
-     "id": 700,
+     "id": 722,
      "name": "puente_de_las_cadenas",
      "type": "postal",
      "x": 1200,
@@ -81889,7 +82407,7 @@
      "properties": []
     },
     {
-     "id": 701,
+     "id": 723,
      "name": "puerta_del_trono",
      "type": "postal",
      "x": 2416,
@@ -81902,7 +82420,7 @@
      "properties": []
     },
     {
-     "id": 702,
+     "id": 724,
      "name": "corazon_helado",
      "type": "postal",
      "x": 3248,
@@ -81918,5 +82436,5 @@
   }
  ],
  "nextlayerid": 200,
- "nextobjectid": 703
+ "nextobjectid": 725
 }
