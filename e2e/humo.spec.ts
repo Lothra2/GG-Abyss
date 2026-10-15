@@ -43,10 +43,11 @@ test('al cambiar el tamaño de la ventana el zoom se recalcula y sigue entero', 
   await page.goto('/?test=1')
   await esperarEscena(page, 'Titulo')
   const casos: [number, number, number, number, number][] = [
-    [1920, 1080, 2, 960, 540],
+    [1920, 1080, 3, 640, 360],
     [960, 540, 1, 960, 540],
-    [800, 800, 2, 400, 400],
-    [1280, 720, 1, 1280, 720],
+    // con zoom 2 el inventario no cabría en 400 x 400: queda en 1
+    [800, 800, 1, 800, 800],
+    [1280, 720, 2, 640, 360],
   ]
   for (const [w, h, zoom, ancho, alto] of casos) {
     await page.setViewportSize({ width: w, height: h })
