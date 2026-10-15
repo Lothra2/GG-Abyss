@@ -1,3 +1,4 @@
+import type { Premium } from '../logic/grado'
 /** Constantes fijas del juego que no son balance: profundidades, calidad, colores, apodos. */
 
 /** Carpeta del kit, relativa al index.html */
@@ -23,6 +24,9 @@ export const PROF = {
   PARTICULAS: 5100,
   BRUMA_A: 6000,
   BRUMA_B: 6001,
+  /** F14: la niebla baja (delante de todo) y los rayos de luz, entre la niebla y la oscuridad */
+  BRUMA_C: 6002,
+  RAYOS: 6500,
   OSCURIDAD: 7000,
   BRILLO: 7100,
   BRILLA_EN_OSCURO: 7200,
@@ -72,6 +76,8 @@ export const COLOR = {
   FUEGO_FATUO: '#8af8ff',
   FUEGO_FATUO_VIOLETA: '#c8a0ff',
   BRASA: '#ff8a3a',
+  /** F14: la lucecita de la luciérnaga */
+  LUCIERNAGA: '#d6ff8a',
   DESCUBRISTE: 0xffd27a,
   BORDE_NEGRO: 0x070a12,
 } as const
@@ -184,3 +190,60 @@ export const SOLO_EN_MUNDO = {
     ],
   },
 } as const
+
+/**
+ * F14, el look premium de cada mundo (logic/grado.ts): la gradación del cuadro (negros con color, luces con tinte,
+ * contraste y saturación), los rayos de luz (ángulo desde la vertical, color, densidad), el tinte de la niebla y
+ * cuánto brilla lo que ya brilla. El taller puede afinarlo por zona en el mapa (`grado` y `rayos`).
+ */
+export const PREMIUM: Record<string, Premium> = {
+  // cálido y mágico: sombras azul verdoso, sol de tarde entre los árboles
+  mundo1: { grado: { sombras: [18, 30, 46], luces: [255, 226, 170], contraste: 1.08, saturacion: 1.12 }, rayos: { angulo: -22, color: [255, 233, 168], densidad: 0.55 }, niebla: [214, 232, 222], brillo: 0.45 },
+  // verde enfermizo con oro: la luz baja de los ventanales altos
+  mundo2: { grado: { sombras: [16, 34, 26], luces: [255, 214, 150], contraste: 1.12, saturacion: 0.9 }, rayos: { angulo: 18, color: [255, 220, 150], densidad: 0.6 }, niebla: [184, 212, 172], brillo: 0.5 },
+  // azul cristal: casi sin cielo, los cristales hacen la luz
+  mundo3: { grado: { sombras: [10, 18, 40], luces: [170, 225, 255], contraste: 1.1, saturacion: 1.05 }, rayos: { angulo: 0, color: [150, 210, 255], densidad: 0.25 }, niebla: [150, 182, 222], brillo: 0.65 },
+  // gris de niebla con el oro del faro
+  mundo4: { grado: { sombras: [20, 28, 38], luces: [255, 210, 140], contraste: 1.06, saturacion: 0.85 }, rayos: { angulo: -30, color: [232, 222, 190], densidad: 0.35 }, niebla: [192, 202, 208], brillo: 0.55 },
+  // ocre y violeta de sueño
+  mundo5: { grado: { sombras: [34, 20, 52], luces: [255, 206, 150], contraste: 1.08, saturacion: 1.05 }, rayos: { angulo: 25, color: [255, 215, 170], densidad: 0.45 }, niebla: [202, 182, 222], brillo: 0.5 },
+  // naranja brasa: la luz sube de la lava
+  mundo6: { grado: { sombras: [30, 10, 8], luces: [255, 180, 110], contraste: 1.14, saturacion: 1.15 }, rayos: { angulo: 0, color: [255, 150, 80], densidad: 0.3 }, niebla: [222, 152, 112], brillo: 0.7 },
+  // azul hielo, y el rojo del Diablo encima
+  mundo7: { grado: { sombras: [8, 14, 34], luces: [200, 225, 255], contraste: 1.15, saturacion: 0.95 }, rayos: { angulo: -15, color: [170, 205, 255], densidad: 0.3 }, niebla: [172, 192, 226], brillo: 0.6 },
+  defecto: { grado: { sombras: [16, 22, 34], luces: [255, 240, 220], contraste: 1.04, saturacion: 1.02 }, rayos: { angulo: -20, color: [255, 240, 210], densidad: 0.3 }, niebla: [222, 226, 232], brillo: 0.4 },
+}
+
+export function premiumDeMundo(id: string): Premium {
+  return PREMIUM[id] ?? PREMIUM.defecto!
+}
+
+/** Cuánto pesa cada parte del look premium en el shader y en los rayos */
+export const PREMIUM_FX = {
+  /** cuánto se tiñen los negros y las luces altas */
+  kSombras: 0.5,
+  kLuces: 0.3,
+  /** desde qué luminancia algo brilla, y el radio del brillo en pixeles del arte */
+  umbralBrillo: 0.68,
+  radioBrillo: 2,
+  /** el tramado retro contra las bandas de los degradados (en niveles de 255) */
+  tramado: 1.5,
+  /** la grilla de los rayos (px del mundo), su alfa máxima y su largo */
+  celdaRayos: 150,
+  alfaRayos: 0.42,
+  largoRayos: 520,
+  /** motas de polvo que flotan dentro de cada rayo */
+  motasPorRayo: 4,
+  /** la niebla baja, delante de todo: alfa y paralaje */
+  alfaNieblaBaja: 0.22,
+  paralajeNieblaBaja: 1.35,
+    /** el primer plano del jefe solo si lo que se ve del mundo sigue midiendo esto de alto o más */
+  altoPrimerPlano: 150,
+  /** la luz chiquita de cada luciérnaga en lo oscuro */
+  radioLuciernaga: 18,
+  /** cuánto se ve el polvo lejos de toda luz (1 era antes) */
+  motaSombra: 0.55,
+} as const
+
+/** F14: cuánto pintan las luces a la heroína, a Thor y al jefe (logic/luzPersonaje.ts) */
+export const LUZ_PERSONAJE = { tope: 0.38, fuerza: 0.7, diaMin: 0.35 }

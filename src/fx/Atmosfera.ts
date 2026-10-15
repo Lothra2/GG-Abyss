@@ -1,7 +1,10 @@
 import Phaser from 'phaser'
 import type { Manifest } from '../kit/tipos'
 import { traducirParticulas, type EmisorZona, type MapaJuego, type Zona } from '../kit/mapa'
-import { CALIDAD, COLOR, PROF, type Calidad } from '../config/juego'
+import { CALIDAD, COLOR, PREMIUM_FX, PROF, premiumDeMundo, type Calidad } from '../config/juego'
+import { idMundo } from '../kit/mundos'
+import { mezclarPremium, premiumDe, type Premium } from '../logic/grado'
+import { Rayos } from './Rayos'
 import { atmosferaDe, mezclar, nocheEfectiva, oscuridadFinal, zonaEn, type Atmosfera as EstadoAtm, type RGB } from '../logic/zonas'
 import type { Ajustes } from '../logic/guardado'
 import type { Activo, Luz } from '../game/Decos'
@@ -24,6 +27,10 @@ export interface InfoAtmosfera {
   capasBruma: number
   calidad: Calidad
   postFx: boolean
+  /** F14: el look premium de este cuadro */
+  rayos: number
+  grado: { contraste: number; saturacion: number; sombras: RGB; luces: RGB }
+  nieblaBaja: boolean
 }
 
 /**
@@ -40,6 +47,10 @@ export class Atmosfera {
   readonly bruma: Bruma
   readonly nubes: Nubes
   readonly particulas: Particulas
+  readonly rayos: Rayos
+  /** F14: el look de la base del mundo y el de este cuadro, que va hacia el de la zona */
+  private premiumBase: Premium
+  prem: Premium
   private oscFinal = 0
   private calidad: Calidad = 'alta'
   private calidadAplicada: Calidad | null = null
@@ -76,6 +87,9 @@ export class Atmosfera {
     this.bruma = new Bruma(escena, ancho, alto)
     this.nubes = new Nubes(escena, mapa.ancho * mapa.cuadro, mapa.alto * mapa.cuadro)
     this.particulas = new Particulas(escena, m)
+    this.rayos = new Rayos(escena)
+    this.premiumBase = premiumDeMundo(idMundo(m.mundo))
+    this.prem = this.premiumBase
     this.webgl = registrarAtmosferaFX(escena.game)
   }
 
@@ -104,6 +118,7 @@ export class Atmosfera {
   saltarA(z: Zona | null): void {
     this.cambiarZona(z)
     this.atm = atmosferaDe(z)
+    this.prem = premiumDe(z?.props, this.premiumBase)
     this.particulas.limpiar()
   }
 
@@ -191,7 +206,12 @@ export class Atmosfera {
     this.luces.update(t, vista, luces, this.oscFinal, CALIDAD[this.calidad].luces)
     this.ultimasLuces = this.luces.ultimas
 
-    this.bruma.update(t, vista.x + vista.width / 2, vista.y + vista.height / 2, this.atm.niebla, CALIDAD[this.calidad].bruma)
+    const alta = CALIDAD[this.calidad].postFx
+    this.prem = mezclarPremium(this.prem, premiumDe(this.zona?.props, this.premiumBase), Math.min(1, dt * 1.2))
+    const pr = this.prem
+    const tinteNiebla = Phaser.Display.Color.GetColor(Math.round(pr.niebla[0]), Math.round(pr.niebla[1]), Math.round(pr.niebla[2]))
+    this.bruma.update(t, vista.x + vista.width / 2, vista.y + vista.height / 2, this.atm.niebla, CALIDAD[this.calidad].bruma, tinteNiebla, alta)
+    this.rayos.update(t, vista, pr.rayos, this.oscFinal, alta)
     this.nubes.update(t, vista, CALIDAD[this.calidad].nubes)
 
     // tinte de la zona
@@ -200,6 +220,17 @@ export class Atmosfera {
       this.fx.tinte = [r / 255, g / 255, b / 255]
       this.fx.tinteK = 0.35
       this.fx.vineta = 0.75
+      this.fx.premium = 1
+      this.fx.sombras = [pr.grado.sombras[0] / 255, pr.grado.sombras[1] / 255, pr.grado.sombras[2] / 255]
+      this.fx.luces = [pr.grado.luces[0] / 255, pr.grado.luces[1] / 255, pr.grado.luces[2] / 255]
+      this.fx.contraste = pr.grado.contraste
+      this.fx.saturacion = pr.grado.saturacion
+      this.fx.brillo = pr.brillo
+      this.fx.kSombras = PREMIUM_FX.kSombras
+      this.fx.kLuces = PREMIUM_FX.kLuces
+      this.fx.umbral = PREMIUM_FX.umbralBrillo
+      this.fx.radio = PREMIUM_FX.radioBrillo
+      this.fx.tramado = PREMIUM_FX.tramado
     } else if (this.tinteRect) {
       this.tinteRect.setFillStyle(Phaser.Display.Color.GetColor(r, g, b))
     }
@@ -218,6 +249,9 @@ export class Atmosfera {
       capasBruma: this.bruma.capasVisibles,
       calidad: this.calidad,
       postFx: !!this.fx,
+      rayos: this.rayos.visibles,
+      grado: { contraste: this.prem.grado.contraste, saturacion: this.prem.grado.saturacion, sombras: this.prem.grado.sombras, luces: this.prem.grado.luces },
+      nieblaBaja: this.bruma.bajaVisible,
     }
   }
 
@@ -227,6 +261,7 @@ export class Atmosfera {
     this.bruma.destruir()
     this.nubes.destruir()
     this.particulas.destruir()
+    this.rayos.destruir()
     this.quitarFallback()
   }
 }

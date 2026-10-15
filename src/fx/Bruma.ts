@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import { K } from '../kit/claves'
-import { PROF } from '../config/juego'
+import { PREMIUM_FX, PROF } from '../config/juego'
 
 /**
  * `niebla_jirones.png` repite bien hacia arriba y abajo pero NO hacia los lados: su borde izquierdo y su borde derecho
@@ -33,11 +33,14 @@ function espejoHorizontal(escena: Phaser.Scene, key: string): string {
 export class Bruma {
   private jirones: Phaser.GameObjects.TileSprite
   private nubes: Phaser.GameObjects.TileSprite
+  /** F14: la niebla baja, delante de todo, más grande y más rápida (da profundidad) */
+  private baja: Phaser.GameObjects.TileSprite
 
   constructor(escena: Phaser.Scene, ancho: number, alto: number) {
     const mk = (key: string, prof: number) => escena.add.tileSprite(0, 0, ancho, alto, key).setOrigin(0, 0).setScrollFactor(0).setTileScale(2, 2).setDepth(prof)
     this.jirones = mk(espejoHorizontal(escena, K.nieblaJirones), PROF.BRUMA_A)
     this.nubes = mk(K.nieblaNubes, PROF.BRUMA_B)
+    this.baja = mk(espejoHorizontal(escena, K.nieblaJirones), PROF.BRUMA_C).setVisible(false)
   }
 
   private escala = 2
@@ -46,10 +49,11 @@ export class Bruma {
   redimensionar(ancho: number, alto: number, ox = 0, oy = 0, zoom = 1): void {
     this.escala = 2 / Math.max(1, zoom)
     for (const t of [this.jirones, this.nubes]) t.setSize(Math.ceil(ancho), Math.ceil(alto)).setPosition(ox, oy).setTileScale(this.escala, this.escala)
+    this.baja.setSize(Math.ceil(ancho), Math.ceil(alto)).setPosition(ox, oy).setTileScale(this.escala * 1.8, this.escala * 1.8)
   }
 
-  /** `niebla` ya viene multiplicada por el control de bruma */
-  update(t: number, cx: number, cy: number, niebla: number, capas: number): void {
+  /** `niebla` ya viene multiplicada por el control de bruma. `tinte` (0xRRGGBB) y `baja` son del look premium */
+  update(t: number, cx: number, cy: number, niebla: number, capas: number, tinte = 0xffffff, baja = false): void {
     const a = Phaser.Math.Clamp(niebla, 0, 1.5)
     // la textura se dibuja a escala 2 en pantalla: la posición va en pixeles de textura
     const e = this.escala
@@ -58,14 +62,27 @@ export class Bruma {
     this.jirones.setAlpha(Math.min(1, a * 0.85)).setVisible(a * 0.85 > 0.01)
     const conNubes = capas >= 2 && a * 0.55 > 0.01
     this.nubes.setAlpha(Math.min(1, a * 0.55)).setVisible(conNubes)
+    this.jirones.setTint(tinte)
+    this.nubes.setTint(tinte)
+    const p = PREMIUM_FX.paralajeNieblaBaja
+    const eb = e * 1.8
+    const conBaja = baja && a > 0.05
+    this.baja.setVisible(conBaja)
+    if (conBaja) this.baja.setTint(tinte).setAlpha(Math.min(0.5, PREMIUM_FX.alfaNieblaBaja * (0.6 + a))).setTilePosition((cx * p + t * 20) / eb, (cy * p + t * 3) / eb)
+  }
+
+  get bajaVisible(): boolean {
+    return this.baja.visible
   }
 
   get capasVisibles(): number {
+    // la niebla baja va aparte (bajaVisible): estas son las capas que pide la calidad
     return (this.jirones.visible ? 1 : 0) + (this.nubes.visible ? 1 : 0)
   }
 
   destruir(): void {
     this.jirones.destroy()
     this.nubes.destroy()
+    this.baja.destroy()
   }
 }
