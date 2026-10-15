@@ -264,9 +264,9 @@ gg-abyss/
 - Escala entera, la misma regla del visor. Una función pura `calcularEscala(anchoCss, altoCss, dpr)` en `src/logic/escala.ts`, con tests:
   - `dpr = window.devicePixelRatio || 1`
   - `Wp = round(anchoCss * dpr)`, `Hp = round(altoCss * dpr)`: pixeles físicos
-  - `zoom = max(1, floor(Hp / 400))`. En un teléfono acostado (menos de 500 px CSS de alto) `floor(Hp / 300)`: el iPhone ve 844 x 390 y el Galaxy S23 780 x 360, como la tablet, en vez de 1266 x 585 a la mitad del tamaño
-  - vista lógica = `Wp / zoom` x `Hp / zoom`. Siempre al menos 400 de alto si la pantalla lo permite, y cada pixel del arte es un cuadrado de `zoom` x `zoom` pixeles físicos
-  - Ejemplos: iPad 1180 x 820 con dpr 2 da zoom 4 y vista 590 x 410. Escritorio 1280 x 720 con dpr 1 da zoom 1 y vista 1280 x 720. 960 x 540 con dpr 1 da zoom 1 y vista 960 x 540
+  - `zoom = max(1, floor(Hp / 320))` (F14, antes 400), y baja uno mientras el inventario no quepa ni entero (426 de alto) ni partido en dos (582 de ancho). En un teléfono acostado (menos de 500 px CSS de alto) `floor(Hp / 300)`: el iPhone ve 844 x 390 y el Galaxy S23 780 x 360, como la tablet, en vez de 1266 x 585 a la mitad del tamaño
+  - vista lógica = `Wp / zoom` x `Hp / zoom`. Siempre al menos 320 de alto si la pantalla lo permite, y cada pixel del arte es un cuadrado de `zoom` x `zoom` pixeles físicos
+  - Ejemplos: iPad 1180 x 820 con dpr 2 da zoom 4 y vista 590 x 410 (con 5 el inventario no cabría). Escritorio 1280 x 720 con dpr 1 da zoom 2 y vista 640 x 360. 1920 x 1080 da zoom 3 y vista 640 x 360. 960 x 540 con dpr 1 da zoom 1 y vista 960 x 540
 - Phaser con `Scale.RESIZE`, `pixelArt: true`, `roundPixels: true`, fondo `#070a12`. El canvas va en pixeles físicos (`Wp` x `Hp`) y por CSS ocupa la ventana. Las cámaras usan `setZoom(zoom)` entero. Se recalcula en cada `resize` y al girar la tablet. Si `Scale.RESIZE` no deja manejar el canvas en pixeles físicos, se usa `Scale.NONE` con el mismo cálculo a mano y se dice en el resumen.
 - Nada se posiciona con coordenadas fijas de 960 x 540. El HUD se ancla a los bordes de la vista lógica (orbe de vida abajo a la izquierda, orbe de maná abajo a la derecha, cinturón abajo al centro, habilidades arriba del orbe de maná, contadores y pausa arriba) con márgenes de `config/juego.ts`, y se reacomoda en cada `resize`. Los paneles se centran con la vista.
 - El inventario (280 x 410) va a x1. Si la vista lógica mide menos de 426 de alto (410 más 8 de margen arriba y abajo), la escena `Inventario` usa su propia cámara con un zoom entero menos, así cabe sin escalar en fracciones. Pasa en el iPad (410 de alto).
@@ -488,7 +488,7 @@ Cada fase termina jugable, con `npm run typecheck`, `npm test`, `npm run build` 
 - `npm run verificar-kit` pasa.
 - En la vista tablet `__ABYSS__.escala()` da zoom 4 y vista 590 x 410, y al cambiar el tamaño de la ventana el zoom se recalcula y sigue entero.
 
-**Tests:** kit (rutas, tamaños, 4096, objetos del mapa en el manifest, traducción de partículas sin huecos), `azar` (misma semilla, misma secuencia), `direccion` (8 vectores dan las 8 direcciones del manifest en su orden), `mapa` (ancho y alto iguales a los del manifest, y al menos 3 puntos de guardado, 5 cofres secretos, 13 zonas y 8 postales, leídos del mapa, nunca cantidades exactas), `escala` (los 3 ejemplos de 3.2, alto lógico siempre >= 400 cuando `Hp >= 400`, zoom siempre entero, pantalla de menos de 400 de alto da zoom 1).
+**Tests:** kit (rutas, tamaños, 4096, objetos del mapa en el manifest, traducción de partículas sin huecos), `azar` (misma semilla, misma secuencia), `direccion` (8 vectores dan las 8 direcciones del manifest en su orden), `mapa` (ancho y alto iguales a los del manifest, y al menos 3 puntos de guardado, 5 cofres secretos, 13 zonas y 8 postales, leídos del mapa, nunca cantidades exactas), `escala` (los ejemplos de 3.2, alto lógico siempre al mínimo cuando la pantalla lo tiene, zoom siempre entero, el inventario siempre cabe, pantalla de menos de 320 de alto da zoom 1).
 
 **E2E:** humo en escritorio y tablet: carga, escena Boot termina, sin errores, zoom esperado. Kit faltante. Sala del kit con todos los personajes del manifest (hoy 15).
 
@@ -1144,6 +1144,20 @@ Lo que se hizo antes de que llegara el arte:
 - Las alas del Diablo (pedido de Sophie): espinas en cada hueso y garras, y sangre oscura que gotea de los desgarrones. Es la única sangre del juego.
 
 **Arreglos del iPad.** Al pasar al Mundo 6 el juego se cerraba: las texturas de cada mundo se quedaban en memoria y al llegar al 6 sumaban 288 megapíxeles (más de 1 GB). Ahora, al cambiar de mundo, se suelta lo del anterior y queda entre 80 y 110. Y al volver por un portal la heroína aparecía pegada al borde de abajo del mapa (el portal del Rey está a 112 px del borde): ahora el punto de regreso y la posición guardada se corrigen siempre al lugar bueno más cerca desde donde se llega caminando.
+
+### F14. Retro pixelado premium: luz, niebla, partículas y cámara
+
+Rick: "Haz los 7 recomendados ya, conéctate con el taller, mejora iluminación, nieblas, partículas, quiero que se vea como un retro pixelado premium". Las 7 mejoras y en qué quedaron:
+
+1. **Color por mundo y por zona.** Cada mundo tiene su gradación en `PREMIUM` (config/juego.ts): negros con color en vez de grises, luces con tinte, contraste y saturación. El Bosque va verde y dorado, la Catedral verde musgo y oro viejo, las Galerías azul cristal, el Puerto gris y ámbar, la Ciudad ocre y violeta, la Fragua brasa y el Corazón Helado hielo. El taller lo afina por zona en el mapa con `grado` = "#sombras,#luces,contraste,saturacion". Al cambiar de zona se mezcla suave (`logic/grado.ts`, con tests).
+2. **Rayos de luz y niebla en capas.** Rayos que bajan en diagonal, anclados al mundo (el mismo lugar siempre tiene el mismo rayo), horneados ya inclinados y tramados en escalones: pixel perfecto, sin rotar nada. Llevan motas de polvo adentro. En los pisos oscuros la oscuridad los apaga sola. El taller los pide por zona con `rayos` = "angulo,#color,densidad". La niebla suma una tercera capa baja, más grande y más rápida, delante de todo, y toda la niebla toma el color del mundo.
+3. **Cámara.** Con `floor(Hp / 320)` la compu ve el mundo a 360 de alto en 720 p, 1080 p y 1440 p, el mismo encuadre en todas (antes 1080 p veía 540, chiquito). La tablet no puede acercarse más sin romper el inventario a x1 (quedaría en 472 x 328 y el panel mide 280 x 410): se queda en 410. Lo que sí gana la tablet son los **primeros planos**: en la entrada, el enojo y la muerte del jefe la cámara corta a un zoom entero más, como un corte de cine, y vuelve a la pelea. Con "efectos suaves" no hay corte.
+4. **Pisos repintados** (taller).
+5. **Un monumento por zona** (taller).
+6. **Vida ambiental.** El taller agrega especies nuevas y el juego las lee del manifest con `comportamiento` (`huye`, `se_esconde`, `corre`, `agua`, `sonido`). Las luciérnagas alumbran de verdad en lo oscuro y el polvo brilla solo donde le pega una luz.
+7. **La luz pinta a los personajes.** La heroína, Thor y el jefe toman el color de las luces que tienen cerca: tibios junto a la fogata, fríos junto a un cristal, más en lo oscuro (`logic/luzPersonaje.ts`). Su propio farol no cuenta. El tinte del golpe, del marcado y del enojo va encima. No es iluminación con mapas de normales: eso pediría redibujar todas las hojas y el iPad no tiene memoria para eso.
+
+**El cuadro.** El shader de la atmósfera suma un brillo que se derrama hacia lo oscuro (no quema lo que ya es claro: la heroína se sigue leyendo) y un tramado ordenado 4 x 4 que rompe las bandas de los degradados, como en las consolas de antes. Todo esto va solo en calidad alta. En calidad baja queda lo de siempre.
 
 ## 6. Riesgos y mitigación
 
