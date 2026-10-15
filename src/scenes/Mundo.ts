@@ -29,7 +29,9 @@ import { familiaDeArma, NOMBRE_FAMILIA } from '../logic/armas'
 import { crearAnimFx, crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
-import { CALIDAD, COLOR, PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S, SOMBRA_LARGA, SOLO_EN_MUNDO } from '../config/juego'
+import { CALIDAD, COLOR, PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S, SOMBRA_LARGA, SOLO_EN_MUNDO, PREMIUM_FX, LUZ_PERSONAJE } from '../config/juego'
+import { acercarTinte, aEntero, tinteDeLuces } from '../logic/luzPersonaje'
+import type { RGB } from '../logic/zonas'
 import { REACCIONES, AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, MUSICA_ESTADOS, OLFATO } from '../config/balance'
 import { enAnillo, enLinea } from '../logic/jefe'
 import { Grilla } from '../logic/grilla'
@@ -283,6 +285,9 @@ export class Mundo extends Phaser.Scene {
   private director = new DirectorJefe()
   planoJefe: Plano = new DirectorJefe().tick(0)
   private bloqueoPorJefe = false
+  /** el zoom entero de la cámara según la pantalla, y si ahora va un primer plano (x1 más) */
+  private zoomBase = 1
+  private primerPlano = false
   /** F7: la música por estados y los detalles de ambiente por cercanía */
   private directorMusica = new DirectorMusica()
   private relojAudio = 0
@@ -510,7 +515,7 @@ export class Mundo extends Phaser.Scene {
     this.heroina = new Heroina(this, m, this.grilla, id, pos.x, pos.y, { paso: (x, y, corre) => this.alPaso(x, y, corre) })
     this.thor = new ThorSprite(this, m, this.grilla, thorIni?.x ?? pos.x + 30, thorIni?.y ?? pos.y + 10)
     this.criaturas = new Criaturas(this, m, this.mapa.entidades)
-    this.criaturas.alHuir = (especie) => this.sonido.efecto(especie === 'rana' ? 'rana_salto' : especie === 'pez' ? 'charco_pisar' : 'arbusto_sacudir', { volumen: 0.45 })
+    this.criaturas.alHuir = (especie) => this.sonido.efecto(this.m.mundo.criaturas[especie]?.comportamiento?.sonido ?? (especie === 'rana' ? 'rana_salto' : especie === 'pez' ? 'charco_pisar' : 'arbusto_sacudir'), { volumen: 0.45 })
 
     this.reflejos = new Reflejos(this, this.aguaQuieta, [this.heroina.sprite, this.thor.sprite])
     this.fondo = new FondoParalaje(this, m, objetosDeFondo(m))
@@ -905,11 +910,8 @@ export class Mundo extends Phaser.Scene {
 
     alCambiarEscala(this, (e) => {
       // el mundo se ve más cerca en pantallas grandes, el HUD no cambia (va en su escena)
-      this.camara.zoom = params.postal ? 1 : zoomCamara(e.alto)
-      const o = this.camara.origenPantalla
-      this.atmosfera.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y, this.camara.zoom)
-      this.fondo.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y)
-      this.frente.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y)
+      this.zoomBase = params.postal ? 1 : zoomCamara(e.alto)
+      this.aplicarZoom(this.zoomBase + (this.primerPlano ? 1 : 0))
     })
 
     if (!params.postal) {
@@ -2411,6 +2413,14 @@ export class Mundo extends Phaser.Scene {
       x += (j.x - h.x) * ESCENA_JEFE.mezcla
       y += (j.y - j.cuerpo.alto / 2 - (h.y - 12)) * ESCENA_JEFE.mezcla
     }
+    // F14: en la entrada, el enojo y la muerte del jefe la cámara corta a un primer plano (un zoom entero más:
+    // pixel perfecto, como un corte de cine). Si la vista quedara muy chica o en "efectos suaves", no
+    const cerca = !!j && pl.foco === 'jefe' && pl.momento !== null && !this.suave && this.camara.cam.height / (this.zoomBase + 1) >= PREMIUM_FX.altoPrimerPlano
+    if (cerca !== this.primerPlano) {
+      this.primerPlano = cerca
+      this.aplicarZoom(this.zoomBase + (cerca ? 1 : 0))
+      if (cerca) this.camara.centrarEn(x, y)
+    }
     this.camara.seguir(dtReal, x, y, vx, vy)
     if (pl.bloquear && !this.bloqueoPorJefe) {
       this.bloqueoPorJefe = true
@@ -2420,6 +2430,34 @@ export class Mundo extends Phaser.Scene {
       this.bloqueoPorJefe = false
       if (!this.cartelAbierto && !this.presentacion?.activa && !this.combate.caido) this.entrada.pausada = false
     }
+  }
+
+  /** F14: lo que la luz pinta ahora a la heroína, a Thor y al jefe (se acerca suave al tinte nuevo) */
+  private tintesLuz: [RGB, RGB, RGB] = [[255, 255, 255], [255, 255, 255], [255, 255, 255]]
+
+  private pintarConLuz(luces: readonly Luz[], dt: number): void {
+    const osc = this.atmosfera.oscuridadFinal
+    const k = Math.min(1, dt * 6)
+    const jb = this.jefe
+    const quien: [number, number][] = [[this.heroina.x, this.heroina.y - 12], [this.thor.x, this.thor.y - 10], jb ? [jb.x, jb.y - jb.cuerpo.alto / 2] : [0, 0]]
+    quien.forEach(([x, y], i) => {
+      const meta = i === 2 && !jb ? ([255, 255, 255] as RGB) : tinteDeLuces(x, y, luces, osc, LUZ_PERSONAJE)
+      this.tintesLuz[i] = acercarTinte(this.tintesLuz[i]!, meta, k)
+    })
+    const [h, t, j] = this.tintesLuz.map(aEntero) as [number, number, number]
+    this.heroina.iluminar(h)
+    if (t === 0xffffff) this.thor.sprite.clearTint()
+    else this.thor.sprite.setTint(t)
+    jb?.iluminar(j)
+  }
+
+  /** Pone el zoom entero de la cámara y acomoda lo que va pegado a la pantalla */
+  private aplicarZoom(z: number): void {
+    this.camara.zoom = z
+    const o = this.camara.origenPantalla
+    this.atmosfera.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y, this.camara.zoom)
+    this.fondo.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y)
+    this.frente.redimensionar(this.camara.ancho, this.camara.alto, o.x, o.y)
   }
 
   /** "Efectos suaves" en la pausa: sin sacudidas, congelados ni destellos fuertes */
@@ -2613,6 +2651,7 @@ export class Mundo extends Phaser.Scene {
     this.lucesUltimas = luces
     this.criaturas.update(this.t, dtVisual, heroe, vista, this.atmosfera.oscuridadFinal)
     this.atmosfera.update(this.t, dtVisual, vista, heroe, luces, (fn) => this.decos.forEachActivo(fn), rafaga)
+    this.pintarConLuz(luces, dtVisual)
     const cal = CALIDAD[this.partida.ajustes.calidad]
     this.decos.sombrasLargas = cal.sombrasLargas
     this.decos.reflejos = cal.reflejos
@@ -2713,7 +2752,7 @@ export class Mundo extends Phaser.Scene {
       tocar: ((x: number, y: number) => this.entrada.tocar(x, y)) as never,
       estado: () => JSON.parse(JSON.stringify(this.partida)),
       atmosfera: () => this.atmosfera.info(),
-      luzMundo: () => ({ ...this.decos.contarEfectos(), sombrasPersonajes: this.sombrasPj?.cantidad ?? 0, portalesConLuz: this.portalesFx.length, sombraHeroina: this.sombrasPj?.infoDe(this.heroina.sprite) ?? null, sombraThor: this.sombrasPj?.infoDe(this.thor.sprite) ?? null, reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, reacciones: this.decos.totalReacciones, criaturasChicas: this.criaturas.infoChicos, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible, frenteMedidas: this.frente.medidas, altoVista: this.frente.altoVista }),
+      luzMundo: () => ({ ...this.decos.contarEfectos(), sombrasPersonajes: this.sombrasPj?.cantidad ?? 0, portalesConLuz: this.portalesFx.length, sombraHeroina: this.sombrasPj?.infoDe(this.heroina.sprite) ?? null, sombraThor: this.sombrasPj?.infoDe(this.thor.sprite) ?? null, reflejoPersonajes: this.reflejos.visibles, zoomCamara: this.camara.zoom, tinteHeroina: aEntero(this.tintesLuz[0]), tinteThor: aEntero(this.tintesLuz[1]), reacciones: this.decos.totalReacciones, criaturasChicas: this.criaturas.infoChicos, capasFondo: this.fondo.cantidad, frente: this.frente.piezas, frenteVisible: this.frente.visible, frenteMedidas: this.frente.medidas, altoVista: this.frente.altoVista }),
       camara: () => ({ x: this.camara.cx, y: this.camara.cy, ancho: this.camara.ancho, alto: this.camara.alto, manual: this.camara.manual }),
       // F11: las Galerías
       galerias: () => (this.galerias ? { ...this.galerias.info, viajando: !!this.viaje, sombras: this.enemigos.lista.filter((e) => e.cfg.soloEnLuz && e.vivo).map((e) => ({ x: Math.round(e.x), y: Math.round(e.y), oculta: e.oculta })) } : null),
@@ -2846,7 +2885,7 @@ export class Mundo extends Phaser.Scene {
         for (const b of this.mecanismos?.info().piezas ?? []) if (this.partida.brasas.length < n && !this.partida.brasas.includes(b.id)) this.partida.brasas.push(b.id)
       }) as never,
       musicaEstado: () => ({ estado: this.estadoMusica, agua: Math.round(this.detalleAgua * 100) / 100 }),
-      planoJefe: () => ({ ...this.planoJefe, entradaPausada: this.entrada.estaPausada, camara: { x: Math.round(this.camara.cx), y: Math.round(this.camara.cy) } }),
+      planoJefe: () => ({ ...this.planoJefe, entradaPausada: this.entrada.estaPausada, camara: { x: Math.round(this.camara.cx), y: Math.round(this.camara.cy), zoom: this.camara.zoom, primerPlano: this.primerPlano } }),
       guia: () => ({ sinProgreso: Math.round(this.relojGuia.sinProgreso * 10) / 10, visible: this.relojGuia.visible, flecha: this.flechaGuia }),
       /** como si hubiera pasado el rato sin progreso */
       forzarGuia: (() => {

@@ -69,6 +69,26 @@ test.describe('El minotauro', () => {
     await sinErrores(errores)
   })
 
+  test('F14: la entrada del jefe corta a un primer plano pixel perfecto y vuelve a la pelea', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'rick')
+    type Plano = { momento: string | null; camara: { zoom: number; primerPlano: boolean } }
+    const plano = () => gancho<Plano>(page, 'planoJefe')
+    const base = (await plano()).camara.zoom
+    await gancho(page, 'entrarArena')
+    await avanzar(page, 0.6)
+    const cerca = await plano()
+    expect(cerca.momento).toBe('intro')
+    expect(cerca.camara.primerPlano).toBe(true)
+    expect(cerca.camara.zoom).toBe(base + 1)
+    await gancho(page, 'curarTodo')
+    await avanzar(page, 3)
+    const lejos = await plano()
+    expect(lejos.camara.primerPlano).toBe(false)
+    expect(lejos.camara.zoom).toBe(base)
+    await sinErrores(errores)
+  })
+
   test('cambia a la fase 2 al 60 % de la vida y su vida nunca sube', async ({ page }) => {
     await empezar(page)
     expect((await jefe(page)).fase).toBe(1)

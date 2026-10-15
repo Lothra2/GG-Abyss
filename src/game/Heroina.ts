@@ -168,6 +168,17 @@ export class Heroina {
     this.accionActual = null
   }
 
+  /** F14: el color con que la pintan las luces de alrededor (blanco: ninguno) */
+  private luzTinte = 0xffffff
+
+  iluminar(c: number): void {
+    if (c === this.luzTinte) return
+    this.luzTinte = c
+    if (this.tinteS > 0) return
+    if (c === 0xffffff) this.sprite.clearTint()
+    else this.sprite.setTint(c)
+  }
+
   /** Un destello de color (daño recibido) */
   destello(color: number, seg = 0.14): void {
     this.sprite.setTint(color)
@@ -261,7 +272,10 @@ export class Heroina {
     this.suenoS = Math.max(0, this.suenoS - dt)
     if (this.tinteS > 0) {
       this.tinteS -= dt
-      if (this.tinteS <= 0) this.sprite.clearTint()
+      if (this.tinteS <= 0) {
+        if (this.luzTinte === 0xffffff) this.sprite.clearTint()
+        else this.sprite.setTint(this.luzTinte)
+      }
     }
     const ac = this.accionActual
     if (ac) {

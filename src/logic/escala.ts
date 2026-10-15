@@ -17,8 +17,16 @@ export interface Escala {
   cssZoom: number
 }
 
-/** Alto lógico mínimo que se busca (si la pantalla lo permite) */
-export const ALTO_LOGICO_MIN = 400
+/** Alto lógico mínimo que se busca (si la pantalla lo permite). F14: era 400, con 320 la compu ve el mundo más cerca */
+export const ALTO_LOGICO_MIN = 320
+
+/**
+ * F14: los paneles tienen que caber a x1. El inventario del kit mide 280 x 410: cabe entero con 426 de alto, o partido
+ * en dos mitades lado a lado con 582 de ancho. Si con el zoom nuevo no cabe de ninguna forma (el iPad quedaría en
+ * 472 x 328), el zoom baja uno.
+ */
+export const PANEL_ALTO = 426
+export const PANEL_ANCHO_PARTIDO = 582
 
 /**
  * En un teléfono acostado (menos de 500 px CSS de alto) se busca menos alto lógico: así el iPhone y el Galaxy ven el
@@ -35,7 +43,8 @@ export function calcularEscala(anchoCss: number, altoCss: number, dpr: number): 
   const Wp = Math.max(1, Math.round(anchoCss * d))
   const Hp = Math.max(1, Math.round(altoCss * d))
   const min = altoCss < ALTO_CSS_TELEFONO ? ALTO_LOGICO_MIN_TELEFONO : ALTO_LOGICO_MIN
-  const zoom = Math.max(1, Math.floor(Hp / min))
+  let zoom = Math.max(1, Math.floor(Hp / min))
+  while (zoom > 1 && Math.ceil(Hp / zoom) < PANEL_ALTO && Math.ceil(Wp / zoom) < PANEL_ANCHO_PARTIDO) zoom--
   return {
     dpr: d,
     Wp,
@@ -52,7 +61,7 @@ export function calcularEscala(anchoCss: number, altoCss: number, dpr: number): 
  * lo que se ve siga midiendo esto o más: en una compu de 720 p el mundo se ve x2 (640 x 360, unos 20 x 11 cuadros),
  * casi el mismo encuadre que la tablet. El HUD no cambia: vive en su propia escena sin este zoom.
  */
-export const ALTO_MUNDO_MIN = 340
+export const ALTO_MUNDO_MIN = 320
 
 /** Aumento entero de la cámara del mundo sobre la vista lógica */
 export function zoomCamara(altoLogico: number): number {

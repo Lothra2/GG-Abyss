@@ -52,15 +52,30 @@ test.describe('Luz del mundo', () => {
     await sinErrores(errores)
   })
 
-  test('el zoom de la cámara deja ver al menos 340 px de alto del mundo', async ({ page }) => {
+  test('el zoom de la cámara deja ver al menos 320 px de alto del mundo', async ({ page }) => {
     await abrirMundo(page, 'sophie')
     const c = await gancho<{ ancho: number; alto: number }>(page, 'camara')
     const z = (await luz(page)).zoomCamara
     expect(Number.isInteger(z)).toBe(true)
-    expect(c.alto).toBeGreaterThanOrEqual(340)
+    expect(c.alto).toBeGreaterThanOrEqual(320)
     const v = await gancho<{ vista: { w: number; h: number } }>(page, 'hudLayout')
     // la cámara agranda el mundo, el HUD sigue en la vista lógica
     expect(Math.round(v.vista.w / c.ancho)).toBe(z)
+  })
+
+  test('F14: junto a la fogata la luz la pinta tibia, y a Thor también', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    const h = await gancho<{ x: number; y: number }>(page, 'pos')
+    const fogatas = (await gancho<{ tipo: string; x: number; y: number }[]>(page, 'objetivos')).filter((o) => o.tipo === 'fogata')
+    const f = fogatas.sort((a, b) => Math.hypot(a.x - h.x, a.y - h.y) - Math.hypot(b.x - h.x, b.y - h.y))[0]!
+    await gancho(page, 'ponerHeroina', f.x + 26, f.y + 18)
+    await gancho(page, 'avanzar', 1.5)
+    const t = (await gancho<{ tinteHeroina: number }>(page, 'luzMundo')).tinteHeroina
+    const r = (t >> 16) & 255, b = t & 255
+    expect(t).not.toBe(0xffffff)
+    expect(r).toBeGreaterThan(b)
+    await sinErrores(errores)
   })
 
   test('pasar pegado a un arbusto lo sacude y suelta hojas', async ({ page }) => {

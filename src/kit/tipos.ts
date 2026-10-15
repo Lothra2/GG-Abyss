@@ -158,6 +158,8 @@ export interface CriaturaDef {
   w: number
   h: number
   anims: Record<string, AnimHoja>
+  /** F14: cómo se porta una criatura chica nueva (sin esto, solo las de siempre: rana, pez, ardilla) */
+  comportamiento?: { huye?: number; se_esconde?: boolean; corre?: number; agua?: boolean; sonido?: string }
 }
 
 export interface SueloTrozo {

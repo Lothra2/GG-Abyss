@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { multiplicarTinte } from '../logic/luzPersonaje'
 import type { Manifest } from '../kit/tipos'
 import type { Entidad } from '../kit/mapa'
 import { K } from '../kit/claves'
@@ -250,13 +251,22 @@ export class JefeSprite implements Atacable {
     this.pintarTono()
   }
 
-  /** El tono del sprite: marcado (rojizo), enojado en la fase 2 (un poco rojo) o normal. Nunca pisa el destello del golpe */
+  /** F14: el color con que lo pintan las luces de la arena (blanco: ninguno) */
+  private luzTinte = 0xffffff
+
+  iluminar(c: number): void {
+    if (c === this.luzTinte) return
+    this.luzTinte = c
+    this.pintarTono()
+  }
+
+  /** El tono del sprite: marcado (rojizo), enojado en la fase 2 (un poco rojo) o normal, encima de la luz. Nunca pisa el destello del golpe */
   private pintarTono(): void {
     if (this.escena.time.now < this.destelloFin) return
-    if (!this.vivo) this.sprite.clearTint()
-    else if (this.marcado) this.sprite.setTint(0xffa0a0)
-    else if (this.logica.fase >= 2) this.sprite.setTint(0xffc4b4)
-    else this.sprite.clearTint()
+    const tono = !this.vivo ? 0xffffff : this.marcado ? 0xffa0a0 : this.logica.fase >= 2 ? 0xffc4b4 : 0xffffff
+    const c = multiplicarTinte(tono, this.luzTinte)
+    if (c === 0xffffff) this.sprite.clearTint()
+    else this.sprite.setTint(c)
   }
 
   /** Daño recibido. Devuelve true si murió. */

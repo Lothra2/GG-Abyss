@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import type { Manifest } from '../kit/tipos'
 import type { EmisorZona } from '../kit/mapa'
 import { K } from '../kit/claves'
-import { COLOR, PROF, CALIDAD, type Calidad } from '../config/juego'
+import { COLOR, PROF, CALIDAD, PREMIUM_FX, type Calidad } from '../config/juego'
 import { fx } from '../logic/azar'
 import type { Activo, Luz } from '../game/Decos'
 
@@ -237,7 +237,7 @@ export class Particulas {
       const fade = Math.min(1, p.sinEntrada ? 1 : p.edad / 0.8, (p.vida - p.edad) / 0.8)
       let alfa = fade * p.alfaMax
       if (p.tipo === 'luciernaga') alfa *= 0.6 + 0.4 * Math.sin(t * 3 + p.ph)
-      else if (p.tipo === 'mota') alfa *= 0.9
+      else if (p.tipo === 'mota') alfa *= 0.9 * this.enLaLuz(p.x, p.y, c.luces)
       else if (p.llave === 'brillo') alfa *= 0.5 + 0.5 * Math.sin(t * 7 + p.ph * 3)
       else if (p.llave === 'humo') alfa *= 0.55
       p.s.setAlpha(Math.max(0, alfa))
@@ -253,7 +253,24 @@ export class Particulas {
 
       if (p.tipo === 'fuego') c.luces.push({ x: p.x, y: p.y, r: 44, color: p.violeta ? COLOR.FUEGO_FATUO_VIOLETA : COLOR.FUEGO_FATUO, pulse: true, ph: p.ph })
       else if (p.llave === 'brasa') c.luces.push({ x: p.x, y: p.y, r: 10, color: COLOR.BRASA, ph: p.ph })
+      // F14: la luciérnaga alumbra de verdad: en lo oscuro deja su puntito de luz
+      else if (p.tipo === 'luciernaga' && c.noche > 0.3 && alfa > 0.3) c.luces.push({ x: p.x, y: p.y, r: PREMIUM_FX.radioLuciernaga, color: COLOR.LUCIERNAGA, ph: p.ph })
     }
+  }
+
+  /**
+   * F14: el polvo se ve donde le pega la luz (como en un rayo de sol): lejos de toda luz queda tenue, junto a una
+   * fogata o un farol brilla. Devuelve un factor de PREMIUM_FX.motaSombra a 1.4
+   */
+  private enLaLuz(x: number, y: number, luces: readonly Luz[]): number {
+    let mejor = 0
+    for (const l of luces) {
+      if (l.r < 30) continue
+      const d = Math.abs(l.x - x) + Math.abs(l.y - y)
+      if (d >= l.r * 1.2) continue
+      mejor = Math.max(mejor, 1 - d / (l.r * 1.2))
+    }
+    return PREMIUM_FX.motaSombra + (1.4 - PREMIUM_FX.motaSombra) * mejor
   }
 
   /** Lo que pide la zona, con el tope por tipo escalado por la calidad */

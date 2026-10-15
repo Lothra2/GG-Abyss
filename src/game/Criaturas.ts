@@ -40,6 +40,7 @@ interface Ojos {
  * agua, la ardilla corre al árbol) y vuelven solos cuando nadie los mira */
 interface Chico {
   especie: string
+  def: Especie
   hx: number
   hy: number
   x: number
@@ -54,10 +55,22 @@ interface Chico {
   ph: number
 }
 
-const ESPECIES_CHICAS: Record<string, { huye: number; seEsconde: boolean; corre: number }> = {
-  rana: { huye: 50, seEsconde: true, corre: 34 },
-  pez: { huye: 60, seEsconde: false, corre: 0 },
-  ardilla: { huye: 56, seEsconde: true, corre: 22 },
+interface Especie { huye: number; seEsconde: boolean; corre: number; agua: boolean }
+
+const ESPECIES_CHICAS: Record<string, Especie> = {
+  rana: { huye: 50, seEsconde: true, corre: 34, agua: false },
+  pez: { huye: 60, seEsconde: false, corre: 0, agua: true },
+  ardilla: { huye: 56, seEsconde: true, corre: 22, agua: false },
+}
+
+/** F14: las de siempre, o la que el taller trae en el manifest con su `comportamiento` */
+function especieDe(m: Manifest, especie: string): Especie | null {
+  const fija = ESPECIES_CHICAS[especie]
+  if (fija) return fija
+  const c = m.mundo.criaturas[especie]?.comportamiento
+  if (!c) return null
+  const num = (v: unknown, d: number) => (typeof v === 'number' && Number.isFinite(v) ? Math.max(0, v) : d)
+  return { huye: num(c.huye, 50), seEsconde: c.se_esconde === true, corre: num(c.corre, 24), agua: c.agua === true }
 }
 
 /** Radio al que la heroína asusta a un cuervo (PLAN.md 2.5) */
@@ -90,11 +103,12 @@ export class Criaturas {
           hx: e.x, hy: e.y, x: e.x, y: e.y, st: 'quieto', vx: 0, vy: 0, t0: hash2(e.x, e.y) * 5, left, back: 0, s,
           sombra: new Sombra(escena, 9, 0.28), tex: K.cri(nombre, 'quieto'), fr: -1,
         })
-      } else if (ESPECIES_CHICAS[especie] && m.mundo.criaturas[especie]?.anims.quieto && escena.textures.exists(K.cri(especie, 'quieto'))) {
+      } else if (especieDe(m, especie) && m.mundo.criaturas[especie]?.anims.quieto && escena.textures.exists(K.cri(especie, 'quieto'))) {
+        const def = especieDe(m, especie)!
         const s = escena.add.sprite(e.x, e.y, K.cri(especie, 'quieto'), 0).setOrigin(0.5, 1).setDepth(PROF.OBJETOS + e.y)
         // el pez vive en el agua: va abajo del suelo, como el reflejo, y se ve donde hay agua
-        if (especie === 'pez') s.setDepth(PROF.REFLEJO + 0.1)
-        this.chicos.push({ especie, hx: e.x, hy: e.y, x: e.x, y: e.y, huyendo: -1, vuelve: -1, dx: 1, s, tex: K.cri(especie, 'quieto'), fr: -1, ph: hash2(e.x, e.y) })
+        if (def.agua) s.setDepth(PROF.REFLEJO + 0.1)
+        this.chicos.push({ especie, def, hx: e.x, hy: e.y, x: e.x, y: e.y, huyendo: -1, vuelve: -1, dx: 1, s, tex: K.cri(especie, 'quieto'), fr: -1, ph: hash2(e.x, e.y) })
       } else if (especie === 'ojos') {
         const s = escena.add.sprite(e.x, e.y, K.cri('ojos', 'mirar'), 0).setDepth(PROF.BRILLA_EN_OSCURO).setOrigin(0.5, 0.5)
         this.ojos.push({ x: e.x, y: e.y, blinkAt: hash2(e.x, 3) * 6, blinkT: -1, ph: hash2(e.x, e.y), s, tex: K.cri('ojos', 'mirar'), fr: -1 })
@@ -216,7 +230,7 @@ export class Criaturas {
   /** Criaturas chicas que huyen (F10) */
   private actualizarChicos(t: number, dt: number, heroe: { x: number; y: number }, vista: Phaser.Geom.Rectangle): void {
     for (const c of this.chicos) {
-      const def = ESPECIES_CHICAS[c.especie]!
+      const def = c.def
       const anims = this.m.mundo.criaturas[c.especie]!.anims
       const enVista = c.hx > vista.x - 48 && c.hx < vista.right + 48 && c.hy > vista.y - 48 && c.hy < vista.bottom + 48
       if (c.vuelve >= 0) {
@@ -272,7 +286,7 @@ export class Criaturas {
         c.s.setFrame(f)
       }
       c.s.setFlipX(c.dx < 0).setPosition(Math.round(c.x), Math.round(c.y))
-      if (c.especie !== 'pez') c.s.setDepth(PROF.OBJETOS + c.y)
+      if (!def.agua) c.s.setDepth(PROF.OBJETOS + c.y)
     }
   }
 

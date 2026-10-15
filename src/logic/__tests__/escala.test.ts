@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ALTO_CSS_TELEFONO, ALTO_LOGICO_GRANDE, ALTO_LOGICO_MIN_TELEFONO, ALTO_MUNDO_MIN, calcularEscala, pantallaChica, zoomCamara } from '../escala'
+import { ALTO_CSS_TELEFONO, ALTO_LOGICO_GRANDE, ALTO_LOGICO_MIN, ALTO_LOGICO_MIN_TELEFONO, ALTO_MUNDO_MIN, PANEL_ALTO, PANEL_ANCHO_PARTIDO, calcularEscala, pantallaChica, zoomCamara } from '../escala'
 
 describe('calcularEscala', () => {
-  it('iPad 1180 x 820 con dpr 2: zoom 4 y vista 590 x 410', () => {
+  it('iPad 1180 x 820 con dpr 2: zoom 4 y vista 590 x 410 (con 5 el inventario no cabría)', () => {
     const e = calcularEscala(1180, 820, 2)
     expect(e.zoom).toBe(4)
     expect(e.ancho).toBe(590)
@@ -11,11 +11,11 @@ describe('calcularEscala', () => {
     expect(e.Hp).toBe(1640)
   })
 
-  it('escritorio 1280 x 720 con dpr 1: zoom 1 y vista 1280 x 720', () => {
+  it('escritorio 1280 x 720 con dpr 1: zoom 2 y vista 640 x 360', () => {
     const e = calcularEscala(1280, 720, 1)
-    expect(e.zoom).toBe(1)
-    expect(e.ancho).toBe(1280)
-    expect(e.alto).toBe(720)
+    expect(e.zoom).toBe(2)
+    expect(e.ancho).toBe(640)
+    expect(e.alto).toBe(360)
   })
 
   it('960 x 540 con dpr 1: zoom 1 y vista 960 x 540 (el encuadre de las postales)', () => {
@@ -25,11 +25,11 @@ describe('calcularEscala', () => {
     expect(e.alto).toBe(540)
   })
 
-  it('1920 x 1080 con dpr 1: zoom 2 y vista 960 x 540', () => {
+  it('1920 x 1080 con dpr 1: zoom 3 y vista 640 x 360, el mismo encuadre que la compu de 720 p', () => {
     const e = calcularEscala(1920, 1080, 1)
-    expect(e.zoom).toBe(2)
-    expect(e.ancho).toBe(960)
-    expect(e.alto).toBe(540)
+    expect(e.zoom).toBe(3)
+    expect(e.ancho).toBe(640)
+    expect(e.alto).toBe(360)
   })
 
   it('el zoom siempre es entero y mayor o igual a 1', () => {
@@ -42,12 +42,12 @@ describe('calcularEscala', () => {
     }
   })
 
-  it('el alto lógico siempre mide al menos 400 cuando la pantalla tiene 400 o más pixeles físicos de alto', () => {
+  it('el alto lógico siempre mide al menos el mínimo cuando la pantalla lo tiene en pixeles físicos', () => {
     for (const dpr of [1, 1.25, 1.5, 2, 2.625, 3]) {
       for (const h of [400, 410, 540, 600, 720, 820, 1080, 1440]) {
         const e = calcularEscala(1000, h / dpr, dpr)
         // los teléfonos acostados buscan menos alto (ver el test de abajo)
-        if (e.Hp >= 400 && h / dpr >= ALTO_CSS_TELEFONO) expect(e.alto).toBeGreaterThanOrEqual(400)
+        if (e.Hp >= ALTO_LOGICO_MIN && h / dpr >= ALTO_CSS_TELEFONO) expect(e.alto).toBeGreaterThanOrEqual(ALTO_LOGICO_MIN)
       }
     }
   })
@@ -62,8 +62,9 @@ describe('calcularEscala', () => {
     }
     // la tablet y la compu no cambian
     expect(calcularEscala(1180, 820, 2).zoom).toBe(4)
-    expect(calcularEscala(1280, 720, 1).zoom).toBe(1)
-    expect(pantallaChica(calcularEscala(1280, 720, 1))).toBe(false)
+    expect(calcularEscala(1280, 720, 1).zoom).toBe(2)
+    // una ventana de 540 a 639 de alto con zoom 1 (las postales) lleva textos x2
+    expect(pantallaChica(calcularEscala(960, 540, 1))).toBe(false)
   })
 
   it('la vista lógica cubre toda la ventana física', () => {
@@ -95,11 +96,29 @@ describe('calcularEscala', () => {
     expect(calcularEscala(1280, 720, Number.NaN).dpr).toBe(1)
   })
 
-  it('la cámara del mundo se acerca x2 en una compu de 720 p y queda igual en la tablet y en las postales', () => {
-    expect(zoomCamara(calcularEscala(1280, 720, 1).alto)).toBe(2)
-    expect(zoomCamara(calcularEscala(1366, 768, 1).alto)).toBe(2)
+  it('F14: el inventario siempre cabe a x1, entero o partido en dos', () => {
+    for (const dpr of [1, 1.25, 1.5, 2, 2.625, 3]) {
+      for (const [w, h] of [[1180, 820], [1366, 1024], [1024, 768], [1280, 800], [1280, 720], [1920, 1080], [2560, 1440], [844, 390], [667, 325], [800, 1280]]) {
+        const e = calcularEscala(w!, h!, dpr)
+        if (e.zoom > 1) expect(e.alto >= PANEL_ALTO || e.ancho >= PANEL_ANCHO_PARTIDO, `${w}x${h}@${dpr}`).toBe(true)
+      }
+    }
+  })
+
+  it('la tablet, la compu y las postales ven el mundo sin agrandar más la cámara: el zoom entero ya lo acerca', () => {
+    expect(zoomCamara(calcularEscala(1280, 720, 1).alto)).toBe(1)
+    expect(zoomCamara(calcularEscala(1366, 768, 1).alto)).toBe(1)
     expect(zoomCamara(calcularEscala(1180, 820, 2).alto)).toBe(1)
     expect(zoomCamara(calcularEscala(960, 540, 1).alto)).toBe(1)
+    // las compus ven entre 320 y 460 de alto del mundo (la MacBook queda en 450 para que quepa el inventario)
+    for (const [w, h, d] of [[1280, 720, 1], [1920, 1080, 1], [2560, 1440, 1], [1440, 900, 2]] as const) {
+      const e = calcularEscala(w, h, d)
+      const alto = e.alto / zoomCamara(e.alto)
+      expect(alto, `${w}x${h}@${d}`).toBeGreaterThanOrEqual(ALTO_MUNDO_MIN)
+      expect(alto, `${w}x${h}@${d}`).toBeLessThanOrEqual(460)
+    }
+    // la tablet sigue como estaba: 410
+    expect(calcularEscala(1180, 820, 2).alto / zoomCamara(calcularEscala(1180, 820, 2).alto)).toBe(410)
   })
 
   it('lo que se ve del mundo nunca baja del alto mínimo si la pantalla lo tiene', () => {
