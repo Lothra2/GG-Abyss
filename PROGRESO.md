@@ -91,7 +91,9 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - Cámara: la compu ve el mundo a 360 de alto en 720 p, 1080 p y 1440 p. La tablet sigue en 410: más cerca, el inventario no cabe a x1. Primer plano del jefe en la entrada, el enojo y la muerte.
   - El juego lee las especies nuevas del taller con su `comportamiento`.
   - Verificación: typecheck, 541 tests unitarios y e2e completo (escritorio, tablet, iPhone y Galaxy): 287 pasaron, 7 se saltan a propósito y 6 fallaron. Cuatro esperaban la escala vieja y se actualizaron. Dos tocaban para cerrar un panel antes de que el juego dibujara el cuadro siguiente (con la suite cargada va a 1 o 2 cuadros por segundo): ahora esperan dos cuadros. Corridos otra vez solos, con el humo de los cuatro aparatos: 24 pasaron y 3 se saltan.
-  - Falta la parte del taller: pisos repintados, un monumento por zona y especies nuevas (encargo `claude/abyss-premium`).
+  - Integrado el kit premium del taller (`5cca584`, rama `claude/abyss-premium`): pisos repintados, 69 monumentos, 14 especies nuevas, `grado` y `rayos` en cada zona. `verificar-kit` bien. Memoria por mundo en el iPad: +1 a +2 MP.
+  - Verificación con el kit final: typecheck, 541 tests unitarios y e2e completo con postales (escritorio, tablet, iPhone, Galaxy y postales): 304 pasaron, 7 se saltan a propósito y 2 fallaron. El del cambio de tamaño esperaba con el zoom y dos casos seguidos tienen el mismo: ahora espera el tamaño completo. El de Steph fue la máquina cargada. Los dos corridos solos dos veces: 10 pasaron.
+  - Postales en `docs/capturas/f14/` y antes y después de los 7 mundos en `docs/capturas/f14/antes_despues.html`.
 - Arreglo publicado: tras vencer al Pez Farol el oro caía en la poza y la heroína se quedaba pegada. Ahora cae en el muelle y ningún botín cae donde no se camina.
 - Verificación de F10a, F11 e intro:
   - Typecheck limpio y 380 tests unitarios.
