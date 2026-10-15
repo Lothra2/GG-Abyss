@@ -85,6 +85,13 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - La cinemática de la bajada y la del cierre, el final con "Jugar con alas" y el Ciclo 2 con la heroína celestial, sus alas y su lanza de luz.
   - Arreglo en el camino: cada mundo cargaba todo el audio del juego. Ahora carga solo lo suyo y suelta lo de otro mundo al entrar: el Bosque baja 55 MB en vez de 73 (en el iPad cada sonido ocupa el doble).
   - Verificación: typecheck, 527 tests unitarios y e2e completo (escritorio, tablet, iPhone y Galaxy). Las fallas que quedaron eran de tiempo real con la máquina cargada: pasan corriéndolas solas y fallan igual con el build publicado antes. Postales en `docs/capturas/f13/`.
+- F14 en código (PLAN.md F14, retro pixelado premium), la parte del juego:
+  - Gradación de color por mundo y zona, rayos de luz tramados anclados al mundo, niebla baja con el color del mundo, brillo que se derrama hacia lo oscuro y tramado 4 x 4. Solo en calidad alta.
+  - La luz pinta a la heroína, a Thor y al jefe. Las luciérnagas alumbran en lo oscuro y el polvo brilla donde le pega la luz.
+  - Cámara: la compu ve el mundo a 360 de alto en 720 p, 1080 p y 1440 p. La tablet sigue en 410: más cerca, el inventario no cabe a x1. Primer plano del jefe en la entrada, el enojo y la muerte.
+  - El juego lee las especies nuevas del taller con su `comportamiento`.
+  - Verificación: typecheck, 541 tests unitarios y e2e completo (escritorio, tablet, iPhone y Galaxy): 287 pasaron, 7 se saltan a propósito y 6 fallaron. Cuatro esperaban la escala vieja y se actualizaron. Dos tocaban para cerrar un panel antes de que el juego dibujara el cuadro siguiente (con la suite cargada va a 1 o 2 cuadros por segundo): ahora esperan dos cuadros. Corridos otra vez solos, con el humo de los cuatro aparatos: 24 pasaron y 3 se saltan.
+  - Falta la parte del taller: pisos repintados, un monumento por zona y especies nuevas (encargo `claude/abyss-premium`).
 - Arreglo publicado: tras vencer al Pez Farol el oro caía en la poza y la heroína se quedaba pegada. Ahora cae en el muelle y ningún botín cae donde no se camina.
 - Verificación de F10a, F11 e intro:
   - Typecheck limpio y 380 tests unitarios.
