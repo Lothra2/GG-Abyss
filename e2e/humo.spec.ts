@@ -18,7 +18,7 @@ test('carga el juego, la escena Boot termina y no hay errores', async ({ page },
   } else if (info.project.name === 'galaxy') {
     expect(esc).toMatchObject({ zoom: 3, ancho: 780, alto: 304, dpr: 3 })
   } else {
-    expect(esc).toMatchObject({ zoom: 1, ancho: 1280, alto: 720, dpr: 1 })
+    expect(esc).toMatchObject({ zoom: 2, ancho: 640, alto: 360, dpr: 1 })
   }
   expect(await gancho(page, 'renderer')).toBe('webgl')
 })
