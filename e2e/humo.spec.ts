@@ -51,7 +51,8 @@ test('al cambiar el tamaño de la ventana el zoom se recalcula y sigue entero', 
   ]
   for (const [w, h, zoom, ancho, alto] of casos) {
     await page.setViewportSize({ width: w, height: h })
-    await page.waitForFunction((z) => (window.__ABYSS__!.escala as () => { zoom: number })().zoom === z, zoom)
+    // se espera el tamaño completo: dos casos seguidos pueden tener el mismo zoom
+    await page.waitForFunction(([z, w]) => { const e = (window.__ABYSS__!.escala as () => { zoom: number; ancho: number })(); return e.zoom === z && e.ancho === w }, [zoom, ancho] as const)
     const esc = await gancho<{ zoom: number; ancho: number; alto: number }>(page, 'escala')
     expect(Number.isInteger(esc.zoom)).toBe(true)
     expect(esc).toMatchObject({ zoom, ancho, alto })
