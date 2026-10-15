@@ -392,13 +392,14 @@ test.describe('Bosque GG vivo', () => {
     expect(Math.abs(l.banner.x - l.vista.w / 2)).toBeLessThanOrEqual(1)
     if (testInfo.project.name === 'escritorio') {
       await page.setViewportSize({ width: 1920, height: 1080 })
-      await page.waitForFunction(() => (window.__ABYSS__!.escala as () => { zoom: number })().zoom === 2)
+      // F14: 1080 p queda en zoom 3 y ve lo mismo que 720 p
+      await page.waitForFunction(() => (window.__ABYSS__!.escala as () => { zoom: number })().zoom === 3)
       await page.waitForTimeout(300)
       l = await medir()
-      expect(l.vista).toEqual({ w: 960, h: 540 })
+      expect(l.vista).toEqual({ w: 640, h: 360 })
       expect(l.panel.x).toBe(6)
-      expect(l.fps.x + l.fps.w).toBeGreaterThanOrEqual(960 - 8)
-      expect(Math.abs(l.banner.x - 480)).toBeLessThanOrEqual(1)
+      expect(l.fps.x + l.fps.w).toBeGreaterThanOrEqual(640 - 8)
+      expect(Math.abs(l.banner.x - 320)).toBeLessThanOrEqual(1)
     }
   })
 
