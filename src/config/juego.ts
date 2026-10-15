@@ -202,15 +202,15 @@ export const PREMIUM: Record<string, Premium> = {
   // verde enfermizo con oro: la luz baja de los ventanales altos
   mundo2: { grado: { sombras: [16, 34, 26], luces: [255, 214, 150], contraste: 1.12, saturacion: 0.9 }, rayos: { angulo: 18, color: [255, 220, 150], densidad: 0.6 }, niebla: [184, 212, 172], brillo: 0.5 },
   // azul cristal: casi sin cielo, los cristales hacen la luz
-  mundo3: { grado: { sombras: [10, 18, 40], luces: [170, 225, 255], contraste: 1.1, saturacion: 1.05 }, rayos: { angulo: 0, color: [150, 210, 255], densidad: 0.25 }, niebla: [150, 182, 222], brillo: 0.65 },
+  mundo3: { grado: { sombras: [10, 18, 40], luces: [170, 225, 255], contraste: 1.1, saturacion: 1.05 }, rayos: { angulo: 0, color: [150, 210, 255], densidad: 0.25 }, niebla: [150, 182, 222], brillo: 0.5 },
   // gris de niebla con el oro del faro
-  mundo4: { grado: { sombras: [20, 28, 38], luces: [255, 210, 140], contraste: 1.06, saturacion: 0.85 }, rayos: { angulo: -30, color: [232, 222, 190], densidad: 0.35 }, niebla: [192, 202, 208], brillo: 0.55 },
+  mundo4: { grado: { sombras: [20, 28, 38], luces: [255, 210, 140], contraste: 1.06, saturacion: 0.85 }, rayos: { angulo: -30, color: [232, 222, 190], densidad: 0.35 }, niebla: [192, 202, 208], brillo: 0.4 },
   // ocre y violeta de sueño
-  mundo5: { grado: { sombras: [34, 20, 52], luces: [255, 206, 150], contraste: 1.08, saturacion: 1.05 }, rayos: { angulo: 25, color: [255, 215, 170], densidad: 0.45 }, niebla: [202, 182, 222], brillo: 0.5 },
+  mundo5: { grado: { sombras: [34, 20, 52], luces: [255, 206, 150], contraste: 1.08, saturacion: 1.05 }, rayos: { angulo: 25, color: [255, 215, 170], densidad: 0.45 }, niebla: [202, 182, 222], brillo: 0.38 },
   // naranja brasa: la luz sube de la lava
-  mundo6: { grado: { sombras: [30, 10, 8], luces: [255, 180, 110], contraste: 1.14, saturacion: 1.15 }, rayos: { angulo: 0, color: [255, 150, 80], densidad: 0.3 }, niebla: [222, 152, 112], brillo: 0.7 },
+  mundo6: { grado: { sombras: [30, 10, 8], luces: [255, 180, 110], contraste: 1.14, saturacion: 1.15 }, rayos: { angulo: 0, color: [255, 150, 80], densidad: 0.3 }, niebla: [222, 152, 112], brillo: 0.5 },
   // azul hielo, y el rojo del Diablo encima
-  mundo7: { grado: { sombras: [8, 14, 34], luces: [200, 225, 255], contraste: 1.15, saturacion: 0.95 }, rayos: { angulo: -15, color: [170, 205, 255], densidad: 0.3 }, niebla: [172, 192, 226], brillo: 0.6 },
+  mundo7: { grado: { sombras: [8, 14, 34], luces: [200, 225, 255], contraste: 1.15, saturacion: 0.95 }, rayos: { angulo: -15, color: [170, 205, 255], densidad: 0.3 }, niebla: [172, 192, 226], brillo: 0.32 },
   defecto: { grado: { sombras: [16, 22, 34], luces: [255, 240, 220], contraste: 1.04, saturacion: 1.02 }, rayos: { angulo: -20, color: [255, 240, 210], densidad: 0.3 }, niebla: [222, 226, 232], brillo: 0.4 },
 }
 

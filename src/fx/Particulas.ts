@@ -254,9 +254,15 @@ export class Particulas {
       if (p.tipo === 'fuego') c.luces.push({ x: p.x, y: p.y, r: 44, color: p.violeta ? COLOR.FUEGO_FATUO_VIOLETA : COLOR.FUEGO_FATUO, pulse: true, ph: p.ph })
       else if (p.llave === 'brasa') c.luces.push({ x: p.x, y: p.y, r: 10, color: COLOR.BRASA, ph: p.ph })
       // F14: la luciérnaga alumbra de verdad: en lo oscuro deja su puntito de luz
-      else if (p.tipo === 'luciernaga' && c.noche > 0.3 && alfa > 0.3) c.luces.push({ x: p.x, y: p.y, r: PREMIUM_FX.radioLuciernaga, color: COLOR.LUCIERNAGA, ph: p.ph })
+      else if (p.tipo === 'luciernaga' && this.luciernagasPedidas && c.noche > 0.3 && alfa > 0.3) c.luces.push({ x: p.x, y: p.y, r: PREMIUM_FX.radioLuciernaga, color: COLOR.LUCIERNAGA, ph: p.ph })
     }
   }
+
+  /**
+   * F14: solo alumbran las luciérnagas que la zona pide. Las que salen solas en cualquier piso oscuro quedan como
+   * puntitos: con luz propia el Mundo 7 parecía un cielo de estrellas y perdía el miedo.
+   */
+  private luciernagasPedidas = false
 
   /**
    * F14: el polvo se ve donde le pega la luz (como en un rayo de sol): lejos de toda luz queda tenue, junto a una
@@ -296,6 +302,7 @@ export class Particulas {
 
     // en la Catedral las luciérnagas son turquesa (los rastros de vida); en el Bosque, amarillas
     const turquesa = quiere('luciernagas_turquesa')
+    this.luciernagasPedidas = quiere('luciernagas') || turquesa
     if ((quiere('luciernagas') || turquesa || c.noche > 0.6) && this.cuenta('luciernaga') < Math.round((14 + c.noche * 16) * q)) {
       this.crear('luciernaga', turquesa ? 'luciernaga_turquesa' : 'luciernaga', rx(), ry(), { vida: 6 + r() * 6 })
     }

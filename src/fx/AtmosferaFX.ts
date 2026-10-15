@@ -69,7 +69,7 @@ void main() {
             + sobra(outTexCoord + vec2(px.x, -px.y) * 2.0) + sobra(outTexCoord + vec2(-px.x, px.y) * 2.0);
     // el brillo se derrama hacia lo oscuro de alrededor y no quema lo que ya es claro (la heroína se sigue leyendo)
     float propio = lum(c.rgb);
-    col += (b * 0.18 + b2 * 0.1) * uBrillo * (1.0 - propio) * (1.0 - propio);
+    col += (b * 0.15 + b2 * 0.06) * uBrillo * (1.0 - propio) * (1.0 - propio);
     // negros con color y luces con tinte
     float l = lum(col);
     col += uSombras * uKSombras * (1.0 - l) * (1.0 - l);
