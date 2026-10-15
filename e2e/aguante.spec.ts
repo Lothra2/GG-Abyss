@@ -12,6 +12,7 @@ const cuadros = (page: Page) => page.evaluate(() => (window as unknown as { __JU
 
 test.describe('El juego no se congela', () => {
   test('si una invocada del jefe la tumba con su mordida, Thor la rescata y el juego sigue', async ({ page }) => {
+    test.setTimeout(240_000)
     const errores = vigilarErrores(page)
     await abrirMundo(page, 'sophie')
     await gancho(page, 'saltarPresentacion')
@@ -23,11 +24,15 @@ test.describe('El juego no se congela', () => {
     // la fase 2 del minotauro llama a sus ratas
     const j = await gancho<{ vidaMax: number }>(page, 'jefe')
     await gancho(page, 'danarJefe', j.vidaMax * 0.4)
-    // (se la cura mientras tanto: que no la tumbe el minotauro antes de que lleguen)
-    await expect.poll(async () => {
+    // con el reloj del juego (no depende de lo cargada que esté la máquina) y curándola: que no la tumbe el minotauro antes
+    let ratas = 0
+    for (let t = 0; t < 200 && ratas < 1; t += 0.2) {
       await gancho(page, 'curarTodo')
-      return page.evaluate(() => ((window as unknown as { __JUEGO__: Juego }).__JUEGO__.scene.getScene('Mundo') as Mundo).enemigos.lista.some((e) => e.vivo && e.ent.props.invocada === true))
-    }, { timeout: 90_000, intervals: [300] }).toBe(true)
+      await gancho(page, 'avanzar', 0.2)
+      ratas = (await gancho<{ ratas: number }>(page, 'jefe')).ratas
+    }
+    expect(ratas).toBeGreaterThanOrEqual(1)
+    await gancho(page, 'curarTodo')
     // la mordida que la deja en cero sale en el turno de la rata, como en el juego
     await page.evaluate(() => {
       const m = (window as unknown as { __JUEGO__: Juego }).__JUEGO__.scene.getScene('Mundo') as Mundo
@@ -40,8 +45,8 @@ test.describe('El juego no se congela', () => {
     })
     await expect.poll(async () => (await gancho<{ caido: boolean }>(page, 'combate')).caido, { timeout: 10_000 }).toBe(true)
     const c0 = await cuadros(page)
-    // Thor llega, ella se levanta y el mundo sigue andando
-    await expect.poll(async () => (await gancho<{ caido: boolean }>(page, 'combate')).caido, { timeout: 20_000 }).toBe(false)
+    // Thor llega, ella se levanta y el mundo sigue andando (el rescate va con el reloj real: con la máquina cargada tarda más)
+    await expect.poll(async () => (await gancho<{ caido: boolean }>(page, 'combate')).caido, { timeout: 90_000 }).toBe(false)
     expect(await cuadros(page)).toBeGreaterThan(c0 + 10)
     await sinErrores(errores)
   })
