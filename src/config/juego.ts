@@ -161,3 +161,26 @@ export const PORTAL_FX = {
   /** desde esta distancia de la heroína se empieza a encender */
   radioCerca: 160,
 } as const
+
+/**
+ * Lo que usa un solo mundo (logic/soloDeMundo.ts): fuera de él no se carga. El Mundo 7 trae su música por fase, sus
+ * ambientes, los sonidos de sus demonios y los efectos del Diablo, de la Reina Escarcha y del Guardián de la Puerta.
+ * Los proyectiles van por su base (el kit los trae en 8 direcciones).
+ */
+export const SOLO_EN_MUNDO = {
+  mundo7: {
+    audio: [
+      'agua_helada', 'ambiente_bosque_hielo', 'ambiente_catacumbas', 'ambiente_ciudadela', 'ambiente_hielo', 'ambiente_lago', 'ambiente_puente', 'ambiente_puerta', 'ambiente_trono',
+      'brasero_congela', 'brasero_hueso_prender', 'bruja_cura', 'bruja_muro', 'congelada', 'diablillo_fuego', 'diablillo_risa',
+      'diablo_cae', 'diablo_nova', 'diablo_oscuridad', 'diablo_paso', 'diablo_pilares', 'diablo_rayo', 'diablo_ruge',
+      'escudo_bloquea', 'espectro_rayo', 'frio_sube', 'guardian_carga', 'guardian_cruz', 'hielo_cruje', 'hielo_rompe', 'hoguera_prender',
+      'jaula_huesos', 'jaula_rompe', 'lobo_aullido', 'lobo_mordida', 'luz_comida', 'luz_vuelve',
+      'musica_diablo_1', 'musica_diablo_2', 'musica_diablo_3', 'musica_diablo_final', 'musica_guardian', 'musica_reina_escarcha',
+      'reina_lanzas', 'reina_ventisca', 'ventisca_viene', 'viento_fuerte',
+    ],
+    fx: [
+      'aviso_carga_diablo', 'aviso_cruz', 'aviso_lanza_hielo', 'aviso_nova', 'aviso_pilar', 'aviso_rayo', 'gota_sangre_diablo', 'impacto_rayo_hielo',
+      'jaula_huesos_subir', 'jaula_huesos_quieta', 'jaula_huesos_romper', 'nova_fuego_diablo', 'pilar_fuego', 'rayo_rojo', 'proyectil_fuego_chico', 'proyectil_rayo_hielo',
+    ],
+  },
+} as const

@@ -11,6 +11,7 @@ import { PortalFx } from '../game/PortalFx'
 import { perfilDe } from '../game/Jefe'
 import { ID_MERCADER, Mercader } from '../game/Mercader'
 import { entidadesDeTipo, parsearMapa, superficieEn, type Deco, type MapaJuego, type Zona } from '../kit/mapa'
+import { delMundo, esDeOtroMundo } from '../logic/soloDeMundo'
 import { encolarAudio, encolarBotin, encolarCapas, encolarCriaturas, encolarFx, encolarMundoBase, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales, objetosDeFondo, objetosDeFrente } from '../kit/cargador'
 import { Frente } from '../fx/Frente'
 import { frenteDeZona } from '../logic/capas'
@@ -28,7 +29,7 @@ import { familiaDeArma, NOMBRE_FAMILIA } from '../logic/armas'
 import { crearAnimFx, crearAnimsPersonaje } from '../kit/anims'
 import { crearAnimsAtlas } from '../kit/atlas'
 import { params } from '../config/params'
-import { CALIDAD, COLOR, PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S, SOMBRA_LARGA } from '../config/juego'
+import { CALIDAD, COLOR, PROF, FPS_MIN_CALIDAD, FPS_VENTANA_S, SOMBRA_LARGA, SOLO_EN_MUNDO } from '../config/juego'
 import { REACCIONES, AUTOGUARDADO_S, BOTIN, ESCENA_JEFE, GUIA, JEFE, MUSICA_ESTADOS, OLFATO } from '../config/balance'
 import { enAnillo, enLinea } from '../logic/jefe'
 import { Grilla } from '../logic/grilla'
@@ -111,6 +112,18 @@ export function liberarTexturasDeMundo(tex: Phaser.Textures.TextureManager, anim
   for (const k of fuera) for (const a of anims.getAnimsFromTexture(k)) if (anims.exists(a)) anims.remove(a)
   for (const k of fuera) tex.remove(k)
   return fuera.size
+}
+
+/** Suelta los sonidos y los efectos de otro mundo (y la música de las cinemáticas) que hayan quedado en memoria */
+function soltarDeOtroMundo(e: Phaser.Scene, m: Manifest, mundo: string): void {
+  for (const n of Object.keys(m.audio)) {
+    if (!esDeOtroMundo(n, 'audio', mundo, SOLO_EN_MUNDO) || !e.cache.audio.exists(K.aud(n))) continue
+    e.sound.removeByKey(K.aud(n))
+    e.cache.audio.remove(K.aud(n))
+  }
+  const fuera = Object.keys(m.fx).filter((n) => esDeOtroMundo(n, 'fx', mundo, SOLO_EN_MUNDO) && e.textures.exists(K.fx(n))).map((n) => K.fx(n))
+  for (const k of fuera) for (const a of e.anims.getAnimsFromTexture(k)) if (e.anims.exists(a)) e.anims.remove(a)
+  for (const k of fuera) e.textures.remove(k)
 }
 
 /** Objetos del manifest que el mapa usa sin ponerlos en la capa `objetos` */
@@ -347,7 +360,10 @@ export class Mundo extends Phaser.Scene {
     encolarPostales(this, m)
     encolarPersonaje(this, m, id)
     encolarPersonaje(this, m, 'thor')
-    encolarAudio(this, m)
+    // solo el audio de este mundo: lo de otro mundo (o de las cinemáticas) que quedó en memoria se suelta
+    const mundoId = idMundo(m.mundo)
+    soltarDeOtroMundo(this, m, mundoId)
+    encolarAudio(this, m, delMundo(Object.keys(m.audio), 'audio', mundoId, SOLO_EN_MUNDO))
   }
 
   /* ---------- armado ---------- */
@@ -402,7 +418,7 @@ export class Mundo extends Phaser.Scene {
     const idHeroe = this.registry.get('heroeId') as string
     const partidaCarga = this.registry.get('partida') as Partida | undefined
     if (partidaCarga && this.cache.json.exists(K.catalogo)) encolarCapas(this, this.m, idHeroe, aspectoDe(partidaCarga.equipo, leerCatalogo(this.cache.json.get(K.catalogo)), this.m.personajes[idHeroe]?.capas, partidaCarga.celestial))
-    encolarFx(this, this.m, fxDeCombate(this.m.direcciones))
+    encolarFx(this, this.m, delMundo(fxDeCombate(this.m.direcciones), 'fx', idMundo(this.m.mundo), SOLO_EN_MUNDO))
     if (this.load.list.size === 0) return this.armar()
     this.load.once(Phaser.Loader.Events.COMPLETE, () => this.armar())
     this.load.start()
