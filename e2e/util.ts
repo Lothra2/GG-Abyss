@@ -15,6 +15,17 @@ export async function esperarEscena(page: Page, nombre: string, timeout = 60_000
   await page.waitForFunction((n) => window.__ABYSS__ && (window.__ABYSS__.escena as () => string)() === n, nombre, { timeout })
 }
 
+/** Espera `nombre`; si antes sale una cinemática (la bajada al Mundo 7 la primera vez), la salta y sigue */
+export async function esperarEscenaSaltandoCine(page: Page, nombre: string, timeout = 60_000): Promise<void> {
+  const escena = () => page.evaluate(() => (window.__ABYSS__ as unknown as Record<string, () => string>).escena!())
+  await page.waitForFunction((n) => { const e = (window.__ABYSS__ as unknown as Record<string, () => string>)?.escena?.(); return e === 'Cine' || e === n }, nombre, { timeout })
+  if ((await escena()) === 'Cine') {
+    await page.waitForFunction(() => !!(window.__ABYSS__ as unknown as Record<string, () => { plano: string | null } | undefined>).cine?.()?.plano, null, { timeout: 30_000 })
+    await gancho(page, 'saltarCine')
+  }
+  await esperarEscena(page, nombre, timeout)
+}
+
 /** Lee un gancho de prueba */
 export async function gancho<T = unknown>(page: Page, nombre: string, ...args: unknown[]): Promise<T> {
   return page.evaluate(

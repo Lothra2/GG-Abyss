@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { abrirMundo, esperarEscena, gancho, manifest, sinErrores, vigilarErrores } from './util'
+import { abrirMundo, esperarEscena, esperarEscenaSaltandoCine, gancho, manifest, sinErrores, vigilarErrores } from './util'
 
 // F12, el Mundo 6: La Fragua de las Luces. La luz quema: cerca del fuego la heroína junta calor. Las grietas respiran
 // con los fuelles, cada jaula liberada deja luz fría, Thor se moja y se sacude, los hollines se pegan y la Dragona de
@@ -269,7 +269,8 @@ test.describe('La Fragua de las Luces', () => {
     await expect.poll(async () => (await gancho<Jefe>(page, 'jefe')).portal, { timeout: 60_000 }).toBe(true)
     const hay7 = ((await manifest(page)).mundos ?? []).some((q) => q.id === 'mundo7')
     await gancho(page, 'irAlPortal')
-    await esperarEscena(page, hay7 ? 'Bajada' : 'Continuara')
+    // al Mundo 7 se baja la primera vez con su cinemática, que se salta
+    await esperarEscenaSaltandoCine(page, hay7 ? 'Bajada' : 'Continuara')
     await sinErrores(errores)
   })
 })

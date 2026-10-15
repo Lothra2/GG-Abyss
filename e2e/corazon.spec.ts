@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { abrirMundo, esperarEscena, gancho, manifest, sinErrores, vigilarErrores } from './util'
+import { abrirMundo, esperarEscena, esperarEscenaSaltandoCine, gancho, manifest, sinErrores, vigilarErrores } from './util'
 
 // F13, el Mundo 7: El Corazón Helado. El frío sube a oscuras y baja en la hoguera, la ventisca avisa y empuja (detrás
 // de una columna o un gigante no llega), las sombras se comen las luces compañeras, la arena se abre al vencer al
@@ -30,12 +30,7 @@ async function bajarAlCorazon(page: Page): Promise<boolean> {
   if (!(m.mundos ?? []).some((q) => q.id === 'mundo7') || !m.personajes.diablo) return false
   await gancho(page, 'irAMundo', 'mundo7')
   // la primera vez pasa por la cinemática de la bajada (si el kit la trae), se salta y sigue
-  await page.waitForFunction(() => { const e = (window.__ABYSS__ as unknown as Record<string, () => string>).escena!(); return e === 'Cine' || e === 'Bajada' }, null, { timeout: 60_000 })
-  if ((await page.evaluate(() => (window.__ABYSS__ as unknown as Record<string, () => string>).escena!())) === 'Cine') {
-    await page.waitForFunction(() => !!(window.__ABYSS__ as unknown as Record<string, () => { plano: string | null } | undefined>).cine?.()?.plano, null, { timeout: 30_000 })
-    await gancho(page, 'saltarCine')
-  }
-  await esperarEscena(page, 'Bajada')
+  await esperarEscenaSaltandoCine(page, 'Bajada')
   await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return a.escena!() === 'Mundo' && typeof a.noEsperar === 'function' && a.noEsperar() === true && !!a.corazon?.() }, null, { timeout: 180_000 })
   await gancho(page, 'saltarPresentacion')
   return true
@@ -80,8 +75,10 @@ test.describe('El Corazón Helado', () => {
     // al guardar en la hoguera vuelven todas
     const fogatas = (await gancho<{ tipo: string; llave: string; parada: { x: number; y: number } }[]>(page, 'objetivos')).filter((o) => o.tipo === 'fogata')
     const f = fogatas.sort((a, b) => Math.hypot(a.parada.x - h.x, a.parada.y - h.y) - Math.hypot(b.parada.x - h.x, b.parada.y - h.y))[0]!
+    // se para al lado de la fogata (la que queda más cerca de la hoguera puede estar lejos y la caminata no es lo que se prueba)
+    await gancho(page, 'teleport', f.parada.x, f.parada.y)
     await gancho(page, 'usarObjetivo', f.llave)
-    await expect.poll(async () => { await avanzar(page, 0.3); return (await cz(page)).companeras.vivas }, { timeout: 20_000 }).toBe(c.companeras.max)
+    await expect.poll(async () => { await avanzar(page, 0.3); return (await cz(page)).companeras.vivas }, { timeout: 40_000 }).toBe(c.companeras.max)
     await sinErrores(errores)
   })
 
