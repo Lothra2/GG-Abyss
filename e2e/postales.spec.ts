@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { mkdirSync } from 'node:fs'
 import { join } from 'node:path'
-import { abrirMundo, esperarEscena, gancho, vigilarErrores, sinErrores } from './util'
+import { abrirMundo, esperarEscena, esperarEscenaSaltandoCine, gancho, manifest, vigilarErrores, sinErrores } from './util'
 import { JEFE } from '../src/config/balance'
 import { vidaDeJefe } from '../src/logic/dureza'
 
@@ -726,6 +726,150 @@ test('captura la Fragua de las Luces: las zonas, el calor, las jaulas libres, la
     await gancho(page, 'irAPostal', 'rio_de_lava')
     await gancho(page, 'avanzar', 1)
     await foto('lava_fria', 2500)
+    await sinErrores(errores)
+    await ctx.close()
+  }
+})
+
+test('captura el Corazón Helado: las zonas, el frío, la ventisca, los braseros, el Diablo en sus fases, las cinemáticas, el final y la celestial', async ({ browser }) => {
+  test.setTimeout(1_200_000)
+  const dir = join(process.cwd(), 'docs', 'capturas', 'f13')
+  mkdirSync(dir, { recursive: true })
+  type J = { x: number; y: number; vida: number; vidaMax: number; fase: number; estado: string; blindado: boolean; vencido: boolean; portal: boolean; avisos: { ataque: string }[] }
+  type Cz = { refugios: { x: number; y: number }[]; hogueras: { x: number; y: number }[]; braseros: { x: number; y: number; estado: string }[] }
+  const vistas = [
+    { sufijo: '', ctx: { viewport: { width: 960, height: 540 } } },
+    { sufijo: '_tablet', ctx: { viewport: { width: 1180, height: 820 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true } },
+  ]
+  for (const v of vistas) {
+    const ctx = await browser.newContext(v.ctx)
+    const page = await ctx.newPage()
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    const m = await manifest(page)
+    if (!(m.mundos ?? []).some((q) => q.id === 'mundo7') || !m.personajes.diablo) {
+      await ctx.close()
+      test.skip(true, 'el kit todavía no trae el Mundo 7 con el Diablo')
+    }
+    const foto = async (nombre: string, espera = 1500) => {
+      await page.waitForTimeout(espera)
+      await page.screenshot({ path: join(dir, `corazon_${nombre}${v.sufijo}.png`) })
+    }
+    const cine = () => gancho<{ plano: string | null; t: number }>(page, 'cine')
+    // la bajada: la cinemática, con el Diablo de cerca y sus alas que gotean
+    await gancho(page, 'irAMundo', 'mundo7')
+    await esperarEscena(page, 'Cine')
+    if (!v.sufijo) {
+      for (const plano of ['bajada_puerta', 'bajada_escalera', 'bajada_lago', 'bajada_ladrona', 'bajada_diablo', 'bajada_titulo']) {
+        await page.waitForFunction((p) => (window.__ABYSS__ as unknown as { cine: () => { plano: string | null } }).cine().plano === p, plano, { timeout: 90_000 })
+        await page.waitForTimeout(plano === 'bajada_diablo' ? 3500 : 2200)
+        await page.screenshot({ path: join(dir, `cine_${plano}.png`) })
+      }
+    } else {
+      await page.waitForFunction(() => (window.__ABYSS__ as unknown as { cine: () => { plano: string | null } }).cine().plano === 'bajada_diablo', null, { timeout: 90_000 })
+      await foto('cine_diablo', 3500)
+    }
+    expect((await cine()).plano).not.toBeNull()
+    await esperarEscenaSaltandoCine(page, 'Bajada')
+    await esperarEscena(page, 'Mundo', 180_000)
+    await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true && !!a.corazon?.() }, null, { timeout: 180_000 })
+    await gancho(page, 'saltarPresentacion')
+    await gancho(page, 'ponerNivel', 20)
+    if (!v.sufijo) {
+      for (const p of (await gancho<string[]>(page, 'postales')).filter((n) => /escalera|bosque|lago|catacumbas|ciudadela|puente|puerta|corazon/.test(n))) {
+        await gancho(page, 'irAPostal', p)
+        await gancho(page, 'avanzar', 1)
+        await foto(`zona_${p}`, 2500)
+      }
+    }
+    await gancho(page, 'matarEnemigos')
+    const c = await gancho<Cz>(page, 'corazon')
+    // la ventisca: se ve venir y sopla, detrás del refugio no llega
+    const r = c.refugios[0]!
+    await gancho(page, 'ponerHeroina', r.x - 80, r.y + 4)
+    await gancho(page, 'ventisca', 'aviso', 1, 0)
+    await gancho(page, 'avanzar', 0.4)
+    await foto('ventisca_aviso', 300)
+    await gancho(page, 'ventisca', 'sopla', 1, 0)
+    await gancho(page, 'avanzar', 0.6)
+    await foto('ventisca_sopla', 300)
+    // a oscuras y sin compañeras se congela; la hoguera la calienta
+    while (await gancho<boolean>(page, 'devorarLuz'));
+    await gancho(page, 'ventisca', 'calma', 1, 0)
+    await gancho(page, 'frioA', 99)
+    await gancho(page, 'avanzar', 2)
+    await foto('congelada', 300)
+    const h = c.hogueras[0]!
+    await gancho(page, 'teleport', h.x + 40, h.y + 30)
+    for (let i = 0; i < 8; i++) await gancho(page, 'avanzar', 0.5)
+    await foto('hoguera', 600)
+    // el Diablo
+    await gancho(page, 'curarTodo')
+    await gancho(page, 'entrarArena')
+    await expect.poll(async () => (await gancho<J>(page, 'jefe')).estado !== 'dormido', { timeout: 30_000 }).toBe(true)
+    await gancho(page, 'avanzar', 3)
+    await foto('diablo_arena', 800)
+    const j0 = await gancho<J>(page, 'jefe')
+    await gancho(page, 'danarJefe', j0.vidaMax * 0.27)
+    for (let i = 0; i < 300 && !(await gancho<J>(page, 'jefe')).avisos.some((a) => a.ataque === 'rayo'); i++) {
+      await gancho(page, 'curarTodo')
+      await gancho(page, 'avanzar', 0.1)
+    }
+    await gancho(page, 'avanzar', 1.2)
+    await foto('diablo_rayo', 200)
+    await gancho(page, 'danarJefe', j0.vidaMax * 0.26)
+    await expect.poll(async () => { await gancho(page, 'curarTodo'); await gancho(page, 'avanzar', 0.2); return (await gancho<J>(page, 'jefe')).blindado }, { timeout: 30_000 }).toBe(true)
+    await gancho(page, 'avanzar', 1)
+    await foto('diablo_oscuridad', 400)
+    for (let i = 0; i < 3; i++) await gancho(page, 'prenderBrasero', i)
+    await gancho(page, 'avanzar', 0.6)
+    await foto('braseros', 300)
+    await gancho(page, 'prenderBrasero', 3)
+    await expect.poll(async () => { await gancho(page, 'curarTodo'); await gancho(page, 'avanzar', 0.2); return (await gancho<J>(page, 'jefe')).estado }, { timeout: 30_000 }).toBe('aturdido')
+    await gancho(page, 'danarJefe', j0.vidaMax * 0.25)
+    for (let i = 0; i < 300 && !(await gancho<J>(page, 'jefe')).avisos.some((a) => a.ataque === 'jaula'); i++) {
+      await gancho(page, 'curarTodo')
+      const j = await gancho<J>(page, 'jefe')
+      if (j.blindado) for (let k = 0; k < 4; k++) await gancho(page, 'prenderBrasero', k)
+      await gancho(page, 'avanzar', 0.1)
+    }
+    await gancho(page, 'avanzar', 1.5)
+    await foto('diablo_jaula', 300)
+    for (let k = 0; k < 120 && !(await gancho<J>(page, 'jefe')).vencido; k++) {
+      const j = await gancho<J>(page, 'jefe')
+      if (j.blindado) for (let i = 0; i < 4; i++) await gancho(page, 'prenderBrasero', i)
+      else await gancho(page, 'danarJefe', 99999)
+      await gancho(page, 'curarTodo')
+      await gancho(page, 'avanzar', 0.3)
+    }
+    await gancho(page, 'avanzar', 1.5)
+    await foto('diablo_cae', 500)
+    await expect.poll(async () => (await gancho<J>(page, 'jefe')).portal, { timeout: 60_000 }).toBe(true)
+    for (let i = 0; i < 6; i++) await gancho(page, 'avanzar', 1)
+    await foto('corazon_apagado', 2000)
+    // el cierre: la cinemática y la pantalla de las alas
+    await gancho(page, 'irAlPortal')
+    await esperarEscena(page, 'Cine')
+    const planosFin = v.sufijo ? ['fin_cae', 'fin_alas'] : ['fin_cae', 'fin_llama', 'fin_pisos', 'fin_amanecer', 'fin_alas', 'fin_titulo']
+    for (const plano of planosFin) {
+      await page.waitForFunction((p) => (window.__ABYSS__ as unknown as { cine: () => { plano: string | null } }).cine().plano === p, plano, { timeout: 120_000 })
+      await page.waitForTimeout(plano === 'fin_titulo' ? 4000 : 2500)
+      await page.screenshot({ path: join(dir, `cine_${plano}${v.sufijo}.png`) })
+    }
+    await esperarEscenaSaltandoCine(page, 'Continuara')
+    await foto('final', 2500)
+    // el Ciclo 2: celestial en el Bosque, con sus alas y su lanza
+    await gancho(page, 'cicloNuevo')
+    await esperarEscena(page, 'Bajada')
+    await esperarEscena(page, 'Mundo', 180_000)
+    await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return typeof a.noEsperar === 'function' && a.noEsperar() === true && typeof a.ciclo === 'function' }, null, { timeout: 180_000 })
+    await gancho(page, 'saltarPresentacion')
+    await gancho(page, 'avanzar', 1)
+    await foto('ciclo2_celestial', 2000)
+    const p0 = await gancho<{ x: number; y: number }>(page, 'pos')
+    await gancho(page, 'alas', p0.x + 200, p0.y)
+    await gancho(page, 'avanzar', 0.3)
+    await foto('ciclo2_vuelo', 100)
     await sinErrores(errores)
     await ctx.close()
   }

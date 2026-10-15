@@ -79,6 +79,12 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - Al liberarla todas las luces vuelven a sus pisos y la fragua se enfría.
   - Suite completa en verde con el taller `b684504` (290 pasaron, 7 se saltan a propósito).
   - Arreglos en el camino: la palanca nueva chocaba de nombre con la vieja (el juego ya no se rompe con una hoja sin cuadros y el taller la renombra) y el chorro del surtidor ahora cuenta con el reloj del juego.
+- El final (PLAN.md F13), con el taller `e5af0ee` (rama `claude/abyss-final`, une el Mundo 7 y la celestial):
+  - Mundo 7, El Corazón Helado: el frío, la ventisca con refugios, el hielo fino, las cinco luces compañeras que la sombra se come, los braseros de hueso y la llave en el Guardián de la Puerta.
+  - El Diablo en cinco fases: nova, rayo que gira, pilares, oscuridad con los cuatro braseros y la jaula de huesos. Sus alas tienen espinas y sangre oscura que gotea (pedido de Sophie), en el juego y en las dos cinemáticas.
+  - La cinemática de la bajada y la del cierre, el final con "Jugar con alas" y el Ciclo 2 con la heroína celestial, sus alas y su lanza de luz.
+  - Arreglo en el camino: cada mundo cargaba todo el audio del juego. Ahora carga solo lo suyo y suelta lo de otro mundo al entrar: el Bosque baja 55 MB en vez de 73 (en el iPad cada sonido ocupa el doble).
+  - Verificación: typecheck, 527 tests unitarios y e2e completo (escritorio, tablet, iPhone y Galaxy). Las fallas que quedaron eran de tiempo real con la máquina cargada: pasan corriéndolas solas y fallan igual con el build publicado antes. Postales en `docs/capturas/f13/`.
 - Arreglo publicado: tras vencer al Pez Farol el oro caía en la poza y la heroína se quedaba pegada. Ahora cae en el muelle y ningún botín cae donde no se camina.
 - Verificación de F10a, F11 e intro:
   - Typecheck limpio y 380 tests unitarios.

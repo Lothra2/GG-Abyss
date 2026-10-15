@@ -1126,7 +1126,9 @@ Los créditos LPC corren al final.
 3. Mientras el taller dibuja, el juego hace las reglas puras con tests: el frío, la ventisca, el hielo fino, las luces compañeras, el Diablo, el Ciclo 2 y los poderes celestiales.
 4. Llega el arte y se conecta: postales, suite completa y publicar.
 
-**Estado (en el juego, esperando el arte del taller).**
+**Estado (jugable, con el taller `e5af0ee`, rama `claude/abyss-final`, que une `claude/abyss-mundo7` y `claude/abyss-celestial`).** Los mundos 1 a 6 del kit quedan idénticos byte a byte. Las alas nuevas del Diablo (espinas, garras y sangre oscura) están en el juego y en las dos cinemáticas: en la bajada gotean y en `fin_cae` se rompen con él. Cada mundo carga solo su audio y sus efectos: la música por fase del Diablo, los ambientes y los sonidos del Mundo 7 y la música de las cinemáticas ya no van a todos los pisos (`logic/soloDeMundo.ts`, lista en `config/juego.ts`); el Bosque baja 55 MB en vez de 73. Pruebas en `e2e/corazon.spec.ts` y `e2e/final.spec.ts`, postales `corazon_*` y `cine_*` en `docs/capturas/f13/`.
+
+Lo que se hizo antes de que llegara el arte:
 - Dificultad: la vida y el daño de todos los enemigos x2.6 desde el Bosque y más por piso, refuerzos desde el piso 3, los jefes x2.8 de vida y **sus golpes también pegan más por piso** (x1.4 en el Bosque a x4.1 en el piso 7). Medido en `dificultad.test.ts`: un común aguanta de 2 a 14 golpes, la heroína aguanta de 6 a 40 golpes comunes y de 4 a 16 golpes de jefe (antes hasta 39), y cada jefe dura más de 45 s de golpes seguidos. Modo peque más amable sin regalar.
 - Ciclo 2: llega a enemigos (vida x1.7, daño x1.5 por ciclo, más refuerzos) y a jefes (vida y golpes).
 - Mundo 7 en el juego (`game/Corazon.ts`): el frío con su termómetro, la ventisca que avisa, empuja y achica la luz (detrás de `columna_hielo` y `gigante` no llega), el hielo fino que cruje y se rompe (cae al agua helada y vuelve a lo firme), cinco luces compañeras (al vencer a la Dragona se abren todas las jaulas, así que llegan las cinco) que la sombra devoradora se come y vuelven solas o en la hoguera, y los cuatro braseros de hueso que se prenden quedándose al lado (sin botón, para Alana).
@@ -1135,7 +1137,6 @@ Los créditos LPC corren al final.
 - Cinemáticas (`scenes/Cine.ts`): la bajada al infierno la primera vez que se cruza a `mundo7` y el cierre al vencer al Diablo, con franjas, paralaje, fundidos, subtítulos letra por letra, nieve o humo que cruza y un toque para saltar. Sin el kit siguen derecho.
 - El final: "¡Venciste al Diablo!" con "Jugar con alas" (empieza el ciclo siguiente) o "Quedarme aquí".
 - La celestial: +25 % de vida y daño, farol más grande, y dos botones nuevos: las alas (R) y la lanza de luz (X).
-- Falta del taller: el mapa y el arte del Mundo 7, el Diablo, los paneles de las cinemáticas, las capas `alas` y `aura` de las heroínas y los íconos `hab_alas`, `hab_lanza`, `hab_frio`.
 
 **Dificultad, segunda vuelta (Rick: "Sophie pasa todo llegando al boss directo y mata con cualquier arma").** Se medía bien el daño, pero se ganaba igual porque al caer el jefe no se curaba: se lo podía gastar cayendo diez veces. Decisiones de Rick:
 - En modo normal, si cae, el jefe vuelve a la vida con la que empezó su fase. Lo de las fases ganadas no se pierde. En modo peque (Alana) sigue sin curarse.
