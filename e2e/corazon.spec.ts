@@ -29,6 +29,12 @@ async function bajarAlCorazon(page: Page): Promise<boolean> {
   const m = await manifest(page)
   if (!(m.mundos ?? []).some((q) => q.id === 'mundo7') || !m.personajes.diablo) return false
   await gancho(page, 'irAMundo', 'mundo7')
+  // la primera vez pasa por la cinemática de la bajada (si el kit la trae), se salta y sigue
+  await page.waitForFunction(() => { const e = (window.__ABYSS__ as unknown as Record<string, () => string>).escena!(); return e === 'Cine' || e === 'Bajada' }, null, { timeout: 60_000 })
+  if ((await page.evaluate(() => (window.__ABYSS__ as unknown as Record<string, () => string>).escena!())) === 'Cine') {
+    await page.waitForFunction(() => !!(window.__ABYSS__ as unknown as Record<string, () => { plano: string | null } | undefined>).cine?.()?.plano, null, { timeout: 30_000 })
+    await gancho(page, 'saltarCine')
+  }
   await esperarEscena(page, 'Bajada')
   await page.waitForFunction(() => { const a = window.__ABYSS__ as unknown as Record<string, () => unknown>; return a.escena!() === 'Mundo' && typeof a.noEsperar === 'function' && a.noEsperar() === true && !!a.corazon?.() }, null, { timeout: 180_000 })
   await gancho(page, 'saltarPresentacion')
