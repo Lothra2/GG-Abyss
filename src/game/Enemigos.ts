@@ -991,6 +991,8 @@ export class Enemigo implements Atacable {
   }
 
   private colocar(): void {
+    // ya quitado (una invocada que se fue cuando la heroína cayó en medio de su propio turno): no queda nada que dibujar
+    if (this.destruido) return
     const x = Math.round(this.x)
     const y = Math.round(this.y)
     this.sprite.setPosition(x, y).setDepth(PROF.OBJETOS + this.y)
@@ -1038,6 +1040,7 @@ export class Enemigo implements Atacable {
   }
 
   setVisible(v: boolean): void {
+    if (this.destruido) return
     this.sprite.setVisible(v)
     this.sombra.setVisible(v)
     if (!v) {
@@ -1126,7 +1129,8 @@ export class Enemigos {
   update(dt: number, ctx: ContextoEnemigos, vistaRadio = 900): void {
     this.repartirRodeo(dt, ctx)
     this.curarBrujas(dt, ctx)
-    for (const e of this.lista) {
+    // sobre una copia: el golpe de un enemigo puede tumbar a la heroína y al caer se quitan las invocadas (esta incluida)
+    for (const e of [...this.lista]) {
       if (e.destruido) continue
       const lejos = Math.hypot(e.x - ctx.heroe.x, e.y - ctx.heroe.y) > vistaRadio
       if (lejos && e.vivo) {
@@ -1135,7 +1139,7 @@ export class Enemigos {
       }
       e.setVisible(true)
       e.update(dt, ctx)
-      e.actualizarVista()
+      if (!e.destruido) e.actualizarVista()
     }
   }
 

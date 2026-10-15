@@ -98,6 +98,7 @@ export class Combate {
   caido = false
   rescates = 0
   enRescate = false
+  private reapareciendo = false
   muertes = 0
   ultimoNivel = 0
   private atqCd = 0
@@ -427,15 +428,21 @@ export class Combate {
     this.d.sonido.efecto('thor_rescate', { volumen: 0.8 })
     this.d.thor.hacer('howl', 1.4)
     this.d.sonido.efecto('aullido', { volumen: 0.9 })
-    e.game.events.emit('heroina-cae')
+    // el rescate se agenda antes de avisar: pase lo que pase al avisar (el jefe, las invocadas), Thor llega igual
     e.time.delayedCall(900, () => {
       const cam = e.cameras.main
-      cam.fadeOut(COMBATE.fundidoRescateS * 1000, 7, 10, 18)
       cam.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.reaparecer())
+      cam.fadeOut(COMBATE.fundidoRescateS * 1000, 7, 10, 18)
+      // si el fundido no avisa (otro efecto de cámara en el medio), reaparece igual un poco después
+      e.time.delayedCall(COMBATE.fundidoRescateS * 1000 + 2500, () => this.reaparecer())
     })
+    e.game.events.emit('heroina-cae')
   }
 
   private reaparecer(): void {
+    // una sola vez por caída (lo llaman el fundido y su reserva)
+    if (!this.enRescate || this.reapareciendo) return
+    this.reapareciendo = true
     const e = this.d.escena
     const h = this.d.heroina
     const destino = this.d.puntoRescate()
@@ -460,6 +467,7 @@ export class Combate {
       e.cameras.main.fadeIn(500, 7, 10, 18)
       this.caido = false
       this.enRescate = false
+      this.reapareciendo = false
       this.rescates++
       this.invulnerableS = 1
       this.d.bloquearEntrada(false)

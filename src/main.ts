@@ -5,6 +5,7 @@ import { escalaActual, instalarPantalla } from './game/Pantalla'
 import { instalarGanchos, agregarGanchos } from './test/ganchos'
 import { estadoPwa, registrarServiceWorker } from './pwa'
 import { instalarAudio } from './game/Audio'
+import { instalarAguante } from './game/Aguante'
 import { Boot } from './scenes/Boot'
 import { Titulo } from './scenes/Titulo'
 import { SeleccionJugador } from './scenes/SeleccionJugador'
@@ -42,6 +43,8 @@ const game = new Phaser.Game({
   callbacks: { preBoot: (g) => g.registry.set('escala', escala) },
 })
 
+// antes de que arranque el bucle: un cuadro que falla no congela el juego
+instalarAguante(game)
 instalarPantalla(game)
 instalarGanchos(game)
 
