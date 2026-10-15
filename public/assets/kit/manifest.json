@@ -99246,8 +99246,8 @@
    "monumentos": {
     "mon_fragua_herrero": {
      "zona": "La Escalera de Ceniza",
-     "x": 480,
-     "y": 508,
+     "x": 672,
+     "y": 796,
      "historia": "La estatua del primer herrero, con el martillo al hombro y los ojos de brasa."
     },
     "mon_fragua_crisol": {
@@ -102375,8 +102375,8 @@
    "monumentos": {
     "mon_corazon_heroina_hielo": {
      "zona": "La Escalera Helada",
-     "x": 512,
-     "y": 476,
+     "x": 480,
+     "y": 572,
      "historia": "La primera heroína que bajó hasta acá, congelada adentro de un bloque de hielo con la espada en alto."
     },
     "mon_corazon_espada": {
