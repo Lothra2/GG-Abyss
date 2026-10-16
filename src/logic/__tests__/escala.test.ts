@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ALTO_CSS_TELEFONO, ALTO_LOGICO_GRANDE, ALTO_LOGICO_MIN, ALTO_LOGICO_MIN_TELEFONO, ALTO_MUNDO_MIN, PANEL_ALTO, PANEL_ANCHO_PARTIDO, calcularEscala, pantallaChica, zoomCamara } from '../escala'
+import { ALTO_CSS_TELEFONO, ALTO_LOGICO_GRANDE, ALTO_LOGICO_MIN, ALTO_LOGICO_MIN_TELEFONO, ALTO_MUNDO_MIN, PANEL_ALTO, PANEL_ANCHO_PARTIDO, anchoVisible, calcularEscala, franjaCine, zoomCine, zoomPanel, pantallaChica, zoomCamara } from '../escala'
 
 describe('calcularEscala', () => {
   it('iPad 1180 x 820 con dpr 2: zoom 4 y vista 590 x 410 (con 5 el inventario no cabría)', () => {
@@ -130,5 +130,42 @@ describe('calcularEscala', () => {
         if (e.alto >= ALTO_MUNDO_MIN) expect(e.alto / z).toBeGreaterThanOrEqual(ALTO_MUNDO_MIN)
       }
     }
+  })
+})
+
+describe('la escala de las cinemáticas', () => {
+  const casos: [string, number, number, number][] = [
+    ['iPad', 1180, 820, 2],
+    ['compu 720 p', 1280, 720, 1],
+    ['compu 1080 p', 1920, 1080, 1],
+    ['iPhone acostado', 844, 390, 3],
+    ['Galaxy con la barra', 780, 304, 3],
+    ['MacBook', 1440, 900, 2],
+  ]
+  it('el panel de la familia se ve casi entero a lo ancho en cada aparato (pedido de Rick: se veía cortada)', () => {
+    for (const [nombre, w, h, d] of casos) {
+      const Wp = Math.round(w * d), Hp = Math.round(h * d)
+      const z = zoomCine(Wp, Hp, 480, 270)
+      expect(Number.isInteger(z), nombre).toBe(true)
+      // nunca se corta más del 12 % del ancho
+      expect(anchoVisible(Wp, 480, z), nombre).toBeGreaterThanOrEqual(0.88)
+      // y a lo alto, entre las franjas, se ven los pies de la familia (llegan a la fila 246 de 270)
+      const hl = Math.ceil(Hp / z), alto = 270 * zoomPanel(Math.ceil(Wp / z), hl * 0.9, 480, 270), franja = franjaCine(hl, alto, 1)
+      const filaAbajo = 270 / 2 + (hl / 2 - franja) / (alto / 270)
+      expect(filaAbajo, nombre).toBeGreaterThanOrEqual(248)
+    }
+    // antes, en el iPad, cubrir siempre dejaba ver el 61 %
+    expect(anchoVisible(590, 480, 2)).toBeLessThan(0.62)
+  })
+  it('con el zoom de cine la vista lógica mide más o menos un panel, y el panel va a x1', () => {
+    const e = calcularEscala(1180, 820, 2, (Wp, Hp) => zoomCine(Wp, Hp, 480, 270))
+    expect(e.zoom).toBe(5)
+    expect(e.ancho).toBe(472)
+    expect(zoomPanel(e.ancho, e.alto, 480, 270)).toBe(1)
+    expect(calcularEscala(1920, 1080, 1, (Wp, Hp) => zoomCine(Wp, Hp, 480, 270))).toMatchObject({ zoom: 4, ancho: 480, alto: 270 })
+    // la compu de 720 p ve el panel entero con franjas a los lados
+    expect(calcularEscala(1280, 720, 1, (Wp, Hp) => zoomCine(Wp, Hp, 480, 270)).zoom).toBe(2)
+    // sin zoom de cine, la regla de siempre
+    expect(calcularEscala(1180, 820, 2).zoom).toBe(4)
   })
 })

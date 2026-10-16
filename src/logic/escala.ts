@@ -38,13 +38,18 @@ export const ALTO_LOGICO_MIN_TELEFONO = 300
 /** Desde este alto lógico la pantalla es grande (la compu): los textos y los íconos van x2 */
 export const ALTO_LOGICO_GRANDE = 500
 
-export function calcularEscala(anchoCss: number, altoCss: number, dpr: number): Escala {
+/**
+ * `zoomFijo` (las cinemáticas) elige el aumento con los pixeles físicos en vez de la regla de siempre: así un panel
+ * de cine llena la pantalla a escala entera sin cortarse.
+ */
+export function calcularEscala(anchoCss: number, altoCss: number, dpr: number, zoomFijo?: (Wp: number, Hp: number) => number): Escala {
   const d = Number.isFinite(dpr) && dpr > 0 ? dpr : 1
   const Wp = Math.max(1, Math.round(anchoCss * d))
   const Hp = Math.max(1, Math.round(altoCss * d))
   const min = altoCss < ALTO_CSS_TELEFONO ? ALTO_LOGICO_MIN_TELEFONO : ALTO_LOGICO_MIN
   let zoom = Math.max(1, Math.floor(Hp / min))
   while (zoom > 1 && Math.ceil(Hp / zoom) < PANEL_ALTO && Math.ceil(Wp / zoom) < PANEL_ANCHO_PARTIDO) zoom--
+  if (zoomFijo) zoom = Math.max(1, Math.round(zoomFijo(Wp, Hp)))
   return {
     dpr: d,
     Wp,
@@ -71,4 +76,45 @@ export function zoomCamara(altoLogico: number): number {
 /** ¿La vista lógica es chica (tablet, teléfono)? Entonces textos e íconos van x1; en la compu, x2 */
 export function pantallaChica(e: Pick<Escala, 'alto'>): boolean {
   return e.alto < ALTO_LOGICO_GRANDE
+}
+
+/**
+ * El aumento entero que mejor muestra un panel de `pw` x `ph` en una pantalla de `W` x `H`. Lo que se corta del panel
+ * pesa el doble que lo que queda vacío de pantalla: en la cinemática final la familia va de borde a borde y no se
+ * puede cortar. Con "cubrir siempre" (redondear para arriba) el iPad veía solo el 61 % del ancho del panel.
+ */
+export function zoomPanel(W: number, H: number, pw: number, ph: number, max = 16): number {
+  let mejor = 1
+  let puntaje = Infinity
+  for (let z = 1; z <= max; z++) {
+    const corte = Math.max(0, 1 - W / (pw * z)) + Math.max(0, 1 - H / (ph * z))
+    const vacio = Math.max(0, 1 - (pw * z) / W) + Math.max(0, 1 - (ph * z) / H)
+    const p = corte * 2 + vacio
+    if (p < puntaje - 1e-9) {
+      puntaje = p
+      mejor = z
+    }
+  }
+  return mejor
+}
+
+/** Cuánto se ve del ancho del panel con el aumento `z` (1 = todo) */
+export function anchoVisible(W: number, pw: number, z: number): number {
+  return Math.min(1, W / (pw * z))
+}
+
+/** Las franjas de cine se comen un 10 % del alto: el panel se elige para lo que queda entre ellas */
+export const ALTO_UTIL_CINE = 0.9
+
+/** El aumento de pantalla para una cinemática con paneles de `pw` x `ph` */
+export function zoomCine(Wp: number, Hp: number, pw: number, ph: number): number {
+  return zoomPanel(Wp, Hp * ALTO_UTIL_CINE, pw, ph)
+}
+
+/**
+ * El alto de cada franja negra de cine en pixeles lógicos: lo que sobra arriba y abajo del panel, o lo justo para el
+ * subtítulo (5 % del alto, al menos 12 px por la escala del texto) si el panel ya llena la pantalla.
+ */
+export function franjaCine(h: number, altoPanel: number, esc: number): number {
+  return Math.max(Math.round((h - altoPanel) / 2), Math.round(h * 0.05), 12 * esc)
 }

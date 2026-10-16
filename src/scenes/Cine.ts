@@ -2,8 +2,8 @@ import Phaser from 'phaser'
 import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
 import { encolarAudio, encolarCine } from '../kit/cargador'
-import { escalaPanel } from '../kit/intro'
-import { alCambiarEscala, escalaDe } from '../game/Pantalla'
+import { alCambiarEscala, escalaDe, pedirZoomCine } from '../game/Pantalla'
+import { ALTO_UTIL_CINE, franjaCine, zoomCine, zoomPanel } from '../logic/escala'
 import { texto } from '../game/Texto'
 import { crearBoton, type Boton } from '../game/ui/Boton'
 import { CINE, duracionCine, hojasCine, letrasCine, panelesCine, planoEn, planosCine, sonidosCine, TEXTOS_CINE, type PanelCine, type PlanoCine } from '../logic/cine'
@@ -27,6 +27,8 @@ interface CapaViva {
   x: number
   /** si el panel es alto, cuánto mide ya escalado: la cámara baja por él */
   alto: number
+  /** lo que sobra del panel a cada lado: hasta ahí se puede correr sin mostrar el borde */
+  holgura: number
 }
 
 /**
@@ -103,7 +105,11 @@ export class Cine extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       quitarGanchos('cine', 'saltarCine')
       this.musica?.stop()
+      pedirZoomCine(null)
     })
+    // el aumento de la pantalla lo elige el panel: así se ve entero (la familia del final iba cortada)
+    const ref = this.paneles.find((p) => p.h <= p.w)
+    if (ref) pedirZoomCine((Wp, Hp) => zoomCine(Wp, Hp, ref.w, ref.h))
     this.cameras.main.setBackgroundColor(0x000000)
     if (!this.planos.length) {
       this.terminar(true)
@@ -171,21 +177,26 @@ export class Cine extends Phaser.Scene {
       if (this.planos[this.actual]?.titulo) this.time.delayedCall(0, () => this.ponerLogo())
     }
     this.capas = []
-    this.alto = Math.max(Math.min(Math.max(0, Math.round((h - w / 2.2) / 2)), Math.round(h * 0.12)), Math.round(26 * this.esc))
+    // las franjas tapan solo lo que sobra arriba y abajo del panel (o lo justo para el subtítulo): no le comen los pies a nadie
+    const ref = this.paneles.find((p) => p.h <= p.w)
+    this.alto = ref
+      ? franjaCine(h, ref.h * zoomPanel(w, h * ALTO_UTIL_CINE, ref.w, ref.h), this.esc)
+      : Math.max(Math.min(Math.max(0, Math.round((h - w / 2.2) / 2)), Math.round(h * 0.12)), Math.round(26 * this.esc))
     this.franjas[0]!.setPosition(0, 0).setSize(w, this.alto)
     this.franjas[1]!.setPosition(0, h - this.alto).setSize(w, this.alto)
     this.leyenda.setScale(this.esc).setPosition(Math.round(w / 2), Math.round(h - this.alto / 2))
     this.planos.forEach((pl, i) => {
       const p = this.paneles.find((q) => q.nombre === pl.panel)!
       const alto = p.h > p.w ? p.h : 0
-      const k = alto ? Math.max(1, Math.ceil(w / p.w)) : escalaPanel(p.w, p.h, w, h, 18 * this.esc)
+      const k = alto ? Math.max(1, Math.ceil(w / p.w)) : zoomPanel(w, h * ALTO_UTIL_CINE, p.w, p.h)
+      const holgura = Math.max(0, Math.floor((p.w * k - w) / 2))
       const g = this.add.container(0, 0).setDepth(10 + i).setAlpha(i === this.actual ? 1 : 0)
       for (const c of p.capas) {
         const tex = K.cine(this.d.cine, `${p.nombre}_${c.nombre}`)
         const x = Math.round(w / 2)
         const s = this.add.sprite(x, alto ? 0 : Math.round(h / 2), tex, 0).setOrigin(0.5, alto ? 0 : 0.5).setScale(k)
         g.add(s)
-        this.capas.push({ s, plano: i, paralaje: c.paralaje, x, alto: alto * k })
+        this.capas.push({ s, plano: i, paralaje: c.paralaje, x, alto: alto * k, holgura })
         if (i === this.actual) this.animar(s, tex)
       }
       this.grupos.push(g)
@@ -207,11 +218,12 @@ export class Cine extends Phaser.Scene {
     const h = this.scale.height
     const pl = this.planos[i]!
     // el título no se mueve. Los demás se corren despacito, cada capa a su velocidad
-    const corre = pl.titulo ? 0 : (k - 0.5) * 2 * 14 * this.esc
+    const corre = pl.titulo ? 0 : (k - 0.5) * 2
     for (const c of this.capas) {
       if (c.plano !== i) continue
       if (c.alto) c.s.setY(Math.round(-(c.alto - h) * (1 - Math.pow(1 - k, 2)) * c.paralaje))
-      else c.s.setX(Math.round(c.x - corre * c.paralaje))
+      // se corre lo que el panel deja de sobra, nunca tanto como para que se vea el borde
+      else c.s.setX(Math.round(c.x - corre * Math.min(14 * this.esc, c.holgura) * c.paralaje))
     }
   }
 

@@ -11,8 +11,21 @@ import { calcularEscala, type Escala } from '../logic/escala'
 
 export const EVENTO_ESCALA = 'escala'
 
+/** Mientras corre una cinemática, el aumento lo elige ella (ver `pedirZoomCine`) */
+let zoomCine: ((Wp: number, Hp: number) => number) | null = null
+let reaplicar: (() => void) | null = null
+
 export function escalaActual(): Escala {
-  return calcularEscala(window.innerWidth, window.innerHeight, window.devicePixelRatio || 1)
+  return calcularEscala(window.innerWidth, window.innerHeight, window.devicePixelRatio || 1, zoomCine ?? undefined)
+}
+
+/**
+ * Una cinemática pide su propio aumento entero (el que mejor muestra sus paneles) y lo suelta al terminar con `null`.
+ * Las escenas se reacomodan solas con el aviso de escala de siempre.
+ */
+export function pedirZoomCine(fn: ((Wp: number, Hp: number) => number) | null): void {
+  zoomCine = fn
+  reaplicar?.()
 }
 
 export function escalaDe(game: Phaser.Game): Escala {
@@ -52,6 +65,7 @@ export function instalarPantalla(game: Phaser.Game): void {
     setTimeout(aplicar, 150)
     setTimeout(aplicar, 600)
   }
+  reaplicar = aplicar
   window.addEventListener('resize', aplicarYRevisar)
   window.addEventListener('orientationchange', aplicarYRevisar)
   window.visualViewport?.addEventListener('resize', aplicarYRevisar)

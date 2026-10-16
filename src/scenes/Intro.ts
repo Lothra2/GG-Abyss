@@ -3,9 +3,10 @@ import { K } from '../kit/claves'
 import { manifestDe } from '../kit/contexto'
 import { crearAnimsPersonaje } from '../kit/anims'
 import { encolarAudio, encolarIntro, encolarObjetosMundo, encolarParticulas, encolarPersonaje, encolarPostales } from '../kit/cargador'
-import { audioIntro, escalaPanel, hojasIntro, introPintado, PANEL_DE_MOMENTO, panelesIntro } from '../kit/intro'
+import { audioIntro, hojasIntro, introPintado, PANEL_DE_MOMENTO, panelesIntro } from '../kit/intro'
 import type { PanelIntro } from '../kit/tipos'
-import { alCambiarEscala, escalaDe } from '../game/Pantalla'
+import { alCambiarEscala, escalaDe, pedirZoomCine } from '../game/Pantalla'
+import { ALTO_UTIL_CINE, franjaCine, zoomCine, zoomPanel } from '../logic/escala'
 import { escalaQueEntra, texto } from '../game/Texto'
 import { crearBoton, type Boton } from '../game/ui/Boton'
 import { Bloqueo } from '../game/ui/Bloqueo'
@@ -74,7 +75,7 @@ export class Intro extends Phaser.Scene {
   private golpeTitulo = false
   /** F11: los paneles pintados del taller */
   private pintado = false
-  private capas: { s: Phaser.GameObjects.Sprite; panel: string; paralaje: number; x: number; y: number; alto: number }[] = []
+  private capas: { s: Phaser.GameObjects.Sprite; panel: string; paralaje: number; x: number; y: number; alto: number; holgura: number }[] = []
   private familiaFrente: Phaser.GameObjects.Sprite | null = null
   private humos = 0
 
@@ -149,10 +150,14 @@ export class Intro extends Phaser.Scene {
     })
     this.input.keyboard?.on('keydown', () => saltable() && this.terminar())
 
+    // con los paneles pintados, el aumento de la pantalla lo elige el panel: así la familia se ve entera
+    const refZoom = this.pintado ? Object.values(panelesIntro(manifestDe(this))).find((p) => p.h <= p.w) : undefined
+    if (refZoom) pedirZoomCine((Wp, Hp) => zoomCine(Wp, Hp, refZoom.w, refZoom.h))
     alCambiarEscala(this, () => this.armar())
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       quitarGanchos('intro', 'saltarIntro')
       this.musica?.stop()
+      pedirZoomCine(null)
     })
     agregarGanchos({
       intro: () => ({ t: Math.round(this.t * 10) / 10, momento: this.beat, pintado: this.pintado, capas: this.capas.length, humos: this.humos, texto: this.leyenda.text, duracion: DURACION_INTRO, cortes: this.cortes, latidos: this.latidos, relampagos: this.relampagos, golpeTitulo: this.golpeTitulo, franjas: Math.round(this.franjas[0]?.height ?? 0) }),
@@ -187,7 +192,10 @@ export class Intro extends Phaser.Scene {
     this.brasas = null
     this.negro.setSize(w, h)
     // en pantallas muy anchas la franja sale de la proporción; en la tablet, un mínimo para que entre el subtítulo
-    this.alto = Math.max(Math.min(this.altoFranja(w, h), Math.round(h * 0.12)), Math.round(26 * esc))
+    const ref = this.pintado ? Object.values(panelesIntro(manifestDe(this))).find((p) => p.h <= p.w) : undefined
+    this.alto = ref
+      ? franjaCine(h, ref.h * zoomPanel(w, h * ALTO_UTIL_CINE, ref.w, ref.h), esc)
+      : Math.max(Math.min(this.altoFranja(w, h), Math.round(h * 0.12)), Math.round(26 * esc))
     this.franjas[0]!.setPosition(0, 0).setSize(w, this.alto)
     this.franjas[1]!.setPosition(0, h - this.alto).setSize(w, this.alto)
     const cy = h / 2
@@ -346,7 +354,8 @@ export class Intro extends Phaser.Scene {
       const p: PanelIntro = paneles[nombre]!
       const alto = p.h > p.w ? p.h : 0
       // el corte del abismo es alto: cubre de ancho y la cámara baja por él. Los demás cubren todo con aire a los lados
-      const k = alto ? Math.max(1, Math.ceil(w / p.w)) : escalaPanel(p.w, p.h, w, h, 18 * this.esc)
+      const k = alto ? Math.max(1, Math.ceil(w / p.w)) : zoomPanel(w, h * ALTO_UTIL_CINE, p.w, p.h)
+      const holgura = Math.max(0, Math.floor((p.w * k - w) / 2))
       for (const c of p.capas) {
         const tex = K.intro(`${nombre}_${c.nombre}`)
         const x = Math.round(w / 2)
@@ -357,7 +366,7 @@ export class Intro extends Phaser.Scene {
         else if (this.anims.exists(key) && momento !== 'ojos') s.play(key)
         if (momento === 'familia' && c.nombre === 'frente') this.familiaFrente = s
         this.planos[momento].add(s)
-        this.capas.push({ s, panel: momento, paralaje: c.paralaje, x, y, alto: alto * k })
+        this.capas.push({ s, panel: momento, paralaje: c.paralaje, x, y, alto: alto * k, holgura })
       }
       // el fuego ilumina desde abajo: un velo oscuro arriba para que las franjas de cine no corten de golpe
       this.planos[momento].add(this.add.rectangle(0, 0, w, h, 0x05020a, 0.15).setOrigin(0, 0))
@@ -367,14 +376,14 @@ export class Intro extends Phaser.Scene {
   /** La cámara del panel: se corre despacio de lado (cada capa según su paralaje) o baja por el corte del abismo */
   private moverPaneles(momento: Momento, k: number): void {
     const h = this.scale.height
-    const corre = (k - 0.5) * 2 * 14 * this.esc
+    const corre = (k - 0.5) * 2
     for (const c of this.capas) {
       if (c.panel !== momento) continue
       if (c.alto) {
         // de arriba (el bosque) al fondo, frenando al final; la capa de atrás baja un poco menos
         const e = 1 - Math.pow(1 - k, 2)
         c.s.setY(Math.round(-(c.alto - h) * e * c.paralaje))
-      } else c.s.setX(Math.round(c.x - corre * c.paralaje))
+      } else c.s.setX(Math.round(c.x - corre * Math.min(14 * this.esc, c.holgura) * c.paralaje))
     }
   }
 
