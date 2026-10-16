@@ -28,7 +28,7 @@ import type { Atacable, Enemigos } from './Enemigos'
 import type { Proyectiles, Blanco } from './Proyectiles'
 import type { Numeros } from './Numeros'
 import type { Sonido } from './Sonido'
-import { moverEnCinturon } from '../logic/inventario'
+import { efectoDePocion, moverEnCinturon, sePuedeBeber } from '../logic/inventario'
 
 export interface DepsCombate {
   escena: Phaser.Scene
@@ -74,8 +74,6 @@ interface Aura {
   dy: number
 }
 
-const POCION_VIDA = (id: string) => id.includes('health')
-const POCION_MANA = (id: string) => id.includes('mana')
 
 /**
  * El combate de la heroína (PLAN.md F2): ataque básico por toque al enemigo, dos habilidades por clase, pociones,
@@ -825,12 +823,12 @@ export class Combate {
     const p = this.partida
     const id = p.cinturon[i]
     if (!id) return false
-    const vida = POCION_VIDA(id)
-    const mana = POCION_MANA(id)
-    if (!vida && !mana) return false
-    // no se gasta una poción que no hace falta
-    if (vida && p.vida >= this.stats.vidaMax) return false
-    if (mana && p.mana >= this.stats.manaMax) return false
+    const e = efectoDePocion(itemDe(this.d.cat, id))
+    if (!e) return false
+    // no se gasta una poción que no hace falta (la morada sirve si falta vida o maná)
+    if (!sePuedeBeber(e, p.vida >= this.stats.vidaMax, p.mana >= this.stats.manaMax)) return false
+    const vida = e.vida && p.vida < this.stats.vidaMax
+    const mana = e.mana && p.mana < this.stats.manaMax
     p.cinturon[i] = null
     this.curacion = {
       vida: vida ? (this.stats.vidaMax * BOTIN.pociones.vidaPct) / 100 : 0,

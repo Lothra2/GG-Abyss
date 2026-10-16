@@ -3,7 +3,7 @@ import { Azar } from '../azar'
 import { leerJson } from '../../../scripts/lib/verificacion'
 import { esEquipable, itemDe, leerCatalogo, ranuraDe } from '../catalogo'
 import { aporteDe, bonosDeEquipo, bonosDeSets, comparar, nivelArmaduraThor, piezasDeSet } from '../equipo'
-import { bolsaLlena, desequipar, equipar, moverEnBolsa, moverEnCinturon, normalizar, recoger, sacar, sacarDelCinturon, beber, type Inv } from '../inventario'
+import { bolsaLlena, desequipar, equipar, moverEnBolsa, moverEnCinturon, normalizar, recoger, sacar, sacarDelCinturon, beber, efectoDePocion, sePuedeBeber, type Inv } from '../inventario'
 import { legendarioDe, tablaLegendarios, tablaMagicos, tablaNormal, tablaRaros, tamanoOro, tirarBotin } from '../botin'
 import { statsDe } from '../stats'
 import { BOTIN } from '../../config/balance'
@@ -200,6 +200,27 @@ describe('inventario', () => {
     inv.cinturon[2] = 'potion_mana_minor'
     expect(sacarDelCinturon(inv, 2)).toMatchObject({ ok: true })
     expect(inv.bolsa[0]).toBe('potion_mana_minor')
+  })
+  it('la poción morada se toma: da vida y maná, y sirve con que falte uno de los dos (pedido de Sophie)', () => {
+    const morada = efectoDePocion(itemDe(cat, 'potion_rejuv_minor'))!
+    expect(morada).toEqual({ vida: true, mana: true })
+    // con el maná lleno y poca vida se toma (antes no dejaba)
+    expect(sePuedeBeber(morada, false, true)).toBe(true)
+    expect(sePuedeBeber(morada, true, false)).toBe(true)
+    expect(sePuedeBeber(morada, true, true)).toBe(false)
+    const inv = invVacio()
+    inv.cinturon[0] = 'potion_rejuv_minor'
+    expect(beber(inv, cat, 0)).toEqual({ vidaPct: 40, manaPct: 50 })
+  })
+  it('ninguna poción del kit queda trancada: todas hacen algo', () => {
+    const pociones = cat.lista.filter((i) => i.base.cat === 'potion').map((i) => i.id)
+    expect(pociones.length).toBeGreaterThanOrEqual(5)
+    for (const id of pociones) {
+      const e = efectoDePocion(itemDe(cat, id))
+      expect(e, id).not.toBeNull()
+      expect(e!.vida || e!.mana, id).toBe(true)
+    }
+    expect(efectoDePocion(itemDe(cat, 'sword_1'))).toBeNull()
   })
   it('normalizar completa una bolsa de otro tamaño', () => {
     const inv = normalizar({ equipo: {}, bolsa: ['sword_1'], cinturon: [] })

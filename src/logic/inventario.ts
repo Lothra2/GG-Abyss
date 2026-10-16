@@ -1,5 +1,5 @@
 import { BOTIN } from '../config/balance'
-import { esEquipable, esPocion, itemDe, ranuraDe, type Catalogo, type Ranura } from './catalogo'
+import { esEquipable, esPocion, itemDe, ranuraDe, type Catalogo, type ItemCat, type Ranura } from './catalogo'
 
 /** Lo que guarda la partida del inventario */
 export interface Inv {
@@ -97,15 +97,35 @@ export function sacarDelCinturon(inv: Inv, indice: number): Resultado {
   return { ok: true, donde: 'bolsa' }
 }
 
+/** Lo que hace una poción: la roja da vida, la azul maná y la morada (rejuvenecer) las dos */
+export interface EfectoPocion {
+  vida: boolean
+  mana: boolean
+}
+
+/**
+ * El efecto de una poción del kit. Toda poción sirve para algo: las que el juego no usa todavía (aguante, antídoto,
+ * descongelante) dan vida como la roja. Antes no se podían tomar nunca y se quedaban trancadas en el cinturón.
+ */
+export function efectoDePocion(i: ItemCat | null | undefined): EfectoPocion | null {
+  if (!i || !esPocion(i)) return null
+  if (i.base.kind === 'mana') return { vida: false, mana: true }
+  if (i.base.kind === 'rejuv') return { vida: true, mana: true }
+  return { vida: true, mana: false }
+}
+
+/** Se toma si le sirve en algo: la morada con que falte vida o maná, no las dos */
+export function sePuedeBeber(e: EfectoPocion, vidaLlena: boolean, manaLlena: boolean): boolean {
+  return (e.vida && !vidaLlena) || (e.mana && !manaLlena)
+}
+
 /** Una poción que se bebe: sale del cinturón y devuelve cuánto restaura */
 export function beber(inv: Inv, cat: Catalogo, indice: number): { vidaPct: number; manaPct: number } | null {
   const id = inv.cinturon[indice]
-  const i = itemDe(cat, id)
-  if (!id || !i || !esPocion(i)) return null
+  const e = efectoDePocion(itemDe(cat, id))
+  if (!id || !e) return null
   inv.cinturon[indice] = null
-  const vida = i.base.kind === 'health' || i.base.kind === 'rejuv'
-  const mana = i.base.kind === 'mana' || i.base.kind === 'rejuv'
-  return { vidaPct: vida ? BOTIN.pociones.vidaPct : 0, manaPct: mana ? BOTIN.pociones.manaPct : 0 }
+  return { vidaPct: e.vida ? BOTIN.pociones.vidaPct : 0, manaPct: e.mana ? BOTIN.pociones.manaPct : 0 }
 }
 
 /** Una partida vieja puede traer una bolsa de otro tamaño: se normaliza */

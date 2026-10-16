@@ -369,6 +369,29 @@ test.describe('Combate', () => {
     expect((await combate(page)).vida).toBeGreaterThan(v0 + 15)
   })
 
+  test('la poción morada se toma con el maná lleno si falta vida, y las raras también se toman (pedido de Sophie)', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'darObjeto', 'potion_rejuv_minor')
+    await gancho(page, 'darObjeto', 'potion_antidote_minor')
+    const cint = (await combate(page)).cinturon
+    const morada = cint.indexOf('potion_rejuv_minor'), rara = cint.indexOf('potion_antidote_minor')
+    expect(morada).toBeGreaterThanOrEqual(0)
+    expect(rara).toBeGreaterThanOrEqual(0)
+    await gancho(page, 'curarTodo')
+    await gancho(page, 'danar', 30)
+    const v0 = (await combate(page)).vida
+    // el maná está lleno: igual se la toma porque le falta vida
+    expect(await gancho(page, 'pocion', morada)).toBe(true)
+    expect((await combate(page)).cinturon[morada]).toBeNull()
+    await avanzar(page, 1.2)
+    expect((await combate(page)).vida).toBeGreaterThan(v0)
+    await gancho(page, 'danar', 30)
+    expect(await gancho(page, 'pocion', rara)).toBe(true)
+    expect((await combate(page)).cinturon[rara]).toBeNull()
+    await sinErrores(errores)
+  })
+
   test('el cinturón tiene 5 casillas: arrastrar una poción sobre otra las cambia de lugar y tocarla la toma', async ({ page }, info) => {
     const errores = vigilarErrores(page)
     await abrirMundo(page, 'sophie')
