@@ -3,7 +3,7 @@ import { Azar } from '../azar'
 import { leerJson } from '../../../scripts/lib/verificacion'
 import { esEquipable, itemDe, leerCatalogo, ranuraDe } from '../catalogo'
 import { aporteDe, bonosDeEquipo, bonosDeSets, comparar, nivelArmaduraThor, piezasDeSet } from '../equipo'
-import { bolsaLlena, desequipar, equipar, moverEnBolsa, moverEnCinturon, normalizar, recoger, sacar, sacarDelCinturon, beber, efectoDePocion, sePuedeBeber, type Inv } from '../inventario'
+import { bolsaLlena, desequipar, equipar, moverEnBolsa, moverEnCinturon, normalizar, recoger, sacar, sacarDelCinturon, beber, efectoDePocion, rellenarCinturon, sePuedeBeber, type Inv } from '../inventario'
 import { legendarioDe, tablaLegendarios, tablaMagicos, tablaNormal, tablaRaros, tamanoOro, tirarBotin } from '../botin'
 import { statsDe } from '../stats'
 import { BOTIN } from '../../config/balance'
@@ -211,6 +211,23 @@ describe('inventario', () => {
     const inv = invVacio()
     inv.cinturon[0] = 'potion_rejuv_minor'
     expect(beber(inv, cat, 0)).toEqual({ vidaPct: 40, manaPct: 50 })
+  })
+  it('con el cinturón lleno, tocar una poción en la bolsa dice cinturón lleno (no "bolsa llena") y el hueco se rellena solo', () => {
+    const inv = invVacio()
+    inv.cinturon = ['potion_health_minor', 'potion_health_minor', 'potion_mana_minor', 'potion_health_minor', 'potion_mana_minor']
+    inv.bolsa[3] = 'potion_rejuv_minor'
+    inv.bolsa[5] = 'sword_1'
+    expect(equipar(inv, cat, 3)).toEqual({ ok: false, motivo: 'cinturon-lleno' })
+    // se toma una del cinturón: la morada de la bolsa pasa sola a ese hueco, la espada se queda
+    inv.cinturon[1] = null
+    expect(rellenarCinturon(inv, cat)).toBe(1)
+    expect(inv.cinturon[1]).toBe('potion_rejuv_minor')
+    expect(inv.bolsa[3]).toBeNull()
+    expect(inv.bolsa[5]).toBe('sword_1')
+    // sin pociones en la bolsa no pasa nada
+    inv.cinturon[0] = null
+    expect(rellenarCinturon(inv, cat)).toBe(0)
+    expect(inv.cinturon[0]).toBeNull()
   })
   it('ninguna poción del kit queda trancada: todas hacen algo', () => {
     const pociones = cat.lista.filter((i) => i.base.cat === 'potion').map((i) => i.id)

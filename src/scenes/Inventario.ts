@@ -357,7 +357,14 @@ export class Inventario extends Phaser.Scene {
     const m = this.mundo
     const r = c.origen.tipo === 'bolsa' ? m.equiparDeBolsa(c.origen.i) : c.origen.tipo === 'equipo' ? m.desequiparRanura(c.origen.ranura) : { ok: false as const, motivo: 'vacio' as const }
     if (r.ok) this.sound.play(K.aud('recoger'), { volume: 0.6 })
-    else {
+    else if (r.motivo === 'cinturon-lleno' && c.origen.tipo === 'bolsa') {
+      // el cinturón está lleno: la poción se toma ahí mismo (si hace falta)
+      if (m.tomarDeBolsa(c.origen.i)) this.avisar('¡Glup!', 0x8affa0)
+      else {
+        this.sound.play(K.aud('error'), { volume: 0.5 })
+        this.avisar('Cinturón lleno', 0xffd27a)
+      }
+    } else {
       this.sound.play(K.aud('error'), { volume: 0.5 })
       this.avisar(r.motivo === 'llena' ? 'Bolsa llena' : 'Eso no se puede poner')
     }

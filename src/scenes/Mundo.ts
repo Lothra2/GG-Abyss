@@ -40,7 +40,7 @@ import { descubrirSecretoCofre, descubrirZona, resumen, type EstadoDescubrimient
 import { fx, juego } from '../logic/azar'
 import { itemDe, leerCatalogo, type Catalogo } from '../logic/catalogo'
 import { tirarBotin, type Fuente, type Premio } from '../logic/botin'
-import { equipar as equiparInv, desequipar as desequiparInv, moverEnBolsa, normalizar, recoger as recogerInv, sacar as sacarInv, type Inv, type OrigenInv } from '../logic/inventario'
+import { equipar as equiparInv, desequipar as desequiparInv, moverEnBolsa, normalizar, recoger as recogerInv, rellenarCinturon, sacar as sacarInv, type Inv, type OrigenInv } from '../logic/inventario'
 import { nivelArmaduraThor } from '../logic/equipo'
 import { almacenDelNavegador, borrarPartida, cambiarDeMundo, cargarOCrear, guardarPartida, type Almacen, type Partida } from '../logic/guardado'
 import { MundoVista } from '../game/MundoVista'
@@ -440,6 +440,8 @@ export class Mundo extends Phaser.Scene {
     this.cat = leerCatalogo(this.cache.json.get(K.catalogo))
     this.aspectoPuesto = ''
     normalizar(this.inv())
+    // una partida con huecos en el cinturón y pociones en la bolsa (antes no se pasaban solas) se acomoda al entrar
+    rellenarCinturon(this.inv(), this.cat)
     this.descub = { zonas: this.partida.zonas, secretos: this.partida.secretos }
     this.tJugado = this.partida.tiempoJugado ?? 0
     this.tEnMundo = 0
@@ -1743,6 +1745,13 @@ export class Mundo extends Phaser.Scene {
     const r = equiparInv(this.inv(), this.cat, i)
     if (r.ok) this.alCambioInventario()
     return r
+  }
+
+  /** Con el cinturón lleno, una poción de la bolsa se toma de una */
+  tomarDeBolsa(i: number): boolean {
+    const ok = this.combate.pocionDeBolsa(i)
+    if (ok) this.alCambioInventario()
+    return ok
   }
 
   desequiparRanura(r: Parameters<typeof desequiparInv>[1]) {

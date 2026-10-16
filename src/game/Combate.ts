@@ -28,7 +28,7 @@ import type { Atacable, Enemigos } from './Enemigos'
 import type { Proyectiles, Blanco } from './Proyectiles'
 import type { Numeros } from './Numeros'
 import type { Sonido } from './Sonido'
-import { efectoDePocion, moverEnCinturon, sePuedeBeber } from '../logic/inventario'
+import { efectoDePocion, moverEnCinturon, rellenarCinturon, sePuedeBeber } from '../logic/inventario'
 
 export interface DepsCombate {
   escena: Phaser.Scene
@@ -818,18 +818,33 @@ export class Combate {
     return moverEnCinturon(this.partida, de, a)
   }
 
+  /** Toma la poción de la casilla `i` del cinturón, y el hueco se rellena con una de la bolsa */
   pocion(i: number): boolean {
-    if (this.caido) return false
     const p = this.partida
-    const id = p.cinturon[i]
-    if (!id) return false
+    if (!this.beber(p.cinturon[i] ?? null)) return false
+    p.cinturon[i] = null
+    rellenarCinturon(p, this.d.cat)
+    return true
+  }
+
+  /** Toma una poción que está en la bolsa (con el cinturón lleno, tocarla en la mochila la toma de una) */
+  pocionDeBolsa(i: number): boolean {
+    const p = this.partida
+    if (!this.beber(p.bolsa[i] ?? null)) return false
+    p.bolsa[i] = null
+    return true
+  }
+
+  /** ¿Le sirve? Entonces cura (vida, maná o las dos) y suena. No la saca de ningún lado */
+  private beber(id: string | null): boolean {
+    if (this.caido || !id) return false
+    const p = this.partida
     const e = efectoDePocion(itemDe(this.d.cat, id))
     if (!e) return false
     // no se gasta una poción que no hace falta (la morada sirve si falta vida o maná)
     if (!sePuedeBeber(e, p.vida >= this.stats.vidaMax, p.mana >= this.stats.manaMax)) return false
     const vida = e.vida && p.vida < this.stats.vidaMax
     const mana = e.mana && p.mana < this.stats.manaMax
-    p.cinturon[i] = null
     this.curacion = {
       vida: vida ? (this.stats.vidaMax * BOTIN.pociones.vidaPct) / 100 : 0,
       mana: mana ? (this.stats.manaMax * BOTIN.pociones.manaPct) / 100 : 0,

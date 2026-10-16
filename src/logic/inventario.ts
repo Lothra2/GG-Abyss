@@ -8,7 +8,7 @@ export interface Inv {
   cinturon: (string | null)[]
 }
 
-export type MotivoNo = 'llena' | 'no-equipable' | 'vacio' | 'desconocido'
+export type MotivoNo = 'llena' | 'cinturon-lleno' | 'no-equipable' | 'vacio' | 'desconocido'
 
 export type Resultado = { ok: true; donde: 'bolsa' | 'cinturon' | 'equipo'; ranura?: Ranura } | { ok: false; motivo: MotivoNo }
 
@@ -63,7 +63,8 @@ export function equipar(inv: Inv, cat: Catalogo, indiceBolsa: number): Resultado
   if (!esEquipable(i)) return no('no-equipable')
   if (esPocion(i)) {
     const h = inv.cinturon.indexOf(null)
-    if (h < 0) return no('llena')
+    // la bolsa no está llena: lo lleno es el cinturón (decía "Bolsa llena" y parecía que todo se trancaba)
+    if (h < 0) return no('cinturon-lleno')
     inv.cinturon[h] = id
     inv.bolsa[indiceBolsa] = null
     return { ok: true, donde: 'cinturon' }
@@ -126,6 +127,23 @@ export function beber(inv: Inv, cat: Catalogo, indice: number): { vidaPct: numbe
   if (!id || !e) return null
   inv.cinturon[indice] = null
   return { vidaPct: e.vida ? BOTIN.pociones.vidaPct : 0, manaPct: e.mana ? BOTIN.pociones.manaPct : 0 }
+}
+
+/**
+ * Como en Diablo: los huecos del cinturón se llenan solos con las pociones de la bolsa (la primera que haya).
+ * Devuelve cuántas pasó.
+ */
+export function rellenarCinturon(inv: Inv, cat: Catalogo): number {
+  let n = 0
+  for (let c = 0; c < inv.cinturon.length; c++) {
+    if (inv.cinturon[c]) continue
+    const b = inv.bolsa.findIndex((id) => !!id && efectoDePocion(itemDe(cat, id)) !== null)
+    if (b < 0) break
+    inv.cinturon[c] = inv.bolsa[b]!
+    inv.bolsa[b] = null
+    n++
+  }
+  return n
 }
 
 /** Una partida vieja puede traer una bolsa de otro tamaño: se normaliza */

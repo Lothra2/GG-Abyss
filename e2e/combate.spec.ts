@@ -392,6 +392,35 @@ test.describe('Combate', () => {
     await sinErrores(errores)
   })
 
+  test('con el cinturón lleno, la morada de la bolsa se toma desde la mochila y los huecos del cinturón se rellenan solos', async ({ page }) => {
+    const errores = vigilarErrores(page)
+    await abrirMundo(page, 'sophie')
+    await gancho(page, 'saltarPresentacion')
+    // el cinturón se llena y las moradas van a la bolsa (lo que le pasó a Sophie al comprarlas)
+    for (const id of ['potion_health_minor', 'potion_health_minor', 'potion_rejuv_minor', 'potion_rejuv_minor']) await gancho(page, 'darObjeto', id)
+    let inv = await gancho<{ bolsa: (string | null)[]; cinturon: (string | null)[] }>(page, 'inventario')
+    expect(inv.cinturon.every((x) => x)).toBe(true)
+    expect(inv.bolsa.slice(0, 2)).toEqual(['potion_rejuv_minor', 'potion_rejuv_minor'])
+    await gancho(page, 'danar', 30)
+    const v0 = (await combate(page)).vida
+    await gancho(page, 'abrirInventario')
+    await page.waitForFunction(() => typeof (window.__ABYSS__ as unknown as Record<string, unknown>).inventarioUI === 'function', null, { timeout: 10_000 })
+    // tocarla en la bolsa la toma ahí mismo
+    expect(await gancho(page, 'tocarCasilla', 'bolsa', 0)).toBe(true)
+    inv = await gancho(page, 'inventario')
+    expect(inv.bolsa[0]).toBeNull()
+    await gancho(page, 'cerrarInventario')
+    await avanzar(page, 1.2)
+    expect((await combate(page)).vida).toBeGreaterThan(v0)
+    // se toma una del cinturón y la otra morada de la bolsa pasa sola a ese hueco
+    await gancho(page, 'danar', 30)
+    expect(await gancho(page, 'pocion', 0)).toBe(true)
+    inv = await gancho(page, 'inventario')
+    expect(inv.cinturon[0]).toBe('potion_rejuv_minor')
+    expect(inv.bolsa.includes('potion_rejuv_minor')).toBe(false)
+    await sinErrores(errores)
+  })
+
   test('el cinturón tiene 5 casillas: arrastrar una poción sobre otra las cambia de lugar y tocarla la toma', async ({ page }, info) => {
     const errores = vigilarErrores(page)
     await abrirMundo(page, 'sophie')
