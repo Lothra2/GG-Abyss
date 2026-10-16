@@ -85,6 +85,9 @@ Memoria de la sesión larga. Se actualiza al cerrar cada tarea.
   - La cinemática de la bajada y la del cierre, el final con "Jugar con alas" y el Ciclo 2 con la heroína celestial, sus alas y su lanza de luz.
   - Arreglo en el camino: cada mundo cargaba todo el audio del juego. Ahora carga solo lo suyo y suelta lo de otro mundo al entrar: el Bosque baja 55 MB en vez de 73 (en el iPad cada sonido ocupa el doble).
   - Verificación: typecheck, 527 tests unitarios y e2e completo (escritorio, tablet, iPhone y Galaxy). Las fallas que quedaron eran de tiempo real con la máquina cargada: pasan corriéndolas solas y fallan igual con el build publicado antes. Postales en `docs/capturas/f13/`.
+- Arreglos tras probar F14 (Rick y Sophie):
+  - La poción morada (rejuvenecer) no se dejaba tomar: pedía que faltaran vida y maná a la vez, y el juego solo reconocía las de vida y maná. Las moradas y las raras (aguante, antídoto, descongelante) se quedaban trancadas en el cinturón y la bolsa se llenaba. Ahora el efecto sale del kit: la morada sirve con que falte una de las dos, y las raras dan vida.
+  - En la cinemática final la familia se veía cortada: los paneles se agrandaban hasta tapar la pantalla (el iPad veía el 61 % del ancho). Ahora cada cinemática elige su aumento entero y se ven la familia, Thor y la casa completos.
 - F14 en código (PLAN.md F14, retro pixelado premium), la parte del juego:
   - Gradación de color por mundo y zona, rayos de luz tramados anclados al mundo, niebla baja con el color del mundo, brillo que se derrama hacia lo oscuro y tramado 4 x 4. Solo en calidad alta.
   - La luz pinta a la heroína, a Thor y al jefe. Las luciérnagas alumbran en lo oscuro y el polvo brilla donde le pega la luz.
